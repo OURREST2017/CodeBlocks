@@ -1,0 +1,834 @@
+# depslib dependency file v1.0
+1483411807 source:c:\users\rem\documents\apps\ranger\application\advsetup.c
+	"main.h"
+
+1483410165 c:\users\rem\documents\apps\ranger\application\main.h
+	"DIALOG.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\gui.h
+	"GUI_ConfDefaults.h"
+	"GUI_Type.h"
+	"GUI_Version.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\gui_confdefaults.h
+	"GUIConf.h"
+
+1472653608 c:\users\rem\documents\apps\ranger\config\guiconf.h
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\gui_type.h
+	"LCD.h"
+	"GUIConf.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\lcd.h
+	"GUI_ConfDefaults.h"
+	"Global.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\global.h
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\gui_version.h
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\dialog.h
+	"WM.h"
+	"BUTTON.h"
+	"CALENDAR.h"
+	"CHECKBOX.h"
+	"CHOOSECOLOR.h"
+	"CHOOSEFILE.h"
+	"DROPDOWN.h"
+	"EDIT.h"
+	"FRAMEWIN.h"
+	"GRAPH.h"
+	"HEADER.h"
+	"ICONVIEW.h"
+	"IMAGE.h"
+	"LISTBOX.h"
+	"LISTVIEW.h"
+	"LISTWHEEL.h"
+	"MENU.h"
+	"MULTIEDIT.h"
+	"MULTIPAGE.h"
+	"PROGBAR.h"
+	"RADIO.h"
+	"SCROLLBAR.h"
+	"SLIDER.h"
+	"SPINBOX.h"
+	"SWIPELIST.h"
+	"TEXT.h"
+	"TREEVIEW.h"
+	"KNOB.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\wm.h
+	"GUI_ConfDefaults.h"
+	"GUI_Type.h"
+	"WM_GUI.h"
+	"GUI.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\wm_gui.h
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\button.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\dialog_intern.h
+	"WM.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\widget.h
+	"WM_Intern.h"
+	"SCROLLBAR.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\wm_intern.h
+	"WM.h"
+	"GUI_Private.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\gui_private.h
+	"GUI.h"
+	"LCD_Protected.h"
+	"GUI_Debug.h"
+	"WM_GUI.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\lcd_protected.h
+	"LCD.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\gui_debug.h
+	<stddef.h>
+	"GUI.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\scrollbar.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\calendar.h
+	"WM.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\checkbox.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\choosecolor.h
+	"WM.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\choosefile.h
+	"WM.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\dropdown.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"LISTBOX.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\listbox.h
+	"WM.h"
+	"WIDGET.h"
+	"DIALOG_Intern.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\edit.h
+	"WM.h"
+	"DIALOG_Intern.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\framewin.h
+	"WM.h"
+	"WIDGET.h"
+	"DIALOG_Intern.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\graph.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\header.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\iconview.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\image.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\listview.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"ICONVIEW.h"
+	"HEADER.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\listwheel.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\menu.h
+	"WM.h"
+	"WIDGET.h"
+	"DIALOG_Intern.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\multiedit.h
+	"WM.h"
+	"DIALOG_Intern.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\multipage.h
+	"WM.h"
+	"DIALOG.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\progbar.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\radio.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\slider.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\spinbox.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+	"GUI_Debug.h"
+	"EDIT.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\swipelist.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+	"GUI_Debug.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\text.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+	"GUI_Debug.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\treeview.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\knob.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+	"GUI_Debug.h"
+
+1483411839 source:c:\users\rem\documents\apps\ranger\application\basicsetup.c
+	"main.h"
+
+1483410546 source:c:\users\rem\documents\apps\ranger\application\fan.c
+	"main.h"
+
+1483413081 source:c:\users\rem\documents\apps\ranger\application\homewin.c
+	"main.h"
+
+1455247926 source:c:\users\rem\documents\apps\ranger\application\images.c
+	"DIALOG.h"
+
+1483162670 source:c:\users\rem\documents\apps\ranger\application\main.c
+	"main.h"
+	"WM.h"
+
+1483411807 source:c:\users\rem\documents\apps\ranger\application\mode.c
+	"main.h"
+
+1483411950 source:c:\users\rem\documents\apps\ranger\application\schedule.c
+	"main.h"
+
+1483151422 source:c:\users\rem\documents\apps\ranger\application\screentest.c
+	"main.h"
+	"GUI.h"
+	"dialog.h"
+	"button.h"
+
+1483150486 source:c:\users\rem\documents\apps\ranger\application\triacpanelwin.c
+	"main.h"
+	"DIALOG.h"
+
+1472653608 source:c:\users\rem\documents\apps\ranger\config\guiconf.c
+	"GUI.h"
+
+1483371172 source:c:\users\rem\documents\apps\ranger\config\lcdconf.c
+	"GUI.h"
+
+1472653608 source:c:\users\rem\documents\apps\ranger\config\simconf.c
+	"LCD_SIM.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\lcd_sim.h
+	"LCD.h"
+
+1483161299 source:c:\users\rem\documents\apps\ranger\ranger\winmain.c
+	<windows.h>
+	"GUI_SIM_Win32.h"
+
+1472653610 c:\users\rem\documents\apps\ranger\gui\include\gui_sim_win32.h
+	<windows.h>
+
+1483412758 source:c:\users\rem\documents\apps\ranger\application\ranger.c
+	"main.h"
+
+1479828218 source:c:\users\rem\documents\apps\ranger\application\bmbuttonround_80x35.c
+	<stdlib.h>
+	"GUI.h"
+
+1479828218 source:c:\users\rem\documents\apps\ranger\application\bmbuttonroundpressed_80x35.c
+	<stdlib.h>
+	"GUI.h"
+
+1479828218 source:c:\users\rem\documents\apps\ranger\application\bmknob_175x175.c
+	<stdlib.h>
+	"GUI.h"
+
+1479828218 source:c:\users\rem\documents\apps\ranger\application\bmtemperaturecontrolsegger800x480.c
+	<stdlib.h>
+	"GUI.h"
+
+1479828218 source:c:\users\rem\documents\apps\ranger\application\font23s_aa4.c
+	"GUI.h"
+
+1479828218 source:c:\users\rem\documents\apps\ranger\application\font23sl_aa4.c
+	"GUI.h"
+
+1479828218 source:c:\users\rem\documents\apps\ranger\application\font32s_aa4.c
+	"GUI.h"
+
+1479828218 source:c:\users\rem\documents\apps\ranger\application\font32sl_aa4.c
+	"GUI.h"
+
+1479828218 source:c:\users\rem\documents\apps\ranger\application\guiconf.c
+	"GUI.h"
+
+1479828218 source:c:\users\rem\documents\apps\ranger\application\lcdconf.c
+	<stddef.h>
+	<stdlib.h>
+	"GUI.h"
+
+1483293591 source:c:\users\rem\documents\apps\ranger\application\maintask.c
+	"LCDConf.h"
+	"DIALOG.h"
+	"Resource.h"
+
+1472653608 c:\users\rem\documents\apps\ranger\config\lcdconf.h
+
+1479828218 c:\users\rem\documents\apps\ranger\application\resource.h
+
+1479918922 source:c:\users\rem\documents\apps\ranger\application\seggerlogo_60x30.c
+	<stdlib.h>
+	"GUI.h"
+
+1479828218 source:c:\users\rem\documents\apps\ranger\application\simconf.c
+	<windows.h>
+	<stdio.h>
+	"LCD_SIM.h"
+	"GUI_SIM_Win32.h"
+
+1483304971 source:c:\users\rem\documents\apps\ranger\app_gui\fanbmps.c
+	<stdlib.h>
+	"GUI.h"
+
+1483304971 source:c:\users\rem\documents\apps\ranger\app_gui\framewindlg.c
+	"DIALOG.h"
+
+1483304975 source:c:\users\rem\documents\apps\ranger\app_gui\maintask.c
+	"GUI.h"
+	"DIALOG.h"
+	"appl.h"
+
+1483319620 c:\users\rem\documents\apps\ranger\app_gui\appl.h
+	"DIALOG.h"
+	"appdefs.h"
+
+1483304971 c:\users\rem\documents\apps\ranger\app_gui\appdefs.h
+	"rk_bscdefs.h"
+
+1483304975 c:\users\rem\documents\apps\ranger\app_gui\rk_bscdefs.h
+
+1483304975 source:c:\users\rem\documents\apps\ranger\app_gui\programtimedlg.c
+	<stdio.h>
+	<string.h>
+	"appl.h"
+	"DIALOG.h"
+
+1483304975 source:c:\users\rem\documents\apps\ranger\app_gui\programtimesdlg.c
+	<stdio.h>
+	<string.h>
+	"appl.h"
+	"DIALOG.h"
+
+1483304975 source:c:\users\rem\documents\apps\ranger\app_gui\setprogramdlg.c
+	"DIALOG.h"
+
+1483304975 source:c:\users\rem\documents\apps\ranger\app_gui\settimedlg.c
+	"appl.h"
+	<stdio.h>
+	"DIALOG.h"
+
+1483304975 source:c:\users\rem\documents\apps\ranger\app_gui\setupdlg.c
+	"appl.h"
+	"DIALOG.h"
+
+1483304975 source:c:\users\rem\documents\apps\ranger\app_gui\thermostatdlg.c
+	<string.h>
+	<stdio.h>
+	"appl.h"
+	"DIALOG.h"
+
+1483304975 source:c:\users\rem\documents\apps\ranger\app_logic\applogicmain.c
+	<string.h>
+	"lpc177x_8x_rtc.h"
+	"lpc177x_8x_eeprom.h"
+	"i2cmdd.h"
+	"GUI.h"
+	"..\App_GUI\appl.h"
+
+1483304975 c:\users\rem\documents\apps\ranger\app_logic\i2cmdd.h
+	"i2cpdd.h"
+
+1483304976 c:\users\rem\documents\apps\ranger\app_logic\i2cpdd.h
+	"i2cdrvcmn.h"
+
+1483319637 c:\users\rem\documents\apps\ranger\app_logic\i2cdrvcmn.h
+
+1483303382 source:c:\users\rem\documents\apps\ranger\application\gray_bar.c
+	<stdlib.h>
+	"GUI.h"
+
+1483298308 source:c:\users\rem\documents\apps\ranger\application\sampleapp.c
+	<windows.h>
+	"GUI_SIM_Win32.h"
+	"LCD_SIM.h"
+	"GUI.h"
+
+1483246850 source:c:\users\rem\documents\apps\ranger\application\sampleappex.c
+	<windows.h>
+	<commctrl.h>
+	"GUI_SIM_Win32.h"
+	"LCD_SIM.h"
+	"GUI.h"
+
+1483298308 source:c:\users\rem\documents\apps\ranger\application\winmain.c
+	<windows.h>
+	"GUI_SIM_Win32.h"
+	"LCD_SIM.h"
+	"GUI.h"
+
+1483391514 source:c:\users\rem\documents\apps\ranger\application\framewindlg.c
+	"DIALOG.h"
+
+1483410487 source:c:\users\rem\documents\apps\ranger\application\clockformat.c
+	"main.h"
+
+1483410492 source:c:\users\rem\documents\apps\ranger\application\coolingstages.c
+	"main.h"
+
+1483410533 source:c:\users\rem\documents\apps\ranger\application\daylightsavingtime.c
+	"main.h"
+
+1483410538 source:c:\users\rem\documents\apps\ranger\application\eachday.c
+	"main.h"
+
+1483410542 source:c:\users\rem\documents\apps\ranger\application\editschedule.c
+	"main.h"
+
+1483410544 source:c:\users\rem\documents\apps\ranger\application\fancontrol.c
+	"main.h"
+
+1483410540 source:c:\users\rem\documents\apps\ranger\application\heatingstages.c
+	"main.h"
+
+1483410535 source:c:\users\rem\documents\apps\ranger\application\keyboardlockout.c
+	"main.h"
+
+1483410522 source:c:\users\rem\documents\apps\ranger\application\languages.c
+	"main.h"
+
+1483410517 source:c:\users\rem\documents\apps\ranger\application\scheduleperiods.c
+	"main.h"
+
+1483410513 source:c:\users\rem\documents\apps\ranger\application\schedulingoptions.c
+	"main.h"
+
+1483410511 source:c:\users\rem\documents\apps\ranger\application\settings.c
+	"main.h"
+
+1483410509 source:c:\users\rem\documents\apps\ranger\application\settingsschedule.c
+	"main.h"
+
+1483410506 source:c:\users\rem\documents\apps\ranger\application\systemschangeover.c
+	"main.h"
+
+1483410504 source:c:\users\rem\documents\apps\ranger\application\systemsetup.c
+	"main.h"
+
+1483410502 source:c:\users\rem\documents\apps\ranger\application\systemtype.c
+	"main.h"
+
+1483410500 source:c:\users\rem\documents\apps\ranger\application\tempuraturescale.c
+	"main.h"
+
+1483410165 source:c:\users\rem\documents\apps\ranger\application\thermostatcontrols.c
+	"main.h"
+
+1483410497 source:c:\users\rem\documents\apps\ranger\application\thermostatlocations.c
+	"main.h"
+
+1483410526 source:c:\users\rem\documents\apps\ranger\application\wifisetup.c
+	"main.h"
+
+1483411808 source:c:\users\bob.messer\documents\rest\ranger\application\advsetup.c
+	"main.h"
+
+1483618468 c:\users\bob.messer\documents\rest\ranger\application\main.h
+	<stdio.h>
+	"DIALOG.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\dialog.h
+	"WM.h"
+	"BUTTON.h"
+	"CALENDAR.h"
+	"CHECKBOX.h"
+	"CHOOSECOLOR.h"
+	"CHOOSEFILE.h"
+	"DROPDOWN.h"
+	"EDIT.h"
+	"FRAMEWIN.h"
+	"GRAPH.h"
+	"HEADER.h"
+	"ICONVIEW.h"
+	"IMAGE.h"
+	"LISTBOX.h"
+	"LISTVIEW.h"
+	"LISTWHEEL.h"
+	"MENU.h"
+	"MULTIEDIT.h"
+	"MULTIPAGE.h"
+	"PROGBAR.h"
+	"RADIO.h"
+	"SCROLLBAR.h"
+	"SLIDER.h"
+	"SPINBOX.h"
+	"SWIPELIST.h"
+	"TEXT.h"
+	"TREEVIEW.h"
+	"KNOB.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\wm.h
+	"GUI_ConfDefaults.h"
+	"GUI_Type.h"
+	"WM_GUI.h"
+	"GUI.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\gui_confdefaults.h
+	"GUIConf.h"
+
+1483629311 c:\users\bob.messer\documents\rest\ranger\config\guiconf.h
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\gui_type.h
+	"LCD.h"
+	"GUIConf.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\lcd.h
+	"GUI_ConfDefaults.h"
+	"Global.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\global.h
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\wm_gui.h
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\gui.h
+	"GUI_ConfDefaults.h"
+	"GUI_Type.h"
+	"GUI_Version.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\gui_version.h
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\button.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\dialog_intern.h
+	"WM.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\widget.h
+	"WM_Intern.h"
+	"SCROLLBAR.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\wm_intern.h
+	"WM.h"
+	"GUI_Private.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\gui_private.h
+	"GUI.h"
+	"LCD_Protected.h"
+	"GUI_Debug.h"
+	"WM_GUI.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\lcd_protected.h
+	"LCD.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\gui_debug.h
+	<stddef.h>
+	"GUI.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\scrollbar.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\calendar.h
+	"WM.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\checkbox.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\choosecolor.h
+	"WM.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\choosefile.h
+	"WM.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\dropdown.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"LISTBOX.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\listbox.h
+	"WM.h"
+	"WIDGET.h"
+	"DIALOG_Intern.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\edit.h
+	"WM.h"
+	"DIALOG_Intern.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\framewin.h
+	"WM.h"
+	"WIDGET.h"
+	"DIALOG_Intern.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\graph.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\header.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\iconview.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\image.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\listview.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"ICONVIEW.h"
+	"HEADER.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\listwheel.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\menu.h
+	"WM.h"
+	"WIDGET.h"
+	"DIALOG_Intern.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\multiedit.h
+	"WM.h"
+	"DIALOG_Intern.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\multipage.h
+	"WM.h"
+	"DIALOG.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\progbar.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\radio.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\slider.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\spinbox.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+	"GUI_Debug.h"
+	"EDIT.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\swipelist.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+	"GUI_Debug.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\text.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+	"GUI_Debug.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\treeview.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\knob.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+	"GUI_Debug.h"
+
+1483411840 source:c:\users\bob.messer\documents\rest\ranger\application\basicsetup.c
+	"main.h"
+
+1483642462 source:c:\users\bob.messer\documents\rest\ranger\application\clockformat.c
+	"main.h"
+
+1483579128 source:c:\users\bob.messer\documents\rest\ranger\application\coolingstages.c
+	"main.h"
+
+1483639500 source:c:\users\bob.messer\documents\rest\ranger\application\daylightsavingtime.c
+	"main.h"
+
+1483578542 source:c:\users\bob.messer\documents\rest\ranger\application\eachday.c
+	"main.h"
+
+1483578892 source:c:\users\bob.messer\documents\rest\ranger\application\editschedule.c
+	"main.h"
+
+1483579202 source:c:\users\bob.messer\documents\rest\ranger\application\fan.c
+	"main.h"
+
+1483580872 source:c:\users\bob.messer\documents\rest\ranger\application\fancontrol.c
+	"main.h"
+
+1483579304 source:c:\users\bob.messer\documents\rest\ranger\application\heatingstages.c
+	"main.h"
+
+1483670454 source:c:\users\bob.messer\documents\rest\ranger\application\homewin.c
+	"main.h"
+
+1483666690 source:c:\users\bob.messer\documents\rest\ranger\application\keyboardlockout.c
+	"main.h"
+
+1483579470 source:c:\users\bob.messer\documents\rest\ranger\application\languages.c
+	"main.h"
+
+1483579566 source:c:\users\bob.messer\documents\rest\ranger\application\mode.c
+	"main.h"
+
+1483650576 source:c:\users\bob.messer\documents\rest\ranger\application\ranger.c
+	"main.h"
+
+1483579676 source:c:\users\bob.messer\documents\rest\ranger\application\schedule.c
+	"main.h"
+
+1483639390 source:c:\users\bob.messer\documents\rest\ranger\application\scheduleperiods.c
+	"main.h"
+
+1483639080 source:c:\users\bob.messer\documents\rest\ranger\application\schedulingoptions.c
+	"main.h"
+
+1483670546 source:c:\users\bob.messer\documents\rest\ranger\application\settings.c
+	"main.h"
+
+1483578180 source:c:\users\bob.messer\documents\rest\ranger\application\settingsschedule.c
+	"main.h"
+
+1483639390 source:c:\users\bob.messer\documents\rest\ranger\application\systemschangeover.c
+	"main.h"
+
+1483580452 source:c:\users\bob.messer\documents\rest\ranger\application\systemsetup.c
+	"main.h"
+
+1483580526 source:c:\users\bob.messer\documents\rest\ranger\application\systemtype.c
+	"main.h"
+
+1483639874 source:c:\users\bob.messer\documents\rest\ranger\application\tempuraturescale.c
+	"main.h"
+
+1483580654 source:c:\users\bob.messer\documents\rest\ranger\application\thermostatcontrols.c
+	"main.h"
+
+1483580792 source:c:\users\bob.messer\documents\rest\ranger\application\thermostatlocations.c
+	"main.h"
+
+1483580792 source:c:\users\bob.messer\documents\rest\ranger\application\wifisetup.c
+	"main.h"
+
+1483298310 source:c:\users\bob.messer\documents\rest\ranger\application\winmain.c
+	<windows.h>
+	"GUI_SIM_Win32.h"
+	"LCD_SIM.h"
+	"GUI.h"
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\gui_sim_win32.h
+	<windows.h>
+
+1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\lcd_sim.h
+	"LCD.h"
+
+1483487868 source:c:\users\bob.messer\documents\rest\ranger\application\backupheat.c
+	"main.h"
+
+1472650008 source:c:\users\bob.messer\documents\rest\ranger\config\guiconf.c
+	"GUI.h"
+
+1483371174 source:c:\users\bob.messer\documents\rest\ranger\config\lcdconf.c
+	"GUI.h"
+
+1472650008 source:c:\users\bob.messer\documents\rest\ranger\config\simconf.c
+	"LCD_SIM.h"
+
+1483676392 source:c:\users\bob.messer\documents\rest\ranger\application\alphakeyboard.c
+	"main.h"
+
+1483676452 source:c:\users\bob.messer\documents\rest\ranger\application\numerickeyboard.c
+	"main.h"
+
+1483666682 source:c:\users\bob.messer\documents\rest\ranger\application\colors.c
+	"main.h"
+
+1483666324 source:c:\users\bob.messer\documents\rest\ranger\application\datetime.c
+	"main.h"
+
+1483635998 source:c:\users\bob.messer\documents\rest\ranger\application\screenlock.c
+	"DIALOG.h"
+
+1483638844 source:c:\users\bob.messer\documents\rest\ranger\application\preferences.c
+	"main.h"
+
+1483666858 source:c:\users\bob.messer\documents\rest\ranger\application\screenlockout.c
+	"main.h"
+
+1483675880 source:c:\users\bob.messer\documents\rest\ranger\application\profile.c
+	"main.h"
+
