@@ -44,7 +44,7 @@
 */
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
-    { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 12, 2, 480, 272, 0, 0x0, 0 },
+    { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "EDIT SCHEDULE", ID_TEXT_HEADER, 40, -1, 252, 50, 0, 0x64, 0 },
     { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 220, 80, 28, 0, 0x0, 0 },
@@ -59,9 +59,117 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { TEXT_CreateIndirect, "Text", ID_TEXT_START_TIME, 144, 60, 80, 23, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_STOP_TIME, 251, 62, 81, 22, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "TEMP", ID_TEXT_TEMP_VAR, 363, 63, 80, 20, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "", ID_BUTTON_UP, 45, 125, 45, 36, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "", ID_BUTTON_DN, 42, 174, 45, 34, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "", ID_BUTTON_UP, 45, 122, 48, 48, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "", ID_BUTTON_DN, 45, 162, 48, 48, 0, 0x0, 0 },
 };
+
+extern void big_up_button(WM_MESSAGE *);
+extern void big_dn_button(WM_MESSAGE *);
+
+void period_button_off(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawButton16("PERIOD", 90, 26, 0);
+        break;
+    default:
+        BUTTON_Callback(pMsg); // The original callback
+        break;
+    }
+}
+void start_button_off(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawButton16("START",90, 26, 0);
+        break;
+    default:
+        BUTTON_Callback(pMsg); // The original callback
+        break;
+    }
+}
+
+void stop_button_off(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawButton16("STOP", 90, 26, 0);
+        break;
+    default:
+        BUTTON_Callback(pMsg); // The original callback
+        break;
+    }
+}
+
+void temp_button_off(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawButton16("TEMP", 90, 26, 0);
+        break;
+    default:
+        BUTTON_Callback(pMsg); // The original callback
+        break;
+    }
+}
+
+void period_button_on(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawButton16("PERIOD",90, 26, 1);
+        break;
+    default:
+        BUTTON_Callback(pMsg); // The original callback
+        break;
+    }
+}
+
+void start_button_on(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawButton16("START",90, 26, 1);
+        break;
+    default:
+        BUTTON_Callback(pMsg); // The original callback
+        break;
+    }
+}
+
+void stop_button_on(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawButton16("STOP", 90, 26, 1);
+        break;
+    default:
+        BUTTON_Callback(pMsg); // The original callback
+        break;
+    }
+}
+
+void temp_button_on(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawButton16("TEMP", 90, 26,1);
+        break;
+    default:
+        BUTTON_Callback(pMsg); // The original callback
+        break;
+    }
+}
+static WM_HWIN period_button, start_button, stop_button, temp_button;
+static WM_HWIN upButton, dnButton;
 
 /*********************************************************************
 *
@@ -72,179 +180,161 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     WM_HWIN hItem;
     int     NCode;
     int     Id;
-    // USER START (Optionally insert additional variables)
-    // USER END
 
     switch (pMsg->MsgId)
     {
     case WM_INIT_DIALOG:
-        //
-        // Initialization of 'Text'
-        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetFont(hItem, GUI_FONT_32_1);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         //
-        // Initialization of 'Button'
-        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
+        BUTTON_SetFont(hItem, &GUI_FontRounded16);
         BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-//
-        // Initialization of 'Button'
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_WEEKDAY);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
+        BUTTON_SetFont(hItem, &GUI_FontRounded16);
         BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-//
-        // Initialization of 'Button'
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
+        BUTTON_SetFont(hItem, &GUI_FontRounded16);
         BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Text'
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_WEEKEND);
         TEXT_SetTextAlign(hItem, GUI_TA_LEFT | GUI_TA_VCENTER);
         TEXT_SetFont(hItem, GUI_FONT_32B_1);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         //
-        // Initialization of 'Button'
+        period_button = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_PERIOD);
+        WM_SetCallback(period_button, period_button_on);
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_PERIOD);
-        BUTTON_SetText(hItem, "");
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
+        start_button = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_START);
+        WM_SetCallback(start_button, start_button_off);
         //
-        // Initialization of 'Button'
+        stop_button = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_STOP);
+        WM_SetCallback(stop_button, stop_button_off);
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_START);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-//
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_STOP);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_TEMPURATURE);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
-        //
-        // Initialization of 'Text'
+        temp_button = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_TEMPURATURE);
+        WM_SetCallback(temp_button, temp_button_off);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_WAKE);
         TEXT_SetFont(hItem, GUI_FONT_20B_1);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Text'
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_START_TIME);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetFont(hItem, GUI_FONT_20B_1);
         TEXT_SetText(hItem, "6:00 am");
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Text'
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_STOP_TIME);
         TEXT_SetFont(hItem, GUI_FONT_20B_1);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetText(hItem, "8:00 am");
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Text'
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_TEMP_VAR);
         TEXT_SetFont(hItem, GUI_FONT_20B_1);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetText(hItem, "78");
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
         //
-        // Initialization of 'Button'
+        upButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_UP);
+        WM_SetCallback(upButton, big_up_button);
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_UP);
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DN);
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
+        dnButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DN);
+        WM_SetCallback(dnButton, big_dn_button);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
         NCode = pMsg->Data.v;
         switch(Id)
         {
-        case ID_HEADER_0: // Notifications sent by 'Header'
+        case ID_BUTTON_CANCEL:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_CLICKED:
+                state = 13;
+                break;
+            }
+            break;
+        case ID_BUTTON_WEEKDAY:
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
                 break;
             }
             break;
-        case ID_BUTTON_CANCEL: // Notifications sent by 'Button'
+        case ID_BUTTON_SAVE:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_CLICKED:
+                state = 13;
+                break;
+            }
+            break;
+        case ID_BUTTON_PERIOD:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_CLICKED:
+                WM_SetCallback(period_button, period_button_on);
+                WM_SetCallback(start_button, start_button_off);
+                WM_SetCallback(stop_button, stop_button_off);
+                WM_SetCallback(temp_button, temp_button_off);
+                WM_MoveTo(upButton, 45,125);
+                WM_MoveTo(dnButton, 45,174);
+                break;
+            }
+            break;
+        case ID_BUTTON_START:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_CLICKED:
+                WM_SetCallback(period_button, period_button_off);
+                WM_SetCallback(start_button, start_button_on);
+                WM_SetCallback(stop_button, stop_button_off);
+                WM_SetCallback(temp_button, temp_button_off);
+                WM_MoveTo(upButton, 152,125);
+                WM_MoveTo(dnButton, 152,174);
+                break;
+            }
+            break;
+        case ID_BUTTON_STOP:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_CLICKED:
+                WM_SetCallback(period_button, period_button_off);
+                WM_SetCallback(start_button, start_button_off);
+                WM_SetCallback(stop_button, stop_button_on);
+                WM_SetCallback(temp_button, temp_button_off);
+                WM_MoveTo(upButton, 269,125);
+                WM_MoveTo(dnButton, 269,174);
+                break;
+            }
+            break;
+        case ID_BUTTON_TEMPURATURE:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_CLICKED:
+                WM_SetCallback(period_button, period_button_off);
+                WM_SetCallback(start_button, start_button_off);
+                WM_SetCallback(stop_button, stop_button_off);
+                WM_SetCallback(temp_button, temp_button_on);
+                WM_MoveTo(upButton, 376,125);
+                WM_MoveTo(dnButton, 376,174);
+                break;
+            }
+            break;
+        case ID_BUTTON_UP:
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
                 break;
             }
             break;
-        case ID_BUTTON_WEEKDAY: // Notifications sent by 'Button'
-            switch(NCode)
-            {
-            case WM_NOTIFICATION_CLICKED:
-                break;
-            }
-            break;
-        case ID_BUTTON_SAVE: // Notifications sent by 'Button'
-            switch(NCode)
-            {
-            case WM_NOTIFICATION_CLICKED:
-                break;
-            }
-            break;
-        case ID_BUTTON_PERIOD: // Notifications sent by 'Button'
-            switch(NCode)
-            {
-            case WM_NOTIFICATION_CLICKED:
-                break;
-            }
-            break;
-        case ID_BUTTON_START: // Notifications sent by 'Button'
-            switch(NCode)
-            {
-            case WM_NOTIFICATION_CLICKED:
-                break;
-            }
-            break;
-        case ID_BUTTON_STOP: // Notifications sent by 'Button'
-            switch(NCode)
-            {
-            case WM_NOTIFICATION_CLICKED:
-                break;
-            }
-            break;
-        case ID_BUTTON_TEMPURATURE: // Notifications sent by 'Button'
-            switch(NCode)
-            {
-            case WM_NOTIFICATION_CLICKED:
-                break;
-            }
-            break;
-        case ID_BUTTON_UP: // Notifications sent by 'Button'
-            switch(NCode)
-            {
-            case WM_NOTIFICATION_CLICKED:
-                break;
-            }
-            break;
-        case ID_BUTTON_DN: // Notifications sent by 'Button'
+        case ID_BUTTON_DN:
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:

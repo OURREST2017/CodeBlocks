@@ -23,118 +23,135 @@
 #define ID_WINDOW_0  (GUI_ID_USER + 0x00)
 #define ID_HEADER_0  (GUI_ID_USER + 0x01)
 #define ID_TEXT_0  (GUI_ID_USER + 0x02)
-#define ID_BUTTON_0  (GUI_ID_USER + 0x03)
-#define ID_BUTTON_1  (GUI_ID_USER + 0x04)
-#define ID_BUTTON_2  (GUI_ID_USER + 0x05)
-#define ID_BUTTON_3  (GUI_ID_USER + 0x06)
+#define ID_BUTTON_12HOUR  (GUI_ID_USER + 0x03)
+#define ID_BUTTON_24HOUR  (GUI_ID_USER + 0x04)
+#define ID_BUTTON_CANCEL  (GUI_ID_USER + 0x05)
+#define ID_BUTTON_SAVE  (GUI_ID_USER + 0x06)
 
 /*********************************************************************
 *
 *       _aDialogCreate
 */
-static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] = {
-  { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 1, 0, 480, 272, 0, 0x0, 0 },
-  { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
-  { TEXT_CreateIndirect, "Text", ID_TEXT_0, 0, 0, 480, 50, 0, 0x64, 0 },
-  { BUTTON_CreateIndirect, "Button", ID_BUTTON_0, 120, 80, 240, 40, 0, 0x0, 0 },
-  { BUTTON_CreateIndirect, "Button", ID_BUTTON_1, 120, 150, 240, 40, 0, 0x0, 0 },
-  { BUTTON_CreateIndirect, "Button", ID_BUTTON_2, 20, 230, 75, 24, 0, 0x0, 0 },
-  { BUTTON_CreateIndirect, "Button", ID_BUTTON_3, 390, 230, 75, 24, 0, 0x0, 0 },
+static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
+{
+    { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 1, 0, 480, 272, 0, 0x0, 0 },
+    { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
+    { TEXT_CreateIndirect, "Text", ID_TEXT_0, 0, 0, 480, 50, 0, 0x64, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_12HOUR, 120, 80, 240, 40, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_24HOUR, 120, 150, 240, 40, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_CANCEL, 20, 230, 75, 24, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_SAVE, 390, 230, 75, 24, 0, 0x0, 0 },
 };
+
+static int hour12_mode, hour24_mode;
+
+static void hour12_cb(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawButton22("12 Hour", 240, 40, hour12_mode);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+static void hour24_cb(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawButton22("24 Hour", 240, 40, hour24_mode);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+static WM_HWIN hour12Button, hour24Button;
 
 /*********************************************************************
 *
 *       _cbDialog
 */
-static void _cbDialog(WM_MESSAGE * pMsg) {
-  WM_HWIN hItem;
-  int     NCode;
-  int     Id;
-  // USER START (Optionally insert additional variables)
+static void _cbDialog(WM_MESSAGE * pMsg)
+{
+    WM_HWIN hItem;
+    int     NCode;
+    int     Id;
 
-  switch (pMsg->MsgId) {
-  case WM_INIT_DIALOG:
-    //
-    // Initialization of 'Text'
-    //
-    hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_0);
-    TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
-    TEXT_SetFont(hItem, GUI_FONT_32B_1);
-    TEXT_SetText(hItem, "CLOCK FORMAT");
-    TEXT_SetTextColor(hItem,GUI_MAKE_COLOR(0x00FFFFFF));
-   //
-    // Initialization of 'Button'
-    //
-    hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_0);
-    BUTTON_SetFont(hItem, GUI_FONT_20_1);
-    BUTTON_SetText(hItem, "12 Hour");
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-    //
-    // Initialization of 'Button'
-    //
-    hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_1);
-    BUTTON_SetFont(hItem, GUI_FONT_20_1);
-    BUTTON_SetText(hItem, "24 Hour");
-         BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-   //
-    // Initialization of 'Button'
-    //
-    hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_2);
-    BUTTON_SetFont(hItem, GUI_FONT_16B_1);
-    BUTTON_SetText(hItem, "CANCEL");
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-    //
-    // Initialization of 'Button'
-    //
-    hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_3);
-    BUTTON_SetFont(hItem, GUI_FONT_16B_1);
-    BUTTON_SetText(hItem, "SAVE");
-         BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-    break;
-  case WM_NOTIFY_PARENT:
-    Id    = WM_GetId(pMsg->hWinSrc);
-    NCode = pMsg->Data.v;
-    switch(Id) {
-    case ID_BUTTON_0:
-      switch(NCode) {
-      case WM_NOTIFICATION_CLICKED:
+    switch (pMsg->MsgId)
+    {
+    case WM_INIT_DIALOG:
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_0);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetFont(hItem, GUI_FONT_32B_1);
+        TEXT_SetText(hItem, "CLOCK FORMAT");
+        TEXT_SetTextColor(hItem,GUI_MAKE_COLOR(0x00FFFFFF));
+        //
+        hour12Button = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_12HOUR);
+        WM_SetCallback(hour12Button, hour12_cb);
+        //
+        hour24Button = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_24HOUR);
+        WM_SetCallback(hour24Button, hour24_cb);
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
+        WM_SetCallback(hItem, cancel_cb);
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
+        WM_SetCallback(hItem, save_cb);
         break;
-      case WM_NOTIFICATION_RELEASED:
+    case WM_NOTIFY_PARENT:
+        Id    = WM_GetId(pMsg->hWinSrc);
+        NCode = pMsg->Data.v;
+        switch(Id)
+        {
+        case ID_BUTTON_12HOUR:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_RELEASED:
+                hour12_mode = 1;
+                hour24_mode = 0;
+                WM_InvalidateWindow(hour12Button);
+                WM_InvalidateWindow(hour24Button);
+              break;
+            }
+            break;
+        case ID_BUTTON_24HOUR:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_RELEASED:
+                hour12_mode = 0;
+                hour24_mode = 1;
+                WM_InvalidateWindow(hour12Button);
+                WM_InvalidateWindow(hour24Button);
+                break;
+            }
+            break;
+        case ID_BUTTON_CANCEL:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_RELEASED:
+                state = 16;
+                break;
+            }
+            break;
+        case ID_BUTTON_SAVE:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_RELEASED:
+                clockFormat = (hour12_mode == 1) ? 12 : 24;
+                state = 16;
+                break;
+            }
+            break;
+        }
         break;
-      }
-      break;
-    case ID_BUTTON_1:
-      switch(NCode) {
-      case WM_NOTIFICATION_CLICKED:
+    default:
+        WM_DefaultProc(pMsg);
         break;
-      case WM_NOTIFICATION_RELEASED:
-        break;
-      }
-      break;
-    case ID_BUTTON_2:
-      switch(NCode) {
-      case WM_NOTIFICATION_CLICKED:
-          state = 16;
-        break;
-      case WM_NOTIFICATION_RELEASED:
-        break;
-      }
-      break;
-    case ID_BUTTON_3:
-      switch(NCode) {
-      case WM_NOTIFICATION_CLICKED:
-           state = 16;
-       break;
-      case WM_NOTIFICATION_RELEASED:
-        break;
-      }
-      break;
     }
-    break;
-  default:
-    WM_DefaultProc(pMsg);
-    break;
-  }
 }
 
 /*********************************************************************
@@ -142,11 +159,15 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
 *       CreateWindow
 */
 WM_HWIN CreateClockFormat(void);
-WM_HWIN CreateClockFormat(void) {
-  WM_HWIN hWin;
+WM_HWIN CreateClockFormat(void)
+{
+    WM_HWIN hWin;
 
-  hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
-  return hWin;
+    hour12_mode = (clockFormat == 12);
+    hour24_mode = !hour12_mode;
+
+    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    return hWin;
 }
 
 // USER START (Optionally insert additional public code)

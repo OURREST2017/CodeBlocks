@@ -22,140 +22,268 @@
 #define ID_WINDOW_0  (GUI_ID_USER + 0x00)
 #define ID_HEADER_0  (GUI_ID_USER + 0x01)
 #define ID_TEXT_HEADER  (GUI_ID_USER + 0x02)
-#define ID_BUTTON_0  (GUI_ID_USER + 0x03)
-#define ID_BUTTON_1  (GUI_ID_USER + 0x09)
-#define ID_BUTTON_2  (GUI_ID_USER + 0x0C)
-#define ID_BUTTON_3  (GUI_ID_USER + 0x0F)
-#define ID_BUTTON_4  (GUI_ID_USER + 0x10)
-#define ID_BUTTON_5  (GUI_ID_USER + 0x14)
-#define ID_BUTTON_6  (GUI_ID_USER + 0x15)
+#define ID_BUTTON_GREEN  (GUI_ID_USER + 0x03)
+#define ID_BUTTON_LBLUE  (GUI_ID_USER + 0x09)
+#define ID_BUTTON_YELLOW  (GUI_ID_USER + 0x0C)
+#define ID_BUTTON_PINK  (GUI_ID_USER + 0x0F)
+#define ID_BUTTON_BLUE  (GUI_ID_USER + 0x10)
+#define ID_BUTTON_CANCEL  (GUI_ID_USER + 0x14)
+#define ID_BUTTON_SAVE  (GUI_ID_USER + 0x15)
+
+static GUI_COLOR but_green1, but_green2, but_lblue1, but_lblue2;
+static GUI_COLOR but_yellow1, but_yellow2, but_pink1, but_pink2, but_blue1, but_blue2;
+
+static void drawColorButton(GUI_COLOR c1, GUI_COLOR c2)
+{
+    GUI_DrawGradientRoundedV(0, 0, 74, 48, 2, c1, c2);
+    GUI_SetColor(GUI_LIGHTGRAY);
+}
+
+static void draw_green_cb(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawColorButton(but_green1, but_green2);
+        if (color_scheme == 0)
+        {
+            GUI_SetPenSize(2);
+            GUI_SetColor(GUI_RED);
+            GUI_AA_DrawRoundedRect(0, 0, 74, 49, 4);
+        }
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+static void draw_lightblue_cb(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawColorButton(but_lblue1, but_lblue2);
+        if (color_scheme == 1)
+        {
+            GUI_SetPenSize(2);
+            GUI_SetColor(GUI_RED);
+            GUI_AA_DrawRoundedRect(0, 0, 74, 49, 4);
+        }
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+static void draw_yellow_cb(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawColorButton(but_yellow1, but_yellow2);
+        if (color_scheme == 2)
+        {
+            GUI_SetPenSize(2);
+            GUI_SetColor(GUI_RED);
+            GUI_AA_DrawRoundedRect(0, 0, 74, 49, 4);
+        }
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+static void draw_pink_cb(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawColorButton(but_pink1, but_pink2);
+        if (color_scheme == 3)
+        {
+            GUI_SetPenSize(2);
+            GUI_SetColor(GUI_RED);
+            GUI_AA_DrawRoundedRect(0, 0, 74, 49, 4);
+        }
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+static void draw_blue_cb(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawColorButton(but_blue1, but_blue2);
+        if (color_scheme == 4)
+        {
+            GUI_SetPenSize(2);
+            GUI_SetColor(GUI_RED);
+            GUI_AA_DrawRoundedRect(0, 0, 74, 49, 4);
+        }
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
 
 /*********************************************************************
 *
 *       _aDialogCreate
 */
-static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] = {
-  { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
-  { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
-  { TEXT_CreateIndirect, "COLORS", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
-  { BUTTON_CreateIndirect, "Button", ID_BUTTON_0, 20, 120, 75, 50, 0, 0x0, 0 },
-  { BUTTON_CreateIndirect, "Button", ID_BUTTON_1, 200, 120, 75, 50, 0, 0x0, 0 },
-  { BUTTON_CreateIndirect, "Button", ID_BUTTON_2, 110, 120, 75, 50, 0, 0x0, 0 },
-  { BUTTON_CreateIndirect, "Button", ID_BUTTON_3, 290, 120, 75, 50, 0, 0x0, 0 },
-  { BUTTON_CreateIndirect, "Button", ID_BUTTON_4, 380, 120, 75, 50, 0, 0x0, 0 },
-  { BUTTON_CreateIndirect, "Button", ID_BUTTON_5, 20, 230, 80, 24, 0, 0x0, 0 },
-  { BUTTON_CreateIndirect, "Button", ID_BUTTON_6, 390, 230, 69, 22, 0, 0x0, 0 },
+static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
+{
+    { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
+    { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
+    { TEXT_CreateIndirect, "COLORS", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_GREEN, 20, 120, 75, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_LBLUE, 110, 120, 75, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_YELLOW, 200, 120, 75, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_PINK, 290, 120, 75, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_BLUE, 380, 120, 75, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_CANCEL, 20, 230, 80, 25, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_SAVE, 380, 230, 80, 25, 0, 0x0, 0 },
 };
 
 /*********************************************************************
 *
 *       _cbDialog
 */
-static void _cbDialog(WM_MESSAGE * pMsg) {
-  WM_HWIN hItem;
-  int     NCode;
-  int     Id;
-  // USER START (Optionally insert additional variables)
+static void _cbDialog(WM_MESSAGE * pMsg)
+{
+    WM_HWIN hItem;
+    int     NCode;
+    int     Id;
 
-  switch (pMsg->MsgId) {
-  case WM_INIT_DIALOG:
-    //
-    // Initialization of 'Button'
-    //
+    switch (pMsg->MsgId)
+    {
+    case WM_INIT_DIALOG:
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetFont(hItem, GUI_FONT_32B_ASCII);
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00000000));
+        TEXT_SetTextColor(hItem, GUI_WHITE);
 
-    hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_0);
-    BUTTON_SetText(hItem, "green");
-    //
-    // Initialization of 'Button'
-    //
-    hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_1);
-    BUTTON_SetText(hItem, "yellow");
-    //
-    // Initialization of 'Button'
-    //
-    hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_2);
-    BUTTON_SetText(hItem, "light_blue");
-    //
-    // Initialization of 'Button'
-    //
-    hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_3);
-    BUTTON_SetText(hItem, "pink");
-    //
-    // Initialization of 'Button'
-    //
-    hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_4);
-    BUTTON_SetText(hItem, "blue");
-    //
-    // Initialization of 'Button'
-    //
-    hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_5);
-    BUTTON_SetFont(hItem, GUI_FONT_16B_1);
-    BUTTON_SetText(hItem, "CANCEL");
-    //
-    // Initialization of 'Button'
-    //
-    hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_6);
-    BUTTON_SetText(hItem, "SAVE");
-    BUTTON_SetFont(hItem, GUI_FONT_16B_1);
-    break;
-  case WM_NOTIFY_PARENT:
-    Id    = WM_GetId(pMsg->hWinSrc);
-    NCode = pMsg->Data.v;
-    switch(Id) {
-    case ID_BUTTON_0:
-      switch(NCode) {
-      case WM_NOTIFICATION_CLICKED:
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_GREEN);
+        but_green1 = 0x48866c;
+        but_green2 = 0x62b29a; //
+        WM_SetCallback(hItem, draw_green_cb);
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_LBLUE);
+        but_lblue1 = 0xb7a491;
+        but_lblue2 = 0xedb6bd; //
+        WM_SetCallback(hItem, draw_lightblue_cb);
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_YELLOW);
+        but_yellow1 = 0x85b4cb;
+        but_yellow2 = 0xa1e6fd; //
+        WM_SetCallback(hItem, draw_yellow_cb);
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_PINK);
+        but_pink1 = 0xb794c2;
+        but_pink2 = 0xdfc4d8; //
+        WM_SetCallback(hItem, draw_pink_cb);
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_BLUE);
+        but_blue1 = 0x7a5114;
+        but_blue2 = 0xc1842d; //
+        WM_SetCallback(hItem, draw_blue_cb);
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
+        WM_SetCallback(hItem, cancel_cb);
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
+        WM_SetCallback(hItem, save_cb);
         break;
-      }
-      break;
-    case ID_BUTTON_1:
-      switch(NCode) {
-      case WM_NOTIFICATION_CLICKED:
+    case WM_NOTIFY_PARENT:
+        Id    = WM_GetId(pMsg->hWinSrc);
+        NCode = pMsg->Data.v;
+        switch(Id)
+        {
+        case ID_BUTTON_GREEN:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_CLICKED:
+                color_scheme = 0;
+                initColors();
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
+                WM_InvalidateWindow(hItem);
+                WM_InvalidateWindow(pMsg->hWin);
+                break;
+            }
+            break;
+        case ID_BUTTON_LBLUE:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_CLICKED:
+                color_scheme = 1;
+                initColors();
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
+                WM_InvalidateWindow(hItem);
+                WM_InvalidateWindow(pMsg->hWin);
+                break;
+            }
+            break;
+        case ID_BUTTON_YELLOW:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_CLICKED:
+                color_scheme = 2;
+                initColors();
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
+                WM_InvalidateWindow(hItem);
+                WM_InvalidateWindow(pMsg->hWin);
+                break;
+            }
+            break;
+        case ID_BUTTON_PINK:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_CLICKED:
+                color_scheme = 3;
+                initColors();
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
+                WM_InvalidateWindow(hItem);
+                WM_InvalidateWindow(pMsg->hWin);
+                break;
+            }
+            break;
+        case ID_BUTTON_BLUE:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_CLICKED:
+                color_scheme = 4;
+                initColors();
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
+                WM_InvalidateWindow(hItem);
+                WM_InvalidateWindow(pMsg->hWin);
+                break;
+            }
+            break;
+        case ID_BUTTON_CANCEL:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_CLICKED:
+                state = 4;
+                break;
+            }
+            break;
+        case ID_BUTTON_SAVE:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_CLICKED:
+                state = 4;
+                break;
+            }
+            break;
+        }
         break;
-      }
-      break;
-    case ID_BUTTON_2:
-      switch(NCode) {
-      case WM_NOTIFICATION_CLICKED:
+    default:
+        WM_DefaultProc(pMsg);
         break;
-      }
-      break;
-    case ID_BUTTON_3:
-      switch(NCode) {
-      case WM_NOTIFICATION_CLICKED:
-        break;
-      }
-      break;
-    case ID_BUTTON_4:
-      switch(NCode) {
-      case WM_NOTIFICATION_CLICKED:
-        break;
-      }
-      break;
-    case ID_BUTTON_5:
-      switch(NCode) {
-      case WM_NOTIFICATION_CLICKED:
-          state = 4;
-        break;
-      }
-      break;
-    case ID_BUTTON_6:
-      switch(NCode) {
-      case WM_NOTIFICATION_CLICKED:
-           state = 4;
-       break;
-      }
-      break;
     }
-    break;
-  default:
-    WM_DefaultProc(pMsg);
-    break;
-  }
 }
 
 /*********************************************************************
@@ -163,11 +291,12 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
 *       CreateWindow
 */
 WM_HWIN CreateColors(void);
-WM_HWIN CreateColors(void) {
-  WM_HWIN hWin;
+WM_HWIN CreateColors(void)
+{
+    WM_HWIN hWin;
 
-  hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
-  return hWin;
+    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    return hWin;
 }
 
 /*************************** End of file ****************************/

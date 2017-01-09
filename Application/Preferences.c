@@ -75,7 +75,7 @@ GUI_CONST_STORAGE GUI_BITMAP bm_return2 =
     &Palette   // Pointer to palette
 };
 
-static void return_button(WM_MESSAGE * pMsg)
+static void return_cb(WM_MESSAGE * pMsg)
 {
     switch (pMsg->MsgId)
     {
@@ -122,65 +122,44 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_INIT_DIALOG:
-        //
-        // Initialization of 'Text'
-        //
-        //GUI_DrawBitmap(&bm_return, 100, 150);
-
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_RETURN);
-        WM_SetCallback(hItem, return_button);
+        WM_SetCallback(hItem, return_cb);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetFont(hItem, GUI_FONT_32B_1);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         //
-        // Initialization of 'Button'
-        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SCHEDULING_OPTIONS);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
+        BUTTON_SetFont(hItem, &GUI_FontRounded22);
         BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-//
-        // Initialization of 'Button'
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_TEMPURATURE_SCALE);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
+        BUTTON_SetFont(hItem, &GUI_FontRounded22);
         BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Button'
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CLOCK_FORMAT);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
+        BUTTON_SetFont(hItem, &GUI_FontRounded22);
         BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Button'
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DST);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
+        BUTTON_SetFont(hItem, &GUI_FontRounded22);
         BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Button'
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SYSTEM_CHANGE_OVER);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
+        BUTTON_SetFont(hItem, &GUI_FontRounded22);
         BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Button'
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_TEMPURATURE_LIMITS);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
+        BUTTON_SetFont(hItem, &GUI_FontRounded22);
         BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Button'
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_KEYBOARD_LOCKOUT);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
+        BUTTON_SetFont(hItem, &GUI_FontRounded22);
         BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
         //
-        // Initialization of 'Button'
-        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SCHEDULING_PERIODS);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
+        BUTTON_SetFont(hItem, &GUI_FontRounded22);
         BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
         break;
     case WM_NOTIFY_PARENT:
@@ -188,7 +167,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         NCode = pMsg->Data.v;
         switch(Id)
         {
-        case ID_BUTTON_RETURN: // Notifications sent by 'Button'
+        case ID_BUTTON_RETURN:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
@@ -196,7 +175,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 state=4;
             }
             break;
-        case ID_BUTTON_SCHEDULING_OPTIONS: // Notifications sent by 'Button'
+        case ID_BUTTON_SCHEDULING_OPTIONS:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
@@ -204,7 +183,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 state=40;
             }
             break;
-        case ID_BUTTON_TEMPURATURE_SCALE: // Notifications sent by 'Button'
+        case ID_BUTTON_TEMPURATURE_SCALE:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
@@ -212,7 +191,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 state=41;
             }
             break;
-        case ID_BUTTON_CLOCK_FORMAT: // Notifications sent by 'Button'
+        case ID_BUTTON_CLOCK_FORMAT:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
@@ -220,7 +199,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 state=42;
             }
             break;
-        case ID_BUTTON_DST: // Notifications sent by 'Button'
+        case ID_BUTTON_DST:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
@@ -228,7 +207,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 state=43;
             }
             break;
-        case ID_BUTTON_SYSTEM_CHANGE_OVER: // Notifications sent by 'Button'
+        case ID_BUTTON_SYSTEM_CHANGE_OVER:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
@@ -236,7 +215,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 state=44;
             }
             break;
-        case ID_BUTTON_TEMPURATURE_LIMITS: // Notifications sent by 'Button'
+        case ID_BUTTON_TEMPURATURE_LIMITS:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
@@ -244,7 +223,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 state=45;
             }
             break;
-        case ID_BUTTON_KEYBOARD_LOCKOUT: // Notifications sent by 'Button'
+        case ID_BUTTON_KEYBOARD_LOCKOUT:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
@@ -252,7 +231,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 state=46;
             }
             break;
-        case ID_BUTTON_SCHEDULING_PERIODS: // Notifications sent by 'Button'
+        case ID_BUTTON_SCHEDULING_PERIODS:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:

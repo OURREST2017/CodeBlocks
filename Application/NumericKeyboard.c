@@ -137,7 +137,6 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 *       _cbDialog
 */
 WM_HWIN textItem;
-
 static void _cbDialog(WM_MESSAGE * pMsg)
 {
     WM_HWIN hItem;
@@ -182,160 +181,35 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         EDIT_SetFont(textItem, GUI_FONT_20_1);
         EDIT_SetTextAlign(textItem, GUI_TA_LEFT | GUI_TA_VCENTER);
         //
-        // Initialization of 'Button'
-        //
+        int i;
+        for (i=2051; i<2077; i++)
+        {
+            hItem = WM_GetDialogItem(pMsg->hWin, i);
+            BUTTON_SetFont(hItem, GUI_FONT_20B_1);
+            if (i > 2061) WM_DisableWindow(hItem);
+        }
+
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ERASE);
         BUTTON_SetBitmapEx(hItem, 0,  &back_space2, 10, 8);
 
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_Q);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_W);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_E);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_R);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_T);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_Y);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_U);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_I);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_O);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_P);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_A);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_S);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_D);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_F);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_G);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_H);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_J);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_K);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_L);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        //
-        // Initialization of 'Button'
-        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SHIFT);
         BUTTON_SetFont(hItem, GUI_FONT_20_1);
         BUTTON_SetTextColor(hItem, BUTTON_CI_DISABLED, GUI_GRAY);
         WM_DisableWindow(hItem);
-        //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_Z);
-        BUTTON_SetFont(hItem, GUI_FONT_20_1);
-        //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_X);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_C);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_V);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_B);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_N);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        //
-        // Initialization of 'Button'
-        //
+
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
         BUTTON_SetFont(hItem, GUI_FONT_20_1);
-        //
-        // Initialization of 'Button'
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ABC);
         BUTTON_SetFont(hItem, GUI_FONT_20_1);
         //
-        // Initialization of 'Button'
-        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DONE);
         BUTTON_SetFont(hItem, GUI_FONT_20_1);
         //
-        // Initialization of 'Button'
-        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SPACE);
         BUTTON_SetFont(hItem, GUI_FONT_20_1);
+        WM_DisableWindow(hItem);
+
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
@@ -361,17 +235,19 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                     state = 8;
                     break;
                 }
-                  else if (Id == ID_BUTTON_CANCEL)
+                else if (Id == ID_BUTTON_CANCEL)
                 {
+                    setSkin();
                     state = 15;
                     break;
                 }
-                 else if (Id == ID_BUTTON_DONE)
+                else if (Id == ID_BUTTON_DONE)
                 {
+                    setSkin();
                     state = 15;
                     break;
                 }
-               else
+                else
                 {
                     EDIT_GetText(textItem, txt_buffer, 50);
                     int l = strlen(txt_buffer);
@@ -383,7 +259,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 }
             }
             WM_SetFocus(textItem);
-       }
+        }
         break;
     default:
         WM_DefaultProc(pMsg);

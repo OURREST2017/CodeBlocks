@@ -31,8 +31,8 @@
 #define ID_BUTTON_5  (GUI_ID_USER + 0x0C)
 #define ID_BUTTON_6  (GUI_ID_USER + 0x0F)
 #define ID_BUTTON_7  (GUI_ID_USER + 0x10)
-#define ID_BUTTON_8  (GUI_ID_USER + 0x14)
-#define ID_BUTTON_9  (GUI_ID_USER + 0x15)
+#define ID_BUTTON_CANCEL  (GUI_ID_USER + 0x14)
+#define ID_BUTTON_SAVE  (GUI_ID_USER + 0x15)
 #define ID_EDIT_0  (GUI_ID_USER + 0x16)
 #define ID_EDIT_1  (GUI_ID_USER + 0x19)
 #define ID_EDIT_2  (GUI_ID_USER + 0x1A)
@@ -47,21 +47,28 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "SCREEN LOCK", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_0, 100, 78, 30, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_1, 98, 162, 30, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_2, 185, 162, 30, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_3, 185, 78, 30, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_4, 264, 162, 30, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_5, 263, 78, 30, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_6, 341, 78, 30, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_7, 341, 162, 30, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_8, 20, 230, 80, 24, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_9, 390, 230, 69, 22, 0, 0x0, 0 },
-    { EDIT_CreateIndirect, "Edit", ID_EDIT_0, 88, 110, 50, 50, 0, 0x64, 0 },
-    { EDIT_CreateIndirect, "Edit", ID_EDIT_1, 174, 110, 50, 50, 0, 0x64, 0 },
-    { EDIT_CreateIndirect, "Edit", ID_EDIT_2, 254, 110, 50, 50, 0, 0x64, 0 },
-    { EDIT_CreateIndirect, "Edit", ID_EDIT_3, 332, 110, 50, 50, 0, 0x64, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_0, 93, 68, 50, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_1, 93, 160, 50, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_2, 179, 68, 50, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_3, 179, 160, 50, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_4, 258, 68, 50, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_5, 258, 160, 50, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_6, 336, 68, 50, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_7, 336, 160, 50, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_CANCEL, 20, 230, 80, 25, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_SAVE, 390, 230, 80, 25, 0, 0x0, 0 },
+    { TEXT_CreateIndirect, "Edit", ID_EDIT_0, 88, 110, 50, 50, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Edit", ID_EDIT_1, 174, 110, 50, 50, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Edit", ID_EDIT_2, 254, 110, 50, 50, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Edit", ID_EDIT_3, 332, 110, 50, 50, 0, 0x64, 0 },
 };
+
+extern void up_button(WM_MESSAGE *);
+extern void dn_button(WM_MESSAGE *);
+extern void big_up_button(WM_MESSAGE *);
+extern void big_dn_button(WM_MESSAGE *);
+
+static int dig1, dig2, dig3, dig4;
 
 /*********************************************************************
 *
@@ -72,169 +79,198 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     WM_HWIN hItem;
     int     NCode;
     int     Id;
-    // USER START (Optionally insert additional variables)
 
     switch (pMsg->MsgId)
     {
     case WM_INIT_DIALOG:
-        //
-        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetFont(hItem, GUI_FONT_32B_1);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_0);
-        BUTTON_SetText(hItem, "UP");
-        //
-        // Initialization of 'Button'
+        WM_SetCallback(hItem, big_up_button);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_1);
-        BUTTON_SetText(hItem, "DN");
-        //
-        // Initialization of 'Button'
+        WM_SetCallback(hItem, big_dn_button);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_2);
-        BUTTON_SetText(hItem, "DN");
-        //
-        // Initialization of 'Button'
+        WM_SetCallback(hItem, big_up_button);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_3);
-        BUTTON_SetText(hItem, "UP");
-        //
-        // Initialization of 'Button'
+        WM_SetCallback(hItem, big_dn_button);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_4);
-        BUTTON_SetText(hItem, "DN");
-        //
-        // Initialization of 'Button'
+        WM_SetCallback(hItem, big_up_button);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_5);
-        BUTTON_SetText(hItem, "UP");
-        //
-        // Initialization of 'Button'
+        WM_SetCallback(hItem, big_dn_button);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_6);
-        BUTTON_SetText(hItem, "UP");
-        //
-        // Initialization of 'Button'
+        WM_SetCallback(hItem, big_up_button);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_7);
-        BUTTON_SetText(hItem, "DN");
+        WM_SetCallback(hItem, big_dn_button);
         //
-        // Initialization of 'Button'
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
+        WM_SetCallback(hItem, cancel_cb);
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_8);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
-        BUTTON_SetText(hItem, "CANCEL");
-        BUTTON_SetTextColor(hItem, 0, GUI_WHITE);
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
+        WM_SetCallback(hItem, save_cb);
         //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_9);
-        BUTTON_SetText(hItem, "SAVE");
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
-        BUTTON_SetTextColor(hItem, 0, GUI_WHITE);
-        //
-        //
+        dig1 = lockCode[0] - 48;
+        dig2 = lockCode[1] - 48;
+        dig3 = lockCode[2] - 48;
+        dig4 = lockCode[3] - 48;
+        char bf[2];
+        sprintf(bf, "%d", dig1);
         hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_0);
-        EDIT_SetText(hItem, "0");
-        EDIT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        EDIT_SetFont(hItem, GUI_FONT_D24X32);
+        TEXT_SetText(hItem, bf);
+        TEXT_SetBkColor(hItem, GUI_LIGHTGRAY);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetFont(hItem, GUI_FONT_D24X32);
         //
-        //
+        sprintf(bf, "%d", dig2);
         hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_1);
-        EDIT_SetText(hItem, "0");
-        EDIT_SetFont(hItem, GUI_FONT_D24X32);
-        EDIT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetText(hItem, bf);
+        TEXT_SetBkColor(hItem, GUI_LIGHTGRAY);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetFont(hItem, GUI_FONT_D24X32);
         //
-        //
+        sprintf(bf, "%d", dig3);
         hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_2);
-        EDIT_SetText(hItem, "0");
-        EDIT_SetFont(hItem, GUI_FONT_D24X32);
-        EDIT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetText(hItem, bf);
+        TEXT_SetBkColor(hItem, GUI_LIGHTGRAY);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetFont(hItem, GUI_FONT_D24X32);
         //
-        //
+        sprintf(bf, "%d", dig4);
         hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_3);
-        EDIT_SetText(hItem, "0");
-        EDIT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        EDIT_SetFont(hItem, GUI_FONT_D24X32);
+        TEXT_SetText(hItem, bf);
+        TEXT_SetBkColor(hItem, GUI_LIGHTGRAY);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetFont(hItem, GUI_FONT_D24X32);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
         NCode = pMsg->Data.v;
+        char buf[5];
         switch(Id)
         {
         case ID_BUTTON_0:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
-                break;
             case WM_NOTIFICATION_RELEASED:
+                dig1++;
+                if (dig1 == 10) dig1 = 0;
+                sprintf(buf,"%d", dig1);
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_0);
+                TEXT_SetText(hItem, buf);
                 break;
             }
             break;
         case ID_BUTTON_1:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
+                dig1--;
+                if (dig1 == -1) dig1 = 9;
+                sprintf(buf,"%d", dig1);
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_0);
+                TEXT_SetText(hItem, buf);
                 break;
              }
             break;
         case ID_BUTTON_2:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
-                break;
+            case WM_NOTIFICATION_RELEASED:
+                 dig2++;
+                if (dig2 == 10) dig2 = 0;
+                sprintf(buf,"%d", dig2);
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_1);
+                TEXT_SetText(hItem, buf);
+               break;
             }
             break;
         case ID_BUTTON_3:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
-                break;
+            case WM_NOTIFICATION_RELEASED:
+                 dig2--;
+                if (dig2 == -1) dig2 = 9;
+                sprintf(buf,"%d", dig2);
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_1);
+                TEXT_SetText(hItem, buf);
+               break;
              }
             break;
         case ID_BUTTON_4:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
+                dig3++;
+                if (dig3 == 10) dig3 = 0;
+                sprintf(buf,"%d", dig3);
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_2);
+                TEXT_SetText(hItem, buf);
                 break;
             }
             break;
         case ID_BUTTON_5:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
-                break;
+            case WM_NOTIFICATION_RELEASED:
+                 dig3--;
+                if (dig3 == -1) dig3 = 9;
+                sprintf(buf,"%d", dig3);
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_2);
+                TEXT_SetText(hItem, buf);
+               break;
             }
             break;
         case ID_BUTTON_6:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
+                dig4++;
+                if (dig4 == 10) dig4 = 0;
+                sprintf(buf,"%d", dig4);
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_3);
+                TEXT_SetText(hItem, buf);
                 break;
             }
             break;
         case ID_BUTTON_7:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
-                break;
+            case WM_NOTIFICATION_RELEASED:
+                 dig4--;
+                if (dig4 == -1) dig4 = 9;
+                sprintf(buf,"%d", dig4);
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_3);
+                TEXT_SetText(hItem, buf);
+               break;
             }
             break;
-        case ID_BUTTON_8:
+        case ID_BUTTON_CANCEL:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
                 state = 4;
                 break;
             }
             break;
-        case ID_BUTTON_9:
+        case ID_BUTTON_SAVE:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
+                lockCode[0] = dig1 + 48;
+                lockCode[1] = dig2 + 48;
+                lockCode[2] = dig3 + 48;
+                lockCode[3] = dig4 + 48;
+                lockCode[4] = '\0';
+
                 state = 4;
                 break;
             }

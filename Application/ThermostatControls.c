@@ -56,35 +56,24 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_INIT_DIALOG:
-        //
-        // Initialization of 'Checkbox'
-        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_CHECKBOX_COOLING);
-        CHECKBOX_SetFont(hItem, GUI_FONT_20B_1);
-        CHECKBOX_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Checkbox'
+        CHECKBOX_SetFont(hItem, GUI_FONT_20B_ASCII);
+        CHECKBOX_SetTextColor(hItem, 0x48856A);
+        CHECKBOX_SetText(hItem, "Cooling");
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_CHECKBOX_HEATING);
         CHECKBOX_SetFont(hItem, GUI_FONT_20B_ASCII);
-        CHECKBOX_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Button'
+        CHECKBOX_SetTextColor(hItem, 0x48856A);
+        CHECKBOX_SetText(hItem, "Heating");
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Button'
+        WM_SetCallback(hItem, cancel_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Text'
+        WM_SetCallback(hItem, save_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
-        TEXT_SetFont(hItem, GUI_FONT_32B_1);
+        TEXT_SetFont(hItem, GUI_FONT_32B_ASCII);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         break;
@@ -93,21 +82,21 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         NCode = pMsg->Data.v;
         switch(Id)
         {
-        case ID_CHECKBOX_COOLING: // Notifications sent by 'Checkbox'
+        case ID_CHECKBOX_COOLING:
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
                 break;
             }
             break;
-        case ID_CHECKBOX_HEATING: // Notifications sent by 'Checkbox'
+        case ID_CHECKBOX_HEATING:
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
                 break;
             }
             break;
-        case ID_BUTTON_CANCEL: // Notifications sent by 'Button'
+        case ID_BUTTON_CANCEL:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
@@ -115,7 +104,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 state=17;
             }
             break;
-        case ID_BUTTON_SAVE: // Notifications sent by 'Button'
+        case ID_BUTTON_SAVE:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:

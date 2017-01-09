@@ -35,13 +35,41 @@
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 3, -1, 480, 272, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 229, 75, 24, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 390, 230, 75, 24, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 75, 25, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 390, 230, 75, 25, 0, 0x0, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "KEYBOARD LOCKOUT", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
     { BUTTON_CreateIndirect, "Unlocked", ID_BUTTON_UNLOCOKED, 120, 80, 240, 40, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Locked", ID_BUTTON_LOCKED, 120, 151, 240, 40, 0, 0x0, 0 },
 };
+
+static int unlocked_mode, locked_mode;
+
+static void unlocked_cb(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawButton22("Unlocked", 240, 40, unlocked_mode);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+static void locked_cb(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawButton22("Locked", 240, 40, locked_mode);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+static WM_HWIN lockedButton, unlockedButton;
 
 /*********************************************************************
 *
@@ -56,74 +84,74 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_INIT_DIALOG:
-        //
-        // Initialization of 'Button'
-        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Button'
+        WM_SetCallback(hItem, cancel_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Text'
+        WM_SetCallback(hItem, save_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetFont(hItem, GUI_FONT_32B_1);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_WHITE);
         //
-        // Initialization of 'Button'
+        unlockedButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_UNLOCOKED);
+        WM_SetCallback(unlockedButton, unlocked_cb);
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_UNLOCOKED);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-//
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_LOCKED);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-        WM_DisableWindow(hItem);
+        lockedButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_LOCKED);
+        WM_SetCallback(lockedButton, locked_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
         NCode = pMsg->Data.v;
         switch(Id)
         {
-        case ID_BUTTON_CANCEL: // Notifications sent by 'Button'
+        case ID_BUTTON_CANCEL:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-          state = 4;
+          state = 16;
                 break;
             }
             break;
-        case ID_BUTTON_SAVE: // Notifications sent by 'Button'
+        case ID_BUTTON_SAVE:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                if (unlocked_mode)
+                {
+                    strcpy(keyboardLockout, "unlocked");
+                }
+                else
+                {
+                    strcpy(keyboardLockout, "locked");
+                }
                 GUI_Delay(100);
-          state = 4;
+          state = 16;
                 break;
             }
             break;
-        case ID_BUTTON_UNLOCOKED: // Notifications sent by 'Button'
+        case ID_BUTTON_UNLOCOKED:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                unlocked_mode = 1;
+                locked_mode = 0;
+                WM_InvalidateWindow(lockedButton);
+                WM_InvalidateWindow(unlockedButton);
                 break;
             }
             break;
-        case ID_BUTTON_LOCKED: // Notifications sent by 'Button'
+        case ID_BUTTON_LOCKED:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                break;
+                 unlocked_mode = 0;
+                locked_mode = 1;
+                WM_InvalidateWindow(lockedButton);
+                WM_InvalidateWindow(unlockedButton);
+               break;
             }
             break;
         }
@@ -142,6 +170,14 @@ WM_HWIN CreateKeyboardLockout(void);
 WM_HWIN CreateKeyboardLockout(void)
 {
     WM_HWIN hWin;
+
+    if (strcmp(keyboardLockout, "locked") == 0) {
+        unlocked_mode = 0;
+        locked_mode = 1;
+    } else {
+        unlocked_mode = 1;
+        locked_mode = 0;
+    }
 
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;

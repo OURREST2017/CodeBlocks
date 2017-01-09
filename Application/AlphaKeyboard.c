@@ -18,7 +18,6 @@
 **********************************************************************
 */
 
-
 #include "main.h"
 
 #define ID_WINDOW_0  (GUI_ID_USER + 0x00)
@@ -174,7 +173,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
 
-        /* Store new skin properties to enabled button */
         textItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_TEXT);
         EDIT_SetText(textItem, "123");
         EDIT_SetFont(textItem, GUI_FONT_20_1);
@@ -182,8 +180,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ERASE);
         BUTTON_SetBitmapEx(hItem, 0,  &back_space, 10, 8);
-        //
-        // Initialization of 'Button'
         //
         int i;
         for (i=2051; i<2077; i++)
@@ -254,11 +250,13 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 }
                 else if (Id == ID_BUTTON_CANCEL)
                 {
+                    setSkin();
                     state = 15;
                     break;
                 }
                 else if (Id == ID_BUTTON_DONE)
                 {
+                    setSkin();
                     state = 15;
                     break;
                 }
@@ -275,7 +273,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 }
                 else
                 {
-                    //hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_TEXT);
                     EDIT_GetText(textItem, txt_buffer, 50);
                     int l = strlen(txt_buffer);
                     if (l == 50) break;

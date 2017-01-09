@@ -69,70 +69,48 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     {
     case WM_INIT_DIALOG:
         //
-        // Initialization of 'Button'
-        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_PERIOD);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
+        BUTTON_SetFont(hItem, &GUI_FontRounded16);
         BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Button'
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_START);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
+        BUTTON_SetFont(hItem, &GUI_FontRounded16);
         BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Button'
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HEAT_TO);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
+        BUTTON_SetFont(hItem, &GUI_FontRounded16);
         BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Button'
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_COOL_TO);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
+        BUTTON_SetFont(hItem, &GUI_FontRounded16);
         BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Button'
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_UP);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
+        BUTTON_SetFont(hItem, &GUI_FontRounded16);
         BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Button'
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DOWN);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
+        BUTTON_SetFont(hItem, &GUI_FontRounded16);
         BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
         //
-        // Initialization of 'Button'
-        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
+        BUTTON_SetFont(hItem, &GUI_FontRounded16);
         BUTTON_SetTextColor(hItem, BUTTON_CI_UNPRESSED, GUI_WHITE);
         BUTTON_SetTextColor(hItem, BUTTON_CI_PRESSED, GUI_WHITE);
-        //
-        // Initialization of 'Button'
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_WEEKDAY);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
+        BUTTON_SetFont(hItem, &GUI_FontRounded16);
         BUTTON_SetTextColor(hItem, BUTTON_CI_UNPRESSED, GUI_WHITE);
         BUTTON_SetTextColor(hItem, BUTTON_CI_PRESSED, GUI_WHITE);
-        //
-        // Initialization of 'Button'
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
+        BUTTON_SetFont(hItem, &GUI_FontRounded16);
         BUTTON_SetTextColor(hItem, BUTTON_CI_UNPRESSED, GUI_WHITE);
         BUTTON_SetTextColor(hItem, BUTTON_CI_PRESSED, GUI_WHITE);
-        //
-        // Initialization of 'Text'
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_0);
         TEXT_SetFont(hItem, GUI_FONT_24_1);
         TEXT_SetTextColor(hItem, 0x00FFFFFF);
-        //
-        // Initialization of 'Text'
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_1);
         TEXT_SetFont(hItem, GUI_FONT_24B_1);
@@ -143,49 +121,49 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         NCode = pMsg->Data.v;
         switch(Id)
         {
-        case ID_BUTTON_PERIOD: // Notifications sent by 'Button'
+        case ID_BUTTON_PERIOD:
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
                 break;
             }
             break;
-        case ID_BUTTON_START: // Notifications sent by 'Button'
+        case ID_BUTTON_START:
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
                 break;
             }
             break;
-        case ID_BUTTON_HEAT_TO: // Notifications sent by 'Button'
+        case ID_BUTTON_HEAT_TO:
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
                 break;
             }
             break;
-        case ID_BUTTON_COOL_TO: // Notifications sent by 'Button'
+        case ID_BUTTON_COOL_TO:
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
                 break;
             }
             break;
-        case ID_BUTTON_UP: // Notifications sent by 'Button'
+        case ID_BUTTON_UP:
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
                 break;
             }
             break;
-        case ID_BUTTON_DOWN: // Notifications sent by 'Button'
+        case ID_BUTTON_DOWN:
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
                 break;
             }
             break;
-        case ID_BUTTON_CANCEL: // Notifications sent by 'Button'
+        case ID_BUTTON_CANCEL:
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
@@ -193,14 +171,14 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 break;
             }
             break;
-        case ID_BUTTON_WEEKDAY: // Notifications sent by 'Button'
+        case ID_BUTTON_WEEKDAY:
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
                 break;
             }
             break;
-        case ID_BUTTON_SAVE: // Notifications sent by 'Button'
+        case ID_BUTTON_SAVE:
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:

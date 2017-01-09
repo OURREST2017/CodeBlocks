@@ -27,7 +27,7 @@
 #define ID_BUTTON_HOUR_DN  (GUI_ID_USER + 0x04)
 #define ID_BUTTON_MONTH_UP  (GUI_ID_USER + 0x06)
 #define ID_BUTTON_MONTH_DN  (GUI_ID_USER + 0x07)
-#define ID_BUTTON__MINUTE_UP  (GUI_ID_USER + 0x09)
+#define ID_BUTTON_MINUTE_UP  (GUI_ID_USER + 0x09)
 #define ID_BUTTON_MINUTE_DN  (GUI_ID_USER + 0x0A)
 #define ID_BUTTON_DAY_UP  (GUI_ID_USER + 0x0C)
 #define ID_BUTTON_DAY_DN  (GUI_ID_USER + 0x0D)
@@ -37,12 +37,12 @@
 #define ID_BUTTON_YEAR_DN  (GUI_ID_USER + 0x13)
 #define ID_BUTTON_CANCEL  (GUI_ID_USER + 0x14)
 #define ID_BUTTON_SAVE  (GUI_ID_USER + 0x15)
-#define ID_EDIT_0  (GUI_ID_USER + 0x16)
+#define ID_EDIT_HOUR  (GUI_ID_USER + 0x16)
 #define ID_EDIT_MONTH  (GUI_ID_USER + 0x18)
-#define ID_EDIT_2  (GUI_ID_USER + 0x19)
-#define ID_EDIT_3  (GUI_ID_USER + 0x1A)
-#define ID_EDIT_4  (GUI_ID_USER + 0x1B)
-#define ID_EDIT_5  (GUI_ID_USER + 0x1C)
+#define ID_EDIT_MINUTE  (GUI_ID_USER + 0x19)
+#define ID_EDIT_DAY  (GUI_ID_USER + 0x1A)
+#define ID_EDIT_AMPM  (GUI_ID_USER + 0x1B)
+#define ID_EDIT_YEAR  (GUI_ID_USER + 0x1C)
 #define ID_TEXT_0  (GUI_ID_USER + 0x1D)
 #define ID_TEXT_1  (GUI_ID_USER + 0x1E)
 #define ID_TEXT_2  (GUI_ID_USER + 0x1F)
@@ -59,33 +59,39 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "TIME/DATE", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_HOUR_UP, 112, 77, 30, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_HOUR_DN, 113, 108, 30, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_MONTH_UP, 113, 151, 30, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_MONTH_DN, 112, 183, 30, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON__MINUTE_UP, 259, 77, 30, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_MINUTE_DN, 259, 109, 30, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_DAY_UP, 259, 157, 30, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_DAY_DN, 260, 188, 30, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_AMPM_UP, 423, 77, 30, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_AMPM_DN, 425, 107, 30, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON__YEAR_UP, 428, 153, 30, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_YEAR_DN, 429, 185, 30, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 24, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 390, 230, 69, 22, 0, 0x0, 0 },
-    { EDIT_CreateIndirect, "Edit", ID_EDIT_0, 40, 80, 64, 46, 0, 0x64, 0 },
-    { EDIT_CreateIndirect, "Edit", ID_EDIT_MONTH, 22, 158, 83, 52, 0, 0x64, 0 },
-    { EDIT_CreateIndirect, "Edit", ID_EDIT_2, 183, 80, 69, 54, 0, 0x64, 0 },
-    { EDIT_CreateIndirect, "Edit", ID_EDIT_3, 191, 160, 62, 52, 0, 0x64, 0 },
-    { EDIT_CreateIndirect, "Edit", ID_EDIT_4, 334, 80, 85, 55, 0, 0x64, 0 },
-    { EDIT_CreateIndirect, "Edit", ID_EDIT_5, 309, 160, 113, 55, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Text", ID_TEXT_0, 43, 57, 59, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Text", ID_TEXT_1, 186, 56, 84, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Text", ID_TEXT_2, 336, 56, 87, 20, 0, 0x64, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_HOUR_UP, 110, 74, 30, 30, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_HOUR_DN, 110, 104, 30, 30, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_MONTH_UP, 110, 154, 30, 30, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_MONTH_DN, 110, 183, 30, 30, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_MINUTE_UP, 258, 75, 30, 30, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_MINUTE_DN, 258, 104, 30, 30, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_DAY_UP, 258, 154, 30, 30, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_DAY_DN, 258, 183, 30, 30, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_AMPM_UP, 423, 75, 30, 30, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_AMPM_DN, 423, 104, 30, 30, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON__YEAR_UP, 423, 154, 30, 30, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_YEAR_DN, 423, 183, 30, 30, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 25, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 390, 230, 80, 25, 0, 0x0, 0 },
+    { TEXT_CreateIndirect, "Edit", ID_EDIT_HOUR, 40, 80, 65, 50, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Edit", ID_EDIT_MONTH, 22, 160, 83, 50, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Edit", ID_EDIT_MINUTE, 190, 80, 65, 50, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Edit", ID_EDIT_DAY, 191, 160, 65, 50, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Edit", ID_EDIT_AMPM, 355, 80, 65, 50, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Edit", ID_EDIT_YEAR, 309, 160, 113, 50, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Text", ID_TEXT_0, 43, 58, 59, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Text", ID_TEXT_1, 186, 58, 84, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Text", ID_TEXT_2, 355, 58, 87, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_3, 26, 140, 80, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_4, 195, 140, 74, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_5, 310, 140, 80, 20, 0, 0x64, 0 },
 };
+extern void up_button(WM_MESSAGE *);
+extern void dn_button(WM_MESSAGE *);
+
+static char *Months[] = {"JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"};
+static int days[12] = {30,28,30,30,30,30,30,30,30,30,30,30};
+
 
 /*********************************************************************
 *
@@ -96,132 +102,97 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     WM_HWIN hItem;
     int     NCode;
     int     Id;
-    // USER START (Optionally insert additional variables)
+    char buf[10];
 
     switch (pMsg->MsgId)
     {
     case WM_INIT_DIALOG:
-        //
-        // Initialization of 'Button'
-        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
-        TEXT_SetFont(hItem, GUI_FONT_32B_1);
+        TEXT_SetFont(hItem, &GUI_Font32B_ASCII);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HOUR_UP);
-        BUTTON_SetText(hItem, "UP1");
-        //
-        // Initialization of 'Button'
+        WM_SetCallback(hItem, up_button);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HOUR_DN);
-        BUTTON_SetText(hItem, "DN1");
-        //
-        // Initialization of 'Button'
+        WM_SetCallback(hItem, dn_button);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_MONTH_UP);
-        BUTTON_SetText(hItem, "UP2");
-        //
-        // Initialization of 'Button'
+        WM_SetCallback(hItem, up_button);;
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_MONTH_DN);
-        BUTTON_SetText(hItem, "DN2");
+        WM_SetCallback(hItem, dn_button);
         //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON__MINUTE_UP);
-        BUTTON_SetText(hItem, "UP3");
-        //
-        // Initialization of 'Button'
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_MINUTE_UP);
+        WM_SetCallback(hItem, up_button);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_MINUTE_DN);
-        BUTTON_SetText(hItem, "DN3");
-        //
-        // Initialization of 'Button'
+        WM_SetCallback(hItem, dn_button);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DAY_UP);
-        BUTTON_SetText(hItem, "UP4");
-        //
-        // Initialization of 'Button'
+        WM_SetCallback(hItem, up_button);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DAY_DN);
-        BUTTON_SetText(hItem, "DN4");
-        //
-        // Initialization of 'Button'
+        WM_SetCallback(hItem, dn_button);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_AMPM_UP);
-        BUTTON_SetText(hItem, "UP5");
-        //
-        // Initialization of 'Button'
+        WM_SetCallback(hItem, up_button);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_AMPM_DN);
-        BUTTON_SetText(hItem, "DN5");
-        //
-        // Initialization of 'Button'
+        WM_SetCallback(hItem, dn_button);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON__YEAR_UP);
-        BUTTON_SetText(hItem, "UP6");
-        //
-        // Initialization of 'Button'
+        WM_SetCallback(hItem, up_button);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_YEAR_DN);
-        BUTTON_SetText(hItem, "DN6");
-        //
-        // Initialization of 'Button'
+        WM_SetCallback(hItem, dn_button);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
-         BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-       //
-        // Initialization of 'Button'
+        WM_SetCallback(hItem, cancel_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
-          BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-       //
-        // Initialization of 'Edit'
+        WM_SetCallback(hItem, save_cb);
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_0);
-        EDIT_SetText(hItem, "00");
-        EDIT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        EDIT_SetFont(hItem, GUI_FONT_32B_1);
-        //
-        // Initialization of 'Edit'
+        sprintf(buf, "%d", current_hour);
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_HOUR);
+        TEXT_SetText(hItem, buf);
+        TEXT_SetBkColor(hItem, GUI_LIGHTGRAY);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetFont(hItem, GUI_FONT_32B_1);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_MONTH);
-        EDIT_SetText(hItem, "JAN");
-        EDIT_SetFont(hItem, GUI_FONT_32B_1);
-        EDIT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetText(hItem, Months[current_month]);
+        TEXT_SetBkColor(hItem, GUI_LIGHTGRAY);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetFont(hItem, GUI_FONT_32B_1);
         //
-        // Initialization of 'Edit'
+        sprintf(buf, "%d", current_minute);
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_MINUTE);
+        TEXT_SetText(hItem, buf);
+        TEXT_SetBkColor(hItem, GUI_LIGHTGRAY);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetFont(hItem, GUI_FONT_32B_1);
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_2);
-        EDIT_SetText(hItem, "26");
-        EDIT_SetFont(hItem, GUI_FONT_32B_1);
-        EDIT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        sprintf(buf, "%d", current_day);
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_DAY);
+        TEXT_SetText(hItem, buf);
+        TEXT_SetBkColor(hItem, GUI_LIGHTGRAY);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetFont(hItem, GUI_FONT_32B_1);
         //
-        // Initialization of 'Edit'
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_AMPM);
+        TEXT_SetText(hItem, current_ampm ? "AM" : "PM");
+        TEXT_SetBkColor(hItem, GUI_LIGHTGRAY);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetFont(hItem, GUI_FONT_32B_1);
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_3);
-        EDIT_SetText(hItem, "28");
-        EDIT_SetFont(hItem, GUI_FONT_32B_1);
-        EDIT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        //
-        // Initialization of 'Edit'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_4);
-        EDIT_SetText(hItem, "AM");
-        EDIT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        EDIT_SetFont(hItem, GUI_FONT_32B_1);
-        //
-        // Initialization of 'Edit'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_5);
-        EDIT_SetText(hItem, "2017");
-        EDIT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        EDIT_SetFont(hItem, GUI_FONT_32B_1);
-        //
-        // Initialization of 'Text'
+        sprintf(buf, "%d", current_year);
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_YEAR);
+        TEXT_SetText(hItem, buf);
+        TEXT_SetBkColor(hItem, GUI_LIGHTGRAY);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetFont(hItem, GUI_FONT_32B_1);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_0);
         TEXT_SetTextAlign(hItem, GUI_TA_LEFT | GUI_TA_VCENTER);
@@ -229,15 +200,11 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetFont(hItem, GUI_FONT_20_1);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
-        // Initialization of 'Text'
-        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_1);
         TEXT_SetTextAlign(hItem, GUI_TA_LEFT | GUI_TA_VCENTER);
         TEXT_SetFont(hItem, GUI_FONT_20_1);
         TEXT_SetText(hItem, "Minute");
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
-        //
-        // Initialization of 'Text'
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_2);
         TEXT_SetFont(hItem, GUI_FONT_20_1);
@@ -245,28 +212,21 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetText(hItem, "AM/PM");
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
-        // Initialization of 'Text'
-        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_3);
         TEXT_SetFont(hItem, GUI_FONT_20_1);
         TEXT_SetTextAlign(hItem, GUI_TA_LEFT | GUI_TA_VCENTER);
         TEXT_SetText(hItem, "Month");
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
-        // Initialization of 'Text'
-        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_4);
         TEXT_SetFont(hItem, GUI_FONT_20_1);
         TEXT_SetText(hItem, "Day");
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
-        // Initialization of 'Text'
-        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_5);
         TEXT_SetFont(hItem, GUI_FONT_20_1);
         TEXT_SetText(hItem, "Year");
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
-        // USER START (Optionally insert additional code for further widget initialization)
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
@@ -276,91 +236,91 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_HOUR_UP:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
                 break;
             }
             break;
         case ID_BUTTON_HOUR_DN:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
                 break;
             }
             break;
         case ID_BUTTON_MONTH_UP:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
                 break;
             }
             break;
         case ID_BUTTON_MONTH_DN:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
                 break;
             }
             break;
-        case ID_BUTTON__MINUTE_UP:
+        case ID_BUTTON_MINUTE_UP:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
                 break;
             }
             break;
         case ID_BUTTON_MINUTE_DN:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
                 break;
-             }
+            }
             break;
         case ID_BUTTON_DAY_UP:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
                 break;
             }
             break;
         case ID_BUTTON_DAY_DN:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
                 break;
             }
             break;
         case ID_BUTTON_AMPM_UP:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
                 break;
             }
             break;
         case ID_BUTTON_AMPM_DN:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
                 break;
-             }
+            }
             break;
         case ID_BUTTON__YEAR_UP:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
                 break;
             }
             break;
         case ID_BUTTON_YEAR_DN:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
                 break;
-             }
+            }
             break;
         case ID_BUTTON_CANCEL:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
                 state = 4;
                 break;
             }
@@ -368,10 +328,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_SAVE:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
                 state = 4;
                 break;
-           }
+            }
             break;
         }
         break;

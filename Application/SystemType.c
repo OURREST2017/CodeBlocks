@@ -41,9 +41,49 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "HOT WATER OR STEAM", ID_BUTTON_HOT_WATER, 90, 175, 300, 36, 0, 0x0, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "SYSTEM TYPE", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 75, 24, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 390, 230, 75, 24, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 75, 25, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 390, 230, 75, 25, 0, 0x0, 0 },
 };
+
+static int forcedAir_mode, heatPump_mode, hotWater_mode;
+
+static void forcedAir_cb(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawButton22("FORCED AIR", 240, 40, forcedAir_mode);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+static void heatPump_cb(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawButton22("HEAT PUMP", 240, 40, heatPump_mode);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+static void hotWater_cb(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawButton22("HOT WATER OR STEAM", 240, 40, hotWater_mode);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+static WM_HWIN forcedAirButton, heatPumpButton, hotWaterButton;
 
 /*********************************************************************
 *
@@ -59,49 +99,32 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     {
     case WM_INIT_DIALOG:
         //
-        // Initialization of 'Button'
+        forcedAirButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_FORCED_AIR);
+        WM_SetCallback(forcedAirButton, forcedAir_cb);
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_FORCED_AIR);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
+        heatPumpButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HEAT_PUMP);
+        WM_SetCallback(heatPumpButton, heatPump_cb);
         //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HEAT_PUMP);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-//
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HOT_WATER);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Text'
+        hotWaterButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HOT_WATER);
+        WM_SetCallback(hotWaterButton, hotWater_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetFont(hItem, GUI_FONT_32B_1);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         //
-        // Initialization of 'Button'
-        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Button'
+        WM_SetCallback(hItem, cancel_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
+        WM_SetCallback(hItem, save_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
         NCode = pMsg->Data.v;
         switch(Id)
         {
-        case ID_BUTTON_CANCEL: // Notifications sent by 'Button'
+        case ID_BUTTON_CANCEL:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
@@ -109,32 +132,65 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 state=17;
             }
             break;
-        case ID_BUTTON_SAVE: // Notifications sent by 'Button'
+        case ID_BUTTON_SAVE:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                if (forcedAir_mode)
+                {
+                    strcpy(systemType,"forced air");
+                }
+                else if (heatPump_mode)
+                {
+                    strcpy(systemType,"heat pump");
+                }
+                else
+                {
+                    strcpy(systemType,"hot water");
+                }
                 GUI_Delay(100);
                 state=17;
             }
             break;
-        case ID_BUTTON_HOT_WATER: // Notifications sent by 'Button'
+        case ID_BUTTON_HOT_WATER:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                forcedAir_mode = 0;
+                heatPump_mode = 0;
+                hotWater_mode = 1;
+
+                WM_SetCallback(forcedAirButton, forcedAir_cb);
+                WM_SetCallback(heatPumpButton, heatPump_cb);
+                WM_SetCallback(hotWaterButton, hotWater_cb);
                 break;
             }
             break;
-         case ID_BUTTON_FORCED_AIR: // Notifications sent by 'Button'
+        case ID_BUTTON_FORCED_AIR:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                forcedAir_mode = 1;
+                heatPump_mode = 0;
+                hotWater_mode = 0;
+
+                WM_SetCallback(forcedAirButton, forcedAir_cb);
+                WM_SetCallback(heatPumpButton, heatPump_cb);
+                WM_SetCallback(hotWaterButton, hotWater_cb);
                 break;
             }
             break;
-        case ID_BUTTON_HEAT_PUMP: // Notifications sent by 'Button'
+        case ID_BUTTON_HEAT_PUMP:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                forcedAir_mode = 0;
+                heatPump_mode = 1;
+                hotWater_mode = 0;
+
+                WM_SetCallback(forcedAirButton, forcedAir_cb);
+                WM_SetCallback(heatPumpButton, heatPump_cb);
+                WM_SetCallback(hotWaterButton, hotWater_cb);
                 break;
             }
             break;
@@ -154,6 +210,13 @@ WM_HWIN CreateSystemType(void);
 WM_HWIN CreateSystemType(void)
 {
     WM_HWIN hWin;
+
+    if (strcmp(systemType, "heat pump") == 0)
+    {
+        forcedAir_mode = 0;
+        hotWater_mode = 0;
+        heatPump_mode = 1;
+    }
 
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;

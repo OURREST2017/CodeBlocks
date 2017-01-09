@@ -75,7 +75,7 @@ GUI_CONST_STORAGE GUI_BITMAP bm_return =
     &Palette   // Pointer to palette
 };
 
-static void return_button(WM_MESSAGE * pMsg)
+static void return_cb(WM_MESSAGE * pMsg)
 {
     switch (pMsg->MsgId)
     {
@@ -128,7 +128,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         //GUI_DrawBitmap(&bm_return, 100, 150);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_RETURN);
-        WM_SetCallback(hItem, return_button);
+        WM_SetCallback(hItem, return_cb);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetFont(hItem, GUI_FONT_32B_1);

@@ -1,4 +1,3 @@
-
 #include "main.h"
 
 #define ID_HOME_WINDOW     (GUI_ID_USER + 0x00)
@@ -24,153 +23,7 @@
 #define ID_TEXT_INDOOR     (GUI_ID_USER + 0x15)
 #define ID_IMAGE_GRAY_BAR (GUI_ID_USER + 0x17)
 #define ID_TEXT_SET_TO     (GUI_ID_USER + 0x18)
-
-static void _DrawGradientRoundBar(int x0, int y0_, int x1, int y1_, GUI_COLOR Color0, GUI_COLOR Color1)
-{
-    GUI_COLOR Color;
-    double    rd;
-    double    rr;
-    double    x;
-    double    y;
-    int       Temp;
-    int       Add;
-    int       r0;
-    int       g0;
-    int       b0;
-    int       r1;
-    int       g1;
-    int       b1;
-    int       d;
-    int       i;
-    U32       r;
-    U32       g;
-    U32       b;
-
-    if (y0_ > y1_)
-    {
-        Temp = y0_;
-        y0_   = y1_;
-        y1_   = Temp;
-    }
-    if (x0 > x1)
-    {
-        Temp = x0;
-        x0   = x1;
-        x1   = Temp;
-    }
-    r0  = (Color0 >>  0) & 0x000000ff;
-    g0  = (Color0 >>  8) & 0x000000ff;
-    b0  = (Color0 >> 16) & 0x000000ff;
-    r1  = (Color1 >>  0) & 0x000000ff;
-    g1  = (Color1 >>  8) & 0x000000ff;
-    b1  = (Color1 >> 16) & 0x000000ff;
-    Add = -1;
-    d   = y1_ - y0_ + 1;
-    rd  = (double)(y1_ - y0_) / 2;
-    rr  = rd * rd;
-    y   = rd;
-    for (i = y0_; i <= y1_; i++)
-    {
-        x = sqrt(rr - y * y);
-        r = r0 + (r1 - r0) * (i - y0_) / d;
-        g = g0 + (g1 - g0) * (i - y0_) / d;
-        b = b0 + (b1 - b0) * (i - y0_) / d;
-        Color = r | (g << 8) | (b << 16);
-#if (GUI_USE_ARGB)
-        Color |= 0xFF000000;
-#endif
-        GUI_SetColor(Color);
-        GUI_DrawHLine(i, (int)(x0 + rd - x), (int)(x0 + rd));
-        GUI_DrawHLine(i, (int)(x0 + rd),     (int)(x1 - rd));
-        GUI_DrawHLine(i, (int)(x1 - rd),     (int)(x1 - rd + x));
-        y += Add;
-        if (y < 0)
-        {
-            Add = -Add;
-            y = -y;
-        }
-    }
-}
-
-/*********************************************************************
-*
-*       _CreateBitmap
-*
-* Function description
-*   Creates the background image in form of a rounded horizontal bar
-*   with a surrounding frame and a gray gradient within the bar
-*/
-static GUI_MEMDEV_Handle _CreateBitmap(WM_HWIN hWin, int x0, int y0_, int x1, int y1_)
-{
-    GUI_MEMDEV_Handle hMem;
-    GUI_MEMDEV_Handle hOld;
-    int               xSizeLCD;
-    int               ySizeLCD;
-    int               xPos;
-    int               yPos;
-    int               r;
-
-    r = (y1_ - y0_ + 1) / 2;
-    xPos  = WM_GetWindowOrgX(hWin);
-    yPos  = WM_GetWindowOrgY(hWin);
-    xSizeLCD = LCD_GetXSize();
-    ySizeLCD = LCD_GetYSize();
-    //hMem = GUI_MEMDEV_Create(xPos + x0, yPos + y0_, x1 - x0 + 1, y1_ - y0_ + 1);
-    GUI_DrawGradientV(5, 80, xSizeLCD - 6, ySizeLCD - 1, GUI_MAKE_COLOR(0xffffff), GUI_MAKE_COLOR(0xffa0a0));     // Draws the background of the bar
-    //if (hMem) {
-    WM_SelectWindow(hWin);
-    //hOld = GUI_MEMDEV_Select(hMem);
-    //GUI_MEMDEV_CopyFromLCD(hMem);
-    _DrawGradientRoundBar(x0 + 2, y0_ + 2, x1 - 2, y1_ - 2, GUI_MAKE_COLOR(0xEEEEEE), GUI_MAKE_COLOR(0x737373));
-    GUI_SetColor(GUI_MAKE_COLOR(0xff0000));
-    GUI_SetPenSize(3);
-    GUI_AA_DrawArc(x0 + r, y0_ + r, r - 2, r - 2,  90, 270);
-    GUI_AA_DrawArc(x1 - r, y0_ + r, r - 2, r - 2, 270, 450);
-    GUI_AA_DrawLine(x0 + r, y0_ + 2, x1 - r, y0_ + 2);
-    GUI_AA_DrawLine(x0 + r, y1_ - 2, x1 - r, y1_ - 2);
-    //GUI_MEMDEV_Select(hOld);
-    //} else {
-    //  _NoMemory = 1;
-    //}
-    return hMem;
-}
-
-static GUI_MEMDEV_Handle _CreateButton(WM_HWIN hWin, int x0, int y0_, int xSize, int ySize, GUI_COLOR Color0, GUI_COLOR Color1)
-{
-    GUI_MEMDEV_Handle hMem;
-    GUI_MEMDEV_Handle hOld;
-    int               xSizeLCD;
-    int               ySizeLCD;
-    int               xPos;
-    int               yPos;
-    int               r;
-
-    xSizeLCD = LCD_GetXSize();
-    ySizeLCD = LCD_GetYSize();
-    r = xSize / 2;
-    WM_SelectWindow(hWin);
-    xPos  = WM_GetWindowOrgX(hWin);
-    yPos  = WM_GetWindowOrgY(hWin);
-    //hMem = GUI_MEMDEV_Create(xPos + x0, yPos + y0_, xSize, ySize);
-    GUI_DrawGradientV(5, 80, xSizeLCD - 6, ySizeLCD - 1, GUI_MAKE_COLOR(0xffffff), GUI_MAKE_COLOR(0xffa0a0));  // Draws the background of the button
-    //if (hMem) {
-    //hOld = GUI_MEMDEV_Select(hMem);
-    //GUI_MEMDEV_CopyFromLCD(hMem);
-    _DrawGradientRoundBar(x0 + 2, y0_ + 2, x0 + xSize - 2, y0_ + ySize - 2, Color0, Color1);
-    GUI_SetColor(GUI_MAKE_COLOR(0xff0000));
-    GUI_SetPenSize(3);
-    GUI_AA_DrawArc(x0 + r, y0_ + r, r - 2, r - 2,  0, 360);
-    //GUI_MEMDEV_Select(hOld);
-    //} else {
-//   _NoMemory = 1;
-// }
-    return hMem;
-}
-
-/*********************************************************************
-*
-*       _aDialogCreate
-*/
+#define ID_TEXT_HOLD     (GUI_ID_USER + 0x19)
 
 static U8 gray_bar[454] =
 {
@@ -207,17 +60,18 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "Button_Heat", ID_BUTTON_HEAT, 292, 233, 75, 25, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Button_Fan", ID_BUTTON_FAN, 104, 233, 75, 25, 0, 0x0, 0 },
     { IMAGE_CreateIndirect, "Image", ID_IMAGE_GRAY_BAR, -1, 201, 480, 25, 0, 0, 0 },
-    { TEXT_CreateIndirect, "In_T_Panel", ID_TEXT_INSIDE_TEMP, 162, 84, 135, 100, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "In_T_Panel", ID_TEXT_INSIDE_TEMP, 162, 88, 135, 100, 0, 0x64, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER, -1, 0, 480, 50, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button_Up", ID_BUTTON_UP, 390, 70, 48, 48, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button_Dn", ID_BUTTON_DN, 390, 145, 48, 48, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button_Settings", ID_BUTTON_SETTINGS, 10, 110, 88, 31, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button_Up", ID_BUTTON_UP, 390, 75, 48, 48, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button_Dn", ID_BUTTON_DN, 390, 140, 48, 48, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button_Settings", ID_BUTTON_SETTINGS, 14, 110, 104, 25, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "Cool_T_Panel", ID_TEXT_COOLTO, 411, 204, 34, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Heat_T_Panel", ID_TEXT_HEATTO, 319, 204, 36, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "MODE", ID_TEXT_MODE, 33, 204, 45, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "FAN", ID_TEXT_FAN, 125, 204, 43, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Date_Display", ID_TEXT_DATE, 20, 15, 100, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Time_Display", ID_TEXT_TIME, 140, 15, 80, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "AUTO", ID_TEXT_MODE, 33, 204, 45, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "AUTO", ID_TEXT_FAN, 125, 204, 43, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "ON SCHED", ID_TEXT_HOLD, 198, 204, 100, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "", ID_TEXT_DATE, 20, 0, 150, 50, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "", ID_TEXT_TIME, 150, 0, 100, 50, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Out_T_Temp", ID_TEXT_OUT_TEMP, 386, 7, 72, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "OUSIDE", ID_TEXT_OUTSIDE, 389, 26, 61, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "HUMIDITY", ID_TEXT_HUMIDITY, 165, 176, 160, 20, 0, 0x64, 0 },
@@ -225,13 +79,150 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { TEXT_CreateIndirect, "SET_TO", ID_TEXT_SET_TO, 380, 122, 89, 20, 0, 0x64, 0 },
 };
 
+
+static void up_button(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawBigUpButton();
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+
+static void dn_button(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawBigDnButton();
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+
+static void hold_button_on(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawButton("HOLD", 5);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+
+static void hold_button_off(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawButton("HOLD", color_scheme);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+
+char * toup(char *s)
+{
+    int i;
+    char *t;
+    static char o[100];
+    for (i=0; i<strlen(s); i++)
+    {
+        o[i] = toupper(s[i]);
+    }
+    o[i] = '\0';
+    return o;
+}
+
+static WM_HWIN upButton, dnButton, holdButton;
+static WM_HWIN modeButton, fanButton, heatButton, coolButton;
+
+char date_buf[20];
+char time_buf[20];
+
+int holdButtonOn = 0, cool_but, heat_but, fan_but, mode_but;
+int cool_border, heat_border;
+
+static void settings_cb(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawButton16("SETTINGS", 90, 25, 1);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+static void cool_cb(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        if (strcmp(selectedMode, "cool") == 0) cool_border = 1;
+        drawCoolButton("COOL", 75, 25, cool_but, cool_border);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+static void heat_cb(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        if (strcmp(selectedMode, "heat") == 0) heat_border = 1;
+        drawCoolButton("HEAT", 75, 25, heat_but, heat_border);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+static void mode_cb(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawButton16("MODE", 75, 25, mode_but);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+static void fan_cb(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawButton16("FAN", 75, 25, fan_but);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+WM_HWIN dateText, timeText;
 /*********************************************************************
 *
 *       _cbDialog
 */
 static void _cbDialog(WM_MESSAGE * pMsg)
 {
-    static GUI_MEMDEV_Handle hBitmap;
     WM_HWIN hItem;
     WM_HWIN                  hWin;
     int     NCode;
@@ -243,11 +234,13 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     hWin = pMsg->hWin;
     switch (pMsg->MsgId)
     {
+    case WM_PAINT:
+        GUI_SetColor(0xcecece);
+        GUI_DrawVLine(340, 75, 170);
+        GUI_DrawVLine(341, 75, 170);
+        break;
     case WM_INIT_DIALOG:
-        //
-        // Initialization of 'HomeWin'
-        //
-         hItem = pMsg->hWin;
+        hItem = pMsg->hWin;
         WINDOW_SetBkColor(hItem, 0x00FFFFFF);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_IMAGE_GRAY_BAR);
@@ -255,218 +248,238 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         IMAGE_SetPNG(hItem, pData, FileSize);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SETTINGS);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
-        BUTTON_SetText(hItem, "SETTINGS");
-        BUTTON_SetTextColor(hItem, BUTTON_CI_UNPRESSED, GUI_WHITE);
-        BUTTON_SetTextColor(hItem, BUTTON_CI_PRESSED, GUI_WHITE);
-        BUTTON_SetBkColor(hItem, BUTTON_CI_UNPRESSED,GUI_RED);
+        WM_SetCallback(hItem, settings_cb);
 
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_COOL);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
-        BUTTON_SetText(hItem, "COOL");
-        BUTTON_SetTextColor(hItem, BUTTON_CI_UNPRESSED, GUI_BLUE);
-        BUTTON_SetTextColor(hItem, BUTTON_CI_PRESSED, GUI_BLUE);
-     // Initialization of 'Button_Mode'
+        modeButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_MODE);
+        WM_SetCallback(modeButton, mode_cb);
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_MODE);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
-        BUTTON_SetText(hItem, "MODE");
-        BUTTON_SetTextColor(hItem, BUTTON_CI_UNPRESSED, GUI_WHITE);
-        BUTTON_SetTextColor(hItem, BUTTON_CI_PRESSED, GUI_WHITE);
-      //
-        // Initialization of 'Button_Hold'
+        fanButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_FAN);
+        WM_SetCallback(fanButton, fan_cb);
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HOLD);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
-        BUTTON_SetText(hItem, "HOLD");
-        BUTTON_SetTextColor(hItem, BUTTON_CI_UNPRESSED, GUI_WHITE);
-        BUTTON_SetTextColor(hItem, BUTTON_CI_PRESSED, GUI_WHITE);
+        holdButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HOLD);
+        WM_SetCallback(holdButton, hold_button_off);
         //
-        // Initialization of 'Button_Heat'
+        heatButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HEAT);
+        WM_SetCallback(heatButton, heat_cb);
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HEAT);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
-        BUTTON_SetText(hItem, "HEAT");
-        BUTTON_SetTextColor(hItem, BUTTON_CI_UNPRESSED, GUI_RED);
-        BUTTON_SetTextColor(hItem, BUTTON_CI_PRESSED, GUI_RED);
+        coolButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_COOL);
+        WM_SetCallback(coolButton, cool_cb);
         //
-        // Initialization of 'Button_Fan'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_FAN);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
-        BUTTON_SetText(hItem, "FAN");
-        BUTTON_SetTextColor(hItem, BUTTON_CI_UNPRESSED, GUI_WHITE);
-        BUTTON_SetTextColor(hItem, BUTTON_CI_PRESSED, GUI_WHITE);
-        //
-        // Initialization of 'In_T_Panel'
-        //
-        sprintf(buffer,"%d",temperature);
-
+        sprintf(buffer,"%d",insideTemp);
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_INSIDE_TEMP);
-        //TEXT_SetText(hItem, "76");
         TEXT_SetText(hItem, buffer);
         TEXT_SetFont(hItem, GUI_FONT_D80);
         TEXT_SetTextColor(hItem, 0x00808080);
         //
-        // Initialization of 'Button_Up'
+        upButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_UP);
+        WM_SetCallback(upButton, up_button);
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_UP);
-        BUTTON_SetFont(hItem, GUI_FONT_24_1);
-        BUTTON_SetText(hItem, "UP");
-        BUTTON_SetTextColor(hItem, BUTTON_CI_UNPRESSED, GUI_WHITE);
-        BUTTON_SetTextColor(hItem, BUTTON_CI_PRESSED, GUI_WHITE);
-        //
-        // Initialization of 'Button_Dn'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DN);
-        BUTTON_SetFont(hItem, GUI_FONT_24_1);
-        BUTTON_SetText(hItem, "DN");
-        BUTTON_SetTextColor(hItem, BUTTON_CI_UNPRESSED, GUI_WHITE);
-        BUTTON_SetTextColor(hItem, BUTTON_CI_PRESSED, GUI_WHITE);
+        dnButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DN);
+        WM_SetCallback(dnButton, dn_button);
 
+        sprintf(buffer, "%d °", coolToDegrees);
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_COOLTO);
-        TEXT_SetText(hItem, "78 °");
-        TEXT_SetFont(hItem, GUI_FONT_16B_1);
+        TEXT_SetText(hItem, buffer);
+        TEXT_SetFont(hItem, &GUI_FontRounded16);
         TEXT_SetTextColor(hItem, 0x00FFFFFF);
         //
-        // Initialization of 'Heat_T_Panel'
-        //
+        sprintf(buffer, "%d °", heatToDegrees);
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEATTO);
-        TEXT_SetFont(hItem, GUI_FONT_16B_1);
-        TEXT_SetText(hItem, "68 °");
+        TEXT_SetFont(hItem, &GUI_FontRounded16);
+        TEXT_SetText(hItem, buffer);
         TEXT_SetTextColor(hItem, 0x00FFFFFF);
-        //
-        // Initialization of 'Text'
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_MODE);
-        TEXT_SetText(hItem, "AUTO");
-        TEXT_SetFont(hItem, GUI_FONT_16B_1);
+        TEXT_SetText(hItem, toup(selectedMode));
+        TEXT_SetFont(hItem, &GUI_FontRounded16);
         TEXT_SetTextColor(hItem, 0x00FFFFFF);
-        //
-        // Initialization of 'Text'
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_FAN);
-        TEXT_SetText(hItem, "AUTO");
-        TEXT_SetFont(hItem, GUI_FONT_16B_1);
+        TEXT_SetText(hItem,toup(selectedFanMode));
+        TEXT_SetFont(hItem, &GUI_FontRounded16);
+        TEXT_SetTextColor(hItem, 0x00FFFFFF);
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HOLD);
+        TEXT_SetText(hItem, "ON SCHED");
+        TEXT_SetFont(hItem, &GUI_FontRounded16);
         TEXT_SetTextColor(hItem, 0x00FFFFFF);
         //
-        // Initialization of 'Date_Display'
+        dateText = WM_GetDialogItem(pMsg->hWin, ID_TEXT_DATE);
+        TEXT_SetText(dateText, date_buf);
+        TEXT_SetTextAlign(dateText, GUI_TA_LEFT | GUI_TA_VCENTER);
+        TEXT_SetFont(dateText, &GUI_FontRounded22);
+        TEXT_SetTextColor(dateText, 0x00FFFFFF);
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_DATE);
-        TEXT_SetText(hItem, "WED 7/7/09");
-        TEXT_SetFont(hItem, GUI_FONT_20_1);
-        TEXT_SetTextColor(hItem, 0x00FFFFFF);
+        timeText = WM_GetDialogItem(pMsg->hWin, ID_TEXT_TIME);
+        TEXT_SetText(hItem, time_buf);
+        TEXT_SetTextAlign(timeText, GUI_TA_LEFT | GUI_TA_VCENTER);
+        TEXT_SetFont(timeText, &GUI_FontRounded22);
+        TEXT_SetTextColor(timeText, 0x00FFFFFF);
         //
-        // Initialization of 'Text'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_TIME);
-        TEXT_SetText(hItem, "1:36PM");
-        TEXT_SetFont(hItem, GUI_FONT_20_1);
-        TEXT_SetTextColor(hItem, 0x00FFFFFF);
-        //
-        // Initialization of 'Out_T_Temp'
-        //
+        sprintf(buffer, "%d °  |  %d%%", localTemp, localHumidity);
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_OUT_TEMP);
-        TEXT_SetText(hItem, "84 °  |  80%");
-        TEXT_SetFont(hItem, GUI_FONT_16B_1);
+        TEXT_SetText(hItem, buffer);
+        TEXT_SetFont(hItem, &GUI_FontRounded16);
         TEXT_SetTextColor(hItem, 0x00FFFFFF);
-        //
-        // Initialization of 'Text'
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_OUTSIDE);
-        TEXT_SetFont(hItem, GUI_FONT_16B_1);
+        TEXT_SetFont(hItem, &GUI_FontRounded16);
         TEXT_SetText(hItem, "OUTSIDE");
         TEXT_SetTextColor(hItem, 0x00FFFFFF);
         //
-        // Initialization of 'Text'
-        //
+        sprintf(buffer, "%d%% HUMIDITY", insideHumidity);
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HUMIDITY);
-        TEXT_SetFont(hItem, GUI_FONT_20_1);
-        TEXT_SetText(hItem, "30% HUMIDITY");
-        //
-        // Initialization of 'Text'
+        TEXT_SetFont(hItem, &GUI_FontRounded16);
+        TEXT_SetText(hItem, buffer);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_INDOOR);
         TEXT_SetText(hItem, "INDOOR");
-        TEXT_SetFont(hItem, GUI_FONT_20_1);
+        TEXT_SetFont(hItem, &GUI_FontRounded16);
 
+        sprintf(buffer, "SET TO %d °", statControl);
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SET_TO);
-        TEXT_SetText(hItem, "SET TO 72 °");
-        TEXT_SetFont(hItem, GUI_FONT_16B_1);
-        // USER START (Optionally insert additional code for further widget initialization)
-        // USER END
+        TEXT_SetText(hItem, buffer);
+        TEXT_SetFont(hItem, &GUI_FontRounded16);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
         NCode = pMsg->Data.v;
-        sprintf(buffer,"ID=%d,%d,%d",Id, NCode, ID_IMAGE_GRAY_BAR);
-       // GUI_ErrorOut(buffer);
         switch(Id)
         {
-        case ID_BUTTON_COOL: // Notifications sent by 'Button_Cool'
+        case ID_BUTTON_SETTINGS:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
+                state=4;
+            }
+            break;
+        case ID_BUTTON_COOL:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_RELEASED:
                 break;
             }
             break;
-        case ID_BUTTON_MODE: // Notifications sent by 'Button_Mode'
+        case ID_BUTTON_MODE:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
                 state=3;
                 break;
             }
             break;
-        case ID_BUTTON_HOLD: // Notifications sent by 'Button_Hold'
+        case ID_BUTTON_HOLD:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HOLD);
+                if (holdButtonOn)
+                {
+                    mode_but = 1;
+                    cool_but = 1;
+                    heat_but = 1;
+                    fan_but = 1;
+                    WM_SetCallback(holdButton, hold_button_off);
+                    WM_EnableWindow(modeButton);
+                    WM_EnableWindow(coolButton);
+                    WM_EnableWindow(heatButton);
+                    WM_EnableWindow(fanButton);
+                    WM_InvalidateWindow(modeButton);
+                    WM_InvalidateWindow(coolButton);
+                    WM_InvalidateWindow(heatButton);
+                    WM_InvalidateWindow(fanButton);
+                    TEXT_SetText(hItem, "ON SCHED");
+                }
+                else
+                {
+                    mode_but = 0;
+                    cool_but = 0;
+                    heat_but = 0;
+                    fan_but = 0;
+
+                    WM_SetCallback(holdButton, hold_button_on);
+                    WM_DisableWindow(modeButton);
+                    WM_DisableWindow(coolButton);
+                    WM_DisableWindow(heatButton);
+                    WM_DisableWindow(fanButton);
+                    WM_InvalidateWindow(modeButton);
+                    WM_InvalidateWindow(coolButton);
+                    WM_InvalidateWindow(heatButton);
+                    WM_InvalidateWindow(fanButton);
+                    TEXT_SetText(hItem, " ON HOLD");
+                }
+                holdButtonOn = !holdButtonOn;
                 break;
             }
             break;
-        case ID_BUTTON_HEAT: // Notifications sent by 'Button_Heat'
+        case ID_BUTTON_HEAT:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
                 break;
             }
             break;
-        case ID_BUTTON_FAN: // Notifications sent by 'Button_Fan'
+        case ID_BUTTON_FAN:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
                 state=5;
                 break;
             }
             break;
-        case ID_BUTTON_UP: // Notifications sent by 'Button_Up'
+        case ID_BUTTON_UP:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
-                temperature++;
-                GUI_Delay(100);
-                state=1;
+            case WM_NOTIFICATION_RELEASED:
+                //WM_SetCallback(upButton, up_button);
+                if (strcmp(selectedMode, "heat") == 0)
+                {
+                    heatToDegrees++;
+                    sprintf(buffer,"%d °", heatToDegrees);
+                    hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEATTO);
+                    TEXT_SetText(hItem, buffer);
+                    sprintf(buffer,"SET TO %d °", heatToDegrees);
+                    hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SET_TO);
+                    TEXT_SetText(hItem, buffer);
+                }
+                else
+                {
+                    coolToDegrees++;
+                    sprintf(buffer,"%d °", coolToDegrees);
+                    hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_COOLTO);
+                    TEXT_SetText(hItem, buffer);
+                    sprintf(buffer,"SET TO %d °", coolToDegrees);
+                    hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SET_TO);
+                    TEXT_SetText(hItem, buffer);
+                }
                 break;
             }
             break;
-        case ID_BUTTON_DN: // Notifications sent by 'Button_Dn'
+        case ID_BUTTON_DN:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
-                temperature--;
-                GUI_Delay(100);
-                state=1;
-                break;
-            }
-            break;
-        case ID_BUTTON_SETTINGS: // Notifications sent by 'Button_Settings'
-            switch(NCode)
-            {
-            case WM_NOTIFICATION_CLICKED:
-                state=4;
-                break;
+            case WM_NOTIFICATION_RELEASED:
+                if (strcmp(selectedMode, "heat") == 0)
+                {
+                    heatToDegrees--;
+                    sprintf(buffer,"%d °", heatToDegrees);
+                    hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEATTO);
+                    TEXT_SetText(hItem, buffer);
+                    sprintf(buffer,"SET TO %d °", heatToDegrees);
+                    hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SET_TO);
+                    TEXT_SetText(hItem, buffer);
+                }
+                else
+                {
+                    coolToDegrees--;
+                    sprintf(buffer,"%d °", coolToDegrees);
+                    hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_COOLTO);
+                    TEXT_SetText(hItem, buffer);
+                    sprintf(buffer,"SET TO %d °", coolToDegrees);
+                    hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SET_TO);
+                    TEXT_SetText(hItem, buffer);
+                }
             }
             break;
         }
@@ -476,14 +489,16 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         break;
     }
 }
+static void _OnTimer(GUI_TIMER_MESSAGE * pTM)
+{
+    time_t now = time(NULL);
+    strftime(date_buf, 20, "%a %m/%d/%y", localtime(&now));
+    strftime(time_buf, 20, "%I:%M %p", localtime(&now));
+    TEXT_SetText(dateText, date_buf);
+    TEXT_SetText(timeText, time_buf);
 
-
-/*********************************************************************
-*
-*       Public code
-*
-**********************************************************************
-*/
+    GUI_TIMER_Restart(pTM->hTimer);
+}
 /*********************************************************************
 *
 *       CreateHomeWin
@@ -492,13 +507,20 @@ WM_HWIN CreateHomeWin(void);
 WM_HWIN CreateHomeWin(void)
 {
     WM_HWIN hWin;
-    BUTTON_Handle          hButton;
+    time_t now = time(NULL);
+    strftime(date_buf, 20, "%a %m/%d/%y", localtime(&now));
+    strftime(time_buf, 20, "%I:%M %p", localtime(&now));
+    cool_border = 0;
+    heat_border = 0;
 
+    cool_but = !holdMode;
+    heat_but = !holdMode;
+    mode_but = !holdMode;
+    fan_but = !holdMode;
+
+    GUI_TIMER_Create(_OnTimer, 30000, 0, 0);
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
-
-// USER START (Optionally insert additional public code)
-// USER END
 
 /*************************** End of file ****************************/

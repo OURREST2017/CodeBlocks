@@ -49,12 +49,61 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 //    { TEXT_CreateIndirect, "Text", ID_TEXT_4, 0, 180, 178, 20, 0, 0x64, 0 },
     { BUTTON_CreateIndirect, "Frank", ID_BUTTON_CUSTOMER, 176, 90, 230, 30, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "32807", ID_BUTTON_ZIP, 176, 125, 230, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "00:11:22:44:55:66", ID_BUTTON_MAC, 176, 160, 230, 30, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "", ID_BUTTON_MAC, 176, 160, 230, 30, 0, 0x0, 0 },
 //    { BUTTON_CreateIndirect, "12334", ID_BUTTON_CRC, 186, 175, 230, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 229, 75, 24, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 390, 230, 75, 24, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 75, 25, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 390, 230, 75, 25, 0, 0x0, 0 },
 };
 
+char customer_text[30], mac_text[30], zip_text[12], crc_text[10];
+void customer_cb(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawProfileButton(customer_text, 220, 30, color_scheme);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+void mac_cb(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawProfileButton(mac_text, 220, 30, color_scheme);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+void zip_cb(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawProfileButton(zip_text, 220, 30, color_scheme);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+void crc_cb(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawProfileButton(crc_text, 220, 30, color_scheme);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
 /*********************************************************************
 *
 *       _cbDialog
@@ -92,25 +141,16 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00008080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_4);
-        TEXT_SetTextAlign(hItem, GUI_TA_RIGHT | GUI_TA_VCENTER);
-        TEXT_SetFont(hItem, GUI_FONT_20_1);
-        TEXT_SetText(hItem, "CRC:");
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00008080));
+        WM_SetCallback(hItem, crc_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ZIP);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-        BUTTON_SetTextAlign(hItem, GUI_TA_LEFT | GUI_TA_VCENTER);
+        WM_SetCallback(hItem, zip_cb);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CUSTOMER);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-        BUTTON_SetTextAlign(hItem, GUI_TA_LEFT | GUI_TA_VCENTER);
+        WM_SetCallback(hItem, customer_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_MAC);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-        BUTTON_SetTextAlign(hItem, GUI_TA_LEFT | GUI_TA_VCENTER);
+        WM_SetCallback(hItem, mac_cb);
         //
 //        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CRC);
 //        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
@@ -118,13 +158,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 //        BUTTON_SetTextAlign(hItem, GUI_TA_LEFT | GUI_TA_VCENTER);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
+        WM_SetCallback(hItem, cancel_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
+        WM_SetCallback(hItem, save_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
@@ -195,6 +232,10 @@ WM_HWIN CreateProfile(void);
 WM_HWIN CreateProfile(void)
 {
     WM_HWIN hWin;
+    strcpy(crc_text, "1234");
+    strcpy(zip_text, "32807-1234");
+    strcpy(customer_text, "BLOWME");
+        strcpy(mac_text, "00:11:22:44:55:66");
 
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;

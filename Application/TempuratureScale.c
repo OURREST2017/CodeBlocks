@@ -35,13 +35,42 @@
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 3, -1, 480, 272, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 229, 75, 24, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 390, 230, 75, 24, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 75, 25, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 390, 230, 75, 25, 0, 0x0, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "TEMPURATURE SCALE", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
     { BUTTON_CreateIndirect, "Farenheit", ID_BUTTON_FARENHEIT, 120, 80, 240, 40, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Celsius", ID_BUTTON_CELCIOUS, 120, 151, 240, 40, 0, 0x0, 0 },
 };
+
+static int faren,celcius;
+
+static void farenheit_cb(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawButton22("Farenheit", 240, 40, faren);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+static void celcius_cb(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawButton22("Celcius", 240, 40, celcius);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+
+WM_HWIN farenheitButton, celciusButton;
 
 /*********************************************************************
 *
@@ -56,70 +85,64 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_INIT_DIALOG:
-        //
-        // Initialization of 'Button'
-        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Button'
+        WM_SetCallback(hItem, cancel_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Text'
+        WM_SetCallback(hItem, save_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetFont(hItem, GUI_FONT_32B_1);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         //
-        // Initialization of 'Button'
+        farenheitButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_FARENHEIT);
+        WM_SetCallback(farenheitButton, farenheit_cb);
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_FARENHEIT);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CELCIOUS);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
+        celciusButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CELCIOUS);
+        WM_SetCallback(celciusButton, celcius_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
         NCode = pMsg->Data.v;
         switch(Id)
         {
-        case ID_BUTTON_CANCEL: // Notifications sent by 'Button'
+        case ID_BUTTON_CANCEL:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
-          state = 16;
+            case WM_NOTIFICATION_RELEASED:
+                state = 16;
                 break;
             }
             break;
-        case ID_BUTTON_SAVE: // Notifications sent by 'Button'
+        case ID_BUTTON_SAVE:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
-          state = 16;
+            case WM_NOTIFICATION_RELEASED:
+                state = 16;
+                metric = !faren;
                 break;
             }
             break;
-        case ID_BUTTON_FARENHEIT: // Notifications sent by 'Button'
+        case ID_BUTTON_FARENHEIT:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
+                faren = 1;
+                celcius = 0;
+                WM_SetCallback(farenheitButton, farenheit_cb);
+                WM_SetCallback(celciusButton, celcius_cb);
                 break;
             }
             break;
-        case ID_BUTTON_CELCIOUS: // Notifications sent by 'Button'
+        case ID_BUTTON_CELCIOUS:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
+                faren = 0;
+                celcius = 1;
+                WM_SetCallback(farenheitButton, farenheit_cb);
+                WM_SetCallback(celciusButton, celcius_cb);
                 break;
             }
             break;
@@ -140,6 +163,8 @@ WM_HWIN CreateTempuratureScale(void)
 {
     WM_HWIN hWin;
 
+    faren = !metric;
+    celcius = !faren;
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }

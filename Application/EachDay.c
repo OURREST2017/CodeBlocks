@@ -76,13 +76,13 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         // Initialization of 'Button'
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
+        BUTTON_SetFont(hItem, &GUI_FontRounded16);
         BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
         //
         // Initialization of 'Button'
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_EDIT);
-        BUTTON_SetFont(hItem, GUI_FONT_16B_1);
+        BUTTON_SetFont(hItem, &GUI_FontRounded16);
         BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
         //
         // Initialization of 'Text'
