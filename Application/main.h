@@ -7,8 +7,7 @@
 
 extern GUI_CONST_STORAGE GUI_BITMAP GUI_FontRounded16;
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontRounded22;
-extern GUI_CONST_STORAGE GUI_BITMAP bmup;
-extern GUI_CONST_STORAGE GUI_BITMAP bmupt;
+extern GUI_FONT FontBig20B;
 
 extern void drawButton16(char *, int, int, int);
 extern void drawButton(char *, int);
@@ -16,6 +15,13 @@ extern void drawProfileButton(char *, int, int, int);
 extern void cancel_cb(WM_MESSAGE *);
 extern void done_cb(WM_MESSAGE *);
 extern void save_cb(WM_MESSAGE *);
+extern void return_cb(WM_MESSAGE *);
+extern void edit_cb(WM_MESSAGE *);
+
+extern void up_button(WM_MESSAGE *);
+extern void dn_button(WM_MESSAGE *);
+extern void big_up_button(WM_MESSAGE *);
+extern void big_dn_button(WM_MESSAGE *);
 
 extern int color_scheme;
 extern void initColors();
@@ -27,7 +33,9 @@ typedef int uint32_t;
 int state;
 int temperature;
 
-char *serialNumber;
+char keyboard_text[50];
+
+char serialNumber[30];
 int dateTime;
 char *currentScheme;
 int statControl;

@@ -5,7 +5,7 @@ void loadConfig() {
     time_t rawtime;
     struct tm *info;
 
-    serialNumber = "12345";
+    strcpy(serialNumber, "12345");
     dateTime =  101010101;
     currentScheme = "blue";
     statControl = 72;

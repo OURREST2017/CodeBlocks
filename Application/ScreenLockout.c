@@ -47,26 +47,21 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "SCREEN LOCK", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_0, 93, 68, 50, 50, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_1, 93, 160, 50, 50, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_2, 179, 68, 50, 50, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_3, 179, 160, 50, 50, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_4, 258, 68, 50, 50, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_5, 258, 160, 50, 50, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_6, 336, 68, 50, 50, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_7, 336, 160, 50, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_0, 89, 60, 50, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_1, 89, 160, 50, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_2, 174, 60, 50, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_3, 174, 160, 50, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_4, 253, 60, 50, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_5, 253, 160, 50, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_6, 331, 60, 50, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_7, 331, 160, 50, 50, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Button", ID_BUTTON_CANCEL, 20, 230, 80, 25, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_SAVE, 390, 230, 80, 25, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_SAVE, 380, 230, 80, 25, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "Edit", ID_EDIT_0, 88, 110, 50, 50, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Edit", ID_EDIT_1, 174, 110, 50, 50, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Edit", ID_EDIT_2, 254, 110, 50, 50, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Edit", ID_EDIT_3, 332, 110, 50, 50, 0, 0x64, 0 },
 };
-
-extern void up_button(WM_MESSAGE *);
-extern void dn_button(WM_MESSAGE *);
-extern void big_up_button(WM_MESSAGE *);
-extern void big_dn_button(WM_MESSAGE *);
 
 static int dig1, dig2, dig3, dig4;
 

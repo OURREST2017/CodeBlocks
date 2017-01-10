@@ -1332,14 +1332,6 @@ GUI_CONST_STORAGE GUI_FONT GUI_FontRounded16 = {
 *                                                                    *
 *       GUI_FontRounded22                                            *
 *                                                                    *
-*  Used in                                                           *
-*  - GUIDEMO.c                                                       *
-*  - GUIDEMO_Automotive.c                                            *
-*  - GUIDEMO_ColorBar.c                                              *
-*  - GUIDEMO_Cursor.c                                                *
-*  - GUIDEMO_ImageFlow.c                                             *
-*  - GUIDEMO_Intro.c                                                 *
-*  - GUIDEMO_ZoomAndRotate.c                                         *
 *                                                                    *
 **********************************************************************
 */

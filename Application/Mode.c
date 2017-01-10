@@ -44,12 +44,15 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "AUTO", ID_BUTTON_AUTO, 289, 130, 80, 30, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "E-HEAT", ID_BUTTON_EHEAT, 380, 130, 80, 30, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 25, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 380, 230, 80, 25, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 375, 230, 80, 25, 0, 0x0, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "SELECT MODE", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
 };
 
+static WM_HWIN cool_but, heat_but, auto_but, off_but, eheat_but;
+static WM_HWIN cool_but, heat_but, off_but, auto_but, eheat_but;
 static int cool, heat, off, autob=1, eheat;
+
 static void eheat_cb(WM_MESSAGE * pMsg)
 {
     switch (pMsg->MsgId)
@@ -110,12 +113,11 @@ static void off_cb(WM_MESSAGE * pMsg)
         break;
     }
 }
-static WM_HWIN cool_but, heat_but, auto_but, off_but, eheat_but;
+
 /*********************************************************************
 *
 *       _cbDialog
 */
-static WM_HWIN cool_but, heat_but, off_but, auto_but, eheat_but;
 
 static void _cbDialog(WM_MESSAGE * pMsg)
 {

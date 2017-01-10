@@ -37,8 +37,8 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
     { CHECKBOX_CreateIndirect, "Cooling", ID_CHECKBOX_COOLING, 175, 103, 128, 26, 0, 0x0, 0 },
     { CHECKBOX_CreateIndirect, "Heating", ID_CHECKBOX_HEATING, 175, 152, 126, 29, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 75, 24, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 390, 230, 75, 24, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 30, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 380, 230, 80, 30, 0, 0x0, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "THERMOSTAT CONTROLS", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
 };
@@ -57,12 +57,12 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     {
     case WM_INIT_DIALOG:
         hItem = WM_GetDialogItem(pMsg->hWin, ID_CHECKBOX_COOLING);
-        CHECKBOX_SetFont(hItem, GUI_FONT_20B_ASCII);
+        CHECKBOX_SetFont(hItem, &GUI_FontRounded22);
         CHECKBOX_SetTextColor(hItem, 0x48856A);
         CHECKBOX_SetText(hItem, "Cooling");
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_CHECKBOX_HEATING);
-        CHECKBOX_SetFont(hItem, GUI_FONT_20B_ASCII);
+        CHECKBOX_SetFont(hItem, &GUI_FontRounded22);
         CHECKBOX_SetTextColor(hItem, 0x48856A);
         CHECKBOX_SetText(hItem, "Heating");
         //

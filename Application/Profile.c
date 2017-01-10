@@ -51,8 +51,8 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "32807", ID_BUTTON_ZIP, 176, 125, 230, 30, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_MAC, 176, 160, 230, 30, 0, 0x0, 0 },
 //    { BUTTON_CreateIndirect, "12334", ID_BUTTON_CRC, 186, 175, 230, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 75, 25, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 390, 230, 75, 25, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 25, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 375, 230, 80, 25, 0, 0x0, 0 },
 };
 
 char customer_text[30], mac_text[30], zip_text[12], crc_text[10];
@@ -61,7 +61,7 @@ void customer_cb(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        drawProfileButton(customer_text, 220, 30, color_scheme);
+        drawProfileButton(firstNameText, 220, 30, color_scheme);
         break;
     default:
         BUTTON_Callback(pMsg);
@@ -85,7 +85,7 @@ void zip_cb(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        drawProfileButton(zip_text, 220, 30, color_scheme);
+        drawProfileButton(zipCode, 220, 30, color_scheme);
         break;
     default:
         BUTTON_Callback(pMsg);
@@ -104,6 +104,8 @@ void crc_cb(WM_MESSAGE * pMsg)
         break;
     }
 }
+WM_HWIN customerButton;
+
 /*********************************************************************
 *
 *       _cbDialog
@@ -146,8 +148,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ZIP);
         WM_SetCallback(hItem, zip_cb);
 
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CUSTOMER);
-        WM_SetCallback(hItem, customer_cb);
+        customerButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CUSTOMER);
+        WM_SetCallback(customerButton, customer_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_MAC);
         WM_SetCallback(hItem, mac_cb);
@@ -171,7 +173,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_CUSTOMER:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
+                strcpy(keyboard_text, firstNameText);
                 state = 8;
                 break;
             }
@@ -179,7 +182,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_ZIP:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
+                strcpy(keyboard_text, zipCode);
                 state = 2;
                 break;
             }
@@ -187,23 +191,23 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_MAC:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
-                state = 8;
+            case WM_NOTIFICATION_RELEASED:
+                //state = 8;
                 break;
             }
             break;
         case ID_BUTTON_CRC:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
-                state = 8;
+            case WM_NOTIFICATION_RELEASED:
+                //state = 8;
                 break;
             }
             break;
         case ID_BUTTON_CANCEL:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
                 state = 4;
                 break;
             }
@@ -211,7 +215,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_SAVE:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
                 state = 4;
                 break;
             }
@@ -233,9 +237,9 @@ WM_HWIN CreateProfile(void)
 {
     WM_HWIN hWin;
     strcpy(crc_text, "1234");
-    strcpy(zip_text, "32807-1234");
-    strcpy(customer_text, "BLOWME");
-        strcpy(mac_text, "00:11:22:44:55:66");
+    strcpy(zip_text, zipCode);
+    strcpy(customer_text, firstNameText);
+    strcpy(mac_text, "00:11:22:44:55:66");
 
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;

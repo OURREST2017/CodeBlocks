@@ -40,7 +40,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "AUTO", ID_BUTTON_AUTO, 129, 130, 80, 30, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "ON", ID_BUTTON_ON, 260, 130, 80, 30, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 21, 225, 80, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 376, 225, 80, 30, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 375, 225, 80, 30, 0, 0x0, 0 },
 };
 
 static int auto_mode, on_mode;

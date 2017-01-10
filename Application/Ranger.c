@@ -158,59 +158,8 @@ void edit_text(WM_MESSAGE * pMsg)
     }
 }
 
-extern int color_scheme;
-extern void up_button();
-extern void dn_button();
-extern void big_up_button();
-extern void big_dn_button();
-static int x0,y0,x1,y1;
 
-void cancel_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton16("CANCEL", 80, 25, 1);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-void save_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton16("SAVE", 80, 25, 1);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-void done_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton16("DONE", 80, 25, 1);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void _OnTimer(GUI_TIMER_MESSAGE * pTM) {
-//   GUI_Clear();
-  GUI_AA_DrawRoundedRect(x0,y0,x1,y1,6);
-    x0 += 10;
-    y0 += 10;
-    x1 += 10;
-    y1 += 10;
-  GUI_TIMER_Restart(pTM->hTimer);
-  if (x0 > 100) GUI_TIMER_Delete(pTM->hTimer);
-}
+
 void MainTask(void)
 {
     GUI_Init();
@@ -219,7 +168,6 @@ void MainTask(void)
     state=1;
     BUTTON_Handle hButton;
     char buffer[10];
-
 
     color_scheme = 0;
     initColors();
@@ -230,10 +178,7 @@ void MainTask(void)
     rect.x1 = 00;
     rect.y0 = 200;
     rect.y1 = 200;
-    x0 = 50;
-    y0 = 50;
-    x1 = 100;
-    y1 = 100;
+    strcpy(keyboard_text, "BLOWME");
     //   WM_SetCallback(WM_HBKWIN, _cbBkWin);
     //WM_SetScreenSize(480,272);
     //GUI_TIMER_Create(_OnTimer, 1000, 0, 0);
@@ -365,11 +310,11 @@ void MainTask(void)
             state=0;
             break;
         case 30:
-            CreateSettingsSchedule();
+            CreateAllDays();
             state=0;
             break;
         case 31:
-            //CreateWeekend();
+            CreateWeekendSchedule();
             state=0;
             break;
         case 32:
@@ -377,8 +322,7 @@ void MainTask(void)
             state=0;
             break;
         case 33:
-            //CreateVacation();
-            CreateEditSchedule();
+            CreateVacation();
             state=0;
             break;
         case 34:

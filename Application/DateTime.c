@@ -72,7 +72,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "Button", ID_BUTTON__YEAR_UP, 423, 154, 30, 30, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Button", ID_BUTTON_YEAR_DN, 423, 183, 30, 30, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 25, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 390, 230, 80, 25, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 380, 230, 80, 25, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "Edit", ID_EDIT_HOUR, 40, 80, 65, 50, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Edit", ID_EDIT_MONTH, 22, 160, 83, 50, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Edit", ID_EDIT_MINUTE, 190, 80, 65, 50, 0, 0x64, 0 },

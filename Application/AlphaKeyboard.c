@@ -163,8 +163,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         Props.Radius = 2;
         BUTTON_SetSkinFlexProps(&Props, BUTTON_SKINFLEX_PI_ENABLED);
         Props.aColorUpper[0] = 0x48866c;
-        //Props.aColorUpper[1] = 0xcccccc;
-        //Props.aColorLower[0] = 0xdddddd;
         Props.aColorLower[1] = 0x62b29a;
         BUTTON_SetSkinFlexProps(&Props, BUTTON_SKINFLEX_PI_PRESSED);
 
@@ -174,7 +172,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
 
         textItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_TEXT);
-        EDIT_SetText(textItem, "123");
+        EDIT_SetText(textItem, keyboard_text);
         EDIT_SetFont(textItem, GUI_FONT_20_1);
         EDIT_SetTextAlign(textItem, GUI_TA_LEFT | GUI_TA_VCENTER);
 
@@ -256,8 +254,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 }
                 else if (Id == ID_BUTTON_DONE)
                 {
-                    setSkin();
-                    state = 15;
+                    //setSkin();
+                    CreateProfile();
+                    //state = 15;
                     break;
                 }
                 else if (Id == ID_BUTTON_SPACE)

@@ -25,16 +25,28 @@
 #define ID_BUTTON_CANCEL (GUI_ID_USER + 0x02)
 #define ID_BUTTON_EDIT (GUI_ID_USER + 0x03)
 #define ID_TEXT_WAKE (GUI_ID_USER + 0x04)
-#define ID_TEXT_START_TIME (GUI_ID_USER + 0x05)
-#define ID_TEXT_END_TIME (GUI_ID_USER + 0x06)
-#define ID_TEXT_3 (GUI_ID_USER + 0x07)
-#define ID_TEXT_MONDAY (GUI_ID_USER + 0x08)
-#define ID_TEXT_TUESDAY (GUI_ID_USER + 0x09)
-#define ID_TEXT_WEDNESDAY (GUI_ID_USER + 0x0A)
-#define ID_TEXT_THURSDAY (GUI_ID_USER + 0x0B)
-#define ID_TEXT_FRIDAY (GUI_ID_USER + 0x0C)
-#define ID_TEXT_SATURDAY (GUI_ID_USER + 0x0D)
-#define ID_TEXT_SUNDAY (GUI_ID_USER + 0x0E)
+#define ID_TEXT_WAKE_TIME (GUI_ID_USER + 0x05)
+#define ID_TEXT_WAKE_TEMP (GUI_ID_USER + 0x07)
+
+#define ID_TEXT_LEAVE (GUI_ID_USER + 0x08)
+#define ID_TEXT_LEAVE_TIME (GUI_ID_USER + 0x09)
+#define ID_TEXT_LEAVE_TEMP (GUI_ID_USER + 0x0A)
+
+#define ID_TEXT_RETURN (GUI_ID_USER + 0x0B)
+#define ID_TEXT_RETURN_TIME (GUI_ID_USER + 0x0C)
+#define ID_TEXT_RETURN_TEMP (GUI_ID_USER + 0x0D)
+
+#define ID_TEXT_SLEEP (GUI_ID_USER + 0x0E)
+#define ID_TEXT_SLEEP_TIME (GUI_ID_USER + 0x0F)
+#define ID_TEXT_SLEEP_TEMP (GUI_ID_USER + 0xA0)
+
+#define ID_TEXT_MONDAY (GUI_ID_USER + 0xA1)
+#define ID_TEXT_TUESDAY (GUI_ID_USER + 0xA2)
+#define ID_TEXT_WEDNESDAY (GUI_ID_USER + 0xA3)
+#define ID_TEXT_THURSDAY (GUI_ID_USER + 0xA4)
+#define ID_TEXT_FRIDAY (GUI_ID_USER + 0xA5)
+#define ID_TEXT_SATURDAY (GUI_ID_USER + 0xA6)
+#define ID_TEXT_SUNDAY (GUI_ID_USER + 0xA7)
 
 /*********************************************************************
 *
@@ -44,12 +56,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 220, 80, 28, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "EDIT", ID_BUTTON_EDIT, 378, 220, 76, 28, 0, 0x0, 0 },
-    { TEXT_CreateIndirect, "WAKE", ID_TEXT_WAKE, 31, 60, 83, 23, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Text", ID_TEXT_START_TIME, 144, 60, 80, 23, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Text", ID_TEXT_END_TIME, 251, 60, 81, 22, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "temp", ID_TEXT_3, 363, 60, 80, 20, 0, 0x64, 0 },
+
     { TEXT_CreateIndirect, "M", ID_TEXT_MONDAY, 28, 0, 32, 50, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "T", ID_TEXT_TUESDAY, 80, 0, 32, 50, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "W", ID_TEXT_WEDNESDAY, 133, 0, 50, 50, 0, 0x64, 0 },
@@ -57,6 +64,26 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { TEXT_CreateIndirect, "F", ID_TEXT_FRIDAY, 269, 0, 42, 50, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "S", ID_TEXT_SATURDAY, 329, 0, 47, 50, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "SU", ID_TEXT_SUNDAY, 390, 0, 71, 50, 0, 0x64, 0 },
+
+    { TEXT_CreateIndirect, "WAKE", ID_TEXT_WAKE, 31, 65, 83, 23, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "TIME", ID_TEXT_WAKE_TIME, 144, 65, 200, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "TEMP", ID_TEXT_WAKE_TEMP, 363, 65, 80, 20, 0, 0x64, 0 },
+
+    { TEXT_CreateIndirect, "LEAVE", ID_TEXT_LEAVE, 31, 105, 83, 23, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "TIME", ID_TEXT_LEAVE_TIME, 144, 105, 200, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "TEMP", ID_TEXT_LEAVE_TEMP, 363, 105, 80, 20, 0, 0x64, 0 },
+
+    { TEXT_CreateIndirect, "RETURN", ID_TEXT_RETURN, 31, 145, 83, 23, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "TIME", ID_TEXT_RETURN_TIME, 144, 145, 200, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "TEMP", ID_TEXT_RETURN_TEMP, 363, 145, 80, 20, 0, 0x64, 0 },
+
+    { TEXT_CreateIndirect, "SLEEP", ID_TEXT_SLEEP, 31, 185, 83, 23, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "TIME", ID_TEXT_SLEEP_TIME, 144, 185, 200, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "TEMP", ID_TEXT_SLEEP_TEMP, 363, 185, 80, 20, 0, 0x64, 0 },
+
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 25, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "EDIT", ID_BUTTON_EDIT, 375, 230, 80, 25, 0, 0x0, 0 },
+
 };
 
 /*********************************************************************
@@ -71,99 +98,121 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 
     switch (pMsg->MsgId)
     {
+    case WM_PAINT:
+        GUI_SetColor(0xcecece);
+        GUI_DrawHLine(92, 0, 479);
+        GUI_DrawHLine(132, 0, 479);
+        GUI_DrawHLine(172, 0, 479);
+        break;
     case WM_INIT_DIALOG:
-        //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        BUTTON_SetFont(hItem, &GUI_FontRounded16);
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Button'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_EDIT);
-        BUTTON_SetFont(hItem, &GUI_FontRounded16);
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Text'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_WAKE);
-        TEXT_SetFont(hItem, GUI_FONT_20_1);
-        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
-        //
-        // Initialization of 'Text'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_START_TIME);
-        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        TEXT_SetFont(hItem, GUI_FONT_20_1);
-        TEXT_SetText(hItem, "6:00 am");
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
-        //
-        // Initialization of 'Text'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_END_TIME);
-        TEXT_SetFont(hItem, GUI_FONT_20_1);
-        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        TEXT_SetText(hItem, "8:00 am");
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
-        //
-        // Initialization of 'Text'
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_3);
-        TEXT_SetFont(hItem, GUI_FONT_20_1);
-        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        TEXT_SetText(hItem, "78");
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
-        //
-        // Initialization of 'Text'
-        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_MONDAY);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetFont(hItem, GUI_FONT_32B_1);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Text'
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_TUESDAY);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetFont(hItem, GUI_FONT_32_1);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         //
-        // Initialization of 'Text'
-        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_WEDNESDAY);
         TEXT_SetFont(hItem, GUI_FONT_32_1);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Text'
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_THURSDAY);
         TEXT_SetFont(hItem, GUI_FONT_32_1);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         //
-        // Initialization of 'Text'
-        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_FRIDAY);
         TEXT_SetFont(hItem, GUI_FONT_32_1);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
-        // Initialization of 'Text'
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SATURDAY);
         TEXT_SetFont(hItem, GUI_FONT_32_1);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         //
-        // Initialization of 'Text'
-        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SUNDAY);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetFont(hItem, GUI_FONT_32_1);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_WAKE);
+        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetTextAlign(hItem, GUI_TA_LEFT);
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_WAKE_TIME);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetText(hItem, "6:00 am - 8:00 am");
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_WAKE_TEMP);
+        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetText(hItem, "78");
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_LEAVE);
+        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetTextAlign(hItem, GUI_TA_LEFT);
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_LEAVE_TIME);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetText(hItem, "6:00 am - 8:00 am");
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_LEAVE_TEMP);
+        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetText(hItem, "78");
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_RETURN);
+        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetTextAlign(hItem, GUI_TA_LEFT);
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_RETURN_TIME);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetText(hItem, "6:00 am - 8:00 am");
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_RETURN_TEMP);
+        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetText(hItem, "78");
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SLEEP);
+        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetTextAlign(hItem, GUI_TA_LEFT);
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SLEEP_TIME);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetText(hItem, "6:00 am - 8:00 am");
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SLEEP_TEMP);
+        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetText(hItem, "78");
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
+        WM_SetCallback(hItem, cancel_cb);
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_EDIT);
+        WM_SetCallback(hItem, edit_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
@@ -173,15 +222,15 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_CANCEL:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
-                state = 30;
+            case WM_NOTIFICATION_RELEASED:
+                state = 13;
                 break;
             }
             break;
         case ID_BUTTON_EDIT:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
                 break;
             }
             break;

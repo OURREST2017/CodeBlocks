@@ -175,9 +175,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
 
-        /* Store new skin properties to enabled button */
         textItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_TEXT);
-        EDIT_SetText(textItem, "123");
+        EDIT_SetText(textItem, keyboard_text);
         EDIT_SetFont(textItem, GUI_FONT_20_1);
         EDIT_SetTextAlign(textItem, GUI_TA_LEFT | GUI_TA_VCENTER);
         //
@@ -237,13 +236,13 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 }
                 else if (Id == ID_BUTTON_CANCEL)
                 {
-                    setSkin();
+                    //setSkin();
                     state = 15;
                     break;
                 }
                 else if (Id == ID_BUTTON_DONE)
                 {
-                    setSkin();
+                    //setSkin();
                     state = 15;
                     break;
                 }

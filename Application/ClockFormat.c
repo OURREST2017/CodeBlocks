@@ -39,8 +39,8 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { TEXT_CreateIndirect, "Text", ID_TEXT_0, 0, 0, 480, 50, 0, 0x64, 0 },
     { BUTTON_CreateIndirect, "Button", ID_BUTTON_12HOUR, 120, 80, 240, 40, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Button", ID_BUTTON_24HOUR, 120, 150, 240, 40, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_CANCEL, 20, 230, 75, 24, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_SAVE, 390, 230, 75, 24, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_CANCEL, 20, 230, 80, 24, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_SAVE, 375, 230, 80, 24, 0, 0x0, 0 },
 };
 
 static int hour12_mode, hour24_mode;
