@@ -145,10 +145,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         WM_SetCallback(eheat_but, eheat_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        WM_SetCallback(hItem, cancel_cb);
+        WM_SetCallback(hItem, buttonOn16_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DONE);
-        WM_SetCallback(hItem, done_cb);
+        WM_SetCallback(hItem, buttonOn16_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetTextColor(hItem, 0x00FFFFFF);

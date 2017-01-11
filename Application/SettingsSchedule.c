@@ -53,83 +53,6 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "return", ID_BUTTON_RETURN, 20, 12, 50, 50, 0, 0x0, 0 },
 };
 char schedule[20];
-static void all_days_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("All Days", 200, 36, 1);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-
-static void weekday_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("Weekday/Weekend", 200, 36, 1);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-
-static void each_day_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("Each Day", 200, 36, 1);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-
-static void vacation_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("Vacation", 200, 36, 1);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-
-static void help_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton16("HELP", 80, 25, 1);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-
-static void schedule_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton16("SET SCHEDULE", 143, 24, 1);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
 /*********************************************************************
 *
 *       _cbDialog
@@ -152,27 +75,27 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_RETURN);
         WM_SetCallback(hItem, return_cb);
-
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SET_SCHEDULE);
-        WM_SetCallback(hItem, schedule_cb);
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_EDIT);
-        WM_SetCallback(hItem, edit_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ALL_DAYS);
-        WM_SetCallback(hItem, all_days_cb);
+        WM_SetCallback(hItem, buttonOn22_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_WEEKEND);
-        WM_SetCallback(hItem, weekday_cb);
+        WM_SetCallback(hItem, buttonOn22_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_EACH_DAY);
-        WM_SetCallback(hItem, each_day_cb);
+        WM_SetCallback(hItem, buttonOn22_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_VACATION);
-        WM_SetCallback(hItem, vacation_cb);
+        WM_SetCallback(hItem, buttonOn22_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HELP);
-        WM_SetCallback(hItem, help_cb);
+        WM_SetCallback(hItem, buttonOn16_cb);
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SET_SCHEDULE);
+        WM_SetCallback(hItem, buttonOn16_cb);
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_EDIT);
+        WM_SetCallback(hItem, buttonOn16_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);

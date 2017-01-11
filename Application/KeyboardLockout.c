@@ -43,32 +43,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "Locked", ID_BUTTON_LOCKED, 120, 151, 240, 40, 0, 0x0, 0 },
 };
 
-static int unlocked_mode, locked_mode;
-
-static void unlocked_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("Unlocked", 240, 40, unlocked_mode);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void locked_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("Locked", 240, 40, locked_mode);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
+static int unlocked_mode;
 static WM_HWIN lockedButton, unlockedButton;
 
 /*********************************************************************
@@ -84,11 +59,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_INIT_DIALOG:
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        WM_SetCallback(hItem, cancel_cb);
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
-        WM_SetCallback(hItem, save_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetFont(hItem, GUI_FONT_32B_1);
@@ -96,10 +66,24 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextColor(hItem, GUI_WHITE);
         //
         unlockedButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_UNLOCOKED);
-        WM_SetCallback(unlockedButton, unlocked_cb);
         //
         lockedButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_LOCKED);
-        WM_SetCallback(lockedButton, locked_cb);
+        if (unlocked_mode)
+        {
+            WM_SetCallback(unlockedButton, buttonOn22_cb);
+            WM_SetCallback(lockedButton, buttonOff22_cb);
+        }
+        else
+        {
+            WM_SetCallback(lockedButton, buttonOn22_cb);
+            WM_SetCallback(unlockedButton, buttonOff22_cb);
+        }
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
+        WM_SetCallback(hItem, buttonOn16_cb);
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
+        WM_SetCallback(hItem, buttonOn16_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
@@ -111,7 +95,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-          state = 16;
+                state = 16;
                 break;
             }
             break;
@@ -128,7 +112,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                     strcpy(keyboardLockout, "locked");
                 }
                 GUI_Delay(100);
-          state = 16;
+                state = 16;
                 break;
             }
             break;
@@ -137,9 +121,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 unlocked_mode = 1;
-                locked_mode = 0;
-                WM_InvalidateWindow(lockedButton);
-                WM_InvalidateWindow(unlockedButton);
+                WM_SetCallback(lockedButton, buttonOff22_cb);
+                WM_SetCallback(unlockedButton, buttonOn22_cb);
                 break;
             }
             break;
@@ -147,11 +130,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                 unlocked_mode = 0;
-                locked_mode = 1;
-                WM_InvalidateWindow(lockedButton);
-                WM_InvalidateWindow(unlockedButton);
-               break;
+                unlocked_mode = 0;
+                WM_SetCallback(unlockedButton, buttonOff22_cb);
+                WM_SetCallback(lockedButton, buttonOn22_cb);
+                break;
             }
             break;
         }
@@ -171,12 +153,13 @@ WM_HWIN CreateKeyboardLockout(void)
 {
     WM_HWIN hWin;
 
-    if (strcmp(keyboardLockout, "locked") == 0) {
+    if (strcmp(keyboardLockout, "locked") == 0)
+    {
         unlocked_mode = 0;
-        locked_mode = 1;
-    } else {
+    }
+    else
+    {
         unlocked_mode = 1;
-        locked_mode = 0;
     }
 
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);

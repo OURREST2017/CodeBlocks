@@ -39,35 +39,10 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "Button", ID_BUTTON_SAVE, 375, 230, 80, 25, 0, 0x0, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_0, 0, 0, 480, 50, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_YES, 120, 80, 240, 40, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_NO, 120, 151, 240, 40, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Yes", ID_BUTTON_YES, 120, 80, 240, 40, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "No", ID_BUTTON_NO, 120, 151, 240, 40, 0, 0x0, 0 },
 };
-static int yes_mode, no_mode;
-
-static void yes_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("Yes", 240, 40, yes_mode);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void no_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("No", 240, 40, no_mode);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
+static int backupHeat_mode;
 static WM_HWIN yesButton,noButton;
 /*********************************************************************
 *
@@ -82,12 +57,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_INIT_DIALOG:
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        WM_SetCallback(hItem, cancel_cb);
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
-        WM_SetCallback(hItem, save_cb);
-        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_0);
         TEXT_SetFont(hItem, GUI_FONT_32B_1);
         TEXT_SetText(hItem, "BACKUP HEAT");
@@ -95,11 +64,26 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         //
         yesButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_YES);
-        WM_SetCallback(yesButton, yes_cb);
         //
         noButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_NO);
-        WM_SetCallback(noButton, no_cb);
-        break;
+
+        if (backupHeat)
+        {
+            WM_SetCallback(yesButton, buttonOn22_cb);
+            WM_SetCallback(noButton, buttonOff22_cb);
+        }
+        else
+        {
+            WM_SetCallback(yesButton, buttonOff22_cb);
+            WM_SetCallback(noButton, buttonOn22_cb);
+        }
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
+        WM_SetCallback(hItem, buttonOn16_cb);
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
+        WM_SetCallback(hItem, buttonOn16_cb);
+       break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
         NCode = pMsg->Data.v;
@@ -117,7 +101,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                backupHeat = yes_mode;
+                backupHeat = backupHeat_mode;
                 GUI_Delay(100);
                 state=17;
             }
@@ -126,11 +110,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                yes_mode = 1;
-                no_mode = 0;
-
-                WM_SetCallback(yesButton, yes_cb);
-                WM_SetCallback(noButton, no_cb);
+                backupHeat_mode  = 1;
+                WM_SetCallback(yesButton, buttonOn22_cb);
+                WM_SetCallback(noButton, buttonOff22_cb);
                 break;
             }
             break;
@@ -138,11 +120,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                yes_mode = 0;
-                no_mode = 1;
-
-                WM_SetCallback(yesButton, yes_cb);
-                WM_SetCallback(noButton, no_cb);
+                  backupHeat_mode  = 0;
+              WM_SetCallback(yesButton, buttonOff22_cb);
+                WM_SetCallback(noButton, buttonOn22_cb);
                 break;
             }
             break;
@@ -163,8 +143,7 @@ WM_HWIN CreateBackupHeat(void)
 {
     WM_HWIN hWin;
 
-    yes_mode = backupHeat;
-    no_mode = !yes_mode;
+    backupHeat_mode = backupHeat;
 
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;

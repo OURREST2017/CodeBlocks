@@ -42,32 +42,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "Off", ID_BUTTON_OFF, 120, 151, 240, 40, 0, 0x0, 0 },
 };
 
-static int dstOn_mode, dstOff_mode;
-
-static void dstOn_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("ON", 240, 40, dstOn_mode);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void dstOff_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("OFF", 240, 40, dstOff_mode);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
+static int dstOn_mode;
 static WM_HWIN dstOnButton, dstOffButton;
 
 /*********************************************************************
@@ -83,23 +58,31 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_INIT_DIALOG:
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        WM_SetCallback(hItem, cancel_cb);
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
-        WM_SetCallback(hItem, save_cb);
-        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetFont(hItem, GUI_FONT_32B_1);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         //
         dstOnButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ON);
-        WM_SetCallback(dstOnButton, dstOn_cb);
         //
         dstOffButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_OFF);
-        WM_SetCallback(dstOffButton, dstOff_cb);
+
+        if (dstOn_mode)
+        {
+            WM_SetCallback(dstOnButton, buttonOn22_cb);
+            WM_SetCallback(dstOffButton, buttonOff22_cb);
+        }
+        else
+        {
+            WM_SetCallback(dstOnButton, buttonOff22_cb);
+            WM_SetCallback(dstOffButton, buttonOn22_cb);
+        }
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
+        WM_SetCallback(hItem, buttonOn16_cb);
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
+        WM_SetCallback(hItem, buttonOn16_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
@@ -110,8 +93,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
-           state = 16;
-               break;
+                state = 16;
+                break;
             }
             break;
         case ID_BUTTON_SAVE:
@@ -119,8 +102,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 dst = dstOn_mode;
-           state = 16;
-               break;
+                state = 16;
+                break;
             }
             break;
         case ID_BUTTON_ON:
@@ -128,9 +111,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 dstOn_mode = 1;
-                dstOff_mode = 0;
-                WM_InvalidateWindow(dstOnButton);
-                WM_InvalidateWindow(dstOffButton);
+                WM_SetCallback(dstOnButton, buttonOn22_cb);
+                WM_SetCallback(dstOffButton, buttonOff22_cb);
                 break;
             }
             break;
@@ -139,9 +121,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 dstOn_mode = 0;
-                dstOff_mode = 1;
-                WM_InvalidateWindow(dstOnButton);
-                WM_InvalidateWindow(dstOffButton);
+                WM_SetCallback(dstOffButton, buttonOn22_cb);
+                WM_SetCallback(dstOnButton, buttonOff22_cb);
                 break;
             }
             break;
@@ -162,7 +143,6 @@ WM_HWIN CreateDaylightSavingTime(void)
     WM_HWIN hWin;
 
     dstOn_mode = dst;
-    dstOff_mode = !dstOn_mode;
 
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;

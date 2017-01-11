@@ -38,6 +38,7 @@
 *
 *       _aDialogCreate
 */
+char customer_text[30], mac_text[30], zip_text[12], crc_text[10];
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
@@ -49,55 +50,25 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 //    { TEXT_CreateIndirect, "Text", ID_TEXT_4, 0, 180, 178, 20, 0, 0x64, 0 },
     { BUTTON_CreateIndirect, "Frank", ID_BUTTON_CUSTOMER, 176, 90, 230, 30, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "32807", ID_BUTTON_ZIP, 176, 125, 230, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "", ID_BUTTON_MAC, 176, 160, 230, 30, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, mac_text, ID_BUTTON_MAC, 176, 160, 230, 30, 0, 0x0, 0 },
 //    { BUTTON_CreateIndirect, "12334", ID_BUTTON_CRC, 186, 175, 230, 30, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 25, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 375, 230, 80, 25, 0, 0x0, 0 },
 };
 
-char customer_text[30], mac_text[30], zip_text[12], crc_text[10];
-void customer_cb(WM_MESSAGE * pMsg)
+void profile_cb(WM_MESSAGE * pMsg)
 {
+    char nm[20];
+    WM_HWIN win = pMsg->hWin;
+    GUI_RECT r;
+    WIDGET *w;
+    w = BUTTON_GetpWidget(win);
+    r = w->Win.Rect;
+    BUTTON_GetText(win, nm, 20);
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        drawProfileButton(firstNameText, 220, 30, color_scheme);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-void mac_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawProfileButton(mac_text, 220, 30, color_scheme);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-void zip_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawProfileButton(zipCode, 220, 30, color_scheme);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-void crc_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawProfileButton(crc_text, 220, 30, color_scheme);
+        drawProfileButton(nm, r.x1-r.x0, r.y1-r.y0, color_scheme);
         break;
     default:
         BUTTON_Callback(pMsg);
@@ -143,16 +114,16 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00008080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_4);
-        WM_SetCallback(hItem, crc_cb);
+        WM_SetCallback(hItem, profile_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ZIP);
-        WM_SetCallback(hItem, zip_cb);
+        WM_SetCallback(hItem, profile_cb);
 
         customerButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CUSTOMER);
-        WM_SetCallback(customerButton, customer_cb);
+        WM_SetCallback(customerButton, profile_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_MAC);
-        WM_SetCallback(hItem, mac_cb);
+        WM_SetCallback(hItem, profile_cb);
         //
 //        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CRC);
 //        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
@@ -160,10 +131,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 //        BUTTON_SetTextAlign(hItem, GUI_TA_LEFT | GUI_TA_VCENTER);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        WM_SetCallback(hItem, cancel_cb);
+        WM_SetCallback(hItem, buttonOn16_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
-        WM_SetCallback(hItem, save_cb);
+        WM_SetCallback(hItem, buttonOn16_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);

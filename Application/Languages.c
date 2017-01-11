@@ -43,32 +43,8 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "Espanol", ID_BUTTON_ESPANOL, 111, 156, 265, 34, 0, 0x0, 0 },
 };
 
-static int eng_mode, spa_mode;
+static int eng_mode;
 
-static void eng_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("English", 240, 40, eng_mode);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void spa_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("Espanol", 240, 40, spa_mode);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
 static WM_HWIN engButton, spaButton;
 /*********************************************************************
 *
@@ -83,11 +59,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_INIT_DIALOG:
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        WM_SetCallback(hItem, cancel_cb);
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
-        WM_SetCallback(hItem, save_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetFont(hItem, GUI_FONT_32B_1);
@@ -95,10 +66,24 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         //
         engButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ENGLISH);
-        WM_SetCallback(engButton, eng_cb);
         //
         spaButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ESPANOL);
-        WM_SetCallback(spaButton, spa_cb);
+        if (eng_mode)
+        {
+            WM_SetCallback(engButton, buttonOn22_cb);
+            WM_SetCallback(spaButton, buttonOff22_cb);
+        }
+        else
+        {
+            WM_SetCallback(spaButton, buttonOn22_cb);
+            WM_SetCallback(engButton, buttonOff22_cb);
+        }
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
+        WM_SetCallback(hItem, buttonOn16_cb);
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
+        WM_SetCallback(hItem, buttonOn16_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
@@ -137,10 +122,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 eng_mode = 1;
-                spa_mode = 0;
 
-                WM_SetCallback(engButton, eng_cb);
-                WM_SetCallback(spaButton, spa_cb);
+                WM_SetCallback(engButton, buttonOn22_cb);
+                WM_SetCallback(spaButton, buttonOff22_cb);
                 break;
             }
             break;
@@ -149,10 +133,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 eng_mode = 0;
-                spa_mode =1;
 
-                WM_SetCallback(engButton, eng_cb);
-                WM_SetCallback(spaButton, spa_cb);
+                WM_SetCallback(spaButton, buttonOn22_cb);
+                WM_SetCallback(engButton, buttonOff22_cb);
                 break;
                 break;
             }
@@ -177,12 +160,10 @@ WM_HWIN CreateLanguages(void)
     if (strcmp(language, "english") == 0)
     {
         eng_mode = 1;
-        spa_mode =0;
     }
     else
     {
         eng_mode = 0;
-        spa_mode =1;
     }
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;

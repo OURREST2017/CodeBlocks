@@ -248,13 +248,11 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 }
                 else if (Id == ID_BUTTON_CANCEL)
                 {
-                    setSkin();
                     state = 15;
                     break;
                 }
                 else if (Id == ID_BUTTON_DONE)
                 {
-                    //setSkin();
                     CreateProfile();
                     //state = 15;
                     break;

@@ -43,32 +43,8 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 375, 225, 80, 30, 0, 0x0, 0 },
 };
 
-static int auto_mode, on_mode;
-static void auto_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton16("AUTO", 80, 30, auto_mode);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void on_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton16("ON", 80, 30, on_mode);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static WM_HWIN auto_but, on_but;
+static int auto_mode;
+static WM_HWIN autoButton, onButton;
 /*********************************************************************
 *
 *       _cbDialog
@@ -86,17 +62,26 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetFont(hItem, GUI_FONT_32B_1);
         TEXT_SetTextColor(hItem, 0x00FFFFFF);
         //
-        auto_but = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_AUTO);
-        WM_SetCallback(auto_but, auto_cb);
+        autoButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_AUTO);
         //
-        on_but = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ON);
-        WM_SetCallback(on_but, on_cb);
+        onButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ON);
         //
+        if (auto_mode)
+        {
+            WM_SetCallback(autoButton, buttonOn22_cb);
+            WM_SetCallback(onButton, buttonOff22_cb);
+        }
+        else
+        {
+            WM_SetCallback(onButton, buttonOn22_cb);
+            WM_SetCallback(autoButton, buttonOff22_cb);
+        }
+
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        WM_SetCallback(hItem, cancel_cb);
+        WM_SetCallback(hItem, buttonOn16_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DONE);
-        WM_SetCallback(hItem, done_cb);
+        WM_SetCallback(hItem, buttonOn16_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
@@ -108,9 +93,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 auto_mode = 1;
-                on_mode  = 0;
-                WM_InvalidateWindow(auto_but);
-                WM_InvalidateWindow(on_but);
+                WM_SetCallback(onButton, buttonOff22_cb);
+                WM_SetCallback(autoButton, buttonOn22_cb);
                 break;
             }
             break;
@@ -119,9 +103,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 auto_mode = 0;
-                on_mode  = 1;
-                WM_InvalidateWindow(auto_but);
-                WM_InvalidateWindow(on_but);
+                WM_SetCallback(autoButton, buttonOff22_cb);
+                WM_SetCallback(onButton, buttonOn22_cb);
                 break;
             }
             break;
@@ -138,8 +121,14 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 state=1;
-                if (auto_mode) strcpy(selectedFanMode, "auto");
-                if (on_mode) strcpy(selectedFanMode, "on");
+                if (auto_mode)
+                {
+                    strcpy(selectedFanMode, "auto");
+                }
+                else
+                {
+                    strcpy(selectedFanMode, "on");
+                }
                 break;
             }
             break;
@@ -161,9 +150,7 @@ WM_HWIN CreateFanMode(void)
     WM_HWIN hWin;
 
     auto_mode = 0;
-    on_mode = 0;
     if (strcmp(selectedFanMode, "auto") == 0) auto_mode = 1;
-    if (strcmp(selectedFanMode, "on") == 0) on_mode = 1;
 
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;

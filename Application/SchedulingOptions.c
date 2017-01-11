@@ -43,32 +43,8 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "Non-Programmable", ID_BUTTON_NON_PROGRAMMABLE, 120, 151, 240, 40, 0, 0x0, 0 },
 };
 
-static int prog_mode,non_prog_mode;
+static int prog_mode;
 
-static void programmable_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("Programmable", 240, 40, prog_mode);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void non_programmable_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("Non-Programmable", 240, 40, non_prog_mode);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
 /*********************************************************************
 *
 *       _cbDialog
@@ -83,11 +59,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_INIT_DIALOG:
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        WM_SetCallback(hItem, cancel_cb);
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
-        WM_SetCallback(hItem, save_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetFont(hItem, GUI_FONT_32B_1);
@@ -95,10 +66,24 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         //
         progButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_PROGRAMMABLE);
-        WM_SetCallback(progButton, programmable_cb);
         //
         noProgButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_NON_PROGRAMMABLE);
-        WM_SetCallback(noProgButton, non_programmable_cb);
+        if (prog_mode)
+        {
+            WM_SetCallback(progButton, buttonOn22_cb);
+            WM_SetCallback(noProgButton, buttonOff22_cb);
+        }
+        else
+        {
+            WM_SetCallback(noProgButton, buttonOn22_cb);
+            WM_SetCallback(progButton, buttonOff22_cb);
+        }
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
+        WM_SetCallback(hItem, buttonOn16_cb);
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
+        WM_SetCallback(hItem, buttonOn16_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
@@ -134,9 +119,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 prog_mode = 1;
-                non_prog_mode = 0;
-                WM_SetCallback(progButton, programmable_cb);
-                WM_SetCallback(noProgButton, non_programmable_cb);
+                WM_SetCallback(progButton, buttonOn22_cb);
+                WM_SetCallback(noProgButton, buttonOff22_cb);
                 break;
             }
             break;
@@ -145,9 +129,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 prog_mode = 0;
-                non_prog_mode = 1;
-                WM_SetCallback(progButton, programmable_cb);
-                WM_SetCallback(noProgButton, non_programmable_cb);
+                WM_SetCallback(noProgButton, buttonOn22_cb);
+                WM_SetCallback(progButton, buttonOff22_cb);
                 break;
             }
             break;
@@ -167,15 +150,13 @@ WM_HWIN CreateSchedulingOptions(void);
 WM_HWIN CreateSchedulingOptions(void)
 {
     WM_HWIN hWin;
-    prog_mode = 0;
-    non_prog_mode = 0;
     if (strcmp(schedulingOption, "programmable") == 0)
     {
         prog_mode = 1;
     }
     else
     {
-        non_prog_mode = 1;
+        prog_mode = 0;
     }
 
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);

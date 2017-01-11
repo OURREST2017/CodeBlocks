@@ -43,32 +43,8 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "4 Per Day", ID_BUTTON_4_PER_DAY, 120, 151, 240, 40, 0, 0x0, 0 },
 };
 
-static int twoPer_mode, fourPer_mode;
+static int twoPer_mode;
 
-static void twoPer_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("2 Per Day", 240, 40, twoPer_mode);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void fourPer_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("4 Per Day", 240, 40, fourPer_mode);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
 static WM_HWIN twoPerButton, fourPerButton;
 
 /*********************************************************************
@@ -84,11 +60,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_INIT_DIALOG:
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        WM_SetCallback(hItem, cancel_cb);
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
-        WM_SetCallback(hItem, save_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetFont(hItem, GUI_FONT_32B_1);
@@ -96,10 +67,24 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         //
         twoPerButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_2_PER_DAY);
-        WM_SetCallback(twoPerButton, twoPer_cb);
         //
         fourPerButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_4_PER_DAY);
-        WM_SetCallback(fourPerButton, fourPer_cb);
+        if (twoPer_mode)
+        {
+            WM_SetCallback(twoPerButton, buttonOn22_cb);
+            WM_SetCallback(fourPerButton, buttonOff22_cb);
+        }
+        else
+        {
+            WM_SetCallback(fourPerButton, buttonOn22_cb);
+            WM_SetCallback(twoPerButton, buttonOff22_cb);
+        }
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
+        WM_SetCallback(hItem, buttonOn16_cb);
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
+        WM_SetCallback(hItem, buttonOn16_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
@@ -135,9 +120,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 twoPer_mode = 1;
-                fourPer_mode = 0;
-                WM_InvalidateWindow(twoPerButton);
-                WM_InvalidateWindow(fourPerButton);
+                WM_SetCallback(twoPerButton, buttonOn22_cb);
+                WM_SetCallback(fourPerButton, buttonOff22_cb);
                 break;
             }
             break;
@@ -146,9 +130,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 twoPer_mode = 0;
-                fourPer_mode = 1;
-                WM_InvalidateWindow(twoPerButton);
-                WM_InvalidateWindow(fourPerButton);
+                WM_SetCallback(fourPerButton, buttonOn22_cb);
+                WM_SetCallback(twoPerButton, buttonOff22_cb);
                 break;
             }
             break;
@@ -170,7 +153,6 @@ WM_HWIN CreateSchedulePeriods(void)
     WM_HWIN hWin;
 
     twoPer_mode = (schedulePeriods == 2);
-    fourPer_mode = !twoPer_mode;
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }

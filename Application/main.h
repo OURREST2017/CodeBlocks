@@ -12,16 +12,17 @@ extern GUI_FONT FontBig20B;
 extern void drawButton16(char *, int, int, int);
 extern void drawButton(char *, int);
 extern void drawProfileButton(char *, int, int, int);
-extern void cancel_cb(WM_MESSAGE *);
-extern void done_cb(WM_MESSAGE *);
-extern void save_cb(WM_MESSAGE *);
-extern void return_cb(WM_MESSAGE *);
-extern void edit_cb(WM_MESSAGE *);
 
-extern void up_button(WM_MESSAGE *);
-extern void dn_button(WM_MESSAGE *);
+extern void return_cb(WM_MESSAGE *);
+extern void small_up_button(WM_MESSAGE *);
+extern void small_dn_button(WM_MESSAGE *);
 extern void big_up_button(WM_MESSAGE *);
 extern void big_dn_button(WM_MESSAGE *);
+extern void buttonOn16_cb(WM_MESSAGE *);
+extern void buttonOff16_cb(WM_MESSAGE *);
+extern void buttonOn22_cb(WM_MESSAGE *);
+extern void buttonOff22_cb(WM_MESSAGE *);
+extern void edit_text_cb(WM_MESSAGE *);
 
 extern int color_scheme;
 extern void initColors();

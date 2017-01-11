@@ -206,13 +206,13 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        WM_SetCallback(hItem, cancel_cb);
+        WM_SetCallback(hItem, buttonOn16_cb);
         //
         weekdayButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_WEEKDAY);
-        WM_SetCallback(weekdayButton, weekday_cb);
+        WM_SetCallback(weekdayButton, buttonOn16_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
-        WM_SetCallback(hItem, save_cb);
+        WM_SetCallback(hItem, buttonOn16_cb);
         //
         period_button = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_PERIOD);
         WM_SetCallback(period_button, period_button_on);

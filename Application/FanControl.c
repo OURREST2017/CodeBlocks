@@ -43,34 +43,8 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "Heating", ID_BUTTON_HEATING, 120, 151, 240, 40, 0, 0x0, 0 },
 };
 
-static int thermo_mode, heating_mode;
-
-static void thermo_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("Thermostat", 240, 40, thermo_mode);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void heating_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("Heating", 240, 40, heating_mode);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static WM_HWIN thermoButton,heatingButton;
-
+static int thermo_mode;
+static WM_HWIN thermoButton, heatingButton;
 /*********************************************************************
 *
 *       _cbDialog
@@ -84,11 +58,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_INIT_DIALOG:
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        WM_SetCallback(hItem, cancel_cb);
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
-        WM_SetCallback(hItem, save_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetFont(hItem, GUI_FONT_32B_1);
@@ -96,10 +65,24 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         //
         thermoButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_THERMOSTAT);
-        WM_SetCallback(thermoButton, thermo_cb);
         //
         heatingButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HEATING);
-        WM_SetCallback(heatingButton, heating_cb);
+        if (thermo_mode)
+        {
+            WM_SetCallback(thermoButton, buttonOn22_cb);
+            WM_SetCallback(heatingButton, buttonOff22_cb);
+        }
+        else
+        {
+            WM_SetCallback(heatingButton, buttonOn22_cb);
+            WM_SetCallback(thermoButton, buttonOff22_cb);
+        }
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
+        WM_SetCallback(hItem, buttonOn16_cb);
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
+        WM_SetCallback(hItem, buttonOn16_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
@@ -118,14 +101,14 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                if (heating_mode)
+                if (thermo_mode)
                 {
-                    strcpy(fanControl, "heating");
+                      strcpy(fanControl, "thermostat");
                 }
                 else
                 {
-                    strcpy(fanControl, "thermostat");
-                }
+                   strcpy(fanControl, "heating");
+               }
                 GUI_Delay(100);
                 state=17;
             }
@@ -134,11 +117,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
-                heating_mode = 0;
                 thermo_mode = 1;
 
-                WM_SetCallback(heatingButton, heating_cb);
-                WM_SetCallback(thermoButton, thermo_cb);
+                WM_SetCallback(heatingButton, buttonOff22_cb);
+                WM_SetCallback(thermoButton, buttonOn22_cb);
                 break;
             }
             break;
@@ -146,11 +128,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
-                heating_mode = 1;
                 thermo_mode = 0;
 
-                WM_SetCallback(heatingButton, heating_cb);
-                WM_SetCallback(thermoButton, thermo_cb);
+                WM_SetCallback(heatingButton, buttonOn22_cb);
+                WM_SetCallback(thermoButton, buttonOff22_cb);
                 break;
             }
             break;
@@ -173,12 +154,10 @@ WM_HWIN CreateFanControl(void)
 
     if (strcmp(fanControl, "heating") == 0)
     {
-        heating_mode = 1;
         thermo_mode = 0;
     }
     else
     {
-        heating_mode = 0;
         thermo_mode = 1;
     }
 

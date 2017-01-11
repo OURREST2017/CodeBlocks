@@ -33,102 +33,6 @@
 #define ID_BUTTON_SCHEDULING_PERIODS (GUI_ID_USER + 0x15)
 #define ID_BUTTON_RETURN (GUI_ID_USER + 0x16)
 
-static void options_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("Sheduling Options", 220, 36, 1);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void scale_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("Tempurature Scale", 220, 36, 1);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void format_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("Clock Format", 220, 36, 1);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void dst_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("Daylight Savings Time", 220, 36, 1);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void change_over_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("System Change Over", 220, 36, 1);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void limits_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("empurature Limits", 220, 36, 1);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void lockout_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("Keyboard Lockout", 220, 36, 1);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void periods_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("Schedule Periods", 220, 36, 1);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
 /*********************************************************************
 *
 *       _aDialogCreate
@@ -173,28 +77,28 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SCHEDULING_OPTIONS);
-        WM_SetCallback(hItem, options_cb);
+        WM_SetCallback(hItem, buttonOn22_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_TEMPURATURE_SCALE);
-        WM_SetCallback(hItem, scale_cb);
+        WM_SetCallback(hItem, buttonOn22_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CLOCK_FORMAT);
-        WM_SetCallback(hItem, format_cb);
+        WM_SetCallback(hItem, buttonOn22_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DST);
-        WM_SetCallback(hItem, dst_cb);
+        WM_SetCallback(hItem, buttonOn22_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SYSTEM_CHANGE_OVER);
-        WM_SetCallback(hItem, change_over_cb);
+        WM_SetCallback(hItem, buttonOn22_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_TEMPURATURE_LIMITS);
-        WM_SetCallback(hItem, limits_cb);
+        WM_SetCallback(hItem, buttonOn22_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_KEYBOARD_LOCKOUT);
-        WM_SetCallback(hItem, lockout_cb);
+        WM_SetCallback(hItem, buttonOn22_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SCHEDULING_PERIODS);
-         WM_SetCallback(hItem, periods_cb);
+         WM_SetCallback(hItem, buttonOn22_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);

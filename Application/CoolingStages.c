@@ -43,32 +43,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "2 Stages", ID_BUTTON_2_STAGE, 120, 151, 240, 40, 0, 0x0, 0 },
 };
 
-static int one_mode, two_mode;
-
-static void one_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("1 Stage", 240, 40, one_mode);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void two_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("2 Stage", 240, 40, two_mode);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
+static int one_mode;
 static WM_HWIN oneButton, twoButton;
 
 /*********************************************************************
@@ -84,23 +59,31 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_INIT_DIALOG:
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        WM_SetCallback(hItem, cancel_cb);
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
-        WM_SetCallback(hItem, save_cb);
-        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetFont(hItem, GUI_FONT_32B_1);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         //
         oneButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_1_STAGE);
-        WM_SetCallback(oneButton, one_cb);
         //
         twoButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_2_STAGE);
-        WM_SetCallback(twoButton, two_cb);
-        break;
+        if (one_mode)
+        {
+            WM_SetCallback(oneButton, buttonOn22_cb);
+            WM_SetCallback(twoButton, buttonOff22_cb);
+        }
+        else
+        {
+            WM_SetCallback(twoButton, buttonOn22_cb);
+            WM_SetCallback(oneButton, buttonOff22_cb);
+        }
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
+        WM_SetCallback(hItem, buttonOn16_cb);
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
+        WM_SetCallback(hItem, buttonOn16_cb);
+       break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
         NCode = pMsg->Data.v;
@@ -128,10 +111,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 one_mode = 1;
-                two_mode = 0;
-
-                WM_SetCallback(oneButton, one_cb);
-                WM_SetCallback(twoButton, two_cb);
+                WM_SetCallback(oneButton, buttonOn22_cb);
+                WM_SetCallback(twoButton, buttonOff22_cb);
                 break;
             }
             break;
@@ -140,10 +121,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 one_mode =0;
-                two_mode = 1;
-
-                WM_SetCallback(oneButton, one_cb);
-                WM_SetCallback(twoButton, two_cb);
+                WM_SetCallback(twoButton, buttonOn22_cb);
+                WM_SetCallback(oneButton, buttonOff22_cb);
                 break;
             }
             break;
@@ -164,7 +143,6 @@ WM_HWIN CreateCoolingStages(void)
     WM_HWIN hWin;
 
     one_mode = (coolingStages == 1);
-    two_mode = !one_mode;
 
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;

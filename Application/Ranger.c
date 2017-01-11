@@ -32,83 +32,11 @@ extern void CreateKeyboardLockout(void);
 extern void CreateSchedulePeriods(void);
 extern void CreateNumericKeyboard(void);
 
-static void blowme(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawBigDnButton();
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-    if (pMsg->MsgId == WM_TOUCH)
-    {
-        if (BUTTON_IsPressed(pMsg->hWin))
-        {
-            WM_HWIN win = pMsg->hWin;
-            char buf[10];
-            BUTTON_GetText(win, buf, 10);
-            GUI_ErrorOut(buf);
-        }
-    }
-}
-
-static void _DrawGradientRoundBar(int xPos0, int yPos0, int xPos1, int yPos1,
-                                  GUI_COLOR Color0, GUI_COLOR Color1)
-{
-    GUI_COLOR Color;
-    unsigned  r;
-    unsigned  g;
-    U32       b;
-    double    rd;
-    double    rr;
-    double    x;
-    double    y;
-    int       Add;
-    int       r0;
-    int       g0;
-    int       b0;
-    int       r1;
-    int       g1;
-    int       b1;
-    int       d;
-    int       i;
-    r0  = (Color0 >>  0) & 0x000000ff;
-    g0  = (Color0 >>  8) & 0x000000ff;
-    b0  = (Color0 >> 16) & 0x000000ff;
-    r1  = (Color1 >>  0) & 0x000000ff;
-    g1  = (Color1 >>  8) & 0x000000ff;
-    b1  = (Color1 >> 16) & 0x000000ff;
-    Add = -1;
-    d   = yPos1 - yPos0 + 1;
-    rd  = (yPos1 - yPos0) / 2.0;
-    rr  = rd * rd;
-    y   = rd;
-    for (i = yPos0; i <= yPos1; i++)
-    {
-        x = sqrt(rr - y * y);
-        r = r0 + (r1 - r0) * (i - yPos0) / d;
-        g = g0 + (g1 - g0) * (i - yPos0) / d;
-        b = b0 + (b1 - b0) * (i - yPos0) / d;
-        Color = r | (g << 8) | (b << 16);
-        GUI_SetColor(Color);
-        GUI_DrawHLine(i, (int)(xPos0 + rd - x), (int)(xPos0 + rd));
-        GUI_DrawHLine(i, (int)(xPos0 + rd),     (int)(xPos1 - rd));
-        GUI_DrawHLine(i, (int)(xPos1 - rd),     (int)(xPos1 - rd + x));
-        y += Add;
-        if (y < 0)
-        {
-            Add = -Add;
-            y = -y;
-        }
-    }
-}
+char blowme[50];
+BUTTON_Handle hButton;
 
 static void _cbBkWin(WM_MESSAGE * pMsg)
 {
-    const WM_KEY_INFO * pKeyInfo;
     int                 NCode;
     int                 Id;
 
@@ -123,6 +51,9 @@ static void _cbBkWin(WM_MESSAGE * pMsg)
             switch (Id)
             {
             case GUI_ID_BUTTON0:
+                strcpy(blowme, "blowme");
+                WM_InvalidateWindow(hButton);
+                //GUI_ErrorOut(blowme);
                 break;
             case GUI_ID_BUTTON1:
                 break;
@@ -131,12 +62,12 @@ static void _cbBkWin(WM_MESSAGE * pMsg)
         }
         break;
     case WM_PAINT:
-        GUI_DrawGradientV(0, 0, 639, 479, GUI_BLUE, GUI_BLACK);
-        GUI_SetTextMode(GUI_TM_TRANS);
-        GUI_SetColor(GUI_WHITE);
-        GUI_DispStringHCenterAt("emWin VGA Demonstration\n", 400, 44);
-        GUI_DispStringHCenterAt("Press the 'Dashboard' or the 'Cash Terminal'\nbutton to start one of the applications\n", 320, 150);
-        //GUI_DrawBitmap(&bmSeggerLogo, 30, 30);
+//       GUI_DrawGradientV(0, 0, 300, 200, GUI_BLUE, GUI_BLACK);
+//        GUI_SetTextMode(GUI_TM_TRANS);
+//        GUI_SetColor(0xcecece);
+//        GUI_AA_FillRoundedRect(100, 100, 300, 200, 5);
+//              GUI_SetColor(GUI_DARKGRAY);
+//        GUI_DispStringHCenterAt("BLOWME", 150,150);
         break;
     }
 }
@@ -148,9 +79,14 @@ void edit_text(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        GUI_SetBkColorIndex(GUI_DARKGRAY);
-        GUI_SetColor(GUI_YELLOW);
-        GUI_AA_FillRoundedRect(0, 0, 98, 48, 5);
+        GUI_SetTextMode(GUI_TM_TRANS);
+          GUI_SetPenSize(3);
+        GUI_SetColor(0xbbbbbb);
+        GUI_AA_FillRoundedRect(4,4,46,48,4);
+        GUI_SetColor(0x00f0f0f0);
+        GUI_AA_DrawRoundedRect(2,2,48,48, 8);
+        GUI_SetColor(GUI_DARKGRAY);
+        GUI_DispStringHCenterAt(blowme, 40,50);
         break;
     default:
         BUTTON_Callback(pMsg);
@@ -163,23 +99,23 @@ void edit_text(WM_MESSAGE * pMsg)
 void MainTask(void)
 {
     GUI_Init();
-    //BUTTON_SetReactOnLevel();
     temperature=60;
     state=1;
-    BUTTON_Handle hButton;
     char buffer[10];
 
     color_scheme = 0;
     initColors();
     loadConfig();
+    holdMode = 0;
 
     GUI_RECT rect;
     rect.x0 = 00;
     rect.x1 = 00;
     rect.y0 = 200;
     rect.y1 = 200;
-    strcpy(keyboard_text, "BLOWME");
-    //   WM_SetCallback(WM_HBKWIN, _cbBkWin);
+    WM_SetDesktopColor(GUI_WHITE);
+    WM_SetCallback(WM_HBKWIN, _cbBkWin);
+    strcpy(blowme, "BLOWU");
     //WM_SetScreenSize(480,272);
     //GUI_TIMER_Create(_OnTimer, 1000, 0, 0);
     while(1)
@@ -191,15 +127,13 @@ void MainTask(void)
         case 1:
             CreateHomeWin();
 
-            // hButton = TEXT_Create(100,100, 100,50, 0, WM_CF_SHOW, "BLOW", 0);
-//            TEXT_SetBkColor(hButton, GUI_BLUE);
-//            TEXT_SetTextColor(hButton,GUI_WHITE);
-            //WM_SetCallback(hButton, edit_text);
-//            GUI_SetColor(GUI_WHITE);
-//           GUI_DispStringHCenterAt("BLOWE", 210, 122);
+             //hButton = TEXT_Create(100, 100, 50,50, 0, WM_CF_SHOW, "", 0);
+             //WM_SetCallback(hButton, edit_text);
 
-//            hButton = BUTTON_CreateUser(100, 100, 100, 100, 0, WM_CF_SHOW, 0, GUI_ID_BUTTON0, 0);
-//            WM_SetCallback(hButton, up_button);
+            // BUTTON_CreateUser(200, 50, 80, 25, 0, WM_CF_SHOW, 0, GUI_ID_BUTTON0, 3);
+//            BUTTON_SetText(hButton, "BLOWME");
+//            BUTTON_SetUserData(hButton,"DAT", 3);
+//            WM_SetCallback(hButton, blowme);
 //
 //            hButton = BUTTON_CreateUser(130, 100, 100, 100, 0, WM_CF_SHOW, 0, GUI_ID_BUTTON0, 0);
 //            WM_SetCallback(hButton, dn_button);

@@ -47,42 +47,6 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 
 static int forcedAir_mode, heatPump_mode, hotWater_mode;
 
-static void forcedAir_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("FORCED AIR", 240, 40, forcedAir_mode);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void heatPump_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("HEAT PUMP", 240, 40, heatPump_mode);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void hotWater_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("HOT WATER OR STEAM", 240, 40, hotWater_mode);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
 static WM_HWIN forcedAirButton, heatPumpButton, hotWaterButton;
 
 /*********************************************************************
@@ -98,26 +62,41 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_INIT_DIALOG:
-        //
-        forcedAirButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_FORCED_AIR);
-        WM_SetCallback(forcedAirButton, forcedAir_cb);
-        //
-        heatPumpButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HEAT_PUMP);
-        WM_SetCallback(heatPumpButton, heatPump_cb);
-        //
-        hotWaterButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HOT_WATER);
-        WM_SetCallback(hotWaterButton, hotWater_cb);
-        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetFont(hItem, GUI_FONT_32B_1);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         //
+        forcedAirButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_FORCED_AIR);
+        //
+        heatPumpButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HEAT_PUMP);
+        //
+        hotWaterButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HOT_WATER);
+        //
+        if (forcedAir_mode)
+        {
+            WM_SetCallback(forcedAirButton, buttonOn22_cb);
+            WM_SetCallback(heatPumpButton, buttonOff22_cb);
+            WM_SetCallback(hotWaterButton, buttonOff22_cb);
+        }
+        else if (heatPump_mode)
+        {
+            WM_SetCallback(forcedAirButton, buttonOff22_cb);
+            WM_SetCallback(heatPumpButton, buttonOn22_cb);
+            WM_SetCallback(hotWaterButton, buttonOff22_cb);
+        }
+        else
+        {
+            WM_SetCallback(forcedAirButton, buttonOff22_cb);
+            WM_SetCallback(heatPumpButton, buttonOff22_cb);
+            WM_SetCallback(hotWaterButton, buttonOn22_cb);
+        }
+
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        WM_SetCallback(hItem, cancel_cb);
+        WM_SetCallback(hItem, buttonOn16_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
-        WM_SetCallback(hItem, save_cb);
+        WM_SetCallback(hItem, buttonOn16_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
@@ -160,9 +139,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 heatPump_mode = 0;
                 hotWater_mode = 1;
 
-                WM_SetCallback(forcedAirButton, forcedAir_cb);
-                WM_SetCallback(heatPumpButton, heatPump_cb);
-                WM_SetCallback(hotWaterButton, hotWater_cb);
+                WM_SetCallback(forcedAirButton, buttonOff22_cb);
+                WM_SetCallback(heatPumpButton, buttonOff22_cb);
+                WM_SetCallback(hotWaterButton, buttonOn22_cb);
                 break;
             }
             break;
@@ -174,9 +153,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 heatPump_mode = 0;
                 hotWater_mode = 0;
 
-                WM_SetCallback(forcedAirButton, forcedAir_cb);
-                WM_SetCallback(heatPumpButton, heatPump_cb);
-                WM_SetCallback(hotWaterButton, hotWater_cb);
+                WM_SetCallback(forcedAirButton, buttonOn22_cb);
+                WM_SetCallback(heatPumpButton, buttonOff22_cb);
+                WM_SetCallback(hotWaterButton, buttonOff22_cb);
                 break;
             }
             break;
@@ -188,9 +167,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 heatPump_mode = 1;
                 hotWater_mode = 0;
 
-                WM_SetCallback(forcedAirButton, forcedAir_cb);
-                WM_SetCallback(heatPumpButton, heatPump_cb);
-                WM_SetCallback(hotWaterButton, hotWater_cb);
+                WM_SetCallback(forcedAirButton, buttonOff22_cb);
+                WM_SetCallback(heatPumpButton, buttonOn22_cb);
+                WM_SetCallback(hotWaterButton, buttonOff22_cb);
                 break;
             }
             break;

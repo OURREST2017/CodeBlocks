@@ -54,44 +54,6 @@ void initColors()
 
 void setSkin()
 {
-//    BUTTON_SKINFLEX_PROPS Props;
-//    BUTTON_GetSkinFlexProps(&Props, BUTTON_SKINFLEX_PI_ENABLED);
-//    Props.aColorFrame[0] = GUI_LIGHTGRAY;
-//    Props.aColorFrame[1] = GUI_LIGHTGRAY;
-//    Props.aColorFrame[2] = color_map[color_scheme].middle;
-//    Props.aColorUpper[0] = color_map[color_scheme].stop;
-//    Props.aColorUpper[1] = color_map[color_scheme].middle;
-//    Props.aColorLower[0] = color_map[color_scheme].middle;
-//    Props.aColorLower[1] = color_map[color_scheme].start;
-//    BUTTON_SetSkinFlexProps(&Props, BUTTON_SKINFLEX_PI_ENABLED);
-//    BUTTON_SetSkinFlexProps(&Props, BUTTON_SKINFLEX_PI_FOCUSSED);
-//
-//    Props.aColorUpper[0] = GUI_DARKBLUE;
-//    Props.aColorUpper[1] = GUI_DARKBLUE;
-//    Props.aColorLower[0] = GUI_DARKBLUE;
-//    Props.aColorLower[1] = GUI_DARKBLUE;
-//    BUTTON_SetSkinFlexProps(&Props, BUTTON_SKINFLEX_PI_PRESSED);
-//
-//    Props.aColorFrame[0] = 0xdddddd;
-//    Props.aColorFrame[1] = 0xdddddd;
-//    Props.aColorFrame[2] = 0xdddddd;
-//    Props.aColorUpper[0] = 0xdfdfdf;
-//    Props.aColorUpper[1] = 0xdfc4d8;
-//    Props.aColorLower[0] = 0xdfc4d8;
-//    Props.aColorLower[1] = 0xdfdfdf;
-//    BUTTON_SetSkinFlexProps(&Props, BUTTON_SKINFLEX_PI_DISABLED);
-//
-//    CHECKBOX_SKINFLEX_PROPS Props1;
-//    CHECKBOX_GetSkinFlexProps(&Props1, CHECKBOX_SKINFLEX_PI_ENABLED);
-//    Props1.aColorFrame[0] = GUI_LIGHTGRAY;
-//    Props1.aColorFrame[1] = GUI_LIGHTGRAY;
-//    Props1.aColorFrame[2] = GUI_LIGHTGRAY;
-//    Props1.aColorInner[0] = 0x0059A89C;
-//    Props1.aColorInner[1] = 0x0059A88D;
-//    Props1.aColorInner[2] = 0x0048856A;
-//    CHECKBOX_SetSkinFlexProps(&Props1, CHECKBOX_SKINFLEX_PI_ENABLED);
-//    CHECKBOX_SetSkinFlexProps(&Props1, CHECKBOX_SKINFLEX_PI_DISABLED);
-
     HEADER_SKINFLEX_PROPS PropsH;
     HEADER_GetSkinFlexProps(&PropsH, 0);
     PropsH.aColorUpper[0] = color_map[color_scheme].stop;
@@ -99,56 +61,6 @@ void setSkin()
     PropsH.aColorLower[0] = color_map[color_scheme].middle;
     PropsH.aColorLower[1] = color_map[color_scheme].start;
     HEADER_SetSkinFlexProps(&PropsH, 0);
-}
-
-void cancel_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton16("CANCEL", 80, 25, 1);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-void save_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton16("SAVE", 80, 25, 1);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-void done_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton16("DONE", 80, 25, 1);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-
-void edit_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton16("EDIT", 80, 25, 1);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
 }
 
 void drawBigUpButton()
@@ -335,7 +247,41 @@ void drawSmallDnButton()
     //GUI_AA_DrawPolyOutline(aPoints, countof(aPoints), 2, 4, 27);
 }
 
-void up_button(WM_MESSAGE * pMsg)
+void edit_text_cb(WM_MESSAGE * pMsg)
+{
+    int xw,yw;
+    char   nm[6];
+    WM_HWIN win = pMsg->hWin;
+    GUI_RECT r;
+    WIDGET *w;
+    w = BUTTON_GetpWidget(win);
+    r = w->Win.Rect;
+    BUTTON_GetText(win, nm, 6);
+    xw = (r.x1-r.x0);
+    yw = r.y1-r.y0;
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        GUI_SetTextMode(GUI_TM_TRANS);
+        GUI_SetPenSize(3);
+        GUI_SetColor(0xe2e2e2);
+        GUI_AA_FillRoundedRect(4,4,xw-4,yw-2,4);
+        GUI_SetColor(0xaaaaaa);
+        GUI_AA_DrawRoundedRect(2,2,xw-2,yw-2, 10);
+        GUI_SetColor(GUI_DARKGRAY);
+        GUI_SetFont(GUI_FONT_D24X32);
+        r.x0 = 0;
+        r.y0 = 0;
+        r.x1 = xw;
+        r.y1 = yw;
+        GUI_DispStringInRect(nm, &r, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+void small_up_button(WM_MESSAGE * pMsg)
 {
     switch (pMsg->MsgId)
     {
@@ -348,7 +294,7 @@ void up_button(WM_MESSAGE * pMsg)
     }
 }
 
-void dn_button(WM_MESSAGE * pMsg)
+void small_dn_button(WM_MESSAGE * pMsg)
 {
     switch (pMsg->MsgId)
     {
@@ -387,6 +333,90 @@ void big_dn_button(WM_MESSAGE * pMsg)
     }
 }
 
+void buttonOn16_cb(WM_MESSAGE * pMsg)
+{
+    char buf[50], nm[50];
+    WM_HWIN win = pMsg->hWin;
+    GUI_RECT r;
+    WIDGET *w;
+    w = BUTTON_GetpWidget(win);
+    r = w->Win.Rect;
+    BUTTON_GetText(win, nm, 20);
+//      BUTTON_GetUserData(win, buf, 3);
+  sprintf(buf,"%d,%s,%d,%d,%d,%d",w->Id,nm,r.x0,r.y0,r.x1,r.y1);
+//    GUI_ErrorOut(buf);
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        //GUI_ErrorOut(buf);
+        drawButton16(nm, r.x1-r.x0, r.y1-r.y0, 1);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+ }
+
+void buttonOff16_cb(WM_MESSAGE * pMsg)
+{
+    char nm[50];
+    WM_HWIN win = pMsg->hWin;
+    GUI_RECT r;
+    WIDGET *w;
+    w = BUTTON_GetpWidget(win);
+    r = w->Win.Rect;
+    BUTTON_GetText(win, nm, 20);
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawButton16(nm, r.x1-r.x0, r.y1-r.y0, 1);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+
+void buttonOn22_cb(WM_MESSAGE * pMsg)
+{
+    char nm[50];
+    WM_HWIN win = pMsg->hWin;
+    GUI_RECT r;
+    WIDGET *w;
+    w = BUTTON_GetpWidget(win);
+    r = w->Win.Rect;
+    BUTTON_GetText(win, nm, 20);
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawButton22(nm, r.x1-r.x0, r.y1-r.y0, 1);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+
+void buttonOff22_cb(WM_MESSAGE * pMsg)
+{
+    char nm[50];
+    WM_HWIN win = pMsg->hWin;
+    GUI_RECT r;
+    WIDGET *w;
+    w = BUTTON_GetpWidget(win);
+    r = w->Win.Rect;
+    BUTTON_GetText(win, nm, 20);
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawButton22(nm, r.x1-r.x0, r.y1-r.y0, 0);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+
 void drawButton16(char * but, int w, int h, int col)
 {
     GUI_RECT rect;
@@ -402,6 +432,23 @@ void drawButton16(char * but, int w, int h, int col)
     {
         GUI_DrawGradientRoundedV(0, 0, rect.x1, rect.y1, 3, color_map[6].stop, color_map[6].start);
     }
+    GUI_SetFont(&GUI_FontRounded16);
+    GUI_SetColor((col == 6) ? GUI_BLACK : GUI_WHITE);
+    GUI_SetTextMode(GUI_TM_TRANS);
+    GUI_DispStringInRect(but, &rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
+    GUI_SetColor(0x00cccccc);
+    GUI_SetPenSize(2);
+    //GUI_AA_DrawRoundedRect(0, 0, rect.x1, rect.y1, 6);
+}
+
+void drawButtonOff16(char * but, int w, int h, int col)
+{
+    GUI_RECT rect;
+    rect.x0 = 0;
+    rect.y0 = 0;
+    rect.x1 = w-1;
+    rect.y1 = h-1;
+    GUI_DrawGradientRoundedV(0, 0, rect.x1, rect.y1, 3, color_map[6].stop, color_map[6].start);
     GUI_SetFont(&GUI_FontRounded16);
     GUI_SetColor((col == 6) ? GUI_BLACK : GUI_WHITE);
     GUI_SetTextMode(GUI_TM_TRANS);
@@ -494,60 +541,5 @@ void drawButton(char * but, int col)
     GUI_SetColor(GUI_LIGHTGRAY);
     GUI_SetPenSize(2);
     //GUI_AA_DrawRoundedRect(0, 0, 74, 23, 4);
-}
-
-static GUI_CONST_STORAGE unsigned char acreturn[] =
-{
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x01, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00,
-    0x21, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x00, 0x00,
-    0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x10, 0x00,
-    0x01, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x00,
-    0x03, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x11, 0x11, 0x10,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x11, 0x11, 0x10,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x11, 0x11, 0x10,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x11, 0x11, 0x10,
-    0x00, 0x00, 0x00, 0x00, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x11, 0x11, 0x10,
-    0x00, 0x00, 0x00, 0x11, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x11, 0x11, 0x10,
-    0x00, 0x00, 0x01, 0x11, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x11, 0x11, 0x11, 0x10,
-    0x00, 0x01, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x10,
-    0x01, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x00,
-    0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x10, 0x00,
-    0x01, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x00, 0x00,
-    0x00, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x11, 0x11, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x01, 0x11, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x01, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x01, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-};
-
-static const GUI_COLOR Colors[] = { 0x000000, 0xFFFFFF };
-static const GUI_LOGPALETTE Palette = { 2, 1, Colors };
-
-static GUI_CONST_STORAGE GUI_BITMAP bm_return =
-{
-    44, // xSize
-    25, // ySize
-    22, // BytesPerLine
-    4, // BitsPerPixel
-    acreturn,  // Pointer to picture data (indices)
-    &Palette   // Pointer to palette
-};
-
-void return_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        GUI_DrawBitmap(&bm_return, 0, 0);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
 }
 

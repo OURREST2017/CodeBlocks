@@ -37,38 +37,13 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 1, 0, 480, 272, 0, 0x0, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_0, 0, 0, 480, 50, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_12HOUR, 120, 80, 240, 40, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_24HOUR, 120, 150, 240, 40, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_CANCEL, 20, 230, 80, 24, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_SAVE, 375, 230, 80, 24, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "12 Hour", ID_BUTTON_12HOUR, 120, 80, 240, 40, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "24 Hour", ID_BUTTON_24HOUR, 120, 150, 240, 40, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 25, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 375, 230, 80, 25, 0, 0x0, 0 },
 };
 
-static int hour12_mode, hour24_mode;
-
-static void hour12_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("12 Hour", 240, 40, hour12_mode);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void hour24_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("24 Hour", 240, 40, hour24_mode);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
+static int hour12_mode;
 static WM_HWIN hour12Button, hour24Button;
 
 /*********************************************************************
@@ -91,16 +66,25 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextColor(hItem,GUI_MAKE_COLOR(0x00FFFFFF));
         //
         hour12Button = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_12HOUR);
-        WM_SetCallback(hour12Button, hour12_cb);
         //
         hour24Button = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_24HOUR);
-        WM_SetCallback(hour24Button, hour24_cb);
         //
+        if (hour12_mode)
+        {
+            WM_SetCallback(hour12Button, buttonOn22_cb);
+            WM_SetCallback(hour24Button, buttonOff22_cb);
+        }
+        else
+        {
+            WM_SetCallback(hour12Button, buttonOn22_cb);
+            WM_SetCallback(hour24Button, buttonOff22_cb);
+        }
+
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        WM_SetCallback(hItem, cancel_cb);
+        WM_SetCallback(hItem, buttonOn16_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
-        WM_SetCallback(hItem, save_cb);
+        WM_SetCallback(hItem, buttonOn16_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
@@ -112,10 +96,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 hour12_mode = 1;
-                hour24_mode = 0;
-                WM_InvalidateWindow(hour12Button);
-                WM_InvalidateWindow(hour24Button);
-              break;
+                WM_SetCallback(hour12Button, buttonOn22_cb);
+                WM_SetCallback(hour24Button, buttonOff22_cb);
+                break;
             }
             break;
         case ID_BUTTON_24HOUR:
@@ -123,9 +106,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 hour12_mode = 0;
-                hour24_mode = 1;
-                WM_InvalidateWindow(hour12Button);
-                WM_InvalidateWindow(hour24Button);
+                WM_SetCallback(hour12Button, buttonOff22_cb);
+                WM_SetCallback(hour24Button, buttonOn22_cb);
                 break;
             }
             break;
@@ -164,12 +146,9 @@ WM_HWIN CreateClockFormat(void)
     WM_HWIN hWin;
 
     hour12_mode = (clockFormat == 12);
-    hour24_mode = !hour12_mode;
 
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
-
-// USER START (Optionally insert additional public code)
 
 /*************************** End of file ****************************/

@@ -48,6 +48,23 @@
 #define ID_TEXT_SATURDAY (GUI_ID_USER + 0xA6)
 #define ID_TEXT_SUNDAY (GUI_ID_USER + 0xA7)
 
+int days[] = {
+        ID_TEXT_MONDAY,ID_TEXT_TUESDAY,ID_TEXT_WEDNESDAY,
+        ID_TEXT_THURSDAY,ID_TEXT_FRIDAY, ID_TEXT_SATURDAY, ID_TEXT_SUNDAY
+        };
+
+ void resetFonts(WM_HWIN win, int id) {
+     WM_HWIN txt;
+     int i;
+     for (i=0;i<7;i++) {
+        txt = WM_GetDialogItem(win, days[i]);
+        TEXT_SetFont(txt, GUI_FONT_32_1);
+    }
+    txt = WM_GetDialogItem(win, id);
+    TEXT_SetFont(txt, GUI_FONT_32B_1);
+}
+
+int selected_day;
 /*********************************************************************
 *
 *       _aDialogCreate
@@ -209,16 +226,79 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        WM_SetCallback(hItem, cancel_cb);
+        WM_SetCallback(hItem, buttonOn16_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_EDIT);
-        WM_SetCallback(hItem, edit_cb);
+        WM_SetCallback(hItem, buttonOn16_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
         NCode = pMsg->Data.v;
         switch(Id)
         {
+        case ID_TEXT_MONDAY:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_RELEASED:
+                selected_day = 0;
+                resetFonts(pMsg->hWin, ID_TEXT_MONDAY);
+                break;
+            }
+            break;
+        case ID_TEXT_TUESDAY:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_RELEASED:
+                 selected_day = 1;
+               resetFonts(pMsg->hWin, ID_TEXT_TUESDAY);
+                break;
+            }
+            break;
+        case ID_TEXT_WEDNESDAY:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_RELEASED:
+                 selected_day = 2;
+               resetFonts(pMsg->hWin, ID_TEXT_WEDNESDAY);
+                break;
+            }
+            break;
+        case ID_TEXT_THURSDAY:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_RELEASED:
+                  selected_day = 3;
+              resetFonts(pMsg->hWin, ID_TEXT_THURSDAY);
+                break;
+            }
+            break;
+        case ID_TEXT_FRIDAY:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_RELEASED:
+                    selected_day = 4;
+            resetFonts(pMsg->hWin, ID_TEXT_FRIDAY);
+                break;
+            }
+            break;
+        case ID_TEXT_SATURDAY:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_RELEASED:
+                       selected_day = 5;
+         resetFonts(pMsg->hWin, ID_TEXT_SATURDAY);
+                break;
+            }
+            break;
+        case ID_TEXT_SUNDAY:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_RELEASED:
+                       selected_day =6;
+         resetFonts(pMsg->hWin, ID_TEXT_SUNDAY);
+                break;
+            }
+            break;
         case ID_BUTTON_CANCEL:
             switch(NCode)
             {

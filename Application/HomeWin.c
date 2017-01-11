@@ -54,22 +54,22 @@ static const void * _GetImageById(U32 Id, U32 * pSize)
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "HomeWin", ID_HOME_WINDOW, 1, 1, 480, 272, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button_Cool", ID_BUTTON_COOL, 384, 233, 75, 25, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button_Mode", ID_BUTTON_MODE, 12, 233, 75, 25, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button_Hold", ID_BUTTON_HOLD, 198, 233, 75, 25, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button_Heat", ID_BUTTON_HEAT, 292, 233, 75, 25, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button_Fan", ID_BUTTON_FAN, 104, 233, 75, 25, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "COOL", ID_BUTTON_COOL, 384, 233, 75, 25, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "MODE", ID_BUTTON_MODE, 12, 233, 75, 25, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "HOLD", ID_BUTTON_HOLD, 198, 233, 75, 25, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "HEAT", ID_BUTTON_HEAT, 292, 233, 75, 25, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "FAN", ID_BUTTON_FAN, 104, 233, 75, 25, 0, 0x0, 0 },
     { IMAGE_CreateIndirect, "Image", ID_IMAGE_GRAY_BAR, -1, 201, 480, 25, 0, 0, 0 },
     { TEXT_CreateIndirect, "In_T_Panel", ID_TEXT_INSIDE_TEMP, 162, 88, 135, 100, 0, 0x64, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER, -1, 0, 480, 50, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Button_Up", ID_BUTTON_UP, 390, 70, 50, 50, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Button_Dn", ID_BUTTON_DN, 390, 140, 50, 50, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button_Settings", ID_BUTTON_SETTINGS, 14, 110, 104, 25, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "SETTINGS", ID_BUTTON_SETTINGS, 14, 110, 104, 25, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "Cool_T_Panel", ID_TEXT_COOLTO, 411, 204, 34, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Heat_T_Panel", ID_TEXT_HEATTO, 319, 204, 36, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "AUTO", ID_TEXT_MODE, 33, 204, 45, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "AUTO", ID_TEXT_FAN, 125, 204, 43, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "ON SCHED", ID_TEXT_HOLD, 198, 204, 100, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "ON SCHED", ID_TEXT_HOLD, 200, 204, 100, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "", ID_TEXT_DATE, 20, 0, 150, 50, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "", ID_TEXT_TIME, 150, 0, 100, 50, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Out_T_Temp", ID_TEXT_OUT_TEMP, 386, 7, 72, 20, 0, 0x64, 0 },
@@ -78,7 +78,6 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { TEXT_CreateIndirect, "INDOOR", ID_TEXT_INDOOR, 165, 62, 89, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "SET_TO", ID_TEXT_SET_TO, 380, 122, 89, 20, 0, 0x64, 0 },
 };
-
 
 static void hold_button_on(WM_MESSAGE * pMsg)
 {
@@ -125,72 +124,11 @@ static WM_HWIN modeButton, fanButton, heatButton, coolButton;
 char date_buf[20];
 char time_buf[20];
 
-int holdButtonOn = 0, cool_but, heat_but, fan_but, mode_but;
+int holdButtonOn = 0;
 int cool_border, heat_border;
 
-static void settings_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton16("SETTINGS", 90, 25, 1);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void cool_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        if (strcmp(selectedMode, "cool") == 0) cool_border = 1;
-        drawCoolButton("COOL", 75, 25, cool_but, cool_border);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void heat_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        if (strcmp(selectedMode, "heat") == 0) heat_border = 1;
-        drawCoolButton("HEAT", 75, 25, heat_but, heat_border);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void mode_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton16("MODE", 75, 25, mode_but);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void fan_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton16("FAN", 75, 25, fan_but);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
 WM_HWIN dateText, timeText;
+
 /*********************************************************************
 *
 *       _cbDialog
@@ -222,22 +160,22 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         IMAGE_SetPNG(hItem, pData, FileSize);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SETTINGS);
-        WM_SetCallback(hItem, settings_cb);
+        WM_SetCallback(hItem, buttonOn16_cb);
 
         modeButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_MODE);
-        WM_SetCallback(modeButton, mode_cb);
+        WM_SetCallback(modeButton, buttonOn16_cb);
         //
         fanButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_FAN);
-        WM_SetCallback(fanButton, fan_cb);
+        WM_SetCallback(fanButton, buttonOn16_cb);
         //
         holdButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HOLD);
         WM_SetCallback(holdButton, hold_button_off);
         //
         heatButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HEAT);
-        WM_SetCallback(heatButton, heat_cb);
+        WM_SetCallback(heatButton, buttonOn16_cb);
         //
         coolButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_COOL);
-        WM_SetCallback(coolButton, cool_cb);
+        WM_SetCallback(coolButton, buttonOn16_cb);
         //
         sprintf(buffer,"%d",insideTemp);
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_INSIDE_TEMP);
@@ -274,6 +212,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextColor(hItem, 0x00FFFFFF);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HOLD);
+        TEXT_SetTextAlign(dateText, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetText(hItem, "ON SCHED");
         TEXT_SetFont(hItem, &GUI_FontRounded16);
         TEXT_SetTextColor(hItem, 0x00FFFFFF);
@@ -323,22 +262,41 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_SETTINGS:
             switch(NCode)
             {
+            case WM_NOTIFICATION_CLICKED:
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SETTINGS);
+                WM_InvalidateWindow(hItem);
+                WM_SetCallback(hItem, buttonOff16_cb);
+                break;
             case WM_NOTIFICATION_RELEASED:
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SETTINGS);
+                WM_InvalidateWindow(hItem);
+                WM_SetCallback(hItem, buttonOn16_cb);
                 state=4;
             }
             break;
         case ID_BUTTON_COOL:
             switch(NCode)
             {
+            case WM_NOTIFICATION_CLICKED:
+                WM_InvalidateWindow(coolButton);
+                WM_SetCallback(coolButton, buttonOff16_cb);
+                break;
             case WM_NOTIFICATION_RELEASED:
+                WM_InvalidateWindow(coolButton);
+                WM_SetCallback(coolButton, buttonOn16_cb);
                 break;
             }
             break;
         case ID_BUTTON_MODE:
             switch(NCode)
             {
+            case WM_NOTIFICATION_CLICKED:
+                WM_InvalidateWindow(modeButton);
+                WM_SetCallback(modeButton, buttonOff16_cb);
+                break;
             case WM_NOTIFICATION_RELEASED:
-                GUI_Delay(100);
+                WM_InvalidateWindow(modeButton);
+                WM_SetCallback(modeButton, buttonOn16_cb);
                 state=3;
                 break;
             }
@@ -350,54 +308,55 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HOLD);
                 if (holdButtonOn)
                 {
-                    mode_but = 1;
-                    cool_but = 1;
-                    heat_but = 1;
-                    fan_but = 1;
                     WM_SetCallback(holdButton, hold_button_off);
                     WM_EnableWindow(modeButton);
                     WM_EnableWindow(coolButton);
                     WM_EnableWindow(heatButton);
                     WM_EnableWindow(fanButton);
-                    WM_InvalidateWindow(modeButton);
-                    WM_InvalidateWindow(coolButton);
-                    WM_InvalidateWindow(heatButton);
-                    WM_InvalidateWindow(fanButton);
                     TEXT_SetText(hItem, "ON SCHED");
                 }
                 else
                 {
-                    mode_but = 0;
-                    cool_but = 0;
-                    heat_but = 0;
-                    fan_but = 0;
-
                     WM_SetCallback(holdButton, hold_button_on);
                     WM_DisableWindow(modeButton);
                     WM_DisableWindow(coolButton);
                     WM_DisableWindow(heatButton);
                     WM_DisableWindow(fanButton);
                     WM_InvalidateWindow(modeButton);
-                    WM_InvalidateWindow(coolButton);
-                    WM_InvalidateWindow(heatButton);
-                    WM_InvalidateWindow(fanButton);
                     TEXT_SetText(hItem, " ON HOLD");
                 }
+                WM_InvalidateWindow(modeButton);
+                WM_InvalidateWindow(fanButton);
+                WM_InvalidateWindow(coolButton);
+                WM_InvalidateWindow(heatButton);
                 holdButtonOn = !holdButtonOn;
+                holdMode = !holdMode;
                 break;
             }
             break;
         case ID_BUTTON_HEAT:
             switch(NCode)
             {
+            case WM_NOTIFICATION_CLICKED:
+                WM_InvalidateWindow(heatButton);
+                WM_SetCallback(heatButton, buttonOff16_cb);
+                break;
             case WM_NOTIFICATION_RELEASED:
+                WM_InvalidateWindow(heatButton);
+                WM_SetCallback(heatButton, buttonOn16_cb);
                 break;
             }
             break;
         case ID_BUTTON_FAN:
             switch(NCode)
             {
+            case WM_NOTIFICATION_CLICKED:
+                WM_InvalidateWindow(fanButton);
+                WM_SetCallback(fanButton, buttonOff16_cb);
+                break;
             case WM_NOTIFICATION_RELEASED:
+                WM_InvalidateWindow(heatButton);
+                WM_SetCallback(fanButton, buttonOn16_cb);
                 state=5;
                 break;
             }
@@ -406,7 +365,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                //WM_SetCallback(upButton, up_button);
                 if (strcmp(selectedMode, "heat") == 0)
                 {
                     heatToDegrees++;
@@ -486,12 +444,7 @@ WM_HWIN CreateHomeWin(void)
     strftime(time_buf, 20, "%I:%M %p", localtime(&now));
     cool_border = 0;
     heat_border = 0;
-
-    cool_but = !holdMode;
-    heat_but = !holdMode;
-    mode_but = !holdMode;
-    fan_but = !holdMode;
-
+    holdMode = 0;
     //GUI_TIMER_Create(_OnTimer, 30000, 0, 0);
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;

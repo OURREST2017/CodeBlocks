@@ -43,32 +43,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "Automatic", ID_BUTTON_AUTOMATIC, 120, 151, 240, 40, 0, 0x0, 0 },
 };
 
-static int manual_mode, auto_mode;
-
-static void manual_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("Manual", 240, 40, manual_mode);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void auto_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("Automatic", 240, 40, auto_mode);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
+static int manual_mode;
 static WM_HWIN manualButton, autoButton;
 
 /*********************************************************************
@@ -84,11 +59,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_INIT_DIALOG:
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        WM_SetCallback(hItem, cancel_cb);
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
-        WM_SetCallback(hItem, save_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetFont(hItem, GUI_FONT_32B_1);
@@ -96,11 +66,25 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         //
         manualButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_MANUAL);
-        WM_SetCallback(manualButton, manual_cb);
         //
         autoButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_AUTOMATIC);
-        WM_SetCallback(autoButton, auto_cb);
-        break;
+        if (manual_mode)
+        {
+            WM_SetCallback(manualButton, buttonOn22_cb);
+            WM_SetCallback(autoButton, buttonOff22_cb);
+        }
+        else
+        {
+            WM_SetCallback(autoButton, buttonOn22_cb);
+            WM_SetCallback(manualButton, buttonOff22_cb);
+        }
+
+         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
+        WM_SetCallback(hItem, buttonOn16_cb);
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
+        WM_SetCallback(hItem, buttonOn16_cb);
+       break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
         NCode = pMsg->Data.v;
@@ -135,9 +119,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 manual_mode = 1;
-                auto_mode = 0;
-                WM_InvalidateWindow(manualButton);
-                WM_InvalidateWindow(autoButton);
+                WM_SetCallback(manualButton, buttonOn22_cb);
+                WM_SetCallback(autoButton, buttonOff22_cb);
                 break;
             }
             break;
@@ -146,9 +129,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 manual_mode = 0;
-                auto_mode = 1;
-                WM_InvalidateWindow(manualButton);
-                WM_InvalidateWindow(autoButton);
+                WM_SetCallback(autoButton, buttonOn22_cb);
+                WM_SetCallback(manualButton, buttonOff22_cb);
                 break;
             }
             break;
@@ -172,12 +154,10 @@ WM_HWIN CreateSystemsChangeOver(void)
     if (strcmp(systemsChangeOver, "manual") == 0)
     {
         manual_mode = 1;
-        auto_mode = 0;
     }
     else
     {
         manual_mode =0;
-        auto_mode = 1;
     }
 
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
