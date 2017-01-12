@@ -43,8 +43,8 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "COOL", ID_BUTTON_COOL, 198, 130, 80, 30, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "AUTO", ID_BUTTON_AUTO, 289, 130, 80, 30, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "E-HEAT", ID_BUTTON_EHEAT, 380, 130, 80, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 25, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 375, 230, 80, 25, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 28, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 375, 230, 80, 28, 0, 0x0, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "SELECT MODE", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
 };
@@ -187,6 +187,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 cool = 0;
                 heat = 1;
                 eheat = 0;
+                tempSetPoint = heatToDegrees;
                 WM_InvalidateArea(&rect);
                 break;
             }
@@ -200,6 +201,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 cool = 1;
                 heat = 0;
                 eheat = 0;
+                tempSetPoint = coolToDegrees;
                 WM_InvalidateArea(&rect);
                 break;
             }
@@ -239,16 +241,16 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 break;
             }
             break;
-        case ID_BUTTON_DONE: // Notifications sent by 'Button'
+        case ID_BUTTON_DONE:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                if (off) strcpy(selectedMode, "off");
-                if (autob)strcpy(selectedMode, "auto");
-                if (cool) strcpy(selectedMode, "cool");
-                if (heat) strcpy(selectedMode, "heat");
-                if (eheat) strcpy(selectedMode, "eheat");
+                if (off) strcpy(hvacMode, "off");
+                if (autob)strcpy(hvacMode, "auto");
+                if (cool) strcpy(hvacMode, "cool");
+                if (heat) strcpy(hvacMode, "heat");
+                if (eheat) strcpy(hvacMode, "eheat");
                 state=1;
                 break;
             }
@@ -274,11 +276,11 @@ WM_HWIN CreateMode(void)
     heat = 0;
     eheat = 0;
 
-    if (strcmp(selectedMode, "off") == 0) off = 1;
-    if (strcmp(selectedMode, "auto") == 0) autob = 1;
-    if (strcmp(selectedMode, "heat") == 0) heat = 1;
-    if (strcmp(selectedMode, "cool") == 0) cool = 1;
-    if (strcmp(selectedMode, "eheat") == 0) eheat = 1;
+    if (strcmp(hvacMode, "off") == 0) off = 1;
+    if (strcmp(hvacMode, "auto") == 0) autob = 1;
+    if (strcmp(hvacMode, "heat") == 0) heat = 1;
+    if (strcmp(hvacMode, "cool") == 0) cool = 1;
+    if (strcmp(hvacMode, "eheat") == 0) eheat = 1;
 
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;

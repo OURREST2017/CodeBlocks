@@ -36,12 +36,12 @@
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 3, -1, 480, 272, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 25, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 375, 230, 80, 25, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 28, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 375, 230, 80, 28, 0, 0x0, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "HEATING STAGES", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "1 Stage", ID_BUTTON_1_STAGE, 120, 80, 240, 40, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "2 Stages", ID_BUTTON_2_STAGE, 120, 151, 240, 40, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "1 Stage", ID_BUTTON_1_STAGE, 120, 90, 240, 40, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "2 Stages", ID_BUTTON_2_STAGE, 120, 145, 240, 40, 0, 0x0, 0 },
 };
 
 static int one_mode;

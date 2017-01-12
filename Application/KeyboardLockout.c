@@ -35,12 +35,12 @@
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 3, -1, 480, 272, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 25, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 375, 230, 80, 25, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 28, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 375, 230, 80, 28, 0, 0x0, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "KEYBOARD LOCKOUT", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "Unlocked", ID_BUTTON_UNLOCOKED, 120, 80, 240, 40, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Locked", ID_BUTTON_LOCKED, 120, 151, 240, 40, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Unlocked", ID_BUTTON_UNLOCOKED, 120, 90, 240, 40, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Locked", ID_BUTTON_LOCKED, 120, 145, 240, 40, 0, 0x0, 0 },
 };
 
 static int unlocked_mode;
@@ -105,11 +105,11 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             case WM_NOTIFICATION_RELEASED:
                 if (unlocked_mode)
                 {
-                    strcpy(keyboardLockout, "unlocked");
+                    strcpy(keyboardLock, "unlocked");
                 }
                 else
                 {
-                    strcpy(keyboardLockout, "locked");
+                    strcpy(keyboardLock, "locked");
                 }
                 GUI_Delay(100);
                 state = 16;
@@ -153,7 +153,7 @@ WM_HWIN CreateKeyboardLockout(void)
 {
     WM_HWIN hWin;
 
-    if (strcmp(keyboardLockout, "locked") == 0)
+    if (strcmp(keyboardLock, "locked") == 0)
     {
         unlocked_mode = 0;
     }

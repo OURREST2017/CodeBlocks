@@ -98,8 +98,8 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { TEXT_CreateIndirect, "TIME", ID_TEXT_SLEEP_TIME, 144, 185, 200, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "TEMP", ID_TEXT_SLEEP_TEMP, 363, 185, 80, 20, 0, 0x64, 0 },
 
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 25, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "EDIT", ID_BUTTON_EDIT, 375, 230, 80, 25, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 28, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "EDIT", ID_BUTTON_EDIT, 375, 230, 80, 28, 0, 0x0, 0 },
 
 };
 
@@ -160,70 +160,70 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_WAKE);
         TEXT_SetFont(hItem, &FontBig20B);
         TEXT_SetTextAlign(hItem, GUI_TA_LEFT);
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_WAKE_TIME);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetFont(hItem, &FontBig20B);
         TEXT_SetText(hItem, "6:00 am - 8:00 am");
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_WAKE_TEMP);
         TEXT_SetFont(hItem, &FontBig20B);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetText(hItem, "78");
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_LEAVE);
         TEXT_SetFont(hItem, &FontBig20B);
         TEXT_SetTextAlign(hItem, GUI_TA_LEFT);
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_LEAVE_TIME);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetFont(hItem, &FontBig20B);
         TEXT_SetText(hItem, "6:00 am - 8:00 am");
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_LEAVE_TEMP);
         TEXT_SetFont(hItem, &FontBig20B);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetText(hItem, "78");
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_RETURN);
         TEXT_SetFont(hItem, &FontBig20B);
         TEXT_SetTextAlign(hItem, GUI_TA_LEFT);
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_RETURN_TIME);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetFont(hItem, &FontBig20B);
         TEXT_SetText(hItem, "6:00 am - 8:00 am");
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_RETURN_TEMP);
         TEXT_SetFont(hItem, &FontBig20B);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetText(hItem, "78");
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SLEEP);
         TEXT_SetFont(hItem, &FontBig20B);
         TEXT_SetTextAlign(hItem, GUI_TA_LEFT);
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SLEEP_TIME);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetFont(hItem, &FontBig20B);
         TEXT_SetText(hItem, "6:00 am - 8:00 am");
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SLEEP_TEMP);
         TEXT_SetFont(hItem, &FontBig20B);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetText(hItem, "78");
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
         WM_SetCallback(hItem, buttonOn16_cb);

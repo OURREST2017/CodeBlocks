@@ -702,9 +702,14 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_RETURN);
         WM_SetCallback(hItem, return_button);
 
-        hItem = pMsg->hWin;
-        WINDOW_SetBkColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
+ //       hItem = pMsg->hWin;
+//        WINDOW_SetBkColor(hItem, GUI_MAKE_COLOR(0x00FF0000));
         //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
+        TEXT_SetFont(hItem, GUI_FONT_32B_1);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetTextColor(hItem, GUI_WHITE);
+
         hItem = WM_GetDialogItem(pMsg->hWin, ID_IMAGE_COLORS);
         pData = _GetImageById(ID_IMAGE_0_IMAGE_0, &FileSize);
         IMAGE_SetPNG(hItem, pData, FileSize);
@@ -739,40 +744,44 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_0);
         TEXT_SetFont(hItem, &GUI_FontRounded16);
+        TEXT_SetTextColor(hItem, 0x808080);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_1);
         TEXT_SetFont(hItem, &GUI_FontRounded16);
+        TEXT_SetTextColor(hItem, 0x808080);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_2);
         TEXT_SetFont(hItem, &GUI_FontRounded16);
+        TEXT_SetTextColor(hItem, 0x808080);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_3);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetTextColor(hItem, 0x808080);
         TEXT_SetFont(hItem, &GUI_FontRounded16);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_4);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetTextColor(hItem, 0x808080);
         TEXT_SetFont(hItem, &GUI_FontRounded16);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_5);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetTextColor(hItem, 0x808080);
         TEXT_SetFont(hItem, &GUI_FontRounded16);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_6);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetTextColor(hItem, 0x808080);
         TEXT_SetFont(hItem, &GUI_FontRounded16);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_7);
         TEXT_SetFont(hItem, &GUI_FontRounded16);
+        TEXT_SetTextColor(hItem, 0x808080);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
 
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
-        TEXT_SetFont(hItem, GUI_FONT_32B_1);
-        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        TEXT_SetTextColor(hItem, GUI_WHITE);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);

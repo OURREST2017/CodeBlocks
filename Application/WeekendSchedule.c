@@ -47,14 +47,14 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "EDIT SCHEDULE", ID_TEXT_HEADER, 40, -1, 252, 50, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 25, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "WEEKDAY", ID_BUTTON_WEEKDAY, 162, 230, 129, 25, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 378, 230, 80, 25, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 28, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "WEEKDAY", ID_BUTTON_WEEKDAY, 162, 230, 129, 28, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 378, 230, 80, 28, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "WEEKEND", ID_TEXT_WEEKEND, 280, 0, 189, 50, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "PERIOD", ID_BUTTON_PERIOD, 25, 90, 90, 26, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "START", ID_BUTTON_START, 136, 90, 90, 26, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "STOP", ID_BUTTON_STOP, 245, 90, 90, 26, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_TEMPURATURE, 354, 90, 90, 26, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "PERIOD", ID_BUTTON_PERIOD, 25, 90, 90, 28, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "START", ID_BUTTON_START, 136, 90, 90, 28, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "STOP", ID_BUTTON_STOP, 245, 90, 90, 28, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_TEMPURATURE, 354, 90, 90, 28, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "WAKE", ID_TEXT_WAKE, 31, 60, 83, 23, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_START_TIME, 144, 60, 80, 23, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_STOP_TIME, 251, 62, 81, 22, 0, 0x64, 0 },
@@ -229,25 +229,25 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_WAKE);
         TEXT_SetFont(hItem, GUI_FONT_20B_1);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_START_TIME);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetFont(hItem, GUI_FONT_20B_1);
         TEXT_SetText(hItem, "6:00 am");
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_STOP_TIME);
         TEXT_SetFont(hItem, GUI_FONT_20B_1);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetText(hItem, "8:00 am");
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_TEMP_VAR);
         TEXT_SetFont(hItem, GUI_FONT_20B_1);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetText(hItem, "78");
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00B4B4B4));
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
         upButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_UP);
         WM_SetCallback(upButton, big_up_button);

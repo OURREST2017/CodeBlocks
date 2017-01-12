@@ -22,29 +22,35 @@
 
 #define ID_WINDOW_0 (GUI_ID_USER + 0x02)
 #define ID_BUTTON_CANCEL (GUI_ID_USER + 0x05)
-#define ID_BUTTON_SAVE (GUI_ID_USER + 0x06)
+#define ID_BUTTON_DONE (GUI_ID_USER + 0x06)
 #define ID_HEADER_0 (GUI_ID_USER + 0x07)
 #define ID_TEXT_HEADER (GUI_ID_USER + 0x08)
-#define ID_BUTTON_0 (GUI_ID_USER + 0x09)
-#define ID_BUTTON_1 (GUI_ID_USER + 0x0A)
-#define ID_BUTTON_2 (GUI_ID_USER + 0x0B)
+#define ID_BUTTON_ROOM1 (GUI_ID_USER + 0x09)
+#define ID_BUTTON_ROOM2 (GUI_ID_USER + 0x0A)
+#define ID_BUTTON_ROOM3 (GUI_ID_USER + 0x0B)
+#define ID_BUTTON_ROOM4 (GUI_ID_USER + 0x0C)
+#define ID_BUTTON_ROOM5 (GUI_ID_USER + 0x0D)
+#define ID_BUTTON_ROOM6 (GUI_ID_USER + 0x0E)
 
 /*********************************************************************
 *
 *       _aDialogCreate
 */
+
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 25, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 375, 230, 80, 25, 0, 0x0, 0 },
+//    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 25, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 375, 230, 80, 25, 0, 0x0, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
-    { TEXT_CreateIndirect, "THERMOSTAT LOCATION(S)", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "LIVING ROOM", ID_BUTTON_0, 110, 70, 265, 34, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "MASTER BEDROOM", ID_BUTTON_1, 110, 120, 265, 34, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "OFFICE", ID_BUTTON_2, 110, 170, 265, 34, 0, 0x0, 0 },
+    { TEXT_CreateIndirect, "THERMOSTAT LOCATIONS", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
+    { BUTTON_CreateIndirect, "", ID_BUTTON_ROOM1, 30, 70, 200, 34, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "", ID_BUTTON_ROOM2, 30, 120, 200, 34, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "", ID_BUTTON_ROOM3, 30, 170, 200, 34, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "", ID_BUTTON_ROOM4, 250, 70, 200, 34, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "", ID_BUTTON_ROOM5, 250, 120, 200, 34, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "", ID_BUTTON_ROOM6, 250, 170, 200, 34, 0, 0x0, 0 },
 };
-
 /*********************************************************************
 *
 *       _cbDialog
@@ -58,34 +64,96 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_INIT_DIALOG:
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        WM_SetCallback(hItem, buttonOn16_cb);
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
-        WM_SetCallback(hItem, buttonOn16_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetFont(hItem, GUI_FONT_32B_1);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_0);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ROOM1);
+        BUTTON_SetText(hItem, thermo_rooms[0]);
+        WM_SetCallback(hItem, buttonOn20_cb);
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_1);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ROOM2);
+        BUTTON_SetText(hItem, thermo_rooms[1]);
+        WM_SetCallback(hItem, buttonOn20_cb);
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_2);
-        BUTTON_SetFont(hItem, GUI_FONT_20B_1);
-        BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x00FFFFFF));
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ROOM3);
+        BUTTON_SetText(hItem, thermo_rooms[2]);
+        WM_SetCallback(hItem, buttonOn20_cb);
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ROOM4);
+        BUTTON_SetText(hItem, thermo_rooms[3]);
+        WM_SetCallback(hItem, buttonOn20_cb);
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ROOM5);
+        BUTTON_SetText(hItem, thermo_rooms[4]);
+        WM_SetCallback(hItem, buttonOn20_cb);
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ROOM6);
+        BUTTON_SetText(hItem, thermo_rooms[5]);
+        WM_SetCallback(hItem, buttonOn20_cb);
+
+//        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
+//        WM_SetCallback(hItem, buttonOn16_cb);
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DONE);
+        WM_SetCallback(hItem, buttonOn16_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
         NCode = pMsg->Data.v;
+        char room[30];
         switch(Id)
         {
+        case ID_BUTTON_ROOM1:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_RELEASED:
+                CreateEditRoom(0);
+                break;
+            }
+            break;
+        case ID_BUTTON_ROOM2:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_RELEASED:
+                CreateEditRoom(1);
+                break;
+            }
+            break;
+        case ID_BUTTON_ROOM3:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_RELEASED:
+                CreateEditRoom(2);
+                break;
+            }
+            break;
+        case ID_BUTTON_ROOM4:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_RELEASED:
+                CreateEditRoom(3);
+                break;
+            }
+            break;
+        case ID_BUTTON_ROOM5:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_RELEASED:
+                CreateEditRoom(4);
+                break;
+            }
+            break;
+        case ID_BUTTON_ROOM6:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_RELEASED:
+                CreateEditRoom(5);
+                break;
+            }
+            break;
         case ID_BUTTON_CANCEL:
             switch(NCode)
             {
@@ -94,7 +162,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 state=17;
             }
             break;
-        case ID_BUTTON_SAVE:
+        case ID_BUTTON_DONE:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
@@ -102,24 +170,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 state=17;
             }
             break;
-        case ID_BUTTON_0:
-            switch(NCode)
-            {
-            case WM_NOTIFICATION_RELEASED:
-             break;
-           }
-        case ID_BUTTON_1:
-            switch(NCode)
-            {
-            case WM_NOTIFICATION_RELEASED:
-             break;
-           }
-        case ID_BUTTON_2:
-            switch(NCode)
-            {
-            case WM_NOTIFICATION_RELEASED:
-            break;
-            }
         }
         break;
     default:

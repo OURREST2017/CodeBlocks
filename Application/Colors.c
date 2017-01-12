@@ -30,6 +30,24 @@
 #define ID_BUTTON_CANCEL  (GUI_ID_USER + 0x14)
 #define ID_BUTTON_SAVE  (GUI_ID_USER + 0x15)
 
+/*********************************************************************
+*
+*       _aDialogCreate
+*/
+static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
+{
+    { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
+    { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
+    { TEXT_CreateIndirect, "COLORS", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_GREEN, 20, 120, 75, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_LBLUE, 110, 120, 75, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_YELLOW, 200, 120, 75, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_PINK, 290, 120, 75, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_BLUE, 380, 120, 75, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 28, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 380, 230, 80, 28, 0, 0x0, 0 },
+};
+
 static GUI_COLOR but_green1, but_green2, but_lblue1, but_lblue2;
 static GUI_COLOR but_yellow1, but_yellow2, but_pink1, but_pink2, but_blue1, but_blue2;
 
@@ -132,24 +150,6 @@ static void draw_blue_cb(WM_MESSAGE * pMsg)
 
 /*********************************************************************
 *
-*       _aDialogCreate
-*/
-static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
-{
-    { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
-    { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
-    { TEXT_CreateIndirect, "COLORS", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_GREEN, 20, 120, 75, 50, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_LBLUE, 110, 120, 75, 50, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_YELLOW, 200, 120, 75, 50, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_PINK, 290, 120, 75, 50, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_BLUE, 380, 120, 75, 50, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_CANCEL, 20, 230, 80, 25, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_SAVE, 380, 230, 80, 25, 0, 0x0, 0 },
-};
-
-/*********************************************************************
-*
 *       _cbDialog
 */
 static void _cbDialog(WM_MESSAGE * pMsg)
@@ -167,28 +167,28 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextColor(hItem, GUI_WHITE);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_GREEN);
-        but_green1 = 0x48866c;
-        but_green2 = 0x62b29a; //
+        but_green1 = 0x63b39b;
+        but_green2 = 0x48866c;
         WM_SetCallback(hItem, draw_green_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_LBLUE);
-        but_lblue1 = 0xb7a491;
-        but_lblue2 = 0xedb6bd; //
+        but_lblue1 = 0xedb6bd;
+        but_lblue2 = 0xb7a491;
         WM_SetCallback(hItem, draw_lightblue_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_YELLOW);
-        but_yellow1 = 0x85b4cb;
-        but_yellow2 = 0xa1e6fd; //
+        but_yellow1 = 0xa1e6fd;
+        but_yellow2 = 0x85b4cb;
         WM_SetCallback(hItem, draw_yellow_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_PINK);
-        but_pink1 = 0xb794c2;
-        but_pink2 = 0xdfc4d8; //
+        but_pink1 = 0xdfc4d8;
+        but_pink2 = 0xb794c2;
         WM_SetCallback(hItem, draw_pink_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_BLUE);
-        but_blue1 = 0x7a5114;
-        but_blue2 = 0xc1842d; //
+        but_blue1 = 0xc1842d;
+        but_blue2 = 0x7a5114;
         WM_SetCallback(hItem, draw_blue_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);

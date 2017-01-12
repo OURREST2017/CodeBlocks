@@ -38,7 +38,7 @@
 *
 *       _aDialogCreate
 */
-char customer_text[30], mac_text[30], zip_text[12], crc_text[10];
+static char customer_text[30], mac_text[30], zip_text[12], crc_text[10], keyboard_text[50];
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
@@ -48,12 +48,12 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { TEXT_CreateIndirect, "Text", ID_TEXT_2, 0, 129, 168, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_3, 0, 163, 168, 20, 0, 0x64, 0 },
 //    { TEXT_CreateIndirect, "Text", ID_TEXT_4, 0, 180, 178, 20, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "Frank", ID_BUTTON_CUSTOMER, 176, 90, 230, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "32807", ID_BUTTON_ZIP, 176, 125, 230, 30, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, customer_text, ID_BUTTON_CUSTOMER, 176, 90, 230, 30, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, zip_text, ID_BUTTON_ZIP, 176, 125, 230, 30, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, mac_text, ID_BUTTON_MAC, 176, 160, 230, 30, 0, 0x0, 0 },
 //    { BUTTON_CreateIndirect, "12334", ID_BUTTON_CRC, 186, 175, 230, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 25, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 375, 230, 80, 25, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 28, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 375, 230, 80, 28, 0, 0x0, 0 },
 };
 
 void profile_cb(WM_MESSAGE * pMsg)
@@ -116,13 +116,16 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_4);
         WM_SetCallback(hItem, profile_cb);
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ZIP);
-        WM_SetCallback(hItem, profile_cb);
-
         customerButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CUSTOMER);
+        BUTTON_SetText(customerButton, customer_text);
         WM_SetCallback(customerButton, profile_cb);
         //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ZIP);
+        BUTTON_SetText(hItem, zip_text);
+        WM_SetCallback(hItem, profile_cb);
+
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_MAC);
+        BUTTON_SetText(hItem, mac_text);
         WM_SetCallback(hItem, profile_cb);
         //
 //        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CRC);
@@ -145,8 +148,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                strcpy(keyboard_text, firstNameText);
-                state = 8;
+                CreateAlphaKeyboard(1, firstNameText, "Name", "Profile");
                 break;
             }
             break;
@@ -154,8 +156,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                strcpy(keyboard_text, zipCode);
-                state = 2;
+                CreateNumericKeyboard(2, zipCode, "Zip Code", "Profile");
                 break;
             }
             break;
@@ -203,14 +204,25 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 *
 *       CreateWindow
 */
-WM_HWIN CreateProfile(void);
-WM_HWIN CreateProfile(void)
+WM_HWIN CreateProfile(int idx, char * txt);
+WM_HWIN CreateProfile(int idx, char * txt)
 {
     WM_HWIN hWin;
-    strcpy(crc_text, "1234");
-    strcpy(zip_text, zipCode);
-    strcpy(customer_text, firstNameText);
-    strcpy(mac_text, "00:11:22:44:55:66");
+    if (idx == 0)
+    {
+        strcpy(crc_text, "1234");
+        strcpy(zip_text, zipCode);
+        strcpy(customer_text, firstNameText);
+        strcpy(mac_text, "00:11:22:44:55:66");
+    }
+    else if (idx == 1)
+    {
+        strcpy(customer_text, txt);
+    }
+    else if (idx == 2)
+    {
+        strcpy(zip_text, txt);
+    }
 
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;

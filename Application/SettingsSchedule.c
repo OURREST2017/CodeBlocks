@@ -41,15 +41,15 @@
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "SET SCHEDULE", ID_BUTTON_SET_SCHEDULE, 20, 230, 143, 24, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "EDIT", ID_BUTTON_EDIT, 375, 230, 80, 25, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "SET SCHEDULE", ID_BUTTON_SET_SCHEDULE, 20, 230, 143, 28, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "EDIT", ID_BUTTON_EDIT, 375, 230, 80, 28, 0, 0x0, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
     { TEXT_CreateIndirect,   "SETTINGS: SCHEDULE", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "All Days", ID_BUTTON_ALL_DAYS, 20, 90, 200, 40, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Weekday/Weekend", ID_BUTTON_WEEKEND, 20, 150, 200, 40, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Each Day", ID_BUTTON_EACH_DAY, 255, 90, 200, 40, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Vacation", ID_BUTTON_VACATION, 255, 150, 200, 40, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "HELP", ID_BUTTON_HELP, 204, 230, 80, 25, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "All Days", ID_BUTTON_ALL_DAYS, 20, 90, 200, 42, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Weekday/Weekend", ID_BUTTON_WEEKEND, 20, 150, 200, 42, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Each Day", ID_BUTTON_EACH_DAY, 255, 90, 200, 42, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Vacation", ID_BUTTON_VACATION, 255, 150, 200, 42, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "HELP", ID_BUTTON_HELP, 204, 230, 80, 28, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "return", ID_BUTTON_RETURN, 20, 12, 50, 50, 0, 0x0, 0 },
 };
 char schedule[20];
