@@ -67,7 +67,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         //
         noButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_NO);
 
-        if (backupHeat)
+        if (backupHeat_mode)
         {
             WM_SetCallback(yesButton, buttonOn22_cb);
             WM_SetCallback(noButton, buttonOff22_cb);
@@ -143,7 +143,7 @@ WM_HWIN CreateBackupHeat(void)
 {
     WM_HWIN hWin;
 
-    backupHeat_mode = backupHeat;
+    backupHeat_mode = (strcmp(backupHeatingType, "yes") == 0);
 
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;

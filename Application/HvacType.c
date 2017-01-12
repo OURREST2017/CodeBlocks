@@ -117,15 +117,15 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             case WM_NOTIFICATION_RELEASED:
                 if (forcedAir_mode)
                 {
-                    strcpy(systemType,"forced air");
+                    strcpy(hvacType,"air");
                 }
                 else if (heatPump_mode)
                 {
-                    strcpy(systemType,"heat pump");
+                    strcpy(hvacType,"heat");
                 }
                 else
                 {
-                    strcpy(systemType,"hot water");
+                    strcpy(hvacType,"water");
                 }
                 GUI_Delay(100);
                 state=17;
@@ -185,16 +185,28 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 *
 *       CreateWindow
 */
-WM_HWIN CreateSystemType(void);
-WM_HWIN CreateSystemType(void)
+WM_HWIN CreateHvacType(void);
+WM_HWIN CreateHvacType(void)
 {
     WM_HWIN hWin;
 
-    if (strcmp(systemType, "heat pump") == 0)
+    if (strcmp(hvacType, "heat") == 0)
     {
         forcedAir_mode = 0;
         hotWater_mode = 0;
         heatPump_mode = 1;
+    }
+    else if (strcmp(hvacType, "air") == 0)
+    {
+        forcedAir_mode = 1;
+        hotWater_mode = 0;
+        heatPump_mode = 0;
+    }
+    else
+    {
+        forcedAir_mode = 0;
+        hotWater_mode = 1;
+        heatPump_mode = 0;
     }
 
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);

@@ -72,14 +72,14 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 
         if (celcius)
         {
-            WM_SetCallback(farenheitButton, buttonOn22_cb);
-            WM_SetCallback(celciusButton, buttonOff22_cb);
+             WM_SetCallback(farenheitButton, buttonOff22_cb);
+            WM_SetCallback(celciusButton, buttonOn22_cb);
         }
         else
         {
-            WM_SetCallback(farenheitButton, buttonOff22_cb);
-            WM_SetCallback(celciusButton, buttonOn22_cb);
-        }
+            WM_SetCallback(farenheitButton, buttonOn22_cb);
+            WM_SetCallback(celciusButton, buttonOff22_cb);
+       }
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
         WM_SetCallback(hItem, buttonOn16_cb);

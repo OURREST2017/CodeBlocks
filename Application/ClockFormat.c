@@ -76,8 +76,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         }
         else
         {
-            WM_SetCallback(hour12Button, buttonOn22_cb);
-            WM_SetCallback(hour24Button, buttonOff22_cb);
+            WM_SetCallback(hour12Button, buttonOff22_cb);
+            WM_SetCallback(hour24Button, buttonOn22_cb);
         }
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);

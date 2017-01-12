@@ -145,7 +145,7 @@ WM_HWIN CreateHeatingStages(void)
 {
     WM_HWIN hWin;
 
-    one_mode = (heatingStages == 1);
+    one_mode = heatingStages == 1;
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }

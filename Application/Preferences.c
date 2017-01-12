@@ -41,7 +41,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
-    { TEXT_CreateIndirect, "PREFERENCES", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
+    { TEXT_CreateIndirect,   "PREFERENCES", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
     { BUTTON_CreateIndirect, "Sheduling Options", ID_BUTTON_SCHEDULING_OPTIONS, 10, 70, 220, 36, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Tempurature Scale", ID_BUTTON_TEMPURATURE_SCALE, 10, 115, 220, 36, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Clock Format", ID_BUTTON_CLOCK_FORMAT, 10, 160, 220, 36, 0, 0x0, 0 },

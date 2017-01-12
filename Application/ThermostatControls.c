@@ -43,6 +43,8 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { TEXT_CreateIndirect, "THERMOSTAT CONTROLS", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
 };
 
+static int thermo_controls;
+static WM_HWIN cooling, heating;
 /*********************************************************************
 *
 *       _cbDialog
@@ -56,30 +58,53 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_INIT_DIALOG:
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_CHECKBOX_COOLING);
-        CHECKBOX_SetFont(hItem, &GUI_FontRounded22);
-        CHECKBOX_SetTextColor(hItem, 0x48856A);
-        CHECKBOX_SetText(hItem, "Cooling");
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_CHECKBOX_HEATING);
-        CHECKBOX_SetFont(hItem, &GUI_FontRounded22);
-        CHECKBOX_SetTextColor(hItem, 0x48856A);
-        CHECKBOX_SetText(hItem, "Heating");
-        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
+        TEXT_SetFont(hItem, GUI_FONT_32B_ASCII);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
+
+        cooling = WM_GetDialogItem(pMsg->hWin, ID_CHECKBOX_COOLING);
+        CHECKBOX_SetFont(cooling, &GUI_FontRounded22);
+        CHECKBOX_SetTextColor(cooling, 0x48856A);
+        CHECKBOX_SetText(cooling, "Cooling");
+
+        heating = WM_GetDialogItem(pMsg->hWin, ID_CHECKBOX_HEATING);
+        CHECKBOX_SetFont(heating, &GUI_FontRounded22);
+        CHECKBOX_SetTextColor(heating, 0x48856A);
+        CHECKBOX_SetText(heating, "Heating");
+
+        if (thermo_controls == 0)
+        {
+            CHECKBOX_SetState(cooling, 0);
+            CHECKBOX_SetState(heating, 0);
+        }
+        else if (thermo_controls == 1)
+        {
+            CHECKBOX_SetState(cooling, 1);
+            CHECKBOX_SetState(heating, 0);
+        }
+        else if (thermo_controls == 2)
+        {
+            CHECKBOX_SetState(cooling, 0);
+            CHECKBOX_SetState(heating, 1);
+        }
+        else
+        {
+            CHECKBOX_SetState(cooling, 1);
+            CHECKBOX_SetState(heating, 1);
+        }
+
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
         WM_SetCallback(hItem, buttonOn16_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
         WM_SetCallback(hItem, buttonOn16_cb);
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
-        TEXT_SetFont(hItem, GUI_FONT_32B_ASCII);
-        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
         NCode = pMsg->Data.v;
+        int c,h;
         switch(Id)
         {
         case ID_CHECKBOX_COOLING:
@@ -108,6 +133,26 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                c = CHECKBOX_GetState(cooling);
+                h = CHECKBOX_GetState(heating);
+
+                if (c == 0 && h == 0)
+                {
+                    thermostatControls = 0;
+                }
+                else if (c == 1 && h == 0)
+                {
+                    thermostatControls = 1;
+                }
+                else if (c == 0 && h == 1)
+                {
+                    thermostatControls = 2;
+                }
+                else
+                {
+                    thermostatControls = 3;
+                }
+
                 GUI_Delay(100);
                 state=17;
             }
@@ -129,6 +174,7 @@ WM_HWIN CreateThermostatControls(void)
 {
     WM_HWIN hWin;
 
+    thermo_controls = thermostatControls;
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }

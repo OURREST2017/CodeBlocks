@@ -50,9 +50,9 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "WIFI SETUP", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 220, 80, 28, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Disconnect from Network", ID_BUTTON_DISCONNECT, 128, 220, 222, 28, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 378, 220, 80, 28, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 28, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Disconnect from Network", ID_BUTTON_DISCONNECT, 128, 230, 222, 28, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 378, 230, 80, 28, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_1, 27, 60, 154, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_2, 195, 60, 181, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_3, 78, 82, 103, 20, 0, 0x64, 0 },
@@ -95,7 +95,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_2);
         TEXT_SetText(hItem, myWifiNetwork);
-        TEXT_SetFont(hItem, GUI_FONT_20_ASCII);
+        TEXT_SetFont(hItem, &FontBig20B);
         TEXT_SetTextAlign(hItem, GUI_TA_LEFT | GUI_TA_VCENTER);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_3);
@@ -105,7 +105,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_4);
-        TEXT_SetFont(hItem, GUI_FONT_20_ASCII);
+        TEXT_SetFont(hItem, &FontBig20B);
         TEXT_SetText(hItem, "Working");
         TEXT_SetTextAlign(hItem, GUI_TA_LEFT | GUI_TA_VCENTER);
         //
@@ -118,7 +118,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_6);
         TEXT_SetTextAlign(hItem, GUI_TA_LEFT | GUI_TA_VCENTER);
         TEXT_SetText(hItem, "192.168.1.30");
-        TEXT_SetFont(hItem, GUI_FONT_20_ASCII);
+        TEXT_SetFont(hItem, &FontBig20B);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_7);
         TEXT_SetFont(hItem, GUI_FONT_20_ASCII);
@@ -127,7 +127,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_8);
-        TEXT_SetFont(hItem, GUI_FONT_20_ASCII);
+        TEXT_SetFont(hItem, &FontBig20B);
         TEXT_SetText(hItem, "00:50:56:8A:E3:C5");
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_9);
@@ -139,7 +139,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_10);
         TEXT_SetTextAlign(hItem, GUI_TA_LEFT | GUI_TA_VCENTER);
         TEXT_SetText(hItem, "3453");
-        TEXT_SetFont(hItem, GUI_FONT_20_ASCII);
+        TEXT_SetFont(hItem, &FontBig20B);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_11);
         TEXT_SetText(hItem, "Please visit");

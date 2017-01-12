@@ -43,7 +43,7 @@ extern  WM_HWIN CreateProfile(int, char *);
 extern  WM_HWIN CreatePreferences(void);
 extern  WM_HWIN CreateSystemSetup(void);
 extern  WM_HWIN CreateThermostatLocations(void);
-extern  WM_HWIN CreateSystemType(void);
+extern  WM_HWIN CreateHvacType(void);
 extern  WM_HWIN CreateThermostatControls(void);
 extern  WM_HWIN CreateFanControl(void);
 extern  WM_HWIN CreateWifiSetup(void);
@@ -89,13 +89,13 @@ typedef struct schedules
     int systemDefined;
 } schedules;
 
-typedef struct hvacConfig
+typedef struct hvacConfig_s
 {
     char *hvacType;
     char *backupHeatingType;
     int coolingStages;
     int heatingStages;
-} hvacConfig;
+} hvacConfig_s;
 
 int state;
 int temperature;
@@ -146,9 +146,10 @@ int thermostatControls;
 char zipCode[12];
 int metric;
 int backupHeat;
-char systemType[20];
+char hvacType[20];
 int coolingStages;
 int heatingStages;
+char backupHeatingType[10];
 
 int testing;
 

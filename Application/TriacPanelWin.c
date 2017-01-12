@@ -60,7 +60,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     {
     case WM_INIT_DIALOG:
         hItem = pMsg->hWin;
-        WINDOW_SetBkColor(hItem, 0x0FFee0C0);
+        WINDOW_SetBkColor(hItem, 0x0FFee0c6);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_0);
         TEXT_SetFont(hItem, GUI_FONT_32B_1);

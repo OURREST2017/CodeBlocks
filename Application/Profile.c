@@ -148,7 +148,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                CreateAlphaKeyboard(1, firstNameText, "Name", "Profile");
+                CreateAlphaKeyboard(1, ownersName, "Name", "Profile");
                 break;
             }
             break;
@@ -212,7 +212,7 @@ WM_HWIN CreateProfile(int idx, char * txt)
     {
         strcpy(crc_text, "1234");
         strcpy(zip_text, zipCode);
-        strcpy(customer_text, firstNameText);
+        strcpy(customer_text, ownersName);
         strcpy(mac_text, "00:11:22:44:55:66");
     }
     else if (idx == 1)
