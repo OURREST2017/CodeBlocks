@@ -66,10 +66,16 @@
 			<Add library="GUI/Library/GUI.a" />
 			<Add library="Lib/GUISim.a" />
 		</Linker>
+		<Unit filename="Application/AllDays.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="Application/AlphaKeyboard.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/BackupHeat.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/ButtonUtils.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/ClockFormat.c">
@@ -87,16 +93,19 @@
 		<Unit filename="Application/DaylightSavingTime.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="Application/DeleteThermo.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="Application/EachDay.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Application/EditSchedule.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/Fan.c">
+		<Unit filename="Application/EditRoom.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/FanControl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/FanMode.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/HeatingStages.c">
@@ -105,16 +114,25 @@
 		<Unit filename="Application/HomeWin.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="Application/HvacType.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="Application/KeyboardLockout.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/Languages.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="Application/LoadConfig.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="Application/Mode.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/NumericKeyboard.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/PassFail.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/Preferences.c">
@@ -124,6 +142,12 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/Ranger.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/Resources.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/RoundedFonts.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/Schedule.c">
@@ -147,9 +171,6 @@
 		<Unit filename="Application/SystemSetup.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Application/SystemType.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="Application/SystemsChangeOver.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -162,12 +183,32 @@
 		<Unit filename="Application/ThermostatLocations.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="Application/TriacPanelWin.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/Vacation.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/Watermark.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/WeekendSchedule.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/WifiDisconnect.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="Application/WifiSetup.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/WinMain.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="Application/cJSON.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/cJSON.h" />
+		<Unit filename="Application/config_def.json" />
 		<Unit filename="Application/main.h" />
 		<Unit filename="Config/GUIConf.c">
 			<Option compilerVar="CC" />
