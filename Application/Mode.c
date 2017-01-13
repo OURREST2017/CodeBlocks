@@ -49,69 +49,39 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { TEXT_CreateIndirect, "SELECT MODE", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
 };
 
-static WM_HWIN cool_but, heat_but, auto_but, off_but, eheat_but;
-static WM_HWIN cool_but, heat_but, off_but, auto_but, eheat_but;
 static int cool, heat, off, autob=1, eheat;
 
-static void eheat_cb(WM_MESSAGE * pMsg)
+static void modeButton(WM_MESSAGE * pMsg, char *nm, int sel)
 {
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        drawButton16("E-HEAT", 80, 30, eheat);
+        drawButton16(nm, 80, 30, sel);
         break;
     default:
         BUTTON_Callback(pMsg);
         break;
     }
+}
+static void eheat_cb(WM_MESSAGE * pMsg)
+{
+    modeButton(pMsg, "E-HEAT", eheat);
 }
 static void auto_cb(WM_MESSAGE * pMsg)
 {
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton16("AUTO", 80, 30, autob);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
+    modeButton(pMsg, "AUTO", autob);
 }
 static void cool_cb(WM_MESSAGE * pMsg)
 {
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton16("COOL", 80, 30, cool);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
+    modeButton(pMsg, "COOL", cool);
 }
 static void heat_cb(WM_MESSAGE * pMsg)
 {
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton16("HEAT", 80, 30, heat);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
+    modeButton(pMsg, "HEAT", heat);
 }
 static void off_cb(WM_MESSAGE * pMsg)
 {
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton16("OFF", 80, 30, off);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
+    modeButton(pMsg, "OFF", off);
 }
 
 /*********************************************************************
@@ -124,25 +94,32 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     WM_HWIN hItem;
     int     NCode;
     int     Id;
+    GUI_RECT rect;
+    rect.x0 = 0;
+    rect.y0 = 60;
+    rect.x1 = 480;
+    rect.y1 = 200;
 
     switch (pMsg->MsgId)
     {
+    case WM_PAINT:
+        WM_InvalidateArea(&rect);
+        break;
     case WM_INIT_DIALOG:
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_OFF);
+        WM_SetCallback(hItem, off_cb);
         //
-        off_but = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_OFF);
-        WM_SetCallback(off_but, off_cb);
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HEAT);
+        WM_SetCallback(hItem, heat_cb);
         //
-        heat_but = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HEAT);
-        WM_SetCallback(heat_but, heat_cb);
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_COOL);
+        WM_SetCallback(hItem, cool_cb);
         //
-        cool_but = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_COOL);
-        WM_SetCallback(cool_but, cool_cb);
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_AUTO);
+        WM_SetCallback(hItem, auto_cb);
         //
-        auto_but = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_AUTO);
-        WM_SetCallback(auto_but, auto_cb);
-        //
-        eheat_but = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_EHEAT);
-        WM_SetCallback(eheat_but, eheat_cb);
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_EHEAT);
+        WM_SetCallback(hItem, eheat_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
         WM_SetCallback(hItem, buttonOn16_cb);
@@ -158,11 +135,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
         NCode = pMsg->Data.v;
-        GUI_RECT rect;
-        rect.x0 = 0;
-        rect.y0 = 60;
-        rect.x1 = 480;
-        rect.y1 = 200;
         switch(Id)
         {
         case ID_BUTTON_OFF:
@@ -174,7 +146,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 cool = 0;
                 heat = 0;
                 eheat = 0;
-                WM_InvalidateArea(&rect);
                 break;
             }
             break;
@@ -188,7 +159,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 heat = 1;
                 eheat = 0;
                 tempSetPoint = heatToDegrees;
-                WM_InvalidateArea(&rect);
                 break;
             }
             break;
@@ -202,7 +172,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 heat = 0;
                 eheat = 0;
                 tempSetPoint = coolToDegrees;
-                WM_InvalidateArea(&rect);
                 break;
             }
             break;
@@ -215,7 +184,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 cool = 0;
                 heat = 0;
                 eheat = 0;
-                WM_InvalidateArea(&rect);
                 break;
             }
             break;
@@ -228,7 +196,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 cool = 0;
                 heat = 0;
                 eheat = 1;
-                WM_InvalidateArea(&rect);
                 break;
             }
             break;

@@ -1,11 +1,14 @@
 #include "main.h"
+
 void MainTask(void)
 {
     GUI_Init();
+    WM_HWIN       hBkWheel;
 
     color_scheme = 0;
     initColors();
     loadConfig();
+    //saveConfig();
     holdMode = 0;
 
     state = 1;
@@ -26,7 +29,7 @@ void MainTask(void)
             state=0;
             break;
         case 2:
-            //CreateNumericKeyboard();
+            // not used
             state=0;
             break;
         case 3:
@@ -50,7 +53,7 @@ void MainTask(void)
             state=0;
             break;
         case 8:
-            //CreateAlphaKeyboard();
+            // not used
             state=0;
             break;
         case 10:

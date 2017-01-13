@@ -45,7 +45,6 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 };
 
 static int one_mode;
-
 static WM_HWIN oneButton, twoButton;
 /*********************************************************************
 *

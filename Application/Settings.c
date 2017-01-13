@@ -584,7 +584,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { TEXT_CreateIndirect, "Setup", ID_TEXT_7, 359, 226, 80, 20, 0, 0x64, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "SETTINGS", ID_TEXT_HEADER, 144, 9, 212, 33, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "return", ID_BUTTON_RETURN, 20, 12, 50, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "return", ID_BUTTON_RETURN, 20, 0, 50, 50, 0, 0x0, 0 },
 };
 
 /*********************************************************************

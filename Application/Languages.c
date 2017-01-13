@@ -44,7 +44,6 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 };
 
 static int eng_mode;
-
 static WM_HWIN engButton, spaButton;
 /*********************************************************************
 *

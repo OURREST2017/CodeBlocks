@@ -53,13 +53,14 @@ static const void * _GetImageById(U32 Id, U32 * pSize)
 
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
-    { WINDOW_CreateIndirect, "HomeWin", ID_HOME_WINDOW, 1, 1, 480, 272, 0, 0x0, 0 },
+    { WINDOW_CreateIndirect, "HomeWin", ID_HOME_WINDOW, 0, 0, 480, 272, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "COOL", ID_BUTTON_COOL, 384, 233, 75, 28, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "MODE", ID_BUTTON_MODE, 12, 233, 75, 28, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "HOLD", ID_BUTTON_HOLD, 198, 233, 75, 28, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "HEAT", ID_BUTTON_HEAT, 292, 233, 75, 28, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "FAN", ID_BUTTON_FAN, 104, 233, 75, 28, 0, 0x0, 0 },
-    { IMAGE_CreateIndirect, "Image", ID_IMAGE_GRAY_BAR, -1, 201, 480, 25, 0, 0, 0 },
+    { IMAGE_CreateIndirect, "Image", ID_IMAGE_GRAY_BAR, 0, 202, 480, 25, 0, 0, 0 },
+ //   { TEXT_CreateIndirect, "In_T_Panel", ID_TEXT_INSIDE_TEMP, 162, 64, 135, 100, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "In_T_Panel", ID_TEXT_INSIDE_TEMP, 162, 88, 135, 100, 0, 0x64, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER, -1, 0, 480, 50, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Button_Up", ID_BUTTON_UP, 390, 70, 50, 50, 0, 0x0, 0 },
@@ -108,7 +109,7 @@ static void hold_button_off(WM_MESSAGE * pMsg)
     }
 }
 
-void coolButton_cb(WM_MESSAGE * pMsg)
+static void coolButton_cb(WM_MESSAGE * pMsg)
 {
     char nm[50];
     WM_HWIN win = pMsg->hWin;
@@ -128,7 +129,7 @@ void coolButton_cb(WM_MESSAGE * pMsg)
     }
 }
 
-void heatButton_cb(WM_MESSAGE * pMsg)
+static void heatButton_cb(WM_MESSAGE * pMsg)
 {
     char nm[50];
     WM_HWIN win = pMsg->hWin;
@@ -222,6 +223,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         sprintf(buffer,"%d",insideTemp);
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_INSIDE_TEMP);
         TEXT_SetText(hItem, buffer);
+//        TEXT_SetFont(hItem, &GUI_FontFranklinGothicDemi133);
         TEXT_SetFont(hItem, GUI_FONT_D80);
         TEXT_SetTextColor(hItem, 0x00808080);
         //

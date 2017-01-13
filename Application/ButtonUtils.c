@@ -150,13 +150,35 @@ void drawBigDnButton()
         r0 += rs;
         Color = (int)r0 | ((int)g0 << 8) | ((int)b0 << 16);
         GUI_SetColor(Color);
-        GUI_DrawHLine(y++, x1++, x2--);
+//        if (i == 0)
+//        {
+//            GUI_DrawHLine(y++, x1+4, x2-4);
+//        }
+//        else if (i == 1)
+//        {
+//            GUI_DrawHLine(y++, x1+2, x2-2);
+//        }
+//        else if (i == 2)
+//        {
+//            GUI_DrawHLine(y++, x1+1, x2-1);
+//        }
+//        else if (i == 3)
+//        {
+//            GUI_DrawHLine(y++, x1+1, x2-1);
+//        }
+//        else
+//        {
+//            GUI_DrawHLine(y++, x1, x2);
+//        }
+        GUI_DrawHLine(y++, x1, x2);
+        x1++;
+        x2--;
         g0 += gs;
         b0 += bs;
         r0 += rs;
     }
-    GUI_SetColor(GUI_LIGHTGRAY);
-    //GUI_AA_DrawPolyOutline(aPoints, countof(aPoints), 2, 4, 27);
+    GUI_SetColor(GUI_RED);
+    //GUI_AA_DrawPolyOutline(aPoints, 4, 2, 4, 27);
 }
 
 void drawSmallUpButton()
@@ -507,7 +529,7 @@ void drawButtonOff16(char * but, int w, int h, int col)
     //GUI_AA_DrawRoundedRect(0, 0, rect.x1, rect.y1, 6);
 }
 
-void drawCoolButton(char * but, int w, int h, int col, int bor)
+void drawScheduleButton(char * but, int w, int h, int col, int bor)
 {
     GUI_RECT rect;
     rect.x0 = 0;
@@ -521,6 +543,37 @@ void drawCoolButton(char * but, int w, int h, int col, int bor)
     if (col)
     {
         GUI_DrawGradientRoundedV(xo, yo, rect.x1-xo, rect.y1-yo, 2, color_map[color_scheme].stop, color_map[color_scheme].start);
+    }
+    else
+    {
+        GUI_DrawGradientRoundedV(2, 2, rect.x1-2, rect.y1-2, 4, color_map[6].stop, color_map[6].start);
+    }
+    GUI_SetFont(&GUI_FontRounded22);
+    GUI_SetColor((col == 6) ? GUI_BLACK : GUI_WHITE);
+    GUI_SetTextMode(GUI_TM_TRANS);
+    GUI_DispStringInRect(but, &rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
+    GUI_SetColor((bor == 0) ? 0x00cccccc : GUI_RED);
+    if (bor)
+    {
+        GUI_SetPenSize(3);
+        GUI_AA_DrawRoundedRect(1, 1, rect.x1, rect.y1, 6);
+    }
+}
+
+void drawCoolButton(char * but, int w, int h, int col, int bor)
+{
+    GUI_RECT rect;
+    rect.x0 = 0;
+    rect.y0 = 0;
+    rect.x1 = w-1;
+    rect.y1 = h-1;
+    int xo;
+    int yo;
+    xo = bor * 2;
+    yo = bor * 2;
+    if (col)
+    {
+        GUI_DrawGradientRoundedV(xo, yo, rect.x1-xo+1, rect.y1-yo+1,4, color_map[color_scheme].stop, color_map[color_scheme].start);
     }
     else
     {
@@ -601,5 +654,176 @@ void drawButton(char * but, int col)
     GUI_SetColor(GUI_LIGHTGRAY);
     GUI_SetPenSize(2);
     //GUI_AA_DrawRoundedRect(0, 0, 74, 23, 4);
+}
+
+int OwnerDraw(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo)
+{
+    WM_HWIN   hWin;
+    WHEEL   * pWheel;
+    int       xPos;
+    int       yPos;
+    int       xSizeWin;
+    int       ySizeWin;
+    int       xSizeDev;
+
+    hWin = pDrawItemInfo->hWin;
+    //
+    // Process messages
+    //
+    switch (pDrawItemInfo->Cmd)
+    {
+    case WIDGET_ITEM_GET_XSIZE:
+        //
+        // Return x-size of item
+        //
+        return LISTWHEEL_OwnerDraw(pDrawItemInfo);
+    case WIDGET_ITEM_GET_YSIZE:
+        //
+        // Return y-size of item
+        //
+        return LISTWHEEL_OwnerDraw(pDrawItemInfo);
+    case WIDGET_ITEM_DRAW:
+        //
+        // Draw item
+        //
+        return LISTWHEEL_OwnerDraw(pDrawItemInfo);
+    case WIDGET_ITEM_DRAW_BACKGROUND:
+        xSizeWin = WM_GetWindowSizeX(hWin);
+        ySizeWin = WM_GetWindowSizeY(hWin);
+        //
+        // Draw background
+        //
+        GUI_SetColor(0x00FFFFFF);
+        GUI_FillRect(4, 0, xSizeWin - 5, ySizeWin - 1);
+        break;
+    case WIDGET_ITEM_DRAW_OVERLAY:
+        LISTWHEEL_GetUserData(hWin, &pWheel, sizeof(pWheel));
+        xPos     = WM_GetWindowOrgX(hWin);
+        yPos     = WM_GetWindowOrgY(hWin);
+        xSizeWin = WM_GetWindowSizeX(hWin);
+        xSizeDev = GUI_MEMDEV_GetXSize(pWheel->hMemRBorder);
+        //
+        // Draw border
+        //
+        GUI_MEMDEV_WriteAt(pWheel->hMemLBorder, xPos, yPos);
+        GUI_MEMDEV_WriteAt(pWheel->hMemRBorder, xPos + xSizeWin - xSizeDev, yPos);
+        //
+        // Draw overlay
+        //
+        GUI_MEMDEV_WriteAt(pWheel->hMemOverlay, xPos, yPos);
+        break;
+    }
+    return 0;
+}
+
+void CreateDecoration(int xSize, int ySize, int LineHeight, WHEEL * pWheel)
+{
+    GUI_MEMDEV_Handle hMemPrev;
+    GUI_MEMDEV_Handle hMemRBorder;
+    GUI_MEMDEV_Handle hMemLBorder;
+    GUI_MEMDEV_Handle hMemOverlay;
+
+    //
+    // Create left border
+    //
+    hMemLBorder = GUI_MEMDEV_CreateFixed(0, 0, 4, ySize, GUI_MEMDEV_NOTRANS, GUI_MEMDEV_APILIST_32, GUI_COLOR_CONV_8888);
+    hMemPrev = GUI_MEMDEV_Select(hMemLBorder);
+    GUI_SetColor(GUI_BLACK);
+    GUI_DrawVLine(0, 0, ySize - 1);
+    GUI_SetColor(0x00CCCCCC);
+    GUI_FillRect(1, 0, 3, ySize - 1);
+    //
+    // Create right border
+    //
+    hMemRBorder = GUI_MEMDEV_CreateFixed(0, 0, 4, ySize, GUI_MEMDEV_NOTRANS, GUI_MEMDEV_APILIST_32, GUI_COLOR_CONV_8888);
+    GUI_MEMDEV_Select(hMemRBorder);
+    GUI_SetColor(GUI_BLACK);
+    GUI_DrawVLine(3, 0, ySize - 1);
+    GUI_SetColor(GUI_LIGHTGRAY);
+    GUI_FillRect(0, 0, 2, ySize - 1);
+    //
+    // Create overlay device
+    //
+    hMemOverlay = GUI_MEMDEV_CreateFixed(0, 0, xSize, ySize, GUI_MEMDEV_NOTRANS, GUI_MEMDEV_APILIST_32, GUI_COLOR_CONV_8888);
+    GUI_MEMDEV_Select(hMemOverlay);
+    //
+    // Gray gradients at top
+    //
+    GUI_DrawGradientV(0,                0,                   xSize - 1, (ySize * 2) / 10 - 1,               TRANS0,     TRANS1);
+    GUI_DrawGradientV(0, (ySize * 2) / 10,                   xSize - 1, (ySize / 2) - (LineHeight / 2) - 1, TRANS1,     TRANS2);
+    //
+    // Gray gradients at bottom
+    //
+    GUI_DrawGradientV(0, (ySize / 2) + (LineHeight / 2),     xSize - 1, (ySize / 2) + (LineHeight / 2) + 2, 0x88000000, TRANS2);
+    GUI_DrawGradientV(0, (ySize / 2) + (LineHeight / 2) + 3, xSize - 1, ySize - (ySize * 2) / 10 - 1,       TRANS2,     TRANS1);
+    GUI_DrawGradientV(0, ySize - (ySize * 2) / 10,           xSize - 1, ySize - 1,                          TRANS1,     TRANS0);
+    GUI_DrawGradientV(0, ySize - 1,                          xSize - 1, ySize - 1,                          0x33000000, 0x33000000);
+    //
+    // Translucent glass effect in the middle
+    //
+    GUI_SetColor(0x80000000);
+    GUI_DrawHLine((ySize / 2) - (LineHeight / 2),     0, xSize - 1);
+    GUI_SetColor(0x44000000);
+    GUI_DrawHLine((ySize / 2) + (LineHeight / 2) - 1, 0, xSize - 1);
+    GUI_DrawGradientV(1, (ySize / 2) - (LineHeight / 2) + 1, xSize - 2, (ySize / 2) - 1,                    0x88FFFFFF, 0x55AAAAAA);
+    GUI_DrawGradientV(1, (ySize / 2),                        xSize - 2, (ySize / 2) + (LineHeight / 2) - 2, 0xBB000000, 0xBB000000);
+    GUI_MEMDEV_Select(hMemPrev);
+    //
+    // Store result
+    //
+    pWheel->hMemLBorder = hMemLBorder;
+    pWheel->hMemRBorder = hMemRBorder;
+    pWheel->hMemOverlay = hMemOverlay;
+}
+
+int CreateListWheel(int x, int y, int xSize, int ySize, int Id,
+                    char ** apText, int NumItems, int LineHeight, int TextAlign,
+                    WM_HWIN hParent, WHEEL * pWheel, GUI_FONT *pFont, int pos)
+{
+    WM_HWIN                      hWin;
+    int                          i;
+
+    pWheel->pFont = pFont;
+    hWin          = LISTWHEEL_CreateUser(x, y, xSize, ySize, hParent, WM_CF_SHOW | WM_CF_HASTRANS, 0, Id, NULL, sizeof(void *));
+    LISTWHEEL_SetFont(hWin, pFont);
+    LISTWHEEL_SetTextAlign(hWin, TextAlign);
+    LISTWHEEL_SetSnapPosition(hWin, (ySize - LineHeight) / 2);
+    LISTWHEEL_SetOwnerDraw(hWin, OwnerDraw);
+    LISTWHEEL_SetUserData(hWin, &pWheel, sizeof(pWheel));
+    LISTWHEEL_SetLineHeight(hWin, LineHeight);
+    LISTWHEEL_SetTextColor(hWin, LISTWHEEL_CI_SEL, GUI_LIGHTBLUE);
+    for (i = 0; i < NumItems; i++)
+    {
+        LISTWHEEL_AddString(hWin, *(apText + i));
+    }
+    if (TextAlign & GUI_TA_RIGHT)
+    {
+        LISTWHEEL_SetRBorder(hWin, 10);
+    }
+
+    LISTWHEEL_SetPos(hWin, pos);
+
+    // Create overlay devices
+    CreateDecoration(xSize, ySize, LineHeight, pWheel);
+    // Fill WHEEL structure
+    pWheel->hWin = hWin;
+    return 0;
+}
+
+void _cbBkWheel(WM_MESSAGE * pMsg)
+{
+    WM_HWIN hParent;
+    int     xSize;
+    int     ySize;
+
+    switch (pMsg->MsgId)
+    {
+    case WM_NOTIFY_PARENT:
+        break;
+    case WM_PAINT:
+        break;
+    default:
+        WM_DefaultProc(pMsg);
+    }
 }
 

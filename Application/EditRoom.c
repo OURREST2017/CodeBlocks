@@ -43,8 +43,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { TEXT_CreateIndirect, "EDIT ROOM", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
 };
 
-static int cool;
-int room_number;
+static int cool, room_number;
 /*********************************************************************
 *
 *       _cbDialog

@@ -48,12 +48,12 @@
 #define ID_TEXT_SATURDAY (GUI_ID_USER + 0xA6)
 #define ID_TEXT_SUNDAY (GUI_ID_USER + 0xA7)
 
-int days[] = {
+static int days[] = {
         ID_TEXT_MONDAY,ID_TEXT_TUESDAY,ID_TEXT_WEDNESDAY,
         ID_TEXT_THURSDAY,ID_TEXT_FRIDAY, ID_TEXT_SATURDAY, ID_TEXT_SUNDAY
         };
 
- void resetFonts(WM_HWIN win, int id) {
+static void resetFonts(WM_HWIN win, int id) {
      WM_HWIN txt;
      int i;
      for (i=0;i<7;i++) {
@@ -64,7 +64,7 @@ int days[] = {
     TEXT_SetFont(txt, GUI_FONT_32B_1);
 }
 
-int selected_day;
+static int selected_day;
 /*********************************************************************
 *
 *       _aDialogCreate

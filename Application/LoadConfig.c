@@ -2,43 +2,24 @@
 #include <time.h>
 #include "cJSON.h"
 
+static cJSON *config_root;
+
 int getIntObject(cJSON *j, char * o)
 {
     cJSON *cj = cJSON_GetObjectItem(j,o);
-    if (cj == NULL)
-    {
-        return 0;
-    }
-    else
-    {
-        return cj->valueint;
-    }
+    return (cj == NULL) ? "" : cj->valueint;
 }
 
 int getBoolObject(cJSON *j, char * o)
 {
     cJSON *cj = cJSON_GetObjectItem(j,o);
-    if (cj == NULL)
-    {
-        return 0;
-    }
-    else
-    {
-        return cj->valueint;
-    }
+    return (cj == NULL) ? "" : cj->valueint;
 }
 
 char * getStringObject(cJSON *j, char * o)
 {
     cJSON *cj = cJSON_GetObjectItem(j,o);
-    if (cj == NULL)
-    {
-        return "";
-    }
-    else
-    {
-        return cj->valuestring;
-    }
+    return (cj == NULL) ? "" : cj->valuestring;
 }
 
 void loadConfig()
@@ -55,7 +36,8 @@ void loadConfig()
     struct periods_s periods;
     struct hvacConfig_s hvacConfig;
 
-    if ((f = fopen("config_def.json", "rb")) != 0) {
+    if ((f = fopen("config_def.json", "rb")) != 0)
+    {
         fseek(f, 0, SEEK_END);
         len = ftell(f);
         fseek(f, 0, SEEK_SET);
@@ -63,7 +45,7 @@ void loadConfig()
         fread(data, 1, len, f);
         fclose(f);
 
-        cJSON *config_root = cJSON_Parse(data);
+        config_root = cJSON_Parse(data);
 
         dateTime =  101010101;
 
@@ -176,4 +158,19 @@ void loadConfig()
     current_hour = info->tm_hour;
     current_minute = info->tm_min;
     current_ampm = (info->tm_hour <= 12) ? 0 : 1;
+}
+
+void saveConfig()
+{
+    FILE *f;
+    char *out;
+
+    if ((f = fopen("config_def1.json", "w")) != 0)
+    {
+        out = cJSON_Print(config_root);
+        fputs(out, f);
+        free(out);
+
+        fclose(f);
+    }
 }

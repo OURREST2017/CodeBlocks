@@ -32,8 +32,6 @@
 #define ID_BUTTON_HELP (GUI_ID_USER + 0x0D)
 #define ID_BUTTON_RETURN (GUI_ID_USER + 0x0E)
 
-#define ID_IMAGE_0_IMAGE_0 0x00
-
 /*********************************************************************
 *
 *       _aDialogCreate
@@ -50,9 +48,45 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "Each Day", ID_BUTTON_EACH_DAY, 255, 90, 200, 42, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Vacation", ID_BUTTON_VACATION, 255, 150, 200, 42, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "HELP", ID_BUTTON_HELP, 204, 230, 80, 28, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "return", ID_BUTTON_RETURN, 20, 12, 50, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "return", ID_BUTTON_RETURN, 20, 0, 50, 50, 0, 0x0, 0 },
 };
-char schedule[20];
+static char schedule[20];
+static int vacation_border, allDays_border, weekend_border, eachDay_border;
+
+static void schedButton(WM_MESSAGE * pMsg, char *nm, int bor)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawButton22(nm, 200, 42, bor);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+static void vacation_cb(WM_MESSAGE * pMsg)
+{
+    schedButton(pMsg, "Vacation", vacation_border);
+}
+
+static void allDays_cb(WM_MESSAGE * pMsg)
+{
+    schedButton(pMsg, "All Days", allDays_border);
+}
+
+static void eachDay_cb(WM_MESSAGE * pMsg)
+{
+    schedButton(pMsg, "Each Day", eachDay_border);
+}
+
+static void weekend_cb(WM_MESSAGE * pMsg)
+{
+    schedButton(pMsg, "Weekday/Weekend", weekend_border);
+}
+
+
+
 /*********************************************************************
 *
 *       _cbDialog
@@ -64,9 +98,17 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     int     Id;
     const void * pData;
     U32          FileSize;
+    GUI_RECT rect;
+    rect.x0 = 0;
+    rect.y0 = 60;
+    rect.x1 = 480;
+    rect.y1 = 200;
 
     switch (pMsg->MsgId)
     {
+    case WM_PAINT:
+        WM_InvalidateArea(&rect);
+        break;
     case WM_INIT_DIALOG:
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetFont(hItem, GUI_FONT_32B_1);
@@ -77,16 +119,16 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         WM_SetCallback(hItem, return_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ALL_DAYS);
-        WM_SetCallback(hItem, buttonOn22_cb);
+        WM_SetCallback(hItem, allDays_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_WEEKEND);
-        WM_SetCallback(hItem, buttonOn22_cb);
+        WM_SetCallback(hItem, weekend_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_EACH_DAY);
-        WM_SetCallback(hItem, buttonOn22_cb);
+        WM_SetCallback(hItem, eachDay_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_VACATION);
-        WM_SetCallback(hItem, buttonOn22_cb);
+        WM_SetCallback(hItem, vacation_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HELP);
         WM_SetCallback(hItem, buttonOn16_cb);
@@ -100,6 +142,11 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
         NCode = pMsg->Data.v;
+        GUI_RECT rect;
+        rect.x0 = 0;
+        rect.y0 = 60;
+        rect.x1 = 480;
+        rect.y1 = 200;
         switch(Id)
         {
         case ID_BUTTON_RETURN:
@@ -114,6 +161,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
+                strcpy(selectedSchedule, schedule);
                 break;
             }
             break;
@@ -121,6 +169,22 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
+                if (vacation_border)
+                {
+                    CreateVacation();
+                }
+                else if (weekend_border)
+                {
+                    CreateWeekendSchedule();
+                }
+                else if (eachDay_border)
+                {
+                    CreateEachDay();
+                }
+                else
+                {
+                    CreateAllDays();
+                }
                 break;
             }
             break;
@@ -129,7 +193,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 strcpy(schedule, "All Days");
-                state = 30;
+                vacation_border = 0;
+                allDays_border = 1;
+                eachDay_border = 0;
+                weekend_border = 0;
                 break;
             }
             break;
@@ -138,7 +205,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 strcpy(schedule, "Weekend");
-                state = 31;
+                vacation_border = 0;
+                allDays_border = 0;
+                eachDay_border = 0;
+                weekend_border = 1;
                 break;
             }
             break;
@@ -147,7 +217,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 strcpy(schedule, "Each Day");
-                state = 32;
+                vacation_border = 0;
+                allDays_border = 0;
+                eachDay_border = 1;
+                weekend_border = 0;
                 break;
             }
             break;
@@ -156,7 +229,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 strcpy(schedule, "Vacation");
-                state = 33;
+                vacation_border = 1;
+                allDays_border = 0;
+                eachDay_border = 0;
+                weekend_border = 0;
                 break;
             }
             break;
@@ -183,6 +259,32 @@ WM_HWIN CreateSettingsSchedule(void);
 WM_HWIN CreateSettingsSchedule(void)
 {
     WM_HWIN hWin;
+
+    vacation_border = 0;
+    allDays_border = 0;
+    eachDay_border = 0;
+    weekend_border = 0;
+
+    if (strcmp(selectedSchedule, "all days") == 0)
+    {
+        allDays_border = 1;
+
+    }
+    else if (strcmp(selectedSchedule, "each day") == 0)
+    {
+        eachDay_border = 1;
+
+    }
+    else if (strcmp(selectedSchedule, "weekend") == 0)
+    {
+        weekend_border = 1;
+
+    }
+    else
+    {
+        vacation_border = 1;
+
+    }
 
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;

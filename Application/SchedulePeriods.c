@@ -44,7 +44,6 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 };
 
 static int twoPer_mode;
-
 static WM_HWIN twoPerButton, fourPerButton;
 
 /*********************************************************************

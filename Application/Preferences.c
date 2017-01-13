@@ -50,7 +50,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "Tempurature Limits", ID_BUTTON_TEMPURATURE_LIMITS, 242, 115, 220, 36, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Keyboard Lockout", ID_BUTTON_KEYBOARD_LOCKOUT, 242, 160, 220, 36, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Schedule Periods", ID_BUTTON_SCHEDULING_PERIODS, 242, 205, 220, 36, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "return", ID_BUTTON_RETURN, 20, 12, 50, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "return", ID_BUTTON_RETURN, 20, 0, 50, 50, 0, 0x0, 0 },
 };
 
 /*********************************************************************

@@ -45,7 +45,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 
 static int celcius;
 
-WM_HWIN farenheitButton, celciusButton;
+static WM_HWIN farenheitButton, celciusButton;
 
 /*********************************************************************
 *

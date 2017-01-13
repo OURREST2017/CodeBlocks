@@ -23,32 +23,16 @@
 #define ID_WINDOW_0  (GUI_ID_USER + 0x00)
 #define ID_HEADER_0  (GUI_ID_USER + 0x01)
 #define ID_TEXT_HEADER (GUI_ID_USER + 0x02)
-#define ID_BUTTON_HOUR_UP  (GUI_ID_USER + 0x03)
-#define ID_BUTTON_HOUR_DN  (GUI_ID_USER + 0x04)
-#define ID_BUTTON_MONTH_UP  (GUI_ID_USER + 0x06)
-#define ID_BUTTON_MONTH_DN  (GUI_ID_USER + 0x07)
-#define ID_BUTTON_MINUTE_UP  (GUI_ID_USER + 0x09)
-#define ID_BUTTON_MINUTE_DN  (GUI_ID_USER + 0x0A)
-#define ID_BUTTON_DAY_UP  (GUI_ID_USER + 0x0C)
-#define ID_BUTTON_DAY_DN  (GUI_ID_USER + 0x0D)
-#define ID_BUTTON_AMPM_UP  (GUI_ID_USER + 0x0F)
-#define ID_BUTTON_AMPM_DN  (GUI_ID_USER + 0x10)
-#define ID_BUTTON__YEAR_UP  (GUI_ID_USER + 0x12)
-#define ID_BUTTON_YEAR_DN  (GUI_ID_USER + 0x13)
 #define ID_BUTTON_CANCEL  (GUI_ID_USER + 0x14)
 #define ID_BUTTON_SAVE  (GUI_ID_USER + 0x15)
-#define ID_EDIT_HOUR  (GUI_ID_USER + 0x16)
-#define ID_EDIT_MONTH  (GUI_ID_USER + 0x18)
-#define ID_EDIT_MINUTE  (GUI_ID_USER + 0x19)
-#define ID_EDIT_DAY  (GUI_ID_USER + 0x1A)
-#define ID_EDIT_AMPM  (GUI_ID_USER + 0x1B)
-#define ID_EDIT_YEAR  (GUI_ID_USER + 0x1C)
 #define ID_TEXT_0  (GUI_ID_USER + 0x1D)
 #define ID_TEXT_1  (GUI_ID_USER + 0x1E)
-#define ID_TEXT_2  (GUI_ID_USER + 0x1F)
-#define ID_TEXT_3  (GUI_ID_USER + 0x20)
-#define ID_TEXT_4  (GUI_ID_USER + 0x21)
-#define ID_TEXT_5  (GUI_ID_USER + 0x22)
+#define GUI_ID_LISTWHEEL0  (GUI_ID_USER + 0x1F)
+#define GUI_ID_LISTWHEEL1  (GUI_ID_USER + 0x20)
+#define GUI_ID_LISTWHEEL2  (GUI_ID_USER + 0x21)
+#define GUI_ID_LISTWHEEL3  (GUI_ID_USER + 0x22)
+#define GUI_ID_LISTWHEEL4  (GUI_ID_USER + 0x23)
+#define GUI_ID_LISTWHEEL5  (GUI_ID_USER + 0x24)
 
 /*********************************************************************
 *
@@ -59,39 +43,55 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "TIME/DATE", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_HOUR_UP, 110, 74, 30, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_HOUR_DN, 110, 104, 30, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_MONTH_UP, 110, 154, 30, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_MONTH_DN, 110, 183, 30, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_MINUTE_UP, 258, 75, 30, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_MINUTE_DN, 258, 104, 30, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_DAY_UP, 258, 154, 30, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_DAY_DN, 258, 183, 30, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_AMPM_UP, 423, 75, 30, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_AMPM_DN, 423, 104, 30, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON__YEAR_UP, 423, 154, 30, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_YEAR_DN, 423, 183, 30, 30, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 28, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 380, 230, 80, 28, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Edit", ID_EDIT_HOUR, 40, 80, 70, 55, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "Edit", ID_EDIT_MONTH, 26, 160, 83, 50, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "Edit", ID_EDIT_MINUTE, 190, 80, 70, 55, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "Edit", ID_EDIT_DAY, 191, 160, 70, 55, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "Edit", ID_EDIT_AMPM, 355, 80, 70, 55, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "Edit", ID_EDIT_YEAR, 309, 160, 116, 50, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Text", ID_TEXT_0, 43, 58, 59, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Text", ID_TEXT_1, 186, 58, 84, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Text", ID_TEXT_2, 355, 58, 87, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Text", ID_TEXT_3, 26, 140, 80, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Text", ID_TEXT_4, 195, 140, 74, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Text", ID_TEXT_5, 310, 140, 80, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Text", ID_TEXT_0, 50, 65, 59, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Text", ID_TEXT_1, 300, 65, 84, 20, 0, 0x64, 0 },
 };
-extern void small_up_button(WM_MESSAGE *);
-extern void small_dn_button(WM_MESSAGE *);
 
-static char *Months[] = {"JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"};
-static int days[12] = {30,28,30,30,30,30,30,30,30,30,30,30};
+static char * years[] =
+{
+    "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"
+};
 
+static char * months[] =
+{
+    "January", "February", "March", "April", "May", "June", "July",
+     "August", "September", "October", "November", "December"
+};
+
+static char * days[] =
+{
+    "01", "02", "03", "04", "05", "06", "07", "08", "09", "10",
+    "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
+    "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"
+};
+
+static char * hours[] =
+{
+    "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
+    "13", "14", "15", "16", "17", "18", "19", "20","21","22","23"
+};
+
+static char * minutes[] =
+{
+    "01", "02", "03", "04", "05", "06", "07", "08", "09", "10",
+    "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
+    "21", "22", "23", "24", "25", "26", "27", "28", "29", "30",
+    "31", "32", "33", "34", "35", "36", "37", "38", "39", "40",
+    "41", "42", "43", "44", "45", "46", "47", "48", "49", "50",
+    "51", "52", "53", "54", "55", "56", "57", "58", "59"
+};
+
+static char * ampm[] =
+{
+    "AM", "PM"
+};
+
+static WHEEL _aWheel[6];
+
+extern int CreateListWheel(int, int, int, int, int, char **, int, int, int,
+                           WM_HWIN, WHEEL *, GUI_FONT *, int);
 
 /*********************************************************************
 *
@@ -112,199 +112,48 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
 
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HOUR_UP);
-        WM_SetCallback(hItem, small_up_button);
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HOUR_DN);
-        WM_SetCallback(hItem, small_dn_button);
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_MONTH_UP);
-        WM_SetCallback(hItem, small_up_button);;
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_MONTH_DN);
-        WM_SetCallback(hItem, small_dn_button);
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_MINUTE_UP);
-        WM_SetCallback(hItem, small_up_button);
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_MINUTE_DN);
-        WM_SetCallback(hItem, small_dn_button);
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DAY_UP);
-        WM_SetCallback(hItem, small_up_button);
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DAY_DN);
-        WM_SetCallback(hItem, small_dn_button);
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_AMPM_UP);
-        WM_SetCallback(hItem, small_up_button);
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_AMPM_DN);
-        WM_SetCallback(hItem, small_dn_button);
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON__YEAR_UP);
-        WM_SetCallback(hItem, small_up_button);
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_YEAR_DN);
-        WM_SetCallback(hItem, small_dn_button);
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        WM_SetCallback(hItem, buttonOn16_cb);
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
-        WM_SetCallback(hItem, buttonOn16_cb);
-        //
-        sprintf(buf, "%d", current_hour);
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_HOUR);
-        BUTTON_SetText(hItem, buf);
-        WM_SetCallback(hItem, edit_text_cb);
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_MONTH);
-        BUTTON_SetText(hItem, Months[current_month]);
-        WM_SetCallback(hItem, edit_text_cb);
-        //
-        sprintf(buf, "%d", current_minute);
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_MINUTE);
-        BUTTON_SetText(hItem, buf);
-        WM_SetCallback(hItem, edit_text_cb);
-        //
-        sprintf(buf, "%d", current_day);
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_DAY);
-        BUTTON_SetText(hItem, buf);
-        WM_SetCallback(hItem, edit_text_cb);
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_AMPM);
-        BUTTON_SetText(hItem, current_ampm ? "AM" : "PM");
-        WM_SetCallback(hItem, edit_text_cb);
-        //
-        sprintf(buf, "%d", current_year);
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_YEAR);
-        BUTTON_SetText(hItem, buf);
-        WM_SetCallback(hItem, edit_text_cb);
-        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_0);
-        TEXT_SetTextAlign(hItem, GUI_TA_LEFT | GUI_TA_VCENTER);
-        TEXT_SetText(hItem, "Hour");
-        TEXT_SetFont(hItem, GUI_FONT_20_1);
+        TEXT_SetFont(hItem, &GUI_FontRounded22);
+        TEXT_SetText(hItem, "Time");
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_1);
-        TEXT_SetTextAlign(hItem, GUI_TA_LEFT | GUI_TA_VCENTER);
-        TEXT_SetFont(hItem, GUI_FONT_20_1);
-        TEXT_SetText(hItem, "Minute");
+        TEXT_SetFont(hItem, &GUI_FontRounded22);
+        TEXT_SetText(hItem, "Date");
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_2);
-        TEXT_SetFont(hItem, GUI_FONT_20_1);
-        TEXT_SetTextAlign(hItem, GUI_TA_LEFT | GUI_TA_VCENTER);
-        TEXT_SetText(hItem, "AM/PM");
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_3);
-        TEXT_SetFont(hItem, GUI_FONT_20_1);
-        TEXT_SetTextAlign(hItem, GUI_TA_LEFT | GUI_TA_VCENTER);
-        TEXT_SetText(hItem, "Month");
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_4);
-        TEXT_SetFont(hItem, GUI_FONT_20_1);
-        TEXT_SetText(hItem, "Day");
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_5);
-        TEXT_SetFont(hItem, GUI_FONT_20_1);
-        TEXT_SetText(hItem, "Year");
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
+
+        CreateListWheel(4, 95,  50, 100, GUI_ID_LISTWHEEL0, hours,
+                          GUI_COUNTOF(hours),  30, GUI_TA_VCENTER | GUI_TA_HCENTER,
+                          pMsg->hWin, &_aWheel[0], &GUI_Font32B_ASCII, current_hour-1);
+        CreateListWheel(54, 95, 50, 100, GUI_ID_LISTWHEEL1, minutes,
+                         GUI_COUNTOF(minutes), 30,  GUI_TA_VCENTER | GUI_TA_RIGHT,
+                         pMsg->hWin, &_aWheel[1], &GUI_Font32B_ASCII, current_minute-1);
+
+        CreateListWheel(108, 95, 55, 100, GUI_ID_LISTWHEEL2, ampm,
+                         GUI_COUNTOF(ampm), 30, GUI_TA_VCENTER | GUI_TA_RIGHT,
+                         pMsg->hWin, &_aWheel[2], &GUI_Font32B_ASCII, current_ampm);
+
+        CreateListWheel(168, 95,  60, 100, GUI_ID_LISTWHEEL3, days,
+                          GUI_COUNTOF(days),  30, GUI_TA_VCENTER | GUI_TA_HCENTER,
+                          pMsg->hWin, &_aWheel[3], &GUI_Font32B_ASCII, current_day-1);
+        CreateListWheel(228, 95, 160, 100, GUI_ID_LISTWHEEL4, months,
+                         GUI_COUNTOF(months), 30, GUI_TA_VCENTER | GUI_TA_RIGHT,
+                         pMsg->hWin, &_aWheel[4], &GUI_Font32B_ASCII, current_month);
+        CreateListWheel(388, 95,  80, 100, GUI_ID_LISTWHEEL5, years,
+                        GUI_COUNTOF(years),  30, GUI_TA_VCENTER | GUI_TA_HCENTER,
+                        pMsg->hWin, &_aWheel[5], &GUI_Font32B_ASCII, current_year-2010);
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
+        WM_SetCallback(hItem, buttonOn16_cb);
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
+        WM_SetCallback(hItem, buttonOn16_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
         NCode = pMsg->Data.v;
         switch(Id)
         {
-        case ID_BUTTON_HOUR_UP:
-            switch(NCode)
-            {
-            case WM_NOTIFICATION_RELEASED:
-                break;
-            }
-            break;
-        case ID_BUTTON_HOUR_DN:
-            switch(NCode)
-            {
-            case WM_NOTIFICATION_RELEASED:
-                break;
-            }
-            break;
-        case ID_BUTTON_MONTH_UP:
-            switch(NCode)
-            {
-            case WM_NOTIFICATION_RELEASED:
-                break;
-            }
-            break;
-        case ID_BUTTON_MONTH_DN:
-            switch(NCode)
-            {
-            case WM_NOTIFICATION_RELEASED:
-                break;
-            }
-            break;
-        case ID_BUTTON_MINUTE_UP:
-            switch(NCode)
-            {
-            case WM_NOTIFICATION_RELEASED:
-                break;
-            }
-            break;
-        case ID_BUTTON_MINUTE_DN:
-            switch(NCode)
-            {
-            case WM_NOTIFICATION_RELEASED:
-                break;
-            }
-            break;
-        case ID_BUTTON_DAY_UP:
-            switch(NCode)
-            {
-            case WM_NOTIFICATION_RELEASED:
-                break;
-            }
-            break;
-        case ID_BUTTON_DAY_DN:
-            switch(NCode)
-            {
-            case WM_NOTIFICATION_RELEASED:
-                break;
-            }
-            break;
-        case ID_BUTTON_AMPM_UP:
-            switch(NCode)
-            {
-            case WM_NOTIFICATION_RELEASED:
-                break;
-            }
-            break;
-        case ID_BUTTON_AMPM_DN:
-            switch(NCode)
-            {
-            case WM_NOTIFICATION_RELEASED:
-                break;
-            }
-            break;
-        case ID_BUTTON__YEAR_UP:
-            switch(NCode)
-            {
-            case WM_NOTIFICATION_RELEASED:
-                break;
-            }
-            break;
-        case ID_BUTTON_YEAR_DN:
-            switch(NCode)
-            {
-            case WM_NOTIFICATION_RELEASED:
-                break;
-            }
-            break;
         case ID_BUTTON_CANCEL:
             switch(NCode)
             {
@@ -317,6 +166,15 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                current_hour = LISTWHEEL_GetPos(_aWheel[0].hWin);
+                current_minute = LISTWHEEL_GetPos(_aWheel[1].hWin);
+                current_ampm = LISTWHEEL_GetPos(_aWheel[2].hWin);
+                current_day = LISTWHEEL_GetPos(_aWheel[3].hWin);
+                current_month = LISTWHEEL_GetPos(_aWheel[4].hWin);
+                current_year = LISTWHEEL_GetPos(_aWheel[5].hWin) + 2010;
+//                sprintf(buf, "%d,%d,%d,%d,%d,%d",
+//                        current_hour, current_minute, current_ampm,current_day, current_month, current_year);
+//                GUI_ErrorOut(buf);
                 state = 4;
                 break;
             }
@@ -337,7 +195,6 @@ WM_HWIN CreateDateTime(void);
 WM_HWIN CreateDateTime(void)
 {
     WM_HWIN hWin;
-
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }

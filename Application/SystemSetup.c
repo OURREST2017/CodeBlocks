@@ -50,7 +50,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "Backup Heat", ID_BUTTON_BACKUP_HEAT, 242, 115, 220, 36, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Cooling Stages", ID_BUTTON_COOLING_STAGES, 242, 160, 220, 36, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Heating Stages", ID_BUTTON_HEATING_STAGES, 242, 205, 220, 36, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "return", ID_BUTTON_RETURN, 20, 12, 50, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "return", ID_BUTTON_RETURN, 20, 0, 50, 50, 0, 0x0, 0 },
 };
 
 static void location_cb(WM_MESSAGE * pMsg)
