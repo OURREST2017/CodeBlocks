@@ -47,40 +47,43 @@ static char * codes[] =
     "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"
 };
 
+extern void CreateDecoration(int,int,int, WHEEL *);
 extern int OwnerDraw(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo);
 static WHEEL code[4];
 static int dig[4], bc;
 
-static CreateListWheel1(int x, int y, int xSize, int ySize, int Id,
+static void CreateListWheel1(int x, int y, int xSize, int ySize, int Id,
                              char ** apText, int NumItems, int LineHeight, int TextAlign,
-                             WM_HWIN hParent, WHEEL * pWheel, GUI_FONT *pFont, int pos) {
-  WM_HWIN                      hWin;
-  int                          i;
+                             WM_HWIN hParent, WHEEL * pWheel, GUI_FONT *pFont, int pos)
+{
+    WM_HWIN                      hWin;
+    int                          i;
 
-  pWheel->pFont = pFont;
-  hWin          = LISTWHEEL_CreateUser(x, y, xSize, ySize, hParent, WM_CF_SHOW | WM_CF_HASTRANS, 0, Id, NULL, sizeof(void *));
-  LISTWHEEL_SetFont(hWin, pFont);
-  LISTWHEEL_SetTextAlign(hWin, TextAlign);
-  LISTWHEEL_SetSnapPosition(hWin, (ySize - LineHeight) / 2);
-  LISTWHEEL_SetOwnerDraw(hWin, OwnerDraw);
-  LISTWHEEL_SetUserData(hWin, &pWheel, sizeof(pWheel));
-  LISTWHEEL_SetLineHeight(hWin, LineHeight);
-  LISTWHEEL_SetTextColor(hWin, LISTWHEEL_CI_SEL, GUI_LIGHTBLUE);
-  for (i = 0; i < NumItems; i++) {
-    LISTWHEEL_AddString(hWin, *(apText + i));
-  }
-  if (TextAlign & GUI_TA_RIGHT) {
-    LISTWHEEL_SetRBorder(hWin, 10);
-  }
+    pWheel->pFont = pFont;
+    hWin          = LISTWHEEL_CreateUser(x, y, xSize, ySize, hParent, WM_CF_SHOW | WM_CF_HASTRANS, 0, Id, NULL, sizeof(void *));
+    LISTWHEEL_SetFont(hWin, pFont);
+    LISTWHEEL_SetTextAlign(hWin, TextAlign);
+    LISTWHEEL_SetSnapPosition(hWin, (ySize - LineHeight) / 2);
+    LISTWHEEL_SetOwnerDraw(hWin, OwnerDraw);
+    LISTWHEEL_SetUserData(hWin, &pWheel, sizeof(pWheel));
+    LISTWHEEL_SetLineHeight(hWin, LineHeight);
+    LISTWHEEL_SetTextColor(hWin, LISTWHEEL_CI_SEL, GUI_LIGHTBLUE);
+    for (i = 0; i < NumItems; i++)
+    {
+        LISTWHEEL_AddString(hWin, *(apText + i));
+    }
+    if (TextAlign & GUI_TA_RIGHT)
+    {
+        LISTWHEEL_SetRBorder(hWin, 10);
+    }
 
-  code[bc++].hWin = hWin;
-  LISTWHEEL_SetPos(hWin, pos);
+    code[bc++].hWin = hWin;
+    LISTWHEEL_SetPos(hWin, pos);
 
-  // Create overlay devices
-  CreateDecoration(xSize, ySize, LineHeight, pWheel);
-  // Fill WHEEL structure
-  pWheel->hWin = hWin;
-  return 0;
+    // Create overlay devices
+    CreateDecoration(xSize, ySize, LineHeight, pWheel);
+    // Fill WHEEL structure
+    pWheel->hWin = hWin;
 }
 //extern int CreateListWheel(int, int, int, int, int, char **, int, int, int,
 //                           WM_HWIN, WHEEL *, GUI_FONT *, int);
@@ -136,7 +139,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-             lockCode[0] = LISTWHEEL_GetPos(code[0].hWin) + 48;
+                lockCode[0] = LISTWHEEL_GetPos(code[0].hWin) + 48;
                 lockCode[1] = LISTWHEEL_GetPos(code[1].hWin) + 48;
                 lockCode[2] = LISTWHEEL_GetPos(code[2].hWin) + 48;
                 lockCode[3] = LISTWHEEL_GetPos(code[3].hWin) + 48;
@@ -147,7 +150,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 break;
             }
             break;
-         }
+        }
         break;
     default:
         WM_DefaultProc(pMsg);

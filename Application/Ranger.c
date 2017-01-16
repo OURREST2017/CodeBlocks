@@ -3,7 +3,7 @@
 void MainTask(void)
 {
     GUI_Init();
-    WM_HWIN       hBkWheel;
+    WM_HWIN       win;
 
     color_scheme = 0;
     initColors();
@@ -13,6 +13,7 @@ void MainTask(void)
 
     state = 1;
     if (testing) state = 99;
+    if (firstTime) state =14;
 
     while(1)
     {
@@ -25,7 +26,20 @@ void MainTask(void)
             state = 0;
             break;
        case 1:
-            CreateHomeWin();
+//           win = MESSAGEBOX_Create("BLOWME","CAPTION",GUI_MESSAGEBOX_CF_MODAL | GUI_MESSAGEBOX_CF_MOVEABLE);
+//            WM_SetSize(win, 200,150);
+//           WM_HWIN twin =  WM_GetDialogItem(win, GUI_ID_TEXT0);
+//             WM_SetSize(twin, 180,50);
+//          TEXT_SetFont(twin, GUI_FONT_24_ASCII);
+//           WM_HWIN but =  WM_GetDialogItem(win, GUI_ID_OK);
+//            WM_MoveTo(but, 220,180);
+//
+//
+//        GUI_ExecCreatedDialog(win);
+
+        CreatePear();
+             //  CreateHomeWin();
+
             state=0;
             break;
         case 2:
@@ -121,19 +135,19 @@ void MainTask(void)
             state=0;
             break;
         case 30:
-            CreateAllDays();
+            //CreateAllDays();
             state=0;
             break;
         case 31:
-            CreateWeekendSchedule();
+            //CreateWeekendSchedule();
             state=0;
             break;
         case 32:
-            CreateEachDay();
+            //CreateEachDay();
             state=0;
             break;
         case 33:
-            CreateVacation();
+            //CreateVacation();
             state=0;
             break;
         case 34:

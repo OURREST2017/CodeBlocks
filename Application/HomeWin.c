@@ -60,7 +60,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "HEAT", ID_BUTTON_HEAT, 292, 233, 75, 28, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "FAN", ID_BUTTON_FAN, 104, 233, 75, 28, 0, 0x0, 0 },
     { IMAGE_CreateIndirect, "Image", ID_IMAGE_GRAY_BAR, 0, 202, 480, 25, 0, 0, 0 },
- //   { TEXT_CreateIndirect, "In_T_Panel", ID_TEXT_INSIDE_TEMP, 162, 64, 135, 100, 0, 0x64, 0 },
+//   { TEXT_CreateIndirect, "In_T_Panel", ID_TEXT_INSIDE_TEMP, 162, 64, 135, 100, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "In_T_Panel", ID_TEXT_INSIDE_TEMP, 162, 88, 135, 100, 0, 0x64, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER, -1, 0, 480, 50, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Button_Up", ID_BUTTON_UP, 390, 70, 50, 50, 0, 0x0, 0 },
@@ -72,7 +72,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { TEXT_CreateIndirect, "AUTO", ID_TEXT_FAN, 125, 204, 43, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "ON SCHED", ID_TEXT_HOLD, 200, 204, 100, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "", ID_TEXT_DATE, 20, 0, 150, 50, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "", ID_TEXT_TIME, 150, 0, 100, 50, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "", ID_TEXT_TIME, 150, 0, 150, 50, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Out_T_Temp", ID_TEXT_OUT_TEMP, 386, 7, 72, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "OUSIDE", ID_TEXT_OUTSIDE, 389, 26, 61, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "HUMIDITY", ID_TEXT_HUMIDITY, 165, 176, 160, 20, 0, 0x64, 0 },
@@ -80,8 +80,9 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { TEXT_CreateIndirect, "SET_TO", ID_TEXT_SET_TO, 380, 122, 89, 20, 0, 0x64, 0 },
 };
 
-static int holdButtonOn = 0;
+static int holdButtonOn = 0, clicked, timerTemp;
 static int cool_border, heat_border;
+static GUI_TIMER_HANDLE tempTimer_h;
 
 static void hold_button_on(WM_MESSAGE * pMsg)
 {
@@ -148,25 +149,11 @@ static void heatButton_cb(WM_MESSAGE * pMsg)
         break;
     }
 }
-
-char * toup(char *s)
-{
-    int i;
-    char *t;
-    static char o[100];
-    for (i=0; i<strlen(s); i++)
-    {
-        o[i] = toupper(s[i]);
-    }
-    o[i] = '\0';
-    return o;
-}
-
-static WM_HWIN upButton, dnButton, holdButton;
+static WM_HWIN holdButton, insideTempText;
 static WM_HWIN modeButton, fanButton, heatButton, coolButton;
 
-char date_buf[20];
-char time_buf[20];
+static char date_buf[20];
+static char time_buf[20];
 
 
 WM_HWIN dateText, timeText;
@@ -221,17 +208,17 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         WM_SetCallback(coolButton, coolButton_cb);
         //
         sprintf(buffer,"%d",insideTemp);
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_INSIDE_TEMP);
-        TEXT_SetText(hItem, buffer);
+        insideTempText = WM_GetDialogItem(pMsg->hWin, ID_TEXT_INSIDE_TEMP);
+        TEXT_SetText(insideTempText, buffer);
 //        TEXT_SetFont(hItem, &GUI_FontFranklinGothicDemi133);
-        TEXT_SetFont(hItem, GUI_FONT_D80);
-        TEXT_SetTextColor(hItem, 0x00808080);
+        TEXT_SetFont(insideTempText, GUI_FONT_D80);
+        TEXT_SetTextColor(insideTempText, 0x00808080);
         //
-        upButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_UP);
-        WM_SetCallback(upButton, big_up_button);
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_UP);
+        WM_SetCallback(hItem, big_up_button);
         //
-        dnButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DN);
-        WM_SetCallback(dnButton, big_dn_button);
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DN);
+        WM_SetCallback(hItem, big_dn_button);
 
         sprintf(buffer, "%d °", coolToDegrees);
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_COOLTO);
@@ -307,11 +294,13 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
+                GUI_Delay(100);
                 hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SETTINGS);
                 WM_InvalidateWindow(hItem);
                 WM_SetCallback(hItem, buttonOff16_cb);
                 break;
             case WM_NOTIFICATION_RELEASED:
+                GUI_Delay(100);
                 hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SETTINGS);
                 WM_InvalidateWindow(hItem);
                 WM_SetCallback(hItem, buttonOn16_cb);
@@ -416,15 +405,26 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                if (!clicked)
+                {
+                    GUI_TIMER_SetPeriod(tempTimer_h, 5000);
+                    GUI_TIMER_Restart(tempTimer_h);
+                    clicked = 1;
+                }
                 if (strcmp(hvacMode, "heat") == 0)
                 {
                     heatToDegrees++;
                     sprintf(buffer,"%d °", heatToDegrees);
                     hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEATTO);
                     TEXT_SetText(hItem, buffer);
+
                     sprintf(buffer,"SET TO %d °", heatToDegrees);
                     hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SET_TO);
                     TEXT_SetText(hItem, buffer);
+
+                    timerTemp = heatToDegrees;
+                    sprintf(buffer,"%d °", heatToDegrees);
+                    TEXT_SetText(insideTempText, buffer);
                 }
                 else
                 {
@@ -432,9 +432,14 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                     sprintf(buffer,"%d °", coolToDegrees);
                     hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_COOLTO);
                     TEXT_SetText(hItem, buffer);
+
                     sprintf(buffer,"SET TO %d °", coolToDegrees);
                     hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SET_TO);
                     TEXT_SetText(hItem, buffer);
+
+                    timerTemp = coolToDegrees;
+                    sprintf(buffer,"%d °", coolToDegrees);
+                    TEXT_SetText(insideTempText, buffer);
                 }
                 break;
             }
@@ -443,15 +448,26 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                if (!clicked)
+                {
+                    GUI_TIMER_SetPeriod(tempTimer_h, 5000);
+                    GUI_TIMER_Restart(tempTimer_h );
+                    clicked = 1;
+                }
                 if (strcmp(hvacMode, "heat") == 0)
                 {
                     heatToDegrees--;
                     sprintf(buffer,"%d °", heatToDegrees);
                     hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEATTO);
                     TEXT_SetText(hItem, buffer);
+
                     sprintf(buffer,"SET TO %d °", heatToDegrees);
                     hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SET_TO);
                     TEXT_SetText(hItem, buffer);
+
+                    timerTemp = heatToDegrees;
+                    sprintf(buffer,"%d °", heatToDegrees);
+                    TEXT_SetText(insideTempText, buffer);
                 }
                 else
                 {
@@ -459,9 +475,14 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                     sprintf(buffer,"%d °", coolToDegrees);
                     hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_COOLTO);
                     TEXT_SetText(hItem, buffer);
+
                     sprintf(buffer,"SET TO %d °", coolToDegrees);
                     hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SET_TO);
                     TEXT_SetText(hItem, buffer);
+
+                    timerTemp = coolToDegrees;
+                    sprintf(buffer,"%d °", coolToDegrees);
+                    TEXT_SetText(insideTempText, buffer);
                 }
             }
             break;
@@ -472,14 +493,25 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         break;
     }
 }
+static void tempTimer(GUI_TIMER_MESSAGE * pTM)
+{
+    char buf[5];
+    sprintf(buf,"%d",insideTemp);
+    TEXT_SetText(insideTempText, buf);
+    clicked = 0;
+    GUI_TIMER_SetPeriod(pTM->hTimer, 4000);
+    GUI_TIMER_Restart(pTM->hTimer);
+}
+
 static void _OnTimer(GUI_TIMER_MESSAGE * pTM)
 {
     time_t now = time(NULL);
     strftime(date_buf, 20, "%a %m/%d/%y", localtime(&now));
-    strftime(time_buf, 20, "%I:%M %p", localtime(&now));
+    strftime(time_buf, 20, "%I:%M:%S %p", localtime(&now));
     TEXT_SetText(dateText, date_buf);
     TEXT_SetText(timeText, time_buf);
 
+    GUI_TIMER_SetPeriod(pTM->hTimer, 5000);
     GUI_TIMER_Restart(pTM->hTimer);
 }
 /*********************************************************************
@@ -492,11 +524,13 @@ WM_HWIN CreateHomeWin(void)
     WM_HWIN hWin;
     time_t now = time(NULL);
     strftime(date_buf, 20, "%a %m/%d/%y", localtime(&now));
-    strftime(time_buf, 20, "%I:%M %p", localtime(&now));
+    strftime(time_buf, 20, "%I:%M:%S %p", localtime(&now));
     cool_border = strcmp(hvacMode, "cool") == 0;
     heat_border =  strcmp(hvacMode, "heat") == 0;
     holdMode = 0;
-    //GUI_TIMER_Create(_OnTimer, 30000, 0, 0);
+
+    // GUI_TIMER_Create(_OnTimer, 5000, 0, 0);
+    tempTimer_h = GUI_TIMER_Create(tempTimer, 4000, 0, 0);
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }

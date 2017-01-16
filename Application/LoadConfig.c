@@ -1,19 +1,34 @@
 #include "main.h"
+#include <stdlib.h>
 #include <time.h>
 #include "cJSON.h"
 
 static cJSON *config_root;
 
+
+char * toup(char *s)
+{
+    int i;
+    char *t;
+    static char o[100];
+    for (i=0; i<strlen(s); i++)
+    {
+        o[i] = toupper(s[i]);
+    }
+    o[i] = '\0';
+    return o;
+}
+
 int getIntObject(cJSON *j, char * o)
 {
     cJSON *cj = cJSON_GetObjectItem(j,o);
-    return (cj == NULL) ? "" : cj->valueint;
+    return (cj == NULL) ? 0 : cj->valueint;
 }
 
 int getBoolObject(cJSON *j, char * o)
 {
     cJSON *cj = cJSON_GetObjectItem(j,o);
-    return (cj == NULL) ? "" : cj->valueint;
+    return (cj == NULL) ? 0 : cj->valueint;
 }
 
 char * getStringObject(cJSON *j, char * o)
@@ -31,7 +46,6 @@ void loadConfig()
     long len;
     char *data;
 
-    struct schedules scheds[5];
     struct days_s days;
     struct periods_s periods;
     struct hvacConfig_s hvacConfig;
@@ -58,11 +72,12 @@ void loadConfig()
         enableSchedule = getBoolObject(config_root,"enableSchedule");
         epochTime = getIntObject(config_root,"epochTime");
 
-        strcpy(fanControl, cJSON_GetObjectItem(config_root,"fanControl"));
+        strcpy(fanControl, getStringObject(config_root,"fanControl"));
         strcpy(firstNameText, getStringObject(config_root,"firstNameText"));
         strcpy(selectedFanMode, getStringObject(config_root,"fanMode"));
         filterChangeDate = getIntObject(config_root,"filterChangeDate");
         filterLifeInDays = getIntObject(config_root,"filterLifeInDays");
+        firstTime = getBoolObject(config_root,"firstTime");
         strcpy(firmwareUrl, getStringObject(config_root,"firmwareUrl"));
         heatToDegrees = getIntObject(config_root,"heatToDegrees");
         strcpy(hvacMode, getStringObject(config_root,"hvacMode"));
@@ -109,11 +124,11 @@ void loadConfig()
         int i, j, k;
         for (i=0; i<cJSON_GetArraySize(schedules_a); i++)
         {
-            cJSON *schedules = cJSON_GetArrayItem(schedules_a, i);
-            scheds[i].label  = cJSON_GetObjectItem(schedules,"label")->valuestring;
-            printf("schedules.label=%s\n", scheds[i].label);
-            scheds[i].systemDefined = cJSON_GetObjectItem(schedules,"systemDefined")->valueint;
-            cJSON *days_a = cJSON_GetObjectItem(schedules,"days");
+            cJSON *schedules_obj = cJSON_GetArrayItem(schedules_a, i);
+            schedules[i].label  = cJSON_GetObjectItem(schedules_obj,"label")->valuestring;
+            printf("schedules.label=%s\n", schedules[i].label);
+            schedules[i].systemDefined = cJSON_GetObjectItem(schedules_obj,"systemDefined")->valueint;
+            cJSON *days_a = cJSON_GetObjectItem(schedules_obj,"days");
             for (k=0; k<cJSON_GetArraySize(days_a); k++)
             {
                 cJSON *d = cJSON_GetArrayItem(days_a, k);
@@ -129,8 +144,9 @@ void loadConfig()
                     periods.stopTime = cJSON_GetObjectItem(p,"stopTime")->valuestring;
                     days.periods[j] = periods;
                 }
-                scheds[i].days[k] = days;
+                schedules[i].days[k] = days;
             }
+            schedules[i].day_count = k;
         }
         free(data);
     }

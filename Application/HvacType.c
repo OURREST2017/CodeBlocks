@@ -35,7 +35,7 @@
 */
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
-    { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 2, -1, 480, 272, 0, 0x0, 0 },
+    { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "FORCED AIR", ID_BUTTON_FORCED_AIR, 90, 75, 300, 36, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "HEAT PUMP", ID_BUTTON_HEAT_PUMP, 90, 125, 300, 36, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "HOT WATER OR STEAM", ID_BUTTON_HOT_WATER, 90, 175, 300, 36, 0, 0x0, 0 },
@@ -94,9 +94,26 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
         WM_SetCallback(hItem, buttonOn16_cb);
+        if (firstTime)
+        {
+            BUTTON_SetText(hItem, "BACK");
+        }
+        else
+        {
+            BUTTON_SetText(hItem, "CANCEL");
+        }
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
         WM_SetCallback(hItem, buttonOn16_cb);
+        if (firstTime)
+        {
+            BUTTON_SetText(hItem, "NEXT");
+        }
+        else
+        {
+            BUTTON_SetText(hItem, "SAVE");
+        }
+
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
@@ -108,14 +125,19 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                state=17;
+                if (firstTime) {
+                    CreateThermostatLocations();
+                } else {
+                    state=17;
+               }
             }
             break;
         case ID_BUTTON_SAVE:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                if (forcedAir_mode)
+             GUI_Delay(100);
+             if (forcedAir_mode)
                 {
                     strcpy(hvacType,"air");
                 }
@@ -127,8 +149,11 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 {
                     strcpy(hvacType,"water");
                 }
-                GUI_Delay(100);
-                state=17;
+                if (firstTime) {
+                    CreateWifiConnect();
+                } else {
+                    state=17;
+               }
             }
             break;
         case ID_BUTTON_HOT_WATER:

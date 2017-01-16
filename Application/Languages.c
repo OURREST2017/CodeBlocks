@@ -80,8 +80,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
         WM_SetCallback(hItem, buttonOn16_cb);
+        if (firstTime) WM_HideWin(hItem);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
+        if (firstTime) BUTTON_SetText(hItem, "NEXT");
         WM_SetCallback(hItem, buttonOn16_cb);
         break;
     case WM_NOTIFY_PARENT:
@@ -108,11 +110,15 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 }
                 else
                 {
-                    strcpy(language, "esnpanol");
+                    strcpy(language, "espanol");
                 }
 
                 GUI_Delay(100);
-                state=4;
+                if (firstTime) {
+                    CreateThermostatLocations();
+                } else {
+                  state=4;
+                }
                 break;
             }
             break;

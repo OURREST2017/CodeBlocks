@@ -51,18 +51,18 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "WIFI SETUP", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
     { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 28, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Disconnect from Network", ID_BUTTON_DISCONNECT, 128, 230, 222, 28, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Select WIFI Network", ID_BUTTON_DISCONNECT, 128, 230, 222, 28, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 378, 230, 80, 28, 0, 0x0, 0 },
-    { TEXT_CreateIndirect, "Text", ID_TEXT_1, 27, 60, 154, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Text", ID_TEXT_2, 195, 60, 181, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Text", ID_TEXT_3, 78, 82, 103, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Text", ID_TEXT_4, 195, 82, 182, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Text", ID_TEXT_5, 23, 104, 157, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Text", ID_TEXT_6, 195, 104, 157, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Text", ID_TEXT_7, 29, 126, 151, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Text", ID_TEXT_8, 195, 126, 184, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Text", ID_TEXT_9, 17, 148, 161, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Text", ID_TEXT_10, 195, 148, 203, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Text", ID_TEXT_1, 0, 60, 180, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Text", ID_TEXT_2, 186, 60, 260, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Text", ID_TEXT_3, 0, 82, 180, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Text", ID_TEXT_4, 186, 82, 260, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Text", ID_TEXT_5, 0, 104, 180, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Text", ID_TEXT_6, 186, 104, 260, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Text", ID_TEXT_7, 0, 126, 180, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Text", ID_TEXT_8, 186, 126, 260, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Text", ID_TEXT_9, 0, 148, 180, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Text", ID_TEXT_10, 186, 148, 260, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_11, 68, 172, 74, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_12, 145, 172, 175, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_13, 321, 172, 87, 20, 0, 0x64, 0 },
@@ -189,7 +189,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 GUI_Delay(100);
-                CreateWifiDisconnect();
+                CreateWifiConnect();
                 break;
             }
             break;

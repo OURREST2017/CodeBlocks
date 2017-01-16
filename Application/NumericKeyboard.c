@@ -224,9 +224,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             case ID_BUTTON_SPACE:
                 hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_TEXT);
                 EDIT_GetText(hItem, txt_buffer, 50);
-                int len = strlen(txt_buffer);
+                len = strlen(txt_buffer);
                 if (len == 50) break;
-                int l2 = strlen(acBuffer);
                 txt_buffer[len] = ' ';
                 txt_buffer[len+1] = '\0';
                 EDIT_SetText(hItem, txt_buffer);
@@ -261,9 +260,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                     BUTTON_GetText(pMsg->hWinSrc, acBuffer, sizeof(acBuffer));
                     hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_TEXT);
                     EDIT_GetText(hItem, txt_buffer, 50);
-                    int len = strlen(txt_buffer);
+                    len = strlen(txt_buffer);
                     if (len == 50) break;
-                    int l2 = strlen(acBuffer);
                     txt_buffer[len] = acBuffer[0];
                     txt_buffer[len+1] = '\0';
                     EDIT_SetText(hItem, txt_buffer);

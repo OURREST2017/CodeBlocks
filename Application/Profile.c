@@ -56,7 +56,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 375, 230, 80, 28, 0, 0x0, 0 },
 };
 
-void profile_cb(WM_MESSAGE * pMsg)
+static void profile_cb(WM_MESSAGE * pMsg)
 {
     char nm[20];
     WM_HWIN win = pMsg->hWin;
@@ -75,7 +75,7 @@ void profile_cb(WM_MESSAGE * pMsg)
         break;
     }
 }
-WM_HWIN customerButton;
+static WM_HWIN customerButton;
 
 /*********************************************************************
 *

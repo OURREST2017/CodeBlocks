@@ -35,8 +35,8 @@
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
-    { CHECKBOX_CreateIndirect, "Cooling", ID_CHECKBOX_COOLING, 175, 103, 128, 26, 0, 0x0, 0 },
-    { CHECKBOX_CreateIndirect, "Heating", ID_CHECKBOX_HEATING, 175, 152, 126, 29, 0, 0x0, 0 },
+    { CHECKBOX_CreateIndirect, "Cooling", ID_CHECKBOX_COOLING, 175, 103, 160, 32, 0, 0x0, 0 },
+    { CHECKBOX_CreateIndirect, "Heating", ID_CHECKBOX_HEATING, 175, 152, 160, 32, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 30, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 380, 230, 80, 30, 0, 0x0, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
@@ -45,6 +45,22 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 
 static int thermo_controls;
 static WM_HWIN cooling, heating;
+static int _CustomSkin(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo) {
+  switch (pDrawItemInfo->Cmd) {
+  case WIDGET_ITEM_DRAW_BITMAP:
+    //
+    // This case gets hti when the checkmark (it's a bitmap) gets drawn.
+    // But instead of the checkmark we want a custom bitmap.
+    // We add a 3 to the x0 and y0 position. This is the size of the frame.
+    //
+    GUI_SetColor(0x569e85);
+    GUI_FillRoundedRect(36,1,125,30,3);
+    return 0;
+  default:
+    return CHECKBOX_DrawSkinFlex(pDrawItemInfo);
+  }
+}
+
 /*********************************************************************
 *
 *       _cbDialog
@@ -65,13 +81,17 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 
         cooling = WM_GetDialogItem(pMsg->hWin, ID_CHECKBOX_COOLING);
         CHECKBOX_SetFont(cooling, &GUI_FontRounded22);
-        CHECKBOX_SetTextColor(cooling, 0x48856A);
+        CHECKBOX_SetTextColor(cooling, 0x48866c);
         CHECKBOX_SetText(cooling, "Cooling");
+        //CHECKBOX_SetSkin(cooling, _CustomSkin);
+        CHECKBOX_SetSpacing(cooling, 10);
 
         heating = WM_GetDialogItem(pMsg->hWin, ID_CHECKBOX_HEATING);
         CHECKBOX_SetFont(heating, &GUI_FontRounded22);
-        CHECKBOX_SetTextColor(heating, 0x48856A);
+        CHECKBOX_SetTextColor(heating, 0x48866c);
         CHECKBOX_SetText(heating, "Heating");
+        //CHECKBOX_SetSkin(heating, _CustomSkin);
+        CHECKBOX_SetSpacing(heating, 10);
 
         if (thermo_controls == 0)
         {

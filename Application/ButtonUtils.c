@@ -1,5 +1,9 @@
 #include "main.h"
 
+#define TRANS0    0x1163b39b
+#define TRANS1    0xEE48866c
+#define TRANS2    0xFF000000
+
 int color_scheme;
 
 typedef struct colors
@@ -19,26 +23,6 @@ void initColors()
     color_map[0].stop  = 0x63b39b;
     color_map[0].color = "green";
 
-    color_map[1].start = 0xb7a491;
-    color_map[1].middle = 0xccaeae;
-    color_map[1].stop  = 0xedb6bd;
-    color_map[1].color = "lightblue";
-
-    color_map[2].start = 0x85b4cb;
-    color_map[2].middle = 0x9ecede;
-    color_map[2].stop  = 0xa1e6fd;
-    color_map[2].color = "yellow";
-
-    color_map[3].start = 0xb794c2;
-    color_map[3].middle = 0xceaecf;
-    color_map[3].stop  = 0xdfc4d8;
-    color_map[3].color = "pink";
-
-    color_map[4].start = 0x7a5114;
-    color_map[4].middle = 0x9a5924;
-    color_map[4].stop  = 0xc1842d;
-    color_map[4].color = "blue";
-
     color_map[5].start = 0x272780;
     color_map[5].middle = 0x38389e;
     color_map[5].stop  = 0x4343bf;
@@ -51,7 +35,7 @@ void initColors()
 
     setSkin();
 }
-
+//9cb464
 void setSkin()
 {
     HEADER_SKINFLEX_PROPS PropsH;
@@ -62,10 +46,6 @@ void setSkin()
     PropsH.aColorLower[1] = color_map[color_scheme].start;
     HEADER_SetSkinFlexProps(&PropsH, 0);
 }
-
-// blue outline c1882d
-// red outline 4444ccc1
-// gray text 808080\
 
 void drawBigUpButton()
 {
@@ -728,16 +708,16 @@ void CreateDecoration(int xSize, int ySize, int LineHeight, WHEEL * pWheel)
     //
     hMemLBorder = GUI_MEMDEV_CreateFixed(0, 0, 4, ySize, GUI_MEMDEV_NOTRANS, GUI_MEMDEV_APILIST_32, GUI_COLOR_CONV_8888);
     hMemPrev = GUI_MEMDEV_Select(hMemLBorder);
-    GUI_SetColor(GUI_BLACK);
+    GUI_SetColor(GUI_LIGHTGREEN);
     GUI_DrawVLine(0, 0, ySize - 1);
-    GUI_SetColor(0x00CCCCCC);
+    GUI_SetColor(GUI_LIGHTGRAY);
     GUI_FillRect(1, 0, 3, ySize - 1);
     //
     // Create right border
     //
     hMemRBorder = GUI_MEMDEV_CreateFixed(0, 0, 4, ySize, GUI_MEMDEV_NOTRANS, GUI_MEMDEV_APILIST_32, GUI_COLOR_CONV_8888);
     GUI_MEMDEV_Select(hMemRBorder);
-    GUI_SetColor(GUI_BLACK);
+    GUI_SetColor(GUI_LIGHTGREEN);
     GUI_DrawVLine(3, 0, ySize - 1);
     GUI_SetColor(GUI_LIGHTGRAY);
     GUI_FillRect(0, 0, 2, ySize - 1);
@@ -826,4 +806,65 @@ void _cbBkWheel(WM_MESSAGE * pMsg)
         WM_DefaultProc(pMsg);
     }
 }
+
+char * updateTime(char *tm, int dr)
+{
+    static  char buf[10];
+    int hh, mm ,am;
+    sscanf(tm, "%d:%d", &hh, &mm);
+
+    if (strchr(tm, 'a'))
+    {
+        am = 1;
+    }
+    else
+    {
+        am = 0;
+    }
+
+    if (dr == -1)
+    {
+        mm--;
+        if (mm == -1)
+        {
+            mm = 59;
+            hh--;
+            if (hh == 11) am = !am;
+        }
+        if (hh == 0)
+        {
+            hh = 12;
+        }
+    }
+    else
+    {
+        mm++;
+        if (mm == 60)
+        {
+            mm = 0;
+            hh++;
+            if (hh == 12) am = !am;
+     }
+        if (hh == 13)
+        {
+            hh = 1;
+        }
+    }
+
+    sprintf(buf,"%d:%02d%s\n", hh, mm, (am == 1) ? "am" : "pm");
+    return buf;
+}
+
+void scheduleButton(WM_MESSAGE * pMsg, char *nm, int on) {
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawButton16(nm ,90, 26, on);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+
 

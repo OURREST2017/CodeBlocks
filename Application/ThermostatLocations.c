@@ -21,7 +21,7 @@
 #include "main.h"
 
 #define ID_WINDOW_0 (GUI_ID_USER + 0x02)
-#define ID_BUTTON_CANCEL (GUI_ID_USER + 0x05)
+#define ID_BUTTON_BACK (GUI_ID_USER + 0x05)
 #define ID_BUTTON_DONE (GUI_ID_USER + 0x06)
 #define ID_HEADER_0 (GUI_ID_USER + 0x07)
 #define ID_TEXT_HEADER (GUI_ID_USER + 0x08)
@@ -40,10 +40,10 @@
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
-//    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 25, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 375, 230, 80, 25, 0, 0x0, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "THERMOSTAT LOCATIONS", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
+    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 375, 230, 80, 28, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "BACK", ID_BUTTON_BACK, 20, 230, 80, 28, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_ROOM1, 30, 70, 200, 34, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_ROOM2, 30, 120, 200, 34, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_ROOM3, 30, 170, 200, 34, 0, 0x0, 0 },
@@ -94,11 +94,18 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         BUTTON_SetText(hItem, thermo_rooms[5]);
         WM_SetCallback(hItem, buttonOn20_cb);
 
-//        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-//        WM_SetCallback(hItem, buttonOn16_cb);
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_BACK);
+        WM_SetCallback(hItem, buttonOn16_cb);
+        if (!firstTime) WM_HideWin(hItem);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DONE);
         WM_SetCallback(hItem, buttonOn16_cb);
+        if (firstTime) {
+            BUTTON_SetText(hItem, "NEXT");
+        } else {
+            BUTTON_SetText(hItem, "DONE");
+        }
+
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
@@ -154,12 +161,12 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 break;
             }
             break;
-        case ID_BUTTON_CANCEL:
+        case ID_BUTTON_BACK:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                state=17;
+                CreateLanguages();
             }
             break;
         case ID_BUTTON_DONE:
@@ -167,7 +174,11 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                state=17;
+                if (firstTime) {
+                    CreateHvacType();
+                } else {
+                  state=17;
+                }
             }
             break;
         }

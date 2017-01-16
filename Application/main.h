@@ -3,20 +3,27 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
+#include <ctype.h>
+
 #include "DIALOG.h"
-
-#define TRANS0    0x11000000
-#define TRANS1    0xEE000000
-#define TRANS2    0xFF000000
-
 extern GUI_CONST_STORAGE GUI_BITMAP GUI_FontRounded16;
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontRounded22;
 extern GUI_CONST_STORAGE GUI_FONT FontBig20B;
+extern GUI_CONST_STORAGE GUI_BITMAP bmwatermark;
 //extern GUI_CONST_STORAGE GUI_FONT GUI_FontFranklinGothicDemi133;
 
 extern void drawButton16(char *, int, int, int);
 extern void drawButton(char *, int);
 extern void drawProfileButton(char *, int, int, int);
+extern void drawButton16(char *, int,int,int);
+extern void drawButton20(char *, int,int,int);
+extern void drawButton22(char *, int,int,int);
+extern void drawButtonOn16(char *, int,int,int);
+extern void drawButtonOff16(char *, int,int,int);
+extern void drawButtonOn22(char *, int,int,int);
+extern void drawButtonOff22(char *, int,int,int);
+extern void drawCoolButton(char *, int,int,int,int);
 
 extern void return_cb(WM_MESSAGE *);
 extern void return_cb(WM_MESSAGE *);
@@ -30,7 +37,7 @@ extern void buttonOn22_cb(WM_MESSAGE *);
 extern void buttonOff22_cb(WM_MESSAGE *);
 extern void edit_text_cb(WM_MESSAGE *);
 extern void buttonOn20_cb(WM_MESSAGE *);
-extern GUI_CONST_STORAGE GUI_BITMAP bmwatermark;
+extern void scheduleButton(WM_MESSAGE * pMsg, char *nm, int on);
 
 extern int color_scheme;
 extern void initColors();
@@ -69,6 +76,15 @@ extern  WM_HWIN CreateAlphaKeyboard(int, char *, char *,char *);
 extern  WM_HWIN CreateEditRoom(int);
 extern  WM_HWIN CreateWifiDisconnect();
 extern  WM_HWIN CreatePassFail(char *);
+extern  WM_HWIN CreateTriacPanelWin();
+extern  WM_HWIN CreateFanMode();
+extern  WM_HWIN CreateAllDays();
+extern  WM_HWIN CreateVacation();
+extern  WM_HWIN CreateWeekend(char *);
+extern void loadConfig();
+extern void setSkin();
+char * updateTime(char *tm, int dr);
+
 
 typedef int uint8_t;
 typedef int uint16_t;
@@ -98,12 +114,14 @@ typedef struct days_s
     char *label;
 } days_s;
 
-typedef struct schedules
+typedef struct schedules_s
 {
     struct days_s days[7];
     char *label;
     int systemDefined;
-} schedules;
+    int day_count;
+
+} schedules_s;
 
 typedef struct hvacConfig_s
 {
@@ -115,55 +133,13 @@ typedef struct hvacConfig_s
 
 int state;
 int temperature;
+struct schedules_s schedules[5];
 
-
-
-// 4,6or 8 periods per day, lets start with 4.
-//- 6am, 6am - 12pm, 12pm-6pm, etc.
-//Date periodStartTime;
-//Date periodEndTime;
-//
-//imes are in minutes
-//Integer compressorTotalRuntime;
-//Integer compressorLongestRuntime;
-//Integer compressorShortestRuntime;
-//Integer compressorRunCount;
-//
-//Integer blowerTotalRuntime;
-//Integer blowerRunCount;
-//
-//Integer tempHighOutside;
-//Integer tempLowOutside;
-//Integer tempHighInside;
-//Integer tempLowInside;
-//Integer tempHighSetPoint;
-//Integer tempLowSetPoint;
-//
-//Integer humidityOutside;
-//Integer humidityHighInside;
-//Integer humidityLowInside;
-//
-//Date dateCreated;
-//
-//String streetLine1;
-//String streetLine2;
-//String city;
-//String state;
-//String zip;
-//String providence;
-//String country;
-//
-//info
-//String firstName;
-//String lastName;
-//String email;
-//String phone;
-
-    // account owner
-//String username; // or some other identifier for the property owner
+//char ** wifi_networks;
+int wifi_count;
+char myWifiNetwork[50];
 
 char thermo_rooms[6][30];
-char myWifiNetwork[50];
 char changeOver[20];
 char configVersion[10];
 char serialNumber[30];
@@ -188,6 +164,7 @@ char *currFwVersion;
 int enableSchedule;
 int filterChangeDate;
 int filterLifeInDays;
+int firstTime;
 int localHumidity;
 int localTemp;
 char *nextFwVersion;
@@ -214,9 +191,7 @@ int heatingStages;
 char backupHeatingType[10];
 
 int testing;
-
 int insideTemp;
-int statControl;
 
 int current_year;
 int current_day;

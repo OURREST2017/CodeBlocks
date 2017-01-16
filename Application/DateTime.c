@@ -45,8 +45,8 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { TEXT_CreateIndirect, "TIME/DATE", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
     { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 28, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 380, 230, 80, 28, 0, 0x0, 0 },
-    { TEXT_CreateIndirect, "Text", ID_TEXT_0, 50, 65, 59, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Text", ID_TEXT_1, 300, 65, 84, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Text", ID_TEXT_0, 10, 65, 165, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Text", ID_TEXT_1, 176, 65, 280, 20, 0, 0x64, 0 },
 };
 
 static char * years[] =
@@ -114,12 +114,12 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_0);
         TEXT_SetFont(hItem, &GUI_FontRounded22);
-        TEXT_SetText(hItem, "Time");
+        TEXT_SetText(hItem, "Hour  Min");
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_1);
         TEXT_SetFont(hItem, &GUI_FontRounded22);
-        TEXT_SetText(hItem, "Date");
+        TEXT_SetText(hItem, "Day           Month            Year");
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
 
         CreateListWheel(4, 95,  50, 100, GUI_ID_LISTWHEEL0, hours,
@@ -195,6 +195,7 @@ WM_HWIN CreateDateTime(void);
 WM_HWIN CreateDateTime(void)
 {
     WM_HWIN hWin;
+
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }

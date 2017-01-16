@@ -169,13 +169,14 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
+                GUI_Delay(100);
                 if (vacation_border)
                 {
-                    CreateVacation();
+                    CreateEditSchedule("vacation");
                 }
                 else if (weekend_border)
                 {
-                    CreateWeekendSchedule();
+                    CreateEditSchedule("weekend");
                 }
                 else if (eachDay_border)
                 {
@@ -183,7 +184,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 }
                 else
                 {
-                    CreateAllDays();
+                    CreateEditSchedule("all days");
                 }
                 break;
             }
@@ -240,6 +241,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
+                GUI_Delay(100);
+                CreateScheduleHelp();
                 break;
             }
             break;
