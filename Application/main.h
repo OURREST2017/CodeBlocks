@@ -11,26 +11,27 @@ extern GUI_CONST_STORAGE GUI_BITMAP GUI_FontRounded16;
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontRounded22;
 extern GUI_CONST_STORAGE GUI_FONT FontBig20B;
 extern GUI_CONST_STORAGE GUI_BITMAP bmwatermark;
-//extern GUI_CONST_STORAGE GUI_FONT GUI_FontFranklinGothicDemi133;
 
-extern void drawButton16(char *, int, int, int);
+extern void drawButton16(char *, int, int, int, int);
 extern void drawButton(char *, int);
 extern void drawProfileButton(char *, int, int, int);
-extern void drawButton16(char *, int,int,int);
-extern void drawButton20(char *, int,int,int);
-extern void drawButton22(char *, int,int,int);
+extern void drawButton20(char *, int,int,int,int);
+extern void drawButton22(char *, int,int,int,int);
 extern void drawButtonOn16(char *, int,int,int);
 extern void drawButtonOff16(char *, int,int,int);
 extern void drawButtonOn22(char *, int,int,int);
 extern void drawButtonOff22(char *, int,int,int);
 extern void drawCoolButton(char *, int,int,int,int);
 
+extern GUI_CONST_STORAGE GUI_BITMAP bmup_b;
+extern GUI_CONST_STORAGE GUI_BITMAP bmup_nb;
+extern GUI_CONST_STORAGE GUI_BITMAP bmdn_b;
+extern GUI_CONST_STORAGE GUI_BITMAP bmdn_nb;
+extern GUI_CONST_STORAGE GUI_BITMAP bmdn_r;
+extern GUI_CONST_STORAGE GUI_BITMAP bmup_r;
+
 extern void return_cb(WM_MESSAGE *);
 extern void return_cb(WM_MESSAGE *);
-extern void small_up_button(WM_MESSAGE *);
-extern void small_dn_button(WM_MESSAGE *);
-extern void big_up_button(WM_MESSAGE *);
-extern void big_dn_button(WM_MESSAGE *);
 extern void buttonOn16_cb(WM_MESSAGE *);
 extern void buttonOff16_cb(WM_MESSAGE *);
 extern void buttonOn22_cb(WM_MESSAGE *);
@@ -38,6 +39,10 @@ extern void buttonOff22_cb(WM_MESSAGE *);
 extern void edit_text_cb(WM_MESSAGE *);
 extern void buttonOn20_cb(WM_MESSAGE *);
 extern void scheduleButton(WM_MESSAGE * pMsg, char *nm, int on);
+extern void buttonPush16_cb(WM_MESSAGE *);
+extern void buttonPush22_cb(WM_MESSAGE *);
+extern void button22_cb(WM_MESSAGE *);
+extern void button20_cb(WM_MESSAGE *);
 
 extern int color_scheme;
 extern void initColors();
@@ -74,21 +79,16 @@ extern  WM_HWIN CreateSchedulePeriods(void);
 extern  WM_HWIN CreateNumericKeyboard(int, char *,char *, char *);
 extern  WM_HWIN CreateAlphaKeyboard(int, char *, char *,char *);
 extern  WM_HWIN CreateEditRoom(int);
-extern  WM_HWIN CreateWifiDisconnect();
+extern  WM_HWIN CreateWifiDisconnect(void);
 extern  WM_HWIN CreatePassFail(char *);
-extern  WM_HWIN CreateTriacPanelWin();
-extern  WM_HWIN CreateFanMode();
-extern  WM_HWIN CreateAllDays();
-extern  WM_HWIN CreateVacation();
-extern  WM_HWIN CreateWeekend(char *);
+extern  WM_HWIN CreateTriacPanelWin(void);
+extern  WM_HWIN CreateFanMode(void);
+extern  WM_HWIN CreateEditSchedule(char *);
+extern  WM_HWIN CreateWifiConnect(void);
+
 extern void loadConfig();
 extern void setSkin();
 char * updateTime(char *tm, int dr);
-
-
-typedef int uint8_t;
-typedef int uint16_t;
-typedef int uint32_t;
 
 typedef struct
 {

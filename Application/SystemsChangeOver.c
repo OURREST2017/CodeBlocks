@@ -58,6 +58,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 
     switch (pMsg->MsgId)
     {
+    case WM_PAINT:
+        GUI_DrawBitmap(&bmwatermark, 0,50);
+        break;
     case WM_INIT_DIALOG:
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
@@ -79,12 +82,12 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             WM_SetCallback(manualButton, buttonOff22_cb);
         }
 
-         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
         WM_SetCallback(hItem, buttonOn16_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
         WM_SetCallback(hItem, buttonOn16_cb);
-       break;
+        break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
         NCode = pMsg->Data.v;

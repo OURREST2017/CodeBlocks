@@ -57,6 +57,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 
     switch (pMsg->MsgId)
     {
+    case WM_PAINT:
+        GUI_DrawBitmap(&bmwatermark, 0,50);
+        break;
     case WM_INIT_DIALOG:
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
@@ -95,7 +98,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                GUI_Delay(100);
                 state=4;
                 break;
             }
@@ -113,11 +115,14 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                     strcpy(language, "espanol");
                 }
 
-                GUI_Delay(100);
-                if (firstTime) {
+                if (firstTime)
+                {
                     CreateThermostatLocations();
-                } else {
-                  state=4;
+                    GUI_Delay(100);
+                }
+                else
+                {
+                    state=4;
                 }
                 break;
             }

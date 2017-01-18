@@ -57,7 +57,7 @@ static char * years[] =
 static char * months[] =
 {
     "January", "February", "March", "April", "May", "June", "July",
-     "August", "September", "October", "November", "December"
+    "August", "September", "October", "November", "December"
 };
 
 static char * days[] =
@@ -93,19 +93,45 @@ static WHEEL _aWheel[6];
 extern int CreateListWheel(int, int, int, int, int, char **, int, int, int,
                            WM_HWIN, WHEEL *, GUI_FONT *, int);
 
+static void _cbBkWheel(WM_MESSAGE * pMsg)
+{
+    WM_HWIN hParent;
+    int     xSize;
+    int     ySize;
+
+    switch (pMsg->MsgId)
+    {
+    case WM_NOTIFY_PARENT:
+        hParent    = WM_GetParent(pMsg->hWin);
+        pMsg->hWin = hParent;
+        WM_SendMessage(hParent, pMsg);
+        break;
+    case WM_PAINT:
+        xSize = WM_GetWindowSizeX(pMsg->hWin);
+        ySize = WM_GetWindowSizeY(pMsg->hWin);
+        GUI_DrawGradientV(0, 0, xSize - 1, ySize - 1, GUI_WHITE, GUI_WHITE);
+        break;
+    default:
+        WM_DefaultProc(pMsg);
+    }
+}
+
 /*********************************************************************
 *
 *       _cbDialog
 */
 static void _cbDialog(WM_MESSAGE * pMsg)
 {
-    WM_HWIN hItem;
+    WM_HWIN hItem, spinWheel;
     int     NCode;
     int     Id;
     char buf[10];
 
     switch (pMsg->MsgId)
     {
+    case WM_PAINT:
+        GUI_DrawBitmap(&bmwatermark, 0,50);
+        break;
     case WM_INIT_DIALOG:
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetFont(hItem, &GUI_Font32B_ASCII);
@@ -122,26 +148,29 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetText(hItem, "Day           Month            Year");
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
 
-        CreateListWheel(4, 95,  50, 100, GUI_ID_LISTWHEEL0, hours,
-                          GUI_COUNTOF(hours),  30, GUI_TA_VCENTER | GUI_TA_HCENTER,
-                          pMsg->hWin, &_aWheel[0], &GUI_Font32B_ASCII, current_hour-1);
-        CreateListWheel(54, 95, 50, 100, GUI_ID_LISTWHEEL1, minutes,
-                         GUI_COUNTOF(minutes), 30,  GUI_TA_VCENTER | GUI_TA_RIGHT,
-                         pMsg->hWin, &_aWheel[1], &GUI_Font32B_ASCII, current_minute-1);
+        spinWheel = WM_CreateWindowAsChild(4, 95, 480, 100,
+                                           pMsg->hWin, WM_CF_SHOW, _cbBkWheel, 0);
 
-        CreateListWheel(108, 95, 55, 100, GUI_ID_LISTWHEEL2, ampm,
-                         GUI_COUNTOF(ampm), 30, GUI_TA_VCENTER | GUI_TA_RIGHT,
-                         pMsg->hWin, &_aWheel[2], &GUI_Font32B_ASCII, current_ampm);
+        CreateListWheel(0, 0,  50, 100, GUI_ID_LISTWHEEL0, hours,
+                        GUI_COUNTOF(hours),  30, GUI_TA_VCENTER | GUI_TA_HCENTER,
+                        spinWheel, &_aWheel[0], &GUI_Font32B_ASCII, current_hour-1);
+        CreateListWheel(50, 0, 50, 100, GUI_ID_LISTWHEEL1, minutes,
+                        GUI_COUNTOF(minutes), 30,  GUI_TA_VCENTER | GUI_TA_RIGHT,
+                        spinWheel, &_aWheel[1], &GUI_Font32B_ASCII, current_minute-1);
 
-        CreateListWheel(168, 95,  60, 100, GUI_ID_LISTWHEEL3, days,
-                          GUI_COUNTOF(days),  30, GUI_TA_VCENTER | GUI_TA_HCENTER,
-                          pMsg->hWin, &_aWheel[3], &GUI_Font32B_ASCII, current_day-1);
-        CreateListWheel(228, 95, 160, 100, GUI_ID_LISTWHEEL4, months,
-                         GUI_COUNTOF(months), 30, GUI_TA_VCENTER | GUI_TA_RIGHT,
-                         pMsg->hWin, &_aWheel[4], &GUI_Font32B_ASCII, current_month);
-        CreateListWheel(388, 95,  80, 100, GUI_ID_LISTWHEEL5, years,
+        CreateListWheel(104, 0, 55, 100, GUI_ID_LISTWHEEL2, ampm,
+                        GUI_COUNTOF(ampm), 30, GUI_TA_VCENTER | GUI_TA_RIGHT,
+                        spinWheel, &_aWheel[2], &GUI_Font32B_ASCII, current_ampm);
+
+        CreateListWheel(164, 0,  60, 100, GUI_ID_LISTWHEEL3, days,
+                        GUI_COUNTOF(days),  30, GUI_TA_VCENTER | GUI_TA_HCENTER,
+                        spinWheel, &_aWheel[3], &GUI_Font32B_ASCII, current_day-1);
+        CreateListWheel(224, 0, 160, 100, GUI_ID_LISTWHEEL4, months,
+                        GUI_COUNTOF(months), 30, GUI_TA_VCENTER | GUI_TA_RIGHT,
+                        spinWheel, &_aWheel[4], &GUI_Font32B_ASCII, current_month);
+        CreateListWheel(384, 0,  80, 100, GUI_ID_LISTWHEEL5, years,
                         GUI_COUNTOF(years),  30, GUI_TA_VCENTER | GUI_TA_HCENTER,
-                        pMsg->hWin, &_aWheel[5], &GUI_Font32B_ASCII, current_year-2010);
+                        spinWheel, &_aWheel[5], &GUI_Font32B_ASCII, current_year-2010);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
         WM_SetCallback(hItem, buttonOn16_cb);

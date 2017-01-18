@@ -57,6 +57,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 
     switch (pMsg->MsgId)
     {
+    case WM_PAINT:
+        GUI_DrawBitmap(&bmwatermark, 0,50);
+        break;
     case WM_INIT_DIALOG:
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
@@ -93,7 +96,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                GUI_Delay(100);
                 state=17;
             }
             break;
@@ -109,7 +111,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 {
                    strcpy(fanControl, "heating");
                }
-                GUI_Delay(100);
                 state=17;
             }
             break;

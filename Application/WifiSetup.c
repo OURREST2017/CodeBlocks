@@ -81,6 +81,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 
     switch (pMsg->MsgId)
     {
+    case WM_PAINT:
+        GUI_DrawBitmap(&bmwatermark, 0,50);
+        break;
     case WM_INIT_DIALOG:
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetFont(hItem, GUI_FONT_32B_1);
@@ -178,8 +181,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_CANCEL:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
-                GUI_Delay(100);
+            case WM_NOTIFICATION_RELEASED:
                 state=17;
                 break;
             }
@@ -187,9 +189,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_DISCONNECT:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
-                GUI_Delay(100);
+            case WM_NOTIFICATION_RELEASED:
                 CreateWifiConnect();
+                GUI_Delay(100);
                 break;
             }
             break;
@@ -197,7 +199,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
-                GUI_Delay(100);
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DONE);
+                WM_SetCallback(hItem, buttonPush16_cb);
+                break;
+            case WM_NOTIFICATION_RELEASED:
                 state=17;
                 break;
             }

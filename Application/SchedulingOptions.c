@@ -58,6 +58,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 
     switch (pMsg->MsgId)
     {
+    case WM_PAINT:
+        GUI_DrawBitmap(&bmwatermark, 0,50);
+        break;
     case WM_INIT_DIALOG:
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
@@ -93,7 +96,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_CANCEL:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
                 state = 16;
                 break;
             }
@@ -101,7 +104,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_SAVE:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
                 if (prog_mode)
                 {
                     strcpy(schedulingOption, "programmable");

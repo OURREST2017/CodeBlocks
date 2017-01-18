@@ -464,17 +464,17 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { IMAGE_CreateIndirect, "Image", ID_IMAGE_LOCK, 138, 70, 38, 50, 0, 0, 0 },
     { IMAGE_CreateIndirect, "Image", ID_IMAGE_SCHEDULE, 257, 69, 45, 50, 0, 0, 0 },
     { IMAGE_CreateIndirect, "Image", ID_IMAGE_LANGAGES, 376, 75, 50, 42, 0, 0, 0 },
-    { IMAGE_CreateIndirect, "Image", ID_IMAGE_PROFILE, 131, 174, 45, 39, 0, 0, 0 },
-    { IMAGE_CreateIndirect, "Image", ID_IMAGE_PREFERENCES, 257, 167, 45, 50, 0, 0, 0 },
-    { IMAGE_CreateIndirect, "Image", ID_IMAGE_SETUP, 378, 172, 44, 44, 0, 0, 0 },
+    { IMAGE_CreateIndirect, "Image", ID_IMAGE_PROFILE, 131, 180, 45, 39, 0, 0, 0 },
+    { IMAGE_CreateIndirect, "Image", ID_IMAGE_PREFERENCES, 257, 178, 45, 50, 0, 0, 0 },
+    { IMAGE_CreateIndirect, "Image", ID_IMAGE_SETUP, 378, 180, 44, 44, 0, 0, 0 },
     { TEXT_CreateIndirect, "Time/Date", ID_TEXT_0, 10, 128, 80, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Lock", ID_TEXT_1, 126, 128, 59, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Schedule", ID_TEXT_2, 237, 128, 80, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Pear", ID_TEXT_4, 25, 226, 61, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Pear", ID_TEXT_4, 25, 230, 61, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Languages", ID_TEXT_3, 365, 128, 80, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Profile", ID_TEXT_5, 112, 226, 80, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Preferences", ID_TEXT_6, 240, 226, 80, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Setup", ID_TEXT_7, 359, 226, 80, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Profile", ID_TEXT_5, 112, 230, 80, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Preferences", ID_TEXT_6, 240, 230, 80, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Setup", ID_TEXT_7, 359, 230, 80, 20, 0, 0x64, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "SETTINGS", ID_TEXT_HEADER, 144, 9, 212, 33, 0, 0x64, 0 },
     { BUTTON_CreateIndirect, "return", ID_BUTTON_RETURN, 20, 0, 50, 50, 0, 0x0, 0 },
@@ -536,6 +536,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 
     switch (pMsg->MsgId)
     {
+    case WM_PAINT:
+        GUI_DrawBitmap(&bmwatermark, 0,50);
+        break;
     case WM_INIT_DIALOG:
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_RETURN);
         WM_SetCallback(hItem, return_cb);
@@ -629,7 +632,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             case WM_NOTIFICATION_CLICKED:
                 CreatePear();
                 GUI_Delay(100);
-                //state=11;
             }
             break;
         case ID_IMAGE_TIME_DATE:

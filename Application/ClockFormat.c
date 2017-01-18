@@ -58,6 +58,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 
     switch (pMsg->MsgId)
     {
+    case WM_PAINT:
+        GUI_DrawBitmap(&bmwatermark, 0,50);
+        break;
     case WM_INIT_DIALOG:
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_0);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
@@ -114,6 +117,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_CANCEL:
             switch(NCode)
             {
+            case WM_NOTIFICATION_CLICKED:
+                break;
             case WM_NOTIFICATION_RELEASED:
                 state = 16;
                 break;
@@ -122,6 +127,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_SAVE:
             switch(NCode)
             {
+            case WM_NOTIFICATION_CLICKED:
+                break;
             case WM_NOTIFICATION_RELEASED:
                 clockFormat = (hour12_mode == 1) ? 12 : 24;
                 state = 16;

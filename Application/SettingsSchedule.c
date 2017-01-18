@@ -58,7 +58,11 @@ static void schedButton(WM_MESSAGE * pMsg, char *nm, int bor)
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        drawButton22(nm, 200, 42, bor);
+        if (BUTTON_IsPressed(pMsg->hWin)) {
+            drawButton22(nm, 200, 42, bor, 1);
+        } else {
+            drawButton22(nm, 200, 42, bor, 0);
+        }
         break;
     default:
         BUTTON_Callback(pMsg);
@@ -86,6 +90,26 @@ static void weekend_cb(WM_MESSAGE * pMsg)
 }
 
 
+static void invalidateButtons(WM_HWIN hWin)
+{
+    WM_HWIN hItem;
+    hItem = WM_GetDialogItem(hWin, ID_BUTTON_ALL_DAYS);
+    WM_InvalidateWindow(hItem);
+    WM_SetCallback(hItem, allDays_cb);
+
+    hItem = WM_GetDialogItem(hWin, ID_BUTTON_WEEKEND);
+    WM_InvalidateWindow(hItem);
+    WM_SetCallback(hItem, weekend_cb);
+
+    hItem = WM_GetDialogItem(hWin, ID_BUTTON_EACH_DAY);
+    WM_InvalidateWindow(hItem);
+    WM_SetCallback(hItem, eachDay_cb);
+
+    hItem = WM_GetDialogItem(hWin, ID_BUTTON_VACATION);
+    WM_InvalidateWindow(hItem);
+    WM_SetCallback(hItem, vacation_cb);
+
+}
 
 /*********************************************************************
 *
@@ -107,7 +131,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        WM_InvalidateArea(&rect);
+        GUI_DrawBitmap(&bmwatermark, 0,50);
+        //WM_InvalidateArea(&rect);
         break;
     case WM_INIT_DIALOG:
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
@@ -153,14 +178,13 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
-                GUI_Delay(100);
                 state=4;
             }
             break;
         case ID_BUTTON_SET_SCHEDULE:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
                 strcpy(selectedSchedule, schedule);
                 break;
             }
@@ -168,8 +192,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_EDIT:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
-                GUI_Delay(100);
+            case WM_NOTIFICATION_RELEASED:
                 if (vacation_border)
                 {
                     CreateEditSchedule("vacation");
@@ -186,6 +209,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 {
                     CreateEditSchedule("all days");
                 }
+                GUI_Delay(100);
                 break;
             }
             break;
@@ -193,6 +217,11 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ALL_DAYS);
+                WM_SetCallback(hItem, buttonPush22_cb);
+                break;
+            case WM_NOTIFICATION_RELEASED:
+                invalidateButtons(pMsg->hWin);
                 strcpy(schedule, "All Days");
                 vacation_border = 0;
                 allDays_border = 1;
@@ -205,7 +234,12 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
-                strcpy(schedule, "Weekend");
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_WEEKEND);
+                WM_SetCallback(hItem, buttonPush22_cb);
+                break;
+            case WM_NOTIFICATION_RELEASED:
+                 invalidateButtons(pMsg->hWin);
+               strcpy(schedule, "Weekend");
                 vacation_border = 0;
                 allDays_border = 0;
                 eachDay_border = 0;
@@ -217,6 +251,11 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_EACH_DAY);
+                WM_SetCallback(hItem, buttonPush22_cb);
+                break;
+            case WM_NOTIFICATION_RELEASED:
+                invalidateButtons(pMsg->hWin);
                 strcpy(schedule, "Each Day");
                 vacation_border = 0;
                 allDays_border = 0;
@@ -229,6 +268,11 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_VACATION);
+                WM_SetCallback(hItem, buttonPush22_cb);
+                break;
+            case WM_NOTIFICATION_RELEASED:
+                invalidateButtons(pMsg->hWin);
                 strcpy(schedule, "Vacation");
                 vacation_border = 1;
                 allDays_border = 0;
@@ -241,8 +285,12 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
-                GUI_Delay(100);
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HELP);
+                WM_SetCallback(hItem, buttonPush16_cb);
+                break;
+            case WM_NOTIFICATION_RELEASED:
                 CreateScheduleHelp();
+                GUI_Delay(100);
                 break;
             }
             break;

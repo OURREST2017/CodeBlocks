@@ -61,6 +61,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 
     switch (pMsg->MsgId)
     {
+    case WM_PAINT:
+        GUI_DrawBitmap(&bmwatermark, 0,50);
+        break;
     case WM_INIT_DIALOG:
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
@@ -124,20 +127,22 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                GUI_Delay(100);
-                if (firstTime) {
+                if (firstTime)
+                {
                     CreateThermostatLocations();
-                } else {
+                    GUI_Delay(100);
+                }
+                else
+                {
                     state=17;
-               }
+                }
             }
             break;
         case ID_BUTTON_SAVE:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-             GUI_Delay(100);
-             if (forcedAir_mode)
+                if (forcedAir_mode)
                 {
                     strcpy(hvacType,"air");
                 }
@@ -149,11 +154,15 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 {
                     strcpy(hvacType,"water");
                 }
-                if (firstTime) {
+                if (firstTime)
+                {
                     CreateWifiConnect();
-                } else {
+                    GUI_Delay(100);
+                }
+                else
+                {
                     state=17;
-               }
+                }
             }
             break;
         case ID_BUTTON_HOT_WATER:

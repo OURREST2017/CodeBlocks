@@ -45,20 +45,46 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 
 static int thermo_controls;
 static WM_HWIN cooling, heating;
-static int _CustomSkin(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo) {
-  switch (pDrawItemInfo->Cmd) {
-  case WIDGET_ITEM_DRAW_BITMAP:
-    //
-    // This case gets hti when the checkmark (it's a bitmap) gets drawn.
-    // But instead of the checkmark we want a custom bitmap.
-    // We add a 3 to the x0 and y0 position. This is the size of the frame.
-    //
-    GUI_SetColor(0x569e85);
-    GUI_FillRoundedRect(36,1,125,30,3);
-    return 0;
-  default:
-    return CHECKBOX_DrawSkinFlex(pDrawItemInfo);
-  }
+
+static int checkBoxSkin(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo)
+{
+    //GUI_ErrorOut1("D",pDrawItemInfo->Cmd);
+    char buf[20];
+    switch (pDrawItemInfo->Cmd)
+    {
+    case WIDGET_ITEM_DRAW_TEXT:
+        CHECKBOX_GetText(pDrawItemInfo->hWin, buf, 20);;
+        GUI_SetColor(0x569e85);
+        GUI_FillRoundedRect(36,1,140,30,3);
+        GUI_SetColor(GUI_WHITE);
+        GUI_SetTextMode(GUI_TEXTMODE_TRANS);
+        GUI_SetFont(&GUI_FontRounded22);
+        GUI_DispStringAt(buf,42,4);
+        break;
+    default:
+        return CHECKBOX_DrawSkinFlex(pDrawItemInfo);
+    }
+}
+
+static int buttonSkin(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo)
+{
+    char buf[20];
+    switch (pDrawItemInfo->Cmd)
+    {
+    case WIDGET_ITEM_DRAW_BACKGROUND:
+        GUI_SetColor(GUI_RED);
+        GUI_FillRoundedRect(0,0,80,28,3);
+        break;
+    case WIDGET_ITEM_DRAW_TEXT:
+        BUTTON_GetText(pDrawItemInfo->hWin, buf, 20);;
+        GUI_SetColor(GUI_WHITE);
+        GUI_SetTextMode(GUI_TEXTMODE_TRANS);
+        GUI_SetFont(&GUI_FontRounded16);
+        GUI_DispStringAt(buf,3,4);
+        break;
+    default:
+        return BUTTON_DrawSkinFlex(pDrawItemInfo);
+    }
 }
 
 /*********************************************************************
@@ -73,6 +99,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 
     switch (pMsg->MsgId)
     {
+    case WM_PAINT:
+        GUI_DrawBitmap(&bmwatermark, 0,50);
+        break;
     case WM_INIT_DIALOG:
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetFont(hItem, GUI_FONT_32B_ASCII);
@@ -83,15 +112,15 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         CHECKBOX_SetFont(cooling, &GUI_FontRounded22);
         CHECKBOX_SetTextColor(cooling, 0x48866c);
         CHECKBOX_SetText(cooling, "Cooling");
-        //CHECKBOX_SetSkin(cooling, _CustomSkin);
         CHECKBOX_SetSpacing(cooling, 10);
+        CHECKBOX_SetSkin(cooling, checkBoxSkin);
 
         heating = WM_GetDialogItem(pMsg->hWin, ID_CHECKBOX_HEATING);
         CHECKBOX_SetFont(heating, &GUI_FontRounded22);
         CHECKBOX_SetTextColor(heating, 0x48866c);
         CHECKBOX_SetText(heating, "Heating");
-        //CHECKBOX_SetSkin(heating, _CustomSkin);
         CHECKBOX_SetSpacing(heating, 10);
+        CHECKBOX_SetSkin(heating, checkBoxSkin);
 
         if (thermo_controls == 0)
         {
@@ -115,7 +144,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         }
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        WM_SetCallback(hItem, buttonOn16_cb);
+        BUTTON_SetSkin(hItem, buttonSkin);
+
+//        WM_SetCallback(hItem, buttonOn16_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
         WM_SetCallback(hItem, buttonOn16_cb);
@@ -144,6 +175,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_CANCEL:
             switch(NCode)
             {
+            case WM_NOTIFICATION_CLICKED:
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
+                WM_SetCallback(hItem, buttonPush16_cb);
+                break;
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
                 state=17;
@@ -152,6 +187,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_SAVE:
             switch(NCode)
             {
+            case WM_NOTIFICATION_CLICKED:
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
+                WM_SetCallback(hItem, buttonPush16_cb);
+                break;
             case WM_NOTIFICATION_RELEASED:
                 c = CHECKBOX_GetState(cooling);
                 h = CHECKBOX_GetState(heating);
@@ -173,7 +212,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                     thermostatControls = 3;
                 }
 
-                GUI_Delay(100);
                 state=17;
             }
             break;

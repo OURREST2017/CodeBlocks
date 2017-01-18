@@ -67,6 +67,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 
     switch (pMsg->MsgId)
     {
+    case WM_PAINT:
+        GUI_DrawBitmap(&bmwatermark, 0,50);
+        break;
     case WM_INIT_DIALOG:
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_RETURN);
         WM_SetCallback(hItem, return_cb);
@@ -77,28 +80,28 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SCHEDULING_OPTIONS);
-        WM_SetCallback(hItem, buttonOn22_cb);
+        WM_SetCallback(hItem, button22_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_TEMPURATURE_SCALE);
-        WM_SetCallback(hItem, buttonOn22_cb);
+        WM_SetCallback(hItem, button22_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CLOCK_FORMAT);
-        WM_SetCallback(hItem, buttonOn22_cb);
+        WM_SetCallback(hItem, button22_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DST);
-        WM_SetCallback(hItem, buttonOn22_cb);
+        WM_SetCallback(hItem, button22_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SYSTEM_CHANGE_OVER);
-        WM_SetCallback(hItem, buttonOn22_cb);
+        WM_SetCallback(hItem, button22_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_TEMPURATURE_LIMITS);
-        WM_SetCallback(hItem, buttonOn22_cb);
+        WM_SetCallback(hItem, button22_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_KEYBOARD_LOCKOUT);
-        WM_SetCallback(hItem, buttonOn22_cb);
+        WM_SetCallback(hItem, button22_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SCHEDULING_PERIODS);
-         WM_SetCallback(hItem, buttonOn22_cb);
+         WM_SetCallback(hItem, button22_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
@@ -109,14 +112,13 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                GUI_Delay(100);
                 state=4;
             }
             break;
         case ID_BUTTON_SCHEDULING_OPTIONS:
             switch(NCode)
             {
-            case WM_NOTIFICATION_RELEASED:
+           case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
                 state=40;
             }
@@ -124,6 +126,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_TEMPURATURE_SCALE:
             switch(NCode)
             {
+            case WM_NOTIFICATION_CLICKED:
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_TEMPURATURE_SCALE);
+                WM_SetCallback(hItem, buttonPush22_cb);
+                break;
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
                 state=41;
@@ -132,6 +138,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_CLOCK_FORMAT:
             switch(NCode)
             {
+            case WM_NOTIFICATION_CLICKED:
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CLOCK_FORMAT);
+                WM_SetCallback(hItem, buttonPush22_cb);
+                break;
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
                 state=42;
@@ -140,7 +150,11 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_DST:
             switch(NCode)
             {
-            case WM_NOTIFICATION_RELEASED:
+             case WM_NOTIFICATION_CLICKED:
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DST);
+                WM_SetCallback(hItem, buttonPush22_cb);
+                break;
+           case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
                 state=43;
             }
@@ -148,6 +162,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_SYSTEM_CHANGE_OVER:
             switch(NCode)
             {
+            case WM_NOTIFICATION_CLICKED:
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SYSTEM_CHANGE_OVER);
+                WM_SetCallback(hItem, buttonPush22_cb);
+                break;
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
                 state=44;
@@ -156,6 +174,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_TEMPURATURE_LIMITS:
             switch(NCode)
             {
+            case WM_NOTIFICATION_CLICKED:
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_TEMPURATURE_LIMITS);
+                WM_SetCallback(hItem, buttonPush22_cb);
+                break;
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
                 state=45;
@@ -164,6 +186,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_KEYBOARD_LOCKOUT:
             switch(NCode)
             {
+            case WM_NOTIFICATION_CLICKED:
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_KEYBOARD_LOCKOUT);
+                WM_SetCallback(hItem, buttonPush22_cb);
+                break;
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
                 state=46;
@@ -172,6 +198,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_SCHEDULING_PERIODS:
             switch(NCode)
             {
+            case WM_NOTIFICATION_CLICKED:
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SCHEDULING_PERIODS);
+                WM_SetCallback(hItem, buttonPush22_cb);
+                break;
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
                 state=47;

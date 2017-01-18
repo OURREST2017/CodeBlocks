@@ -57,6 +57,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 
     switch (pMsg->MsgId)
     {
+    case WM_PAINT:
+        GUI_DrawBitmap(&bmwatermark, 0,50);
+        break;
     case WM_INIT_DIALOG:
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetTextColor(hItem, 0x00FFFFFF);
@@ -65,10 +68,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetText(hItem, thermo_rooms[room_number]);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CHANGE);
-        WM_SetCallback(hItem, buttonOn20_cb);
+        WM_SetCallback(hItem, button20_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DELETE);
-        WM_SetCallback(hItem, buttonOn20_cb);
+        WM_SetCallback(hItem, button20_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
         WM_SetCallback(hItem, buttonOn16_cb);
@@ -86,7 +89,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                CreateAlphaKeyboard(room_number, thermo_rooms[room_number], thermo_rooms[room_number], "Edit Room");
+                CreateAlphaKeyboard(room_number, thermo_rooms[room_number],
+                                    thermo_rooms[room_number], "Edit Room");
                 break;
             }
             break;
@@ -102,8 +106,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                CreateThermostatLocations();
                 GUI_Delay(100);
+                CreateThermostatLocations();
                 break;
             }
             break;
@@ -111,8 +115,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                CreateThermostatLocations();
                 GUI_Delay(100);
+                CreateThermostatLocations();
                 break;
             }
             break;

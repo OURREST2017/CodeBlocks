@@ -56,6 +56,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 
     switch (pMsg->MsgId)
     {
+    case WM_PAINT:
+        GUI_DrawBitmap(&bmwatermark, 0,50);
+        break;
     case WM_INIT_DIALOG:
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_0);
         TEXT_SetFont(hItem, GUI_FONT_32B_1);
@@ -83,7 +86,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
         WM_SetCallback(hItem, buttonOn16_cb);
-       break;
+        break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
         NCode = pMsg->Data.v;
@@ -92,17 +95,19 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_CANCEL:
             switch(NCode)
             {
+            case WM_NOTIFICATION_CLICKED:
+                break;
             case WM_NOTIFICATION_RELEASED:
-                GUI_Delay(100);
                 state=17;
             }
             break;
         case ID_BUTTON_SAVE:
             switch(NCode)
             {
+            case WM_NOTIFICATION_CLICKED:
+                break;
             case WM_NOTIFICATION_RELEASED:
                 backupHeat = backupHeat_mode;
-                GUI_Delay(100);
                 state=17;
             }
             break;
@@ -110,9 +115,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                backupHeat_mode  = 1;
                 WM_SetCallback(yesButton, buttonOn22_cb);
                 WM_SetCallback(noButton, buttonOff22_cb);
+                backupHeat_mode  = 1;
                 break;
             }
             break;
@@ -120,8 +125,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                  backupHeat_mode  = 0;
-              WM_SetCallback(yesButton, buttonOff22_cb);
+                backupHeat_mode  = 0;
+                WM_SetCallback(yesButton, buttonOff22_cb);
                 WM_SetCallback(noButton, buttonOn22_cb);
                 break;
             }

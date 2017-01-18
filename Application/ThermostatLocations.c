@@ -63,6 +63,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 
     switch (pMsg->MsgId)
     {
+    case WM_PAINT:
+        GUI_DrawBitmap(&bmwatermark, 0,50);
+        break;
     case WM_INIT_DIALOG:
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
@@ -72,27 +75,27 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ROOM1);
         BUTTON_SetText(hItem, thermo_rooms[0]);
-        WM_SetCallback(hItem, buttonOn20_cb);
+        WM_SetCallback(hItem, button20_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ROOM2);
         BUTTON_SetText(hItem, thermo_rooms[1]);
-        WM_SetCallback(hItem, buttonOn20_cb);
+        WM_SetCallback(hItem, button20_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ROOM3);
         BUTTON_SetText(hItem, thermo_rooms[2]);
-        WM_SetCallback(hItem, buttonOn20_cb);
+        WM_SetCallback(hItem, button20_cb);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ROOM4);
         BUTTON_SetText(hItem, thermo_rooms[3]);
-        WM_SetCallback(hItem, buttonOn20_cb);
+        WM_SetCallback(hItem, button20_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ROOM5);
         BUTTON_SetText(hItem, thermo_rooms[4]);
-        WM_SetCallback(hItem, buttonOn20_cb);
+        WM_SetCallback(hItem, button20_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ROOM6);
         BUTTON_SetText(hItem, thermo_rooms[5]);
-        WM_SetCallback(hItem, buttonOn20_cb);
+        WM_SetCallback(hItem, button20_cb);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_BACK);
         WM_SetCallback(hItem, buttonOn16_cb);

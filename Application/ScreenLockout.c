@@ -52,13 +52,16 @@ extern int OwnerDraw(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo);
 static WHEEL code[4];
 static int dig[4], bc;
 
-static void CreateListWheel1(int x, int y, int xSize, int ySize, int Id,
-                             char ** apText, int NumItems, int LineHeight, int TextAlign,
-                             WM_HWIN hParent, WHEEL * pWheel, GUI_FONT *pFont, int pos)
+static int CreateListWheel(int x, int y, int xSize, int ySize, int Id,
+                            char ** apText, int NumItems, int TextAlign,
+                            WM_HWIN hParent, WHEEL * pWheel, GUI_FONT *pFont, int lh, int pos)
 {
     WM_HWIN                      hWin;
     int                          i;
+    int                          LineHeight;
 
+    pWheel->pFont = pFont;
+    LineHeight    = lh;
     pWheel->pFont = pFont;
     hWin          = LISTWHEEL_CreateUser(x, y, xSize, ySize, hParent, WM_CF_SHOW | WM_CF_HASTRANS, 0, Id, NULL, sizeof(void *));
     LISTWHEEL_SetFont(hWin, pFont);
@@ -76,43 +79,72 @@ static void CreateListWheel1(int x, int y, int xSize, int ySize, int Id,
     {
         LISTWHEEL_SetRBorder(hWin, 10);
     }
-
+    CreateDecoration(xSize, ySize, LineHeight, pWheel);
+    //
+    // Fill WHEEL structure
+    //
     code[bc++].hWin = hWin;
     LISTWHEEL_SetPos(hWin, pos);
 
-    // Create overlay devices
-    CreateDecoration(xSize, ySize, LineHeight, pWheel);
-    // Fill WHEEL structure
     pWheel->hWin = hWin;
+    return 0;
 }
-//extern int CreateListWheel(int, int, int, int, int, char **, int, int, int,
-//                           WM_HWIN, WHEEL *, GUI_FONT *, int);
+
+static void _cbBkWheel(WM_MESSAGE * pMsg)
+{
+    WM_HWIN hParent;
+    int     xSize;
+    int     ySize;
+
+    switch (pMsg->MsgId)
+    {
+    case WM_NOTIFY_PARENT:
+        hParent    = WM_GetParent(pMsg->hWin);
+        pMsg->hWin = hParent;
+        WM_SendMessage(hParent, pMsg);
+        break;
+    case WM_PAINT:
+        xSize = WM_GetWindowSizeX(pMsg->hWin);
+        ySize = WM_GetWindowSizeY(pMsg->hWin);
+        //GUI_SetBkColor(GUI_WHITE);
+        GUI_DrawGradientV(0, 0, xSize - 1, ySize - 1, GUI_WHITE, GUI_WHITE);
+        break;
+    default:
+        WM_DefaultProc(pMsg);
+    }
+}
+
 /*********************************************************************
 *
 *       _cbDialog
 */
 static void _cbDialog(WM_MESSAGE * pMsg)
 {
-    WM_HWIN hItem, spin;
+    WM_HWIN hItem, spinWheel;
     int NCode;
     int Id, i;
 
     switch (pMsg->MsgId)
     {
+    case WM_PAINT:
+        GUI_DrawBitmap(&bmwatermark, 0,50);
+        break;
     case WM_INIT_DIALOG:
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetFont(hItem, GUI_FONT_32B_1);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
 
-        CreateListWheel1(40, 70,  80, 140, ID_LISTWHEEL_0, codes,   GUI_COUNTOF(codes), 80,
-                         GUI_TA_VCENTER | GUI_TA_HCENTER, pMsg->hWin, &code[bc], GUI_FONT_D48X64, dig[0]);
-        CreateListWheel1(145, 70,  80, 140, ID_LISTWHEEL_1, codes,   GUI_COUNTOF(codes), 80,
-                         GUI_TA_VCENTER | GUI_TA_HCENTER, pMsg->hWin, &code[bc], GUI_FONT_D48X64, dig[1]);
-        CreateListWheel1(250, 70,  80, 140, ID_LISTWHEEL_2, codes,   GUI_COUNTOF(codes), 80,
-                         GUI_TA_VCENTER | GUI_TA_HCENTER, pMsg->hWin, &code[bc], GUI_FONT_D48X64, dig[2]);
-        CreateListWheel1(355, 70,  80, 140, ID_LISTWHEEL_3, codes,   GUI_COUNTOF(codes), 80,
-                         GUI_TA_VCENTER | GUI_TA_HCENTER, pMsg->hWin, &code[bc], GUI_FONT_D48X64, dig[3]);
+        spinWheel = WM_CreateWindowAsChild(24, 70, 480, 140,
+                                           pMsg->hWin, WM_CF_SHOW, _cbBkWheel, 0);
+        CreateListWheel(  0, 0,  100, 140, GUI_ID_LISTWHEEL0, codes,
+                           GUI_COUNTOF(codes),   GUI_TA_VCENTER | GUI_TA_HCENTER, spinWheel, &code[0], GUI_FONT_D48X64, 80, dig[0]);
+        CreateListWheel(  110, 0,  100, 140, GUI_ID_LISTWHEEL0, codes,
+                           GUI_COUNTOF(codes),   GUI_TA_VCENTER | GUI_TA_HCENTER, spinWheel, &code[1], GUI_FONT_D48X64, 80, dig[1]);
+        CreateListWheel(  220, 0,  100, 140, GUI_ID_LISTWHEEL0, codes,
+                           GUI_COUNTOF(codes),   GUI_TA_VCENTER | GUI_TA_HCENTER, spinWheel, &code[2], GUI_FONT_D48X64, 80, dig[2]);
+        CreateListWheel(  330, 0,  100, 140, GUI_ID_LISTWHEEL0, codes,
+                           GUI_COUNTOF(codes),   GUI_TA_VCENTER | GUI_TA_HCENTER, spinWheel, &code[3], GUI_FONT_D48X64, 80, dig[3]);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
         WM_SetCallback(hItem, buttonOn16_cb);
@@ -144,7 +176,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 lockCode[2] = LISTWHEEL_GetPos(code[2].hWin) + 48;
                 lockCode[3] = LISTWHEEL_GetPos(code[3].hWin) + 48;
                 lockCode[4] = '\0';
-                GUI_ErrorOut(lockCode);
 
                 state = 4;
                 break;

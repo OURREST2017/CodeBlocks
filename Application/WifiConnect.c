@@ -52,8 +52,8 @@ extern int CreateListWheel(int, int, int, int, int, char **, int, int, int,
 extern int drawRoundedListBox(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo);
 
 static char *wifi_networks[] = {
-"My Wifi Network", "your Wifi Network", "HP Home Printer", "BrightHouse Wireless",
-"My Wifi Network", "your Wifi Network", "HP Home Printer", "BrightHouse Wireless"
+"Pinnacle", "FFI-HDQ", "BHN Secure", "CableWifi", "Direct-7c-HP M452 LaserJet",
+"BSCWireless", "INTEGO GROUP", "Other Network", "BrightHouse Wireless"
 };
 
 static WM_HWIN listBox_h;
@@ -70,10 +70,13 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     int     NCode;
     int     Id;
     int i;
-    wifi_count = 8;
+    wifi_count = 9;
 
     switch (pMsg->MsgId)
     {
+    case WM_PAINT:
+        GUI_DrawBitmap(&bmwatermark, 0,50);
+        break;
     case WM_INIT_DIALOG:
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
@@ -81,17 +84,17 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         //
-        CreateListWheel(50, 70, 380, 140, GUI_ID_LISTWHEEL0, wifi_networks,
-                        wifi_count, 30, GUI_TA_VCENTER | GUI_TA_HCENTER,
-                        pMsg->hWin, &wifiWheel, &GUI_Font24B_ASCII, 0);
+//        CreateListWheel(50, 70, 380, 140, GUI_ID_LISTWHEEL0, wifi_networks,
+//                        wifi_count, 30, GUI_TA_VCENTER | GUI_TA_HCENTER,
+//                        pMsg->hWin, &wifiWheel, &GUI_Font24B_ASCII, 0);
 
-//        listBox_h = WM_GetDialogItem(pMsg->hWin, ID_LISTBOX_0);
-//        LISTBOX_SetFont(listBox_h, &GUI_FontRounded22);
-//        LISTBOX_SetBkColor(listBox_h, LISTBOX_CI_SELFOCUS, 0x509e81);
-//        LISTBOX_SetTextColor(listBox_h, LISTBOX_CI_SEL,GUI_WHITE);
-//        LISTBOX_SetTextColor(listBox_h, LISTBOX_CI_UNSEL,GUI_BLACK);
-//        LISTBOX_SetAutoScrollV(listBox_h, 1);
-//        LISTBOX_SetScrollbarWidth(listBox_h, 20);
+        listBox_h = WM_GetDialogItem(pMsg->hWin, ID_LISTBOX_0);
+        LISTBOX_SetFont(listBox_h, &GUI_FontRounded22);
+        LISTBOX_SetBkColor(listBox_h, LISTBOX_CI_SELFOCUS, 0x509e81);
+        LISTBOX_SetTextColor(listBox_h, LISTBOX_CI_SEL,GUI_WHITE);
+        LISTBOX_SetTextColor(listBox_h, LISTBOX_CI_UNSEL,GUI_BLACK);
+        LISTBOX_SetAutoScrollV(listBox_h, 1);
+        LISTBOX_SetScrollbarWidth(listBox_h, 20);
         //LISTBOX_SetOwnerDraw(listBox_h, drawRoundedListBox);
 
         for (i=0;i<wifi_count;i++) {
@@ -172,9 +175,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                GUI_Delay(100);
-//                wifi = LISTBOX_GetSel(listBox_h );
-                wifi = LISTWHEEL_GetPos(wifiWheel.hWin);
+                wifi = LISTBOX_GetSel(listBox_h );
+//                wifi = LISTWHEEL_GetPos(wifiWheel.hWin);
                 strcpy(myWifiNetwork, wifi_networks[wifi]);
                 if (firstTime)
                 {
@@ -184,6 +186,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 {
                     CreateWifiSetup();
                 }
+                GUI_Delay(100);
             }
             break;
         }

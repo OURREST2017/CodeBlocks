@@ -25,6 +25,7 @@
 #define ID_HEADER_0 (GUI_ID_USER + 0x07)
 #define ID_TEXT_HEADER (GUI_ID_USER + 0x08)
 #define ID_BUTTON_CANCEL (GUI_ID_USER + 0x11)
+#define ID_BUTTON_WEEKDAY (GUI_ID_USER + 0x14)
 #define ID_BUTTON_SAVE (GUI_ID_USER + 0x15)
 #define ID_TEXT_TITLE (GUI_ID_USER + 0x25)
 #define ID_BUTTON_PERIOD (GUI_ID_USER + 0x26)
@@ -47,8 +48,6 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "EDIT SCHEDULE:", ID_TEXT_HEADER, 0, 0, 252, 50, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 28, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 378, 230, 80, 28, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "", ID_TEXT_TITLE, 280, 0, 189, 50, 0, 0x64, 0 },
     { BUTTON_CreateIndirect, "PERIOD", ID_BUTTON_PERIOD, 25, 90, 90, 26, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "START", ID_BUTTON_START, 135, 90, 90, 26, 0, 0x0, 0 },
@@ -60,6 +59,9 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { TEXT_CreateIndirect, "TEMP", ID_TEXT_TEMP_VAR, 363, 63, 80, 20, 0, 0x64, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_UP, 45, 120, 48, 48, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_DN, 45, 168, 48, 48, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 28, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "WEEKDAY", ID_BUTTON_WEEKDAY, 162, 230, 129, 28, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 375, 230, 80, 28, 0, 0x0, 0 },
 };
 
 static int period_on, start_on, stop_on, temp_on;
@@ -95,6 +97,58 @@ static struct days_s selectedDay;
 static char *periods_text[] = {"wake","leave","return","sleep"};
 static char edit_title[20];
 
+static void upButton_cb(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        GUI_DrawBitmap(&bmup_nb, 0, 0);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+
+static void upButtonPush_cb(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        GUI_DrawBitmap(&bmup_r, 0, 0);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+
+static void dnButton_cb(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        GUI_DrawBitmap(&bmdn_nb, 0, 0);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+
+static void dnButtonPush_cb(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        GUI_DrawBitmap(&bmdn_r, 0, 0);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+
 /*********************************************************************
 *
 *       _cbDialog
@@ -108,6 +162,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 
     switch (pMsg->MsgId)
     {
+    case WM_PAINT:
+        GUI_DrawBitmap(&bmwatermark, 0,50);
+        break;
     case WM_INIT_DIALOG:
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetFont(hItem, GUI_FONT_32_1);
@@ -119,12 +176,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetFont(hItem, GUI_FONT_32B_1);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         TEXT_SetText(hItem, toup(edit_title));
-
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        WM_SetCallback(hItem, buttonOn16_cb);
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
-        WM_SetCallback(hItem, buttonOn16_cb);
         //
         periodButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_PERIOD);
         WM_SetCallback(periodButton, periodButton_cb);
@@ -164,10 +215,37 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextColor(temp_text, GUI_MAKE_COLOR(0x00808080));
         //
         upButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_UP);
-        WM_SetCallback(upButton, big_up_button);
+        WM_SetCallback(upButton, upButton_cb);
+//       WM_SetCallback(upButton, big_up_button);
         //
         dnButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DN);
-        WM_SetCallback(dnButton, big_dn_button);
+        WM_SetCallback(dnButton, dnButton_cb);
+//       WM_SetCallback(dnButton, big_dn_button);
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
+        WM_SetCallback(hItem, buttonOn16_cb);
+        //
+        weekdayButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_WEEKDAY);
+        WM_SetCallback(weekdayButton, buttonOn16_cb);
+        if (strcmp(edit_title,"weekend") == 0 || strcmp(edit_title,"weekday") == 0 )
+        {
+            WM_ShowWindow(weekdayButton);
+            if (strcmp(edit_title,"weekend") == 0)
+            {
+                BUTTON_SetText(weekdayButton, "WEEKDAY");
+            }
+            else
+            {
+                BUTTON_SetText(weekdayButton, "WEEKEND");
+            }
+        }
+        else
+        {
+            WM_HideWindow(weekdayButton);
+        }
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
+        WM_SetCallback(hItem, buttonOn16_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
@@ -180,7 +258,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_CANCEL:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
                 state = 13;
                 break;
             }
@@ -188,9 +266,25 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_SAVE:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
                 state = 13;
                 break;
+            }
+            break;
+        case ID_BUTTON_WEEKDAY:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_CLICKED:
+                if (strcmp(edit_title, "weekend") ==  0)
+                {
+                    CreateEditSchedule("weekday");
+                }
+                else
+                {
+                    CreateEditSchedule("weekend");
+                }
+                GUI_Delay(100);
+
             }
             break;
         case ID_BUTTON_PERIOD:
@@ -208,8 +302,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 WM_InvalidateWindow(startButton);
                 WM_InvalidateWindow(stopButton);
                 WM_InvalidateWindow(tempButton);
-                WM_MoveTo(upButton, 45,120);
-                WM_MoveTo(dnButton, 45,168);
+                WM_MoveTo(upButton, 45+selected_button*110,120);
+                WM_MoveTo(dnButton, 45+selected_button*110,168);
                 break;
             }
             break;
@@ -228,8 +322,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 WM_InvalidateWindow(startButton);
                 WM_InvalidateWindow(stopButton);
                 WM_InvalidateWindow(tempButton);
-                WM_MoveTo(upButton, 155,120);
-                WM_MoveTo(dnButton, 155,168);
+                WM_MoveTo(upButton, 45+selected_button*110,120);
+                WM_MoveTo(dnButton, 45+selected_button*110,168);
                 break;
             }
             break;
@@ -247,8 +341,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 WM_InvalidateWindow(startButton);
                 WM_InvalidateWindow(stopButton);
                 WM_InvalidateWindow(tempButton);
-                WM_MoveTo(upButton, 265,120);
-                WM_MoveTo(dnButton, 265,168);
+                WM_MoveTo(upButton, 45+selected_button*110,120);
+                WM_MoveTo(dnButton, 45+selected_button*110,168);
                 break;
             }
             break;
@@ -266,8 +360,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 WM_InvalidateWindow(startButton);
                 WM_InvalidateWindow(stopButton);
                 WM_InvalidateWindow(tempButton);
-                WM_MoveTo(upButton, 375,120);
-                WM_MoveTo(dnButton, 375,168);
+                WM_MoveTo(upButton, 45+selected_button*110,120);
+                WM_MoveTo(dnButton, 45+selected_button*110,168);
                 break;
             }
             break;
@@ -275,6 +369,12 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
+                WM_SetCallback(upButton, upButtonPush_cb);
+                WM_MoveTo(upButton, (45+selected_button*110),120);
+                break;
+            case WM_NOTIFICATION_RELEASED:
+                WM_SetCallback(upButton, upButton_cb);
+                WM_MoveTo(upButton, 45+selected_button*110,120);
                 switch(selected_button)
                 {
                 case 0:
@@ -308,6 +408,12 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
+                WM_SetCallback(dnButton, dnButtonPush_cb);
+                WM_MoveTo(dnButton, (45+selected_button*110)+1,168);
+                break;
+            case WM_NOTIFICATION_RELEASED:
+                WM_SetCallback(dnButton, dnButton_cb);
+                WM_MoveTo(dnButton, 45+selected_button*110,168);
                 switch(selected_button)
                 {
                 case 0:

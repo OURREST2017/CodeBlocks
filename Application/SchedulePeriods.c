@@ -93,7 +93,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_CANCEL:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
                 state = 16;
                 break;
             }
@@ -101,7 +101,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_SAVE:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
                 if (twoPer_mode)
                 {
                     schedulePeriods = 2;

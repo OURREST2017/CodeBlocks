@@ -77,17 +77,29 @@ static GUI_CONST_STORAGE unsigned char back_space_img[] =
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
-static const GUI_COLOR Colors[] = { 0x000000, 0x000000 };
-static const GUI_LOGPALETTE Palette = { 2, 1, Colors };
+static const GUI_COLOR Colors_white[] = { 0xFFFFFF, 0xFFFFFF };
+static const GUI_COLOR Colors_black[] = { 0x808080, 0x808080 };
+static const GUI_LOGPALETTE Palette_white = { 2, 1, Colors_white };
+static const GUI_LOGPALETTE Palette_black = { 2, 1, Colors_black };
 
-GUI_CONST_STORAGE GUI_BITMAP back_space =
+GUI_CONST_STORAGE GUI_BITMAP back_space_white =
 {
     44, // xSize
     16, // ySize
     22, // BytesPerLine
     4, // BitsPerPixel
     back_space_img,  // Pointer to picture data (indices)
-    &Palette   // Pointer to palette
+    &Palette_white   // Pointer to palette
+};
+
+GUI_CONST_STORAGE GUI_BITMAP back_space_black =
+{
+    44, // xSize
+    16, // ySize
+    22, // BytesPerLine
+    4, // BitsPerPixel
+    back_space_img,  // Pointer to picture data (indices)
+    &Palette_black   // Pointer to palette
 };
 
 /*********************************************************************
@@ -100,33 +112,33 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
     { EDIT_CreateIndirect, "Edit", ID_EDIT_TEXT, 18, 60, 446, 25, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "q", ID_BUTTON_Q, 10, 96, 35, 32, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "w", ID_BUTTON_W, 57, 96, 35, 32, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "e", ID_BUTTON_E, 104, 96, 35, 32, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "r", ID_BUTTON_R, 151, 96, 35, 32, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "t", ID_BUTTON_T, 198, 96, 35, 32, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "y", ID_BUTTON_Y, 245, 96, 35, 32, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "u", ID_BUTTON_U, 292, 96, 35, 32, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "i", ID_BUTTON_I, 339, 96, 35, 32, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "o", ID_BUTTON_O, 386, 96, 35, 32, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "p", ID_BUTTON_P, 433, 96, 35, 32, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "a", ID_BUTTON_A, 34, 136, 35, 32, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "s", ID_BUTTON_S, 81, 136, 35, 32, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "d", ID_BUTTON_D, 128, 136, 35, 32, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "f", ID_BUTTON_F, 175, 136, 35, 32, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "g", ID_BUTTON_G, 222, 136, 35, 32, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "h", ID_BUTTON_H, 269, 136, 35, 32, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "j", ID_BUTTON_J, 316, 136, 35, 32, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "k", ID_BUTTON_K, 363, 136, 35, 32, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "l", ID_BUTTON_L, 410, 136, 35, 32, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "q", ID_BUTTON_Q, 10, 96, 35,32, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "w", ID_BUTTON_W, 57, 96, 35,32, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "e", ID_BUTTON_E, 104, 96, 35,32, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "r", ID_BUTTON_R, 151, 96, 35,32, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "t", ID_BUTTON_T, 198, 96,  35,32, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "y", ID_BUTTON_Y, 245, 96,  35,32, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "u", ID_BUTTON_U, 292, 96,  35,32, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "i", ID_BUTTON_I, 339, 96,  35,32, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "o", ID_BUTTON_O, 386, 96,  35,32, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "p", ID_BUTTON_P, 433, 96,  35,32, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "a", ID_BUTTON_A, 34, 136,  35,32, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "s", ID_BUTTON_S, 81, 136,  35,32, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "d", ID_BUTTON_D, 128, 136,  35,32, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "f", ID_BUTTON_F, 175, 136,  35,32, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "g", ID_BUTTON_G, 222, 136,  35,32, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "h", ID_BUTTON_H, 269, 136,  35,32, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "j", ID_BUTTON_J, 316, 136,  35,32, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "k", ID_BUTTON_K, 363, 136,  35,32, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "l", ID_BUTTON_L, 410, 136,  35,32, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "SHIFT", ID_BUTTON_SHIFT, 10, 176, 65, 32, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "z", ID_BUTTON_Z, 82, 176, 35, 32, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "x", ID_BUTTON_X, 129, 176, 35, 32, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "c", ID_BUTTON_C, 176, 176, 35, 32, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "v", ID_BUTTON_V, 223, 176, 35, 32, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "b", ID_BUTTON_B, 270, 176, 35, 32, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "n", ID_BUTTON_N, 317, 176, 35, 32, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "m", ID_BUTTON_M, 364, 176, 35, 32, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "z", ID_BUTTON_Z, 82, 176,  35,32, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "x", ID_BUTTON_X, 129, 176,  35,32, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "c", ID_BUTTON_C, 176, 176,  35,32, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "v", ID_BUTTON_V, 223, 176,  35,32, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "b", ID_BUTTON_B, 270, 176,  35,32, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "n", ID_BUTTON_N, 317, 176,  35,32, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "m", ID_BUTTON_M, 364, 176,  35,32, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_ERASE, 410, 176, 58, 32, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 216, 85, 32, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, ".?123", ID_BUTTON_123, 114, 216, 70, 32, 0, 0x0, 0 },
@@ -136,6 +148,125 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 
 static int  shift_key = 0, room_number;
 static char from_screen[30],  txt_buffer[50],edit_title[50];
+
+void shift_cb(WM_MESSAGE * pMsg)
+{
+    char buf[50], nm[50];
+    GUI_RECT rt;
+    WM_GetClientRect(&rt);
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        if (shift_key)
+        {
+            GUI_DrawGradientRoundedV(1,1, rt.x1, rt.y1, 6, 0x48866c, 0x63b39b);
+            GUI_SetColor(0xdbdbdb);
+            GUI_SetPenSize(2);
+            GUI_AA_DrawRoundedRect(0,0,rt.x1,rt.y1,10);
+
+            BUTTON_GetText(pMsg->hWin, buf, 10);
+            if (strcmp(buf,"back") == 0) return;
+            GUI_SetColor(GUI_WHITE);
+        }
+        else
+        {
+            GUI_SetColor(0xf2f2f2);
+            GUI_AA_FillRoundedRect(2,2,rt.x1-2,rt.y1-2,8);
+            GUI_SetColor(0xdbdbdb);
+            GUI_SetPenSize(2);
+            GUI_AA_DrawRoundedRect(0,0,rt.x1,rt.y1,12);
+            BUTTON_GetText(pMsg->hWin, buf, 10);
+            GUI_SetColor(0x808080);
+        }
+        GUI_SetTextMode(GUI_TEXTMODE_TRANS);
+        GUI_SetFont(&GUI_FontRounded22);
+        GUI_DispStringInRect(buf, &rt, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+
+void keys_cb(WM_MESSAGE * pMsg)
+{
+    char buf[50], nm[50];
+    GUI_RECT rt;
+    int idx;
+    WM_GetClientRect(&rt);
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        idx = BUTTON_IsPressed(pMsg->hWin);
+        if (idx)
+        {
+            GUI_DrawGradientRoundedV(1,1, rt.x1, rt.y1, 6, 0x48866c, 0x63b39b);
+            GUI_SetColor(0xdbdbdb);
+            GUI_SetPenSize(2);
+            GUI_AA_DrawRoundedRect(0,0,rt.x1,rt.y1,10);
+
+            BUTTON_GetText(pMsg->hWin, buf, 10);
+            GUI_SetColor(GUI_WHITE);
+        }
+        else
+        {
+            GUI_SetColor(0xf2f2f2);
+            GUI_AA_FillRoundedRect(2,2,rt.x1-2,rt.y1-2,8);
+            GUI_SetColor(0xdbdbdb);
+            GUI_SetPenSize(2);
+            GUI_AA_DrawRoundedRect(0,0,rt.x1,rt.y1,12);
+            BUTTON_GetText(pMsg->hWin, buf, 10);
+            GUI_SetColor(0x808080);
+        }
+        if (strcmp(buf,"back") == 0)
+        {
+            if (idx)
+            {
+                GUI_DrawBitmap(&back_space_white, 7, 9);
+            }
+            else
+            {
+                GUI_DrawBitmap(&back_space_black, 7, 9);
+            }
+        }
+        else
+        {
+            GUI_SetTextMode(GUI_TEXTMODE_TRANS);
+            GUI_SetFont(&GUI_FontRounded22);
+            GUI_DispStringInRect(buf, &rt, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        }
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+
+void keys_disable_cb(WM_MESSAGE * pMsg)
+{
+    char buf[50], nm[50];
+    GUI_RECT rt;
+    int idx;
+    WM_GetClientRect(&rt);
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        GUI_SetColor(0xf2f2f2);
+        GUI_AA_FillRoundedRect(2,2,rt.x1-2,rt.y1-2,8);
+        GUI_SetColor(0xdbdbdb);
+        GUI_SetPenSize(2);
+        GUI_AA_DrawRoundedRect(0,0,rt.x1,rt.y1,12);
+        BUTTON_GetText(pMsg->hWin, buf, 10);
+        GUI_SetColor(0xbababa);
+        GUI_SetTextMode(GUI_TEXTMODE_TRANS);
+        GUI_SetFont(&GUI_FontRounded22);
+        GUI_DispStringInRect(buf, &rt, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
 
 /*********************************************************************
 *
@@ -151,52 +282,61 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 
     switch (pMsg->MsgId)
     {
+    case WM_PAINT:
+        GUI_DrawBitmap(&bmwatermark, 0,50);
+        GUI_SetColor(0xf2f2f2);
+        GUI_AA_FillRoundedRect(10,57,465,85, 6);
+        GUI_SetColor(0xdbdbdb);
+        GUI_SetPenSize(3);
+        GUI_AA_DrawRoundedRect(10,57,465,85, 6);
+        break;
     case WM_INIT_DIALOG:
         hItem = pMsg->hWin;
-
-        BUTTON_SKINFLEX_PROPS Props;
-        BUTTON_GetSkinFlexProps(&Props, BUTTON_SKINFLEX_PI_ENABLED);
-        Props.aColorUpper[0] = 0xf2f2f2;//0x48866c;
-        Props.aColorLower[1] = 0xf2f2f2;//0x62b29a;
-        BUTTON_SetSkinFlexProps(&Props, BUTTON_SKINFLEX_PI_PRESSED);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetFont(hItem, GUI_FONT_32B_1);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
+        TEXT_SetTextColor(hItem, GUI_WHITE);
         sprintf(buf, "EDIT: %s", edit_title);
         TEXT_SetText(hItem, buf);
 
         textItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_TEXT);
         EDIT_SetText(textItem, txt_buffer);
         EDIT_SetFont(textItem, GUI_FONT_20_1);
-        EDIT_SetTextAlign(textItem, GUI_TA_LEFT | GUI_TA_VCENTER);
-
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ERASE);
-        BUTTON_SetBitmapEx(hItem, 0,  &back_space, 10, 8);
+        EDIT_SetTextAlign(textItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        EDIT_SetBkColor(textItem, 1, 0xf2f2f2);
+        EDIT_SetTextColor(textItem, 1, 0x808080);
+        WIDGET_SetEffect(textItem, &WIDGET_Effect_None);
         //
         int i;
         for (i=2051; i<2077; i++)
         {
             hItem = WM_GetDialogItem(pMsg->hWin, i);
-            BUTTON_SetFont(hItem, &GUI_FontRounded22);
+            BUTTON_SetTextColor(hItem, 0, GUI_MAKE_COLOR(0x808080));
+            WM_SetCallback(hItem, keys_cb);
         }
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SHIFT);
         BUTTON_SetFont(hItem, GUI_FONT_20_1);
         BUTTON_SetTextColor(hItem, BUTTON_CI_DISABLED, GUI_GRAY);
+        WM_SetCallback(hItem, shift_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        BUTTON_SetFont(hItem, GUI_FONT_20_1);
+        WM_SetCallback(hItem, keys_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_123);
-        BUTTON_SetFont(hItem, GUI_FONT_20_1);
+        WM_SetCallback(hItem, keys_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DONE);
-        BUTTON_SetFont(hItem, GUI_FONT_20_1);
+        WM_SetCallback(hItem, keys_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SPACE);
-        BUTTON_SetFont(hItem, GUI_FONT_20_1);
+        WM_SetCallback(hItem, keys_cb);
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ERASE);
+        BUTTON_SetText(hItem, "back");
+        WM_SetCallback(hItem, keys_cb);
+
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
@@ -247,7 +387,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 EDIT_GetText(hItem, txt_buffer, 50);
                 len = strlen(txt_buffer);
                 if (len == 50) break;
-                //nt l2 = strlen(acBuffer);
                 txt_buffer[len] = ' ';
                 txt_buffer[len+1] = '\0';
                 EDIT_SetText(hItem, txt_buffer);
@@ -275,6 +414,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                             BUTTON_SetText(hItem, buf );
                         }
                         shift_key = !shift_key;
+                        WM_InvalidateWindow(WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SHIFT));
                     }
                     else
                     {
@@ -282,7 +422,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                         EDIT_GetText(hItem, txt_buffer, 50);
                         len = strlen(txt_buffer);
                         if (len == 50) break;
-                        //int l2 = strlen(acBuffer);
                         txt_buffer[len] = acBuffer[0];
                         txt_buffer[len+1] = '\0';
                         EDIT_SetText(hItem, txt_buffer);

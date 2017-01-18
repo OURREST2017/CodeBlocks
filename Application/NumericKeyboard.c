@@ -57,38 +57,6 @@
 #define ID_BUTTON_DONE  (GUI_ID_USER + 0x21)
 #define ID_BUTTON_SPACE  (GUI_ID_USER + 0x22)
 
-static GUI_CONST_STORAGE unsigned char back_space_img[] =
-{
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x11, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x01, 0x11, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x01, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x00,
-    0x01, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x00,
-    0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x00,
-    0x01, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x00,
-    0x00, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x00,
-    0x00, 0x00, 0x11, 0x11, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x01, 0x11, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x01, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x01, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-};
-
-static const GUI_COLOR Colors[] = { 0x000000, 0x000000 };
-static const GUI_LOGPALETTE Palette = { 2, 1, Colors };
-
-GUI_CONST_STORAGE GUI_BITMAP back_space2 =
-{
-    44, // xSize
-    16, // ySize
-    22, // BytesPerLine
-    4, // BitsPerPixel
-    back_space_img,  // Pointer to picture data (indices)
-    &Palette   // Pointer to palette
-};
 /*********************************************************************
 *
 *       _aDialogCreate
@@ -139,6 +107,13 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 static WM_HWIN textItem;
 static char txt_buffer[50], edit_title[30], from_screen[20];
 static int text_index;
+
+extern GUI_CONST_STORAGE GUI_BITMAP back_space_white;
+extern GUI_CONST_STORAGE GUI_BITMAP back_space_black;
+extern void shift_cb(WM_MESSAGE * pMsg);
+extern void keys_cb(WM_MESSAGE * pMsg);
+extern void keys_disable_cb(WM_MESSAGE * pMsg);
+
 static void _cbDialog(WM_MESSAGE * pMsg)
 {
     WM_HWIN hItem;
@@ -147,6 +122,14 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     char buf[30];
     switch (pMsg->MsgId)
     {
+    case WM_PAINT:
+        GUI_DrawBitmap(&bmwatermark, 0,50);
+        GUI_SetColor(0xf2f2f2);
+        GUI_AA_FillRoundedRect(10,57,465,85, 6);
+        GUI_SetColor(0xdbdbdb);
+        GUI_SetPenSize(3);
+        GUI_AA_DrawRoundedRect(10,57,465,85, 6);
+        break;
     case WM_INIT_DIALOG:
         hItem = pMsg->hWin;
         BUTTON_SKINFLEX_PROPS Props;
@@ -165,39 +148,55 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         textItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_TEXT);
         EDIT_SetText(textItem, txt_buffer);
         EDIT_SetFont(textItem, GUI_FONT_20_1);
-        EDIT_SetTextAlign(textItem, GUI_TA_LEFT | GUI_TA_VCENTER);
+        EDIT_SetTextAlign(textItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        EDIT_SetBkColor(textItem, 1, 0xf2f2f2);
+        EDIT_SetTextColor(textItem, 1, 0x808080);
+        WIDGET_SetEffect(textItem, &WIDGET_Effect_None);
         //
         int i;
         for (i=2051; i<2077; i++)
         {
             hItem = WM_GetDialogItem(pMsg->hWin, i);
             BUTTON_SetFont(hItem, &GUI_FontRounded22);
-            if (i > 2061) WM_DisableWindow(hItem);
+            if (i > 2061)
+            {
+                WM_DisableWindow(hItem);
+                WM_SetCallback(hItem, keys_disable_cb);
+            }
+            else
+            {
+                WM_SetCallback(hItem, keys_cb);
+            }
         }
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ERASE);
-        BUTTON_SetBitmapEx(hItem, 0,  &back_space2, 10, 8);
+        BUTTON_SetText(hItem, "back");
+        WM_SetCallback(hItem, keys_cb);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SHIFT);
-        BUTTON_SetFont(hItem, GUI_FONT_20_1);
-        BUTTON_SetTextColor(hItem, BUTTON_CI_DISABLED, GUI_GRAY);
+        WM_SetCallback(hItem, keys_disable_cb);
         WM_DisableWindow(hItem);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        BUTTON_SetFont(hItem, GUI_FONT_20_1);
+        WM_SetCallback(hItem, keys_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ABC);
-        BUTTON_SetFont(hItem, GUI_FONT_20_1);
         if (strcmp(from_screen, "Profile") == 0)
         {
+            WM_SetCallback(hItem, keys_disable_cb);
             WM_DisableWindow(hItem);
+        }
+        else
+        {
+            WM_SetCallback(hItem, keys_cb);
         }
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DONE);
-        BUTTON_SetFont(hItem, GUI_FONT_20_1);
+        WM_SetCallback(hItem, keys_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SPACE);
         BUTTON_SetFont(hItem, GUI_FONT_20_1);
+        WM_SetCallback(hItem, keys_disable_cb);
         WM_DisableWindow(hItem);
 
         break;
@@ -211,25 +210,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case WM_NOTIFICATION_RELEASED:
             switch (Id)
             {
-            case ID_EDIT_TEXT:
-                break;
-            case ID_BUTTON_ERASE:
-                hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_TEXT);
-                EDIT_GetText(hItem, txt_buffer, 50);
-                len = strlen(txt_buffer);
-                if (len == 0) break;
-                txt_buffer[len-1] = '\0';
-                EDIT_SetText(hItem, txt_buffer);
-                break;
-            case ID_BUTTON_SPACE:
-                hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_TEXT);
-                EDIT_GetText(hItem, txt_buffer, 50);
-                len = strlen(txt_buffer);
-                if (len == 50) break;
-                txt_buffer[len] = ' ';
-                txt_buffer[len+1] = '\0';
-                EDIT_SetText(hItem, txt_buffer);
-                break;
             case ID_BUTTON_ABC:
                 CreateAlphaKeyboard(text_index, txt_buffer, edit_title, "Alpha");
                 break;
@@ -254,6 +234,25 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                     CreateProfile(text_index, txt_buffer);
                 }
                 break;
+            case ID_EDIT_TEXT:
+                break;
+            case ID_BUTTON_ERASE:
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_TEXT);
+                EDIT_GetText(hItem, txt_buffer, 50);
+                len = strlen(txt_buffer);
+                if (len == 0) break;
+                txt_buffer[len-1] = '\0';
+                EDIT_SetText(hItem, txt_buffer);
+                break;
+            case ID_BUTTON_SPACE:
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_TEXT);
+                EDIT_GetText(hItem, txt_buffer, 50);
+                len = strlen(txt_buffer);
+                if (len == 50) break;
+                txt_buffer[len] = ' ';
+                txt_buffer[len+1] = '\0';
+                EDIT_SetText(hItem, txt_buffer);
+                break;
             default:
                 if ((Id >= GUI_ID_USER) && (Id <= (GUI_ID_USER + GUI_COUNTOF(_aDialogCreate) - 1)))
                 {
@@ -266,6 +265,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                     txt_buffer[len+1] = '\0';
                     EDIT_SetText(hItem, txt_buffer);
                 }
+                break;
             }
             WM_SetFocus(textItem);
         }

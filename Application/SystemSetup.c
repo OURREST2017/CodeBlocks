@@ -53,102 +53,6 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "return", ID_BUTTON_RETURN, 20, 0, 50, 50, 0, 0x0, 0 },
 };
 
-static void location_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("Thermostat Location", 220, 36, 1);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void type_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("System Type", 220, 36, 1);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void controls_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("Thermostat Controls", 220, 36, 1);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void fan_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("Fan Control", 220, 36, 1);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void wifi_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("WIFI Setup", 220, 36, 1);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void backup_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("Backup Heat", 220, 36, 1);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void cooling_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("Cooling Stages", 220, 36, 1);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-static void heating_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton22("Heating Stages", 220, 36, 1);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
 /*********************************************************************
 *
 *       _cbDialog
@@ -163,12 +67,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 
     switch (pMsg->MsgId)
     {
+    case WM_PAINT:
+        GUI_DrawBitmap(&bmwatermark, 0,50);
+        break;
     case WM_INIT_DIALOG:
-        //
-        // Initialization of 'Text'
-        //
-        //GUI_DrawBitmap(&bm_return, 100, 150);
-
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_RETURN);
         WM_SetCallback(hItem, return_cb);
 
@@ -178,51 +80,50 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_THERMO_LOCATION);
-        WM_SetCallback(hItem, location_cb);
+        WM_SetCallback(hItem, button22_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SYSTEM_TYPE);
-        WM_SetCallback(hItem, type_cb);
+        WM_SetCallback(hItem, button22_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_THERMO_CONTROLS);
-        WM_SetCallback(hItem, controls_cb);
+        WM_SetCallback(hItem, button22_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_FAN_CONTROLS);
-        WM_SetCallback(hItem, fan_cb);
+        WM_SetCallback(hItem, button22_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_WIFI_SETUP);
-        WM_SetCallback(hItem, wifi_cb);
+        WM_SetCallback(hItem, button22_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_BACKUP_HEAT);
-        WM_SetCallback(hItem, backup_cb);
+        WM_SetCallback(hItem, button22_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_COOLING_STAGES);
-         WM_SetCallback(hItem, cooling_cb);
+         WM_SetCallback(hItem, button22_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HEATING_STAGES);
-        WM_SetCallback(hItem, heating_cb);
+        WM_SetCallback(hItem, button22_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
         NCode = pMsg->Data.v;
         switch(Id)
         {
-        case ID_BUTTON_RETURN: // Notifications sent by 'Button'
+        case ID_BUTTON_RETURN:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                GUI_Delay(100);
                 state=4;
             }
             break;
-        case ID_BUTTON_THERMO_LOCATION: // Notifications sent by 'Button'
+        case ID_BUTTON_THERMO_LOCATION:
             switch(NCode)
             {
-            case WM_NOTIFICATION_RELEASED:
+           case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
                 state=20;
             }
             break;
-        case ID_BUTTON_SYSTEM_TYPE: // Notifications sent by 'Button'
+        case ID_BUTTON_SYSTEM_TYPE:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
@@ -230,7 +131,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 state=21;
             }
             break;
-        case ID_BUTTON_THERMO_CONTROLS: // Notifications sent by 'Button'
+        case ID_BUTTON_THERMO_CONTROLS:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
@@ -238,41 +139,61 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 state=22;
             }
             break;
-        case ID_BUTTON_FAN_CONTROLS: // Notifications sent by 'Button'
+        case ID_BUTTON_FAN_CONTROLS:
             switch(NCode)
             {
+            case WM_NOTIFICATION_CLICKED:
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_FAN_CONTROLS);
+                WM_SetCallback(hItem, buttonPush22_cb);
+                break;
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
                 state=23;
             }
             break;
-        case ID_BUTTON_WIFI_SETUP: // Notifications sent by 'Button'
+        case ID_BUTTON_WIFI_SETUP:
             switch(NCode)
             {
+            case WM_NOTIFICATION_CLICKED:
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_WIFI_SETUP);
+                WM_SetCallback(hItem, buttonPush22_cb);
+                break;
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
                 state=24;
             }
             break;
-        case ID_BUTTON_BACKUP_HEAT: // Notifications sent by 'Button'
+        case ID_BUTTON_BACKUP_HEAT:
             switch(NCode)
             {
+            case WM_NOTIFICATION_CLICKED:
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_BACKUP_HEAT);
+                WM_SetCallback(hItem, buttonPush22_cb);
+                break;
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
                 state=25;
             }
             break;
-        case ID_BUTTON_COOLING_STAGES: // Notifications sent by 'Button'
+        case ID_BUTTON_COOLING_STAGES:
             switch(NCode)
             {
+            case WM_NOTIFICATION_CLICKED:
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_COOLING_STAGES);
+                WM_SetCallback(hItem, buttonPush22_cb);
+                break;
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
                 state=26;
             }
             break;
-        case ID_BUTTON_HEATING_STAGES: // Notifications sent by 'Button'
+        case ID_BUTTON_HEATING_STAGES:
             switch(NCode)
             {
+            case WM_NOTIFICATION_CLICKED:
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HEATING_STAGES);
+                WM_SetCallback(hItem, buttonPush22_cb);
+                break;
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
                 state=27;
