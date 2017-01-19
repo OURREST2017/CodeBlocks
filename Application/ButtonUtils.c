@@ -1,6 +1,7 @@
 #include "main.h"
 
 int color_scheme;
+GUI_COLOR buttonTextColor = 0xffffff;
 
 typedef struct colors
 {
@@ -14,10 +15,18 @@ struct colors color_map[3];
 
 void initColors()
 {
-    color_map[0].start = 0x48866c;
-    color_map[0].middle = 0x509e81;
-    color_map[0].stop  = 0x63b39b;
+    color_map[0].start = 0x48866c;       // 72 134 108
+    color_map[0].middle = 0x509e81;      // 80 158 129
+    color_map[0].stop  = 0x63b39b;       // 99 179 155
+
+//    color_map[0].start = 0x12c850;       // 72 134 108
+//    color_map[0].middle = 0x1ce15f;      // 80 158 129
+//    color_map[0].stop  = 0x26ff78;      // 99 179 155
     color_map[0].color = "green";
+
+//    18 200 70      12c850
+//    28 225 95      1ce15f
+//    38 255 120     26ff78
 
     color_map[1].start = 0x272780;
     color_map[1].middle = 0x38389e;
@@ -28,37 +37,6 @@ void initColors()
     color_map[2].middle = 0xdfcddb;
     color_map[2].stop  = 0xdfdfdf;
     color_map[2].color = "gray";
-
-    setSkin();
-}
-
-void setSkin()
-{
-//    BUTTON_SKINFLEX_PROPS Props;
-//    BUTTON_GetSkinFlexProps(&Props, BUTTON_SKINFLEX_PI_ENABLED);
-//    Props.aColorFrame[0] = 0x0064B49C;
-//    Props.aColorFrame[1] = 0x0059A88D;
-//    Props.aColorFrame[2] = 0x0059A88D;
-//    Props.aColorUpper[0] = 0x0064B49C;
-//    Props.aColorUpper[1] = 0x0059A89C;
-//    Props.aColorLower[0] = 0x0059A88D;
-//    Props.aColorLower[1] = 0x0048856A;
-//    BUTTON_SetSkinFlexProps(&Props, BUTTON_SKINFLEX_PI_ENABLED);
-//    BUTTON_SetSkinFlexProps(&Props, BUTTON_SKINFLEX_PI_FOCUSSED);
-//    Props.aColorUpper[0] = 0x0048856A;
-//    Props.aColorUpper[1] = 0x0059A88D;
-//    Props.aColorLower[0] = 0x0059A89C;
-//    Props.aColorLower[1] = 0x0064B49C;
-//    BUTTON_SetSkinFlexProps(&Props, BUTTON_SKINFLEX_PI_PRESSED);
-//
-//    Props.aColorFrame[0] = 0xdbdbdb;
-//    Props.aColorFrame[1] = 0xdbdbdb;
-//    Props.aColorFrame[2] = 0xdbdbdb;
-//    Props.aColorUpper[0] = 0xdbdbdb;
-//    Props.aColorUpper[1] = 0xdbdbdb;
-//    Props.aColorLower[0] = 0xdbdbdb;
-//    Props.aColorLower[1] = 0xdbdbdb;
-//    BUTTON_SetSkinFlexProps(&Props, BUTTON_SKINFLEX_PI_DISABLED);
 
     HEADER_SKINFLEX_PROPS PropsH;
     HEADER_GetSkinFlexProps(&PropsH, 0);
@@ -103,38 +81,14 @@ void edit_text_cb(WM_MESSAGE * pMsg)
         break;
     }
 }
-void buttonOn20_cb(WM_MESSAGE * pMsg)
-{
-    char buf[50], nm[50];
-    WM_HWIN win = pMsg->hWin;
-    GUI_RECT r;
-    WIDGET *w;
-    w = BUTTON_GetpWidget(win);
-    r = w->Win.Rect;
-    BUTTON_GetText(win, nm, 50);
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        drawButton20(nm, r.x1-r.x0, r.y1-r.y0, 1,0);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
 
 void buttonOn16_cb(WM_MESSAGE * pMsg)
 {
-    char buf[50], nm[50];
+    char nm[50];
     WM_HWIN win = pMsg->hWin;
     GUI_RECT r;
-    WIDGET *w;
-    w = BUTTON_GetpWidget(win);
-    r = w->Win.Rect;
+    WM_GetClientRect(&r);
     BUTTON_GetText(win, nm, 50);
-//      BUTTON_GetUserData(win, buf, 3);
-    sprintf(buf,"%d,%s,%d,%d,%d,%d",w->Id,nm,r.x0,r.y0,r.x1,r.y1);
-//    GUI_ErrorOut(buf);
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
@@ -178,16 +132,12 @@ void buttonPush16_cb(WM_MESSAGE * pMsg)
     char nm[50];
     WM_HWIN win = pMsg->hWin;
     GUI_RECT r;
-    WIDGET *w;
-    int isp;
-    w = BUTTON_GetpWidget(win);
-    r = w->Win.Rect;
+    WM_GetClientRect(&r);
     BUTTON_GetText(win, nm, 50);
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        isp = BUTTON_IsPressed(pMsg->hWin);
-        if (isp == 1)
+        if ( BUTTON_IsPressed(pMsg->hWin) == 1)
         {
             drawButtonPush16(nm, r.x1-r.x0, r.y1-r.y0, 0);
         }
@@ -207,16 +157,12 @@ void buttonPush22_cb(WM_MESSAGE * pMsg)
     char nm[50];
     WM_HWIN win = pMsg->hWin;
     GUI_RECT r;
-    WIDGET *w;
-    int isp;
-    w = BUTTON_GetpWidget(win);
-    r = w->Win.Rect;
+    WM_GetClientRect(&r);
     BUTTON_GetText(win, nm, 50);
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        isp = BUTTON_IsPressed(pMsg->hWin);
-        if (isp == 1)
+        if (BUTTON_IsPressed(pMsg->hWin) == 1)
         {
             drawButtonPush22(nm, r.x1-r.x0, r.y1-r.y0, 0);
         }
@@ -236,9 +182,7 @@ void button20_cb(WM_MESSAGE * pMsg)
     char nm[50];
     WM_HWIN win = pMsg->hWin;
     GUI_RECT r;
-    WIDGET *w;
-    w = BUTTON_GetpWidget(win);
-    r = w->Win.Rect;
+    WM_GetClientRect(&r);
     BUTTON_GetText(win, nm, 50);
     switch (pMsg->MsgId)
     {
@@ -258,14 +202,30 @@ void button20_cb(WM_MESSAGE * pMsg)
     }
 }
 
+void buttonOn20_cb(WM_MESSAGE * pMsg)
+{
+    char nm[50];
+    GUI_RECT r;
+    WM_GetClientRect(&r);
+    BUTTON_GetText(pMsg->hWin, nm, 50);
+
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawButton20(nm, r.x1-r.x0, r.y1-r.y0, 1,0);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+
 void button22_cb(WM_MESSAGE * pMsg)
 {
     char nm[50];
     WM_HWIN win = pMsg->hWin;
     GUI_RECT r;
-    WIDGET *w;
-    w = BUTTON_GetpWidget(win);
-    r = w->Win.Rect;
+    WM_GetClientRect(&r);
     BUTTON_GetText(win, nm, 50);
     switch (pMsg->MsgId)
     {
@@ -290,9 +250,7 @@ void buttonOn22_cb(WM_MESSAGE * pMsg)
     char nm[50];
     WM_HWIN win = pMsg->hWin;
     GUI_RECT r;
-    WIDGET *w;
-    w = BUTTON_GetpWidget(win);
-    r = w->Win.Rect;
+    WM_GetClientRect(&r);
     BUTTON_GetText(win, nm, 50);
     switch (pMsg->MsgId)
     {
@@ -310,9 +268,7 @@ void buttonOff22_cb(WM_MESSAGE * pMsg)
     char nm[50];
     WM_HWIN win = pMsg->hWin;
     GUI_RECT r;
-    WIDGET *w;
-    w = BUTTON_GetpWidget(win);
-    r = w->Win.Rect;
+    WM_GetClientRect(&r);
     BUTTON_GetText(win, nm, 50);
     switch (pMsg->MsgId)
     {
@@ -325,29 +281,6 @@ void buttonOff22_cb(WM_MESSAGE * pMsg)
     }
 }
 
-void drawButton20(char * but, int w, int h, int col, int bor)
-{
-    GUI_RECT rect;
-    rect.x0 = 0;
-    rect.y0 = 0;
-    rect.x1 = w-1;
-    rect.y1 = h-1;
-    if (col)
-    {
-        GUI_DrawGradientRoundedV(0,0, rect.x1, rect.y1, 4, color_map[color_scheme].stop, color_map[color_scheme].start);
-    }
-    else
-    {
-        GUI_DrawGradientRoundedV(0, 0, rect.x1, rect.y1, 4, color_map[2].stop, color_map[2].start);
-    }
-    GUI_SetFont(&FontBig20B);
-    GUI_SetColor((col == 6) ? GUI_BLACK : GUI_WHITE);
-    GUI_SetTextMode(GUI_TM_TRANS);
-    GUI_DispStringInRect(but, &rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
-    GUI_SetColor(0x509e81);
-    GUI_SetPenSize(2);
-    if (bor) GUI_AA_DrawRoundedRect(0, 0, rect.x1, rect.y1, 6);
-}
 
 void drawButton16(char * but, int w, int h, int col, int bor)
 {
@@ -356,6 +289,7 @@ void drawButton16(char * but, int w, int h, int col, int bor)
     rect.y0 = 0;
     rect.x1 = w-1;
     rect.y1 = h-1;
+
     if (col)
     {
         GUI_DrawGradientRoundedV(0,0, rect.x1, rect.y1, 4, color_map[color_scheme].stop, color_map[color_scheme].start);
@@ -365,12 +299,29 @@ void drawButton16(char * but, int w, int h, int col, int bor)
         GUI_DrawGradientRoundedV(0, 0, rect.x1, rect.y1, 4, color_map[2].stop, color_map[2].start);
     }
     GUI_SetFont(&GUI_FontRounded16);
-    GUI_SetColor((col == 6) ? GUI_BLACK : GUI_WHITE);
+    GUI_SetColor((col == 2) ? GUI_BLACK : buttonTextColor);
     GUI_SetTextMode(GUI_TM_TRANS);
     GUI_DispStringInRect(but, &rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
     GUI_SetColor(0x509e81);
     GUI_SetPenSize(2);
     if (bor) GUI_AA_DrawRoundedRect(0, 0, rect.x1, rect.y1, 8);
+}
+
+void drawButtonOff16(char * but, int w, int h, int col)
+{
+    GUI_RECT rect;
+    rect.x0 = 0;
+    rect.y0 = 0;
+    rect.x1 = w-1;
+    rect.y1 = h-1;
+    GUI_DrawGradientRoundedV(0, 0, rect.x1, rect.y1, 4, color_map[2].stop, color_map[2].start);
+    GUI_SetFont(&GUI_FontRounded16);
+    GUI_SetColor((col == 2) ? GUI_BLACK : buttonTextColor);
+    GUI_SetTextMode(GUI_TM_TRANS);
+    GUI_DispStringInRect(but, &rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
+    GUI_SetColor(0x00cccccc);
+    GUI_SetPenSize(2);
+    //GUI_AA_DrawRoundedRect(0, 0, rect.x1, rect.y1, 6);
 }
 
 void drawButtonPush16(char * but, int w, int h, int col)
@@ -390,6 +341,30 @@ void drawButtonPush16(char * but, int w, int h, int col)
 
 }
 
+void drawButton20(char * but, int w, int h, int col, int bor)
+{
+    GUI_RECT rect;
+    rect.x0 = 0;
+    rect.y0 = 0;
+    rect.x1 = w-1;
+    rect.y1 = h-1;
+    if (col)
+    {
+        GUI_DrawGradientRoundedV(0,0, rect.x1, rect.y1, 4, color_map[color_scheme].stop, color_map[color_scheme].start);
+    }
+    else
+    {
+        GUI_DrawGradientRoundedV(0, 0, rect.x1, rect.y1, 4, color_map[2].stop, color_map[2].start);
+    }
+    GUI_SetFont(&FontBig20B);
+    GUI_SetColor((col == 2) ? GUI_BLACK : buttonTextColor);
+    GUI_SetTextMode(GUI_TM_TRANS);
+    GUI_DispStringInRect(but, &rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
+    GUI_SetColor(0x509e81);
+    GUI_SetPenSize(2);
+    if (bor) GUI_AA_DrawRoundedRect(0, 0, rect.x1, rect.y1, 6);
+}
+
 void drawButtonPush20(char * but, int w, int h, int col)
 {
     GUI_RECT rect;
@@ -403,6 +378,30 @@ void drawButtonPush20(char * but, int w, int h, int col)
     GUI_DispStringInRect(but, &rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
 }
 
+void drawButton22(char * but, int w, int h, int col, int bor)
+{
+    GUI_RECT rect;
+    rect.x0 = 0;
+    rect.y0 = 0;
+    rect.x1 = w-1;
+    rect.y1 = h-1;
+    if (col)
+    {
+        GUI_DrawGradientRoundedV(0, 0, rect.x1, rect.y1, 4, color_map[color_scheme].stop, color_map[color_scheme].start);
+    }
+    else
+    {
+        GUI_DrawGradientRoundedV(0, 0, rect.x1, rect.y1, 4, color_map[2].stop, color_map[2].start);
+    }
+    GUI_SetFont(&GUI_FontRounded22);
+    GUI_SetColor((col == 2) ? GUI_BLACK : buttonTextColor);
+    GUI_SetTextMode(GUI_TM_TRANS);
+    GUI_DispStringInRect(but, &rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
+    GUI_SetColor(0x509e81);
+    GUI_SetPenSize(2);
+    if (bor) GUI_AA_DrawRoundedRect(0, 0, rect.x1, rect.y1, 3);
+}
+
 void drawButtonPush22(char * but, int w, int h, int col)
 {
     GUI_RECT rect;
@@ -414,23 +413,6 @@ void drawButtonPush22(char * but, int w, int h, int col)
     GUI_SetFont(&GUI_FontRounded22);
     GUI_SetTextMode(GUI_TM_TRANS);
     GUI_DispStringInRect(but, &rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
-}
-
-void drawButtonOff16(char * but, int w, int h, int col)
-{
-    GUI_RECT rect;
-    rect.x0 = 0;
-    rect.y0 = 0;
-    rect.x1 = w-1;
-    rect.y1 = h-1;
-    GUI_DrawGradientRoundedV(0, 0, rect.x1, rect.y1, 4, color_map[2].stop, color_map[2].start);
-    GUI_SetFont(&GUI_FontRounded16);
-    GUI_SetColor((col == 6) ? GUI_BLACK : GUI_WHITE);
-    GUI_SetTextMode(GUI_TM_TRANS);
-    GUI_DispStringInRect(but, &rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
-    GUI_SetColor(0x00cccccc);
-    GUI_SetPenSize(2);
-    //GUI_AA_DrawRoundedRect(0, 0, rect.x1, rect.y1, 6);
 }
 
 void drawScheduleButton(char * but, int w, int h, int col, int bor)
@@ -453,7 +435,7 @@ void drawScheduleButton(char * but, int w, int h, int col, int bor)
         GUI_DrawGradientRoundedV(2, 2, rect.x1-2, rect.y1-2, 4, color_map[2].stop, color_map[2].start);
     }
     GUI_SetFont(&GUI_FontRounded22);
-    GUI_SetColor((col == 6) ? GUI_BLACK : GUI_WHITE);
+    GUI_SetColor((col == 6) ? GUI_BLACK : buttonTextColor);
     GUI_SetTextMode(GUI_TM_TRANS);
     GUI_DispStringInRect(but, &rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
     GUI_SetColor((bor == 0) ? 0x00cccccc : GUI_RED);
@@ -484,7 +466,7 @@ void drawCoolButton(char * but, int w, int h, int col, int bor)
         GUI_DrawGradientRoundedV(2, 2, rect.x1-2, rect.y1-2, 4, color_map[2].stop, color_map[2].start);
     }
     GUI_SetFont(&GUI_FontRounded16);
-    GUI_SetColor((col == 6) ? GUI_BLACK : GUI_WHITE);
+    GUI_SetColor((col == 6) ? GUI_BLACK : buttonTextColor);
     GUI_SetTextMode(GUI_TM_TRANS);
     GUI_DispStringInRect(but, &rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
     if (strcmp(but, "COOL") == 0)
@@ -500,30 +482,6 @@ void drawCoolButton(char * but, int w, int h, int col, int bor)
         GUI_SetPenSize(3);
         GUI_AA_DrawRoundedRect(1, 1, rect.x1, rect.y1, 6);
     }
-}
-
-void drawButton22(char * but, int w, int h, int col, int bor)
-{
-    GUI_RECT rect;
-    rect.x0 = 0;
-    rect.y0 = 0;
-    rect.x1 = w;
-    rect.y1 = h;
-    if (col)
-    {
-        GUI_DrawGradientRoundedV(2, 2, rect.x1-2, rect.y1-2, 4, color_map[color_scheme].stop, color_map[color_scheme].start);
-    }
-    else
-    {
-        GUI_DrawGradientRoundedV(2, 2, rect.x1-2, rect.y1-2, 4, color_map[2].stop, color_map[2].start);
-    }
-    GUI_SetFont(&GUI_FontRounded22);
-    GUI_SetColor((col == 6) ? GUI_BLACK : GUI_WHITE);
-    GUI_SetTextMode(GUI_TM_TRANS);
-    GUI_DispStringInRect(but, &rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
-    GUI_SetColor(0x509e81);
-    GUI_SetPenSize(2);
-    if (bor) GUI_AA_DrawRoundedRect(2, 2, rect.x1-2, rect.y1-2, 3);
 }
 
 void drawProfileButton(char * but, int w, int h, int col)
@@ -542,6 +500,7 @@ void drawProfileButton(char * but, int w, int h, int col)
     GUI_SetPenSize(2);
     //GUI_AA_DrawRoundedRect(0, 0, 74, 23, 4);
 }
+
 void drawButton(char * but, int col)
 {
     GUI_RECT rect;
@@ -551,7 +510,7 @@ void drawButton(char * but, int col)
     rect.y1 = 26;
     GUI_DrawGradientRoundedV(0, 0, rect.x1, rect.y1, 4, color_map[col].stop, color_map[col].start);
     GUI_SetFont(&GUI_FontRounded16);
-    GUI_SetColor(GUI_WHITE);
+    GUI_SetColor(buttonTextColor);
     GUI_SetTextMode(GUI_TM_TRANS);
     GUI_DispStringInRect(but, &rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
     GUI_SetColor(GUI_LIGHTGRAY);
@@ -612,8 +571,8 @@ int OwnerDraw(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo)
         //
         // Draw background
         //
-        // GUI_SetColor(0x00FFFFFF);
-        //   GUI_FillRect(4, 0, xSizeWin - 5, ySizeWin - 1);
+         GUI_SetColor(0x00FFFFFF);
+        GUI_FillRect(4, 0, xSizeWin - 5, ySizeWin - 1);
         break;
     case WIDGET_ITEM_DRAW_OVERLAY:
         LISTWHEEL_GetUserData(hWin, &pWheel, sizeof(pWheel));
@@ -711,8 +670,9 @@ int CreateListWheel(int x, int y, int xSize, int ySize, int Id,
     LISTWHEEL_SetOwnerDraw(hWin, OwnerDraw);
     LISTWHEEL_SetUserData(hWin, &pWheel, sizeof(pWheel));
     LISTWHEEL_SetLineHeight(hWin, LineHeight);
-    LISTWHEEL_SetTextColor(hWin, LISTWHEEL_CI_SEL, GUI_LIGHTBLUE);
-    for (i = 0; i < NumItems; i++)
+    LISTWHEEL_SetTextColor(hWin, LISTWHEEL_CI_SEL, 0x008800);
+    LISTWHEEL_SetTextColor(hWin, LISTWHEEL_CI_UNSEL, 0x808080);
+   for (i = 0; i < NumItems; i++)
     {
         LISTWHEEL_AddString(hWin, *(apText + i));
     }
@@ -722,6 +682,7 @@ int CreateListWheel(int x, int y, int xSize, int ySize, int Id,
     }
 
     LISTWHEEL_SetPos(hWin, pos);
+    LISTWHEEL_SetSel(hWin, pos);
 
     // Create overlay devices
     CreateDecoration(xSize, ySize, LineHeight, pWheel);

@@ -70,7 +70,9 @@ static int CreateListWheel(int x, int y, int xSize, int ySize, int Id,
     LISTWHEEL_SetOwnerDraw(hWin, OwnerDraw);
     LISTWHEEL_SetUserData(hWin, &pWheel, sizeof(pWheel));
     LISTWHEEL_SetLineHeight(hWin, LineHeight);
-    LISTWHEEL_SetTextColor(hWin, LISTWHEEL_CI_SEL, GUI_LIGHTBLUE);
+    LISTWHEEL_SetTextColor(hWin, LISTWHEEL_CI_SEL, 0x008800);
+    LISTWHEEL_SetTextColor(hWin, LISTWHEEL_CI_UNSEL, 0x808080);
+
     for (i = 0; i < NumItems; i++)
     {
         LISTWHEEL_AddString(hWin, *(apText + i));
@@ -85,6 +87,7 @@ static int CreateListWheel(int x, int y, int xSize, int ySize, int Id,
     //
     code[bc++].hWin = hWin;
     LISTWHEEL_SetPos(hWin, pos);
+    LISTWHEEL_SetSel(hWin, pos);
 
     pWheel->hWin = hWin;
     return 0;
@@ -135,16 +138,20 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
 
-        spinWheel = WM_CreateWindowAsChild(24, 70, 480, 140,
+        spinWheel = WM_CreateWindowAsChild(50, 75, 480, 140,
                                            pMsg->hWin, WM_CF_SHOW, _cbBkWheel, 0);
-        CreateListWheel(  0, 0,  100, 140, GUI_ID_LISTWHEEL0, codes,
-                           GUI_COUNTOF(codes),   GUI_TA_VCENTER | GUI_TA_HCENTER, spinWheel, &code[0], GUI_FONT_D48X64, 80, dig[0]);
-        CreateListWheel(  110, 0,  100, 140, GUI_ID_LISTWHEEL0, codes,
-                           GUI_COUNTOF(codes),   GUI_TA_VCENTER | GUI_TA_HCENTER, spinWheel, &code[1], GUI_FONT_D48X64, 80, dig[1]);
-        CreateListWheel(  220, 0,  100, 140, GUI_ID_LISTWHEEL0, codes,
-                           GUI_COUNTOF(codes),   GUI_TA_VCENTER | GUI_TA_HCENTER, spinWheel, &code[2], GUI_FONT_D48X64, 80, dig[2]);
-        CreateListWheel(  330, 0,  100, 140, GUI_ID_LISTWHEEL0, codes,
-                           GUI_COUNTOF(codes),   GUI_TA_VCENTER | GUI_TA_HCENTER, spinWheel, &code[3], GUI_FONT_D48X64, 80, dig[3]);
+        CreateListWheel(  0, 0,  80, 125, GUI_ID_LISTWHEEL0, codes,
+                           GUI_COUNTOF(codes),   GUI_TA_VCENTER | GUI_TA_HCENTER, spinWheel,
+                        &code[0], GUI_FONT_D36X48, 70, dig[0]);
+        CreateListWheel(  100, 0,  80, 125, GUI_ID_LISTWHEEL0, codes,
+                           GUI_COUNTOF(codes),   GUI_TA_VCENTER | GUI_TA_HCENTER, spinWheel,
+                         &code[1], GUI_FONT_D36X48, 70, dig[1]);
+        CreateListWheel(  200, 0,  80, 125, GUI_ID_LISTWHEEL0, codes,
+                           GUI_COUNTOF(codes),   GUI_TA_VCENTER | GUI_TA_HCENTER, spinWheel,
+                        &code[2], GUI_FONT_D36X48, 70, dig[2]);
+        CreateListWheel(  300, 0,  80, 125, GUI_ID_LISTWHEEL0, codes,
+                           GUI_COUNTOF(codes),   GUI_TA_VCENTER | GUI_TA_HCENTER, spinWheel,
+                        &code[3], GUI_FONT_D36X48, 70, dig[3]);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
         WM_SetCallback(hItem, buttonOn16_cb);

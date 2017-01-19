@@ -49,10 +49,10 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "EDIT SCHEDULE:", ID_TEXT_HEADER, 0, 0, 252, 50, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "", ID_TEXT_TITLE, 280, 0, 189, 50, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "PERIOD", ID_BUTTON_PERIOD, 25, 90, 90, 26, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "START", ID_BUTTON_START, 135, 90, 90, 26, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "STOP", ID_BUTTON_STOP, 245, 90, 90, 26, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_TEMPURATURE, 355, 90, 90, 26, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "PERIOD", ID_BUTTON_PERIOD, 25, 90, 90, 28, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "START", ID_BUTTON_START, 135, 90, 90, 28, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "STOP", ID_BUTTON_STOP, 245, 90, 90, 28, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_TEMPURATURE, 355, 90, 90, 28, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "WAKE", ID_TEXT_WAKE, 31, 60, 83, 23, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_START_TIME, 144, 60, 80, 23, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_STOP_TIME, 251, 62, 81, 22, 0, 0x64, 0 },
@@ -89,7 +89,7 @@ static void tempButton_cb(WM_MESSAGE * pMsg)
 static WM_HWIN periodButton, startButton, stopButton, tempButton;
 static WM_HWIN wake_text, start_text, stop_text, temp_text;
 static WM_HWIN upButton, dnButton, weekdayButton;
-static int selected_button, tempurature, period;
+static int selected_period, tempurature, period;
 static struct periods_s periods[4];
 static struct periods_s getPeriod(char * p);
 static struct days_s selectedDay;
@@ -149,6 +149,25 @@ static void dnButtonPush_cb(WM_MESSAGE * pMsg)
     }
 }
 
+void invalidateButtons(int sel)
+{
+    WM_InvalidateWindow(periodButton);
+    WM_InvalidateWindow(startButton);
+    WM_InvalidateWindow(startButton);
+    WM_InvalidateWindow(stopButton);
+    WM_InvalidateWindow(tempButton);
+
+    WM_MoveTo(upButton, 45+sel*110,120);
+    WM_MoveTo(dnButton, 45+sel*110,168);
+
+    selected_period = sel;
+    period_on = (sel == 0);
+    start_on  = (sel == 1);
+    stop_on   = (sel == 2);
+    temp_on   = (sel == 3);
+
+
+}
 /*********************************************************************
 *
 *       _cbDialog
@@ -216,11 +235,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         //
         upButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_UP);
         WM_SetCallback(upButton, upButton_cb);
-//       WM_SetCallback(upButton, big_up_button);
         //
         dnButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DN);
         WM_SetCallback(dnButton, dnButton_cb);
-//       WM_SetCallback(dnButton, big_dn_button);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
         WM_SetCallback(hItem, buttonOn16_cb);
@@ -274,7 +291,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_WEEKDAY:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
                 if (strcmp(edit_title, "weekend") ==  0)
                 {
                     CreateEditSchedule("weekday");
@@ -290,78 +307,32 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_PERIOD:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
-                selected_button = 0;
-                period_on = 1;
-                start_on = 0;
-                stop_on = 0;
-                temp_on = 0;
-
-                WM_InvalidateWindow(periodButton);
-                WM_InvalidateWindow(startButton);
-                WM_InvalidateWindow(startButton);
-                WM_InvalidateWindow(stopButton);
-                WM_InvalidateWindow(tempButton);
-                WM_MoveTo(upButton, 45+selected_button*110,120);
-                WM_MoveTo(dnButton, 45+selected_button*110,168);
+            case WM_NOTIFICATION_RELEASED:
+                invalidateButtons(0);
                 break;
             }
             break;
         case ID_BUTTON_START:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
-                selected_button = 1;
-                period_on = 0;
-                start_on = 1;
-                stop_on = 0;
-                temp_on = 0;
-
-                WM_InvalidateWindow(periodButton);
-                WM_InvalidateWindow(startButton);
-                WM_InvalidateWindow(startButton);
-                WM_InvalidateWindow(stopButton);
-                WM_InvalidateWindow(tempButton);
-                WM_MoveTo(upButton, 45+selected_button*110,120);
-                WM_MoveTo(dnButton, 45+selected_button*110,168);
+            case WM_NOTIFICATION_RELEASED:
+                invalidateButtons(1);
                 break;
             }
             break;
         case ID_BUTTON_STOP:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
-                selected_button = 2;
-                period_on = 0;
-                start_on = 0;
-                stop_on = 1;
-                temp_on = 0;
-
-                WM_InvalidateWindow(periodButton);
-                WM_InvalidateWindow(startButton);
-                WM_InvalidateWindow(stopButton);
-                WM_InvalidateWindow(tempButton);
-                WM_MoveTo(upButton, 45+selected_button*110,120);
-                WM_MoveTo(dnButton, 45+selected_button*110,168);
+            case WM_NOTIFICATION_RELEASED:
+                invalidateButtons(2);
                 break;
             }
             break;
         case ID_BUTTON_TEMPURATURE:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
-                period_on = 0;
-                start_on = 0;
-                stop_on = 0;
-                temp_on = 1;
-                selected_button = 3;
-
-                WM_InvalidateWindow(periodButton);
-                WM_InvalidateWindow(startButton);
-                WM_InvalidateWindow(stopButton);
-                WM_InvalidateWindow(tempButton);
-                WM_MoveTo(upButton, 45+selected_button*110,120);
-                WM_MoveTo(dnButton, 45+selected_button*110,168);
+            case WM_NOTIFICATION_RELEASED:
+                invalidateButtons(3);
                 break;
             }
             break;
@@ -370,12 +341,12 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 WM_SetCallback(upButton, upButtonPush_cb);
-                WM_MoveTo(upButton, (45+selected_button*110),120);
+                WM_MoveTo(upButton, (45+selected_period*110),120);
                 break;
             case WM_NOTIFICATION_RELEASED:
                 WM_SetCallback(upButton, upButton_cb);
-                WM_MoveTo(upButton, 45+selected_button*110,120);
-                switch(selected_button)
+                WM_MoveTo(upButton, 45+selected_period*110,120);
+                switch(selected_period)
                 {
                 case 0:
                     period++;
@@ -395,9 +366,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                     TEXT_SetText(stop_text, updateTime(buf, 1));
                     break;
                 case 3:
-                    periods[selected_button].tempurature++;
-                    if (periods[selected_button].tempurature == 110) periods[selected_button].tempurature = 110;
-                    itoa(periods[selected_button].tempurature, buf, 10);
+                    periods[selected_period].tempurature++;
+                    if (periods[selected_period].tempurature == 110) periods[selected_period].tempurature = 110;
+                    itoa(periods[selected_period].tempurature, buf, 10);
                     TEXT_SetText(temp_text, buf);
                     break;
                 }
@@ -409,12 +380,12 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 WM_SetCallback(dnButton, dnButtonPush_cb);
-                WM_MoveTo(dnButton, (45+selected_button*110)+1,168);
+                WM_MoveTo(dnButton, (45+selected_period*110)+1,168);
                 break;
             case WM_NOTIFICATION_RELEASED:
                 WM_SetCallback(dnButton, dnButton_cb);
-                WM_MoveTo(dnButton, 45+selected_button*110,168);
-                switch(selected_button)
+                WM_MoveTo(dnButton, 45+selected_period*110,168);
+                switch(selected_period)
                 {
                 case 0:
                     period--;
@@ -434,9 +405,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                     TEXT_SetText(stop_text, updateTime(buf, -1));
                     break;
                 case 3:
-                    periods[selected_button].tempurature--;
-                    if (periods[selected_button].tempurature == 64) periods[selected_button].tempurature = 65;
-                    itoa(periods[selected_button].tempurature, buf, 10);
+                    periods[selected_period].tempurature--;
+                    if (periods[selected_period].tempurature == 64) periods[selected_period].tempurature = 65;
+                    itoa(periods[selected_period].tempurature, buf, 10);
                     TEXT_SetText(temp_text, buf);
                     break;
                 }

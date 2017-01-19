@@ -13,9 +13,13 @@ void MainTask(void)
     //saveConfig();
     holdMode = 0;
 
-    state = 1;
-    if (testing) state = 99;
-    if (firstTime) state =14;
+    if (testing) {
+        state = 99;
+    } else if (firstTime) {
+        state =14;
+    } else {
+        state = 1;
+    }
 
     while(1)
     {
@@ -28,10 +32,26 @@ void MainTask(void)
             state = 0;
             break;
         case 1:
+//           win = MESSAGEBOX_Create("BLOWME","CAPTION",GUI_MESSAGEBOX_CF_MODAL | GUI_MESSAGEBOX_CF_MOVEABLE);
+//            WM_SetSize(win, 200,150);
+//           WM_HWIN twin =  WM_GetDialogItem(win, GUI_ID_TEXT0);
+//             WM_SetSize(twin, 180,50);
+//          TEXT_SetFont(twin, GUI_FONT_24_ASCII);
+//           WM_HWIN but =  WM_GetDialogItem(win, GUI_ID_OK);
+//            WM_MoveTo(but, 220,180);
+//
+//
+//        GUI_ExecCreatedDialog(win);
+
+            //WINDOW_CreateEx(50,50,200,100,WM_HBKWIN,WM_CF_SHOW,0,10,cb);
+//              hBkWheel = WM_CreateWindowAsChild(10, 80, 450, 272,
+//                                     WM_HBKWIN, WM_CF_SHOW, _cbBkWheel, 0);
+//
+           //CreateScreenLockout();
+              GUI_Delay(100);
            CreateHomeWin();
-           GUI_Delay(100);
            state=0;
-           break;
+            break;
         case 2:
             // not used
             state=0;

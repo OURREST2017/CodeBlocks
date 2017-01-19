@@ -118,12 +118,10 @@ static void hold_button_off(WM_MESSAGE * pMsg)
 static void coolButton_cb(WM_MESSAGE * pMsg)
 {
     char nm[50];
-    WM_HWIN win = pMsg->hWin;
     GUI_RECT r;
-    WIDGET *w;
-    w = BUTTON_GetpWidget(win);
-    r = w->Win.Rect;
-    BUTTON_GetText(win, nm, 20);
+    WM_GetClientRect(&r);
+    BUTTON_GetText(pMsg->hWin, nm, 50);
+
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
@@ -138,12 +136,10 @@ static void coolButton_cb(WM_MESSAGE * pMsg)
 static void heatButton_cb(WM_MESSAGE * pMsg)
 {
     char nm[50];
-    WM_HWIN win = pMsg->hWin;
     GUI_RECT r;
-    WIDGET *w;
-    w = BUTTON_GetpWidget(win);
-    r = w->Win.Rect;
-    BUTTON_GetText(win, nm, 20);
+    WM_GetClientRect(&r);
+    BUTTON_GetText(pMsg->hWin, nm, 50);
+
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
@@ -154,11 +150,15 @@ static void heatButton_cb(WM_MESSAGE * pMsg)
         break;
     }
 }
+
 static WM_HWIN holdButton, insideTempText, upButton, dnButton;
 static WM_HWIN modeButton, fanButton, heatButton, coolButton;
 
 static char date_buf[20];
 static char time_buf[20];
+
+extern GUI_CONST_STORAGE GUI_BITMAP bmup_g;
+extern GUI_CONST_STORAGE GUI_BITMAP bmdn_g;
 
 static void upButton_cb(WM_MESSAGE * pMsg)
 {
@@ -211,7 +211,6 @@ static void dnButtonPush_cb(WM_MESSAGE * pMsg)
         break;
     }
 }
-
 WM_HWIN dateText, timeText;
 
 /*********************************************************************
@@ -227,6 +226,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     char		buffer[10];
     const void * pData;
     U32 FileSize;
+    GUI_COLOR textColor = 0xffffff;
+
 
     hWin = pMsg->hWin;
     switch (pMsg->MsgId)
@@ -244,16 +245,34 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         pData = _GetImageById(ID_IMAGE_GRAY_BAR, &FileSize);
         IMAGE_SetPNG(hItem, pData, FileSize);
 
+        dateText = WM_GetDialogItem(pMsg->hWin, ID_TEXT_DATE);
+        TEXT_SetText(dateText, date_buf);
+        TEXT_SetTextAlign(dateText, GUI_TA_LEFT | GUI_TA_VCENTER);
+        TEXT_SetFont(dateText, &GUI_FontRounded22);
+        TEXT_SetTextColor(dateText, textColor);
+        //
+        timeText = WM_GetDialogItem(pMsg->hWin, ID_TEXT_TIME);
+        TEXT_SetText(timeText, time_buf);
+        TEXT_SetTextAlign(timeText, GUI_TA_LEFT | GUI_TA_VCENTER);
+        TEXT_SetFont(timeText, &GUI_FontRounded22);
+        TEXT_SetTextColor(timeText, textColor);
+        //
+        sprintf(buffer, "%d °  |  %d%%", localTemp, localHumidity);
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_OUT_TEMP);
+        TEXT_SetText(hItem, buffer);
+        TEXT_SetFont(hItem, &GUI_FontRounded16);
+        TEXT_SetTextColor(hItem, textColor);
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_OUTSIDE);
+        TEXT_SetFont(hItem, &GUI_FontRounded16);
+        TEXT_SetText(hItem, "OUTSIDE");
+        TEXT_SetTextColor(hItem, textColor);
+        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SETTINGS);
-//        BUTTON_SetFont(hItem, &GUI_FontRounded16);
-//        BUTTON_SetTextColor(hItem, 0, GUI_WHITE);
-//        BUTTON_SetTextColor(hItem, 1, GUI_WHITE);
+        BUTTON_SetTextColor(hItem, 2, textColor);
         WM_SetCallback(hItem, buttonOn16_cb);
 
         modeButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_MODE);
-//        BUTTON_SetFont(modeButton, &GUI_FontRounded16);
-//        BUTTON_SetTextColor(modeButton, 0, GUI_WHITE);
-//        BUTTON_SetTextColor(modeButton, 1, GUI_WHITE);
         WM_SetCallback(modeButton, buttonOn16_cb);
         //
         fanButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_FAN);
@@ -308,29 +327,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetFont(hItem, &GUI_FontRounded16);
         TEXT_SetTextColor(hItem, 0x00FFFFFF);
         //
-        dateText = WM_GetDialogItem(pMsg->hWin, ID_TEXT_DATE);
-        TEXT_SetText(dateText, date_buf);
-        TEXT_SetTextAlign(dateText, GUI_TA_LEFT | GUI_TA_VCENTER);
-        TEXT_SetFont(dateText, &GUI_FontRounded22);
-        TEXT_SetTextColor(dateText, 0x00FFFFFF);
-        //
-        timeText = WM_GetDialogItem(pMsg->hWin, ID_TEXT_TIME);
-        TEXT_SetText(timeText, time_buf);
-        TEXT_SetTextAlign(timeText, GUI_TA_LEFT | GUI_TA_VCENTER);
-        TEXT_SetFont(timeText, &GUI_FontRounded22);
-        TEXT_SetTextColor(timeText, 0x00FFFFFF);
-        //
-        sprintf(buffer, "%d °  |  %d%%", localTemp, localHumidity);
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_OUT_TEMP);
-        TEXT_SetText(hItem, buffer);
-        TEXT_SetFont(hItem, &GUI_FontRounded16);
-        TEXT_SetTextColor(hItem, 0x00FFFFFF);
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_OUTSIDE);
-        TEXT_SetFont(hItem, &GUI_FontRounded16);
-        TEXT_SetText(hItem, "OUTSIDE");
-        TEXT_SetTextColor(hItem, 0x00FFFFFF);
-        //
         sprintf(buffer, "%d%% HUMIDITY", insideHumidity);
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HUMIDITY);
         TEXT_SetFont(hItem, &FontBig20B);
@@ -361,7 +357,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             case WM_NOTIFICATION_RELEASED:
                CreateSettings();
                GUI_Delay(100);
-               //state=4;
             }
             break;
         case ID_BUTTON_COOL:
@@ -381,7 +376,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             case WM_NOTIFICATION_RELEASED:
                 CreateMode();
                 GUI_Delay(100);
-               // state=3;
                 break;
             }
             break;

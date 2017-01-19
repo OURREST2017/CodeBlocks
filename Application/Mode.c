@@ -53,13 +53,15 @@ static int cool, heat, off, autob=1, eheat;
 
 static void modeButton(WM_MESSAGE * pMsg, char *nm, int sel)
 {
-    int idx;
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        if (BUTTON_IsPressed(pMsg->hWin)) {
+        if (BUTTON_IsPressed(pMsg->hWin))
+        {
             drawButton16(nm, 80, 30, sel, 1);
-        } else {
+        }
+        else
+        {
             drawButton16(nm, 80, 30, sel, 0);
         }
         break;
@@ -72,45 +74,52 @@ static void eheat_cb(WM_MESSAGE * pMsg)
 {
     modeButton(pMsg, "E-HEAT", eheat);
 }
+
 static void auto_cb(WM_MESSAGE * pMsg)
 {
     modeButton(pMsg, "AUTO", autob);
 }
+
 static void cool_cb(WM_MESSAGE * pMsg)
 {
     modeButton(pMsg, "COOL", cool);
 }
+
 static void heat_cb(WM_MESSAGE * pMsg)
 {
     modeButton(pMsg, "HEAT", heat);
 }
+
 static void off_cb(WM_MESSAGE * pMsg)
 {
     modeButton(pMsg, "OFF", off);
 }
 
-/*********************************************************************
-*
-*       _cbDialog
-*/
 static void invalidateButtons(WM_HWIN hWin)
 {
     WM_HWIN hItem;
+
     hItem = WM_GetDialogItem(hWin, ID_BUTTON_OFF);
     WM_InvalidateWindow(hItem);
+    WM_SetCallback(hItem, off_cb);
 
     hItem = WM_GetDialogItem(hWin, ID_BUTTON_HEAT);
     WM_InvalidateWindow(hItem);
+    WM_SetCallback(hItem, heat_cb);
 
     hItem = WM_GetDialogItem(hWin, ID_BUTTON_COOL);
     WM_InvalidateWindow(hItem);
+    WM_SetCallback(hItem, cool_cb);
 
     hItem = WM_GetDialogItem(hWin, ID_BUTTON_AUTO);
     WM_InvalidateWindow(hItem);
+    WM_SetCallback(hItem, auto_cb);
 
     hItem = WM_GetDialogItem(hWin, ID_BUTTON_EHEAT);
     WM_InvalidateWindow(hItem);
+    WM_SetCallback(hItem, eheat_cb);
 }
+
 static void _cbDialog(WM_MESSAGE * pMsg)
 {
     WM_HWIN hItem;
@@ -123,6 +132,11 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         GUI_DrawBitmap(&bmwatermark, 0,50);
         break;
     case WM_INIT_DIALOG:
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
+        TEXT_SetTextColor(hItem, 0x00FFFFFF);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetFont(hItem, GUI_FONT_32B_1);
+
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_OFF);
         WM_SetCallback(hItem, off_cb);
         //
@@ -143,11 +157,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DONE);
         WM_SetCallback(hItem, buttonOn16_cb);
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
-        TEXT_SetTextColor(hItem, 0x00FFFFFF);
-        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        TEXT_SetFont(hItem, GUI_FONT_32B_1);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
@@ -157,6 +166,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_OFF:
             switch(NCode)
             {
+            case WM_NOTIFICATION_CLICKED:
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_OFF);
+                WM_SetCallback(hItem, buttonPush16_cb);
+                break;
             case WM_NOTIFICATION_RELEASED:
                 off = 1;
                 autob = 0;
@@ -170,6 +183,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_HEAT:
             switch(NCode)
             {
+            case WM_NOTIFICATION_CLICKED:
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HEAT);
+                WM_SetCallback(hItem, buttonPush16_cb);
+                break;
             case WM_NOTIFICATION_RELEASED:
                 off = 0;
                 autob = 0;
@@ -184,6 +201,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_COOL:
             switch(NCode)
             {
+            case WM_NOTIFICATION_CLICKED:
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_COOL);
+                WM_SetCallback(hItem, buttonPush16_cb);
+                break;
             case WM_NOTIFICATION_RELEASED:
                 off = 0;
                 autob = 0;
@@ -198,6 +219,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_AUTO:
             switch(NCode)
             {
+            case WM_NOTIFICATION_CLICKED:
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_AUTO);
+                WM_SetCallback(hItem, buttonPush16_cb);
+                break;
             case WM_NOTIFICATION_RELEASED:
                 off = 0;
                 autob = 1;
@@ -211,6 +236,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_EHEAT:
             switch(NCode)
             {
+            case WM_NOTIFICATION_CLICKED:
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_EHEAT);
+                WM_SetCallback(hItem, buttonPush16_cb);
+                break;
             case WM_NOTIFICATION_RELEASED:
                 off = 0;
                 autob = 0;
@@ -224,10 +253,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_CANCEL:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
-                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-                WM_SetCallback(hItem, buttonPush16_cb);
-                break;
             case WM_NOTIFICATION_RELEASED:
                 state=1;
                 break;
@@ -236,10 +261,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_DONE:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
-                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DONE);
-                WM_SetCallback(hItem, buttonPush16_cb);
-                break;
             case WM_NOTIFICATION_RELEASED:
                 if (off) strcpy(hvacMode, "off");
                 if (autob)strcpy(hvacMode, "auto");

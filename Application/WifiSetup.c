@@ -203,7 +203,11 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 WM_SetCallback(hItem, buttonPush16_cb);
                 break;
             case WM_NOTIFICATION_RELEASED:
-                state=17;
+                if (firstTime) {
+                    state = 1;
+                } else {
+                    state=17;
+               }
                 break;
             }
             break;

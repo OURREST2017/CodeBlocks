@@ -110,6 +110,7 @@ static int text_index;
 
 extern GUI_CONST_STORAGE GUI_BITMAP back_space_white;
 extern GUI_CONST_STORAGE GUI_BITMAP back_space_black;
+
 extern void shift_cb(WM_MESSAGE * pMsg);
 extern void keys_cb(WM_MESSAGE * pMsg);
 extern void keys_disable_cb(WM_MESSAGE * pMsg);

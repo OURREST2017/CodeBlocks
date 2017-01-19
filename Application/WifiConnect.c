@@ -51,6 +51,34 @@ extern int CreateListWheel(int, int, int, int, int, char **, int, int, int,
                            WM_HWIN, WHEEL *, GUI_FONT *, int);
 extern int drawRoundedListBox(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo);
 
+static void _cbBkWheel(WM_MESSAGE * pMsg)
+{
+    WM_HWIN hParent;
+    int     xSize;
+    int     ySize;
+    int Id;
+    int NCode;
+
+    switch (pMsg->MsgId)
+    {
+    case WM_NOTIFY_PARENT:
+        Id    = WM_GetId(pMsg->hWinSrc);
+        NCode = pMsg->Data.v;
+//GUI_ErrorOut2("F",Id, NCode);
+        hParent    = WM_GetParent(pMsg->hWin);
+        pMsg->hWin = hParent;
+        WM_SendMessage(hParent, pMsg);
+        break;
+    case WM_PAINT:
+        xSize = WM_GetWindowSizeX(pMsg->hWin);
+        ySize = WM_GetWindowSizeY(pMsg->hWin);
+        GUI_DrawGradientV(0, 0, xSize - 1, ySize - 1, GUI_WHITE, GUI_WHITE);
+        break;
+    default:
+        WM_DefaultProc(pMsg);
+    }
+}
+
 static char *wifi_networks[] = {
 "Pinnacle", "FFI-HDQ", "BHN Secure", "CableWifi", "Direct-7c-HP M452 LaserJet",
 "BSCWireless", "INTEGO GROUP", "Other Network", "BrightHouse Wireless"
@@ -66,7 +94,7 @@ int wifi;
 */
 static void _cbDialog(WM_MESSAGE * pMsg)
 {
-    WM_HWIN hItem;
+    WM_HWIN hItem, spinner;
     int     NCode;
     int     Id;
     int i;
@@ -84,17 +112,20 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         //
-//        CreateListWheel(50, 70, 380, 140, GUI_ID_LISTWHEEL0, wifi_networks,
-//                        wifi_count, 30, GUI_TA_VCENTER | GUI_TA_HCENTER,
-//                        pMsg->hWin, &wifiWheel, &GUI_Font24B_ASCII, 0);
+        spinner = WM_CreateWindowAsChild(46, 65, 480, 140,
+                                           pMsg->hWin, WM_CF_SHOW, _cbBkWheel, 0);
 
-        listBox_h = WM_GetDialogItem(pMsg->hWin, ID_LISTBOX_0);
-        LISTBOX_SetFont(listBox_h, &GUI_FontRounded22);
-        LISTBOX_SetBkColor(listBox_h, LISTBOX_CI_SELFOCUS, 0x509e81);
-        LISTBOX_SetTextColor(listBox_h, LISTBOX_CI_SEL,GUI_WHITE);
-        LISTBOX_SetTextColor(listBox_h, LISTBOX_CI_UNSEL,GUI_BLACK);
-        LISTBOX_SetAutoScrollV(listBox_h, 1);
-        LISTBOX_SetScrollbarWidth(listBox_h, 20);
+        CreateListWheel(0, 0, 380, 140, GUI_ID_LISTWHEEL0, wifi_networks,
+                        wifi_count, 30, GUI_TA_VCENTER | GUI_TA_HCENTER,
+                        spinner, &wifiWheel, &GUI_Font24B_ASCII, 0);
+
+//        listBox_h = WM_GetDialogItem(pMsg->hWin, ID_LISTBOX_0);
+//        LISTBOX_SetFont(listBox_h, &GUI_FontRounded22);
+//        LISTBOX_SetBkColor(listBox_h, LISTBOX_CI_SELFOCUS, 0x509e81);
+//        LISTBOX_SetTextColor(listBox_h, LISTBOX_CI_SEL,GUI_WHITE);
+//        LISTBOX_SetTextColor(listBox_h, LISTBOX_CI_UNSEL,GUI_BLACK);
+//        LISTBOX_SetAutoScrollV(listBox_h, 1);
+//        LISTBOX_SetScrollbarWidth(listBox_h, 20);
         //LISTBOX_SetOwnerDraw(listBox_h, drawRoundedListBox);
 
         for (i=0;i<wifi_count;i++) {
@@ -114,6 +145,14 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_RESCAN);
         WM_SetCallback(hItem, buttonOn16_cb);
+        if (firstTime)
+        {
+            WM_MoveTo(hItem, 140, 230);
+        }
+        else
+        {
+            WM_MoveTo(hItem, 200, 230);
+        }
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_LATER);
         WM_SetCallback(hItem, buttonOn16_cb);
@@ -168,6 +207,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
+                firstTime = 0;
                 CreateHomeWin();
             }
             break;
@@ -175,11 +215,12 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                wifi = LISTBOX_GetSel(listBox_h );
-//                wifi = LISTWHEEL_GetPos(wifiWheel.hWin);
+//                wifi = LISTBOX_GetSel(listBox_h );
+                wifi = LISTWHEEL_GetPos(wifiWheel.hWin);
                 strcpy(myWifiNetwork, wifi_networks[wifi]);
                 if (firstTime)
                 {
+                    firstTime = 0;
                     CreateHomeWin();
                 }
                 else

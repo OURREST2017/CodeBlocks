@@ -87,7 +87,6 @@ extern  WM_HWIN CreateEditSchedule(char *);
 extern  WM_HWIN CreateWifiConnect(void);
 
 extern void loadConfig();
-extern void setSkin();
 char * updateTime(char *tm, int dr);
 
 typedef struct
