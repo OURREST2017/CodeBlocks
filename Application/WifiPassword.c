@@ -48,6 +48,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 375, 230, 80, 28, 0, 0x0, 0 },
 };
 
+static char wifiPassword[20];
 /*********************************************************************
 *
 *       _cbDialog
@@ -131,26 +132,12 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 *
 *       CreateWindow
 */
-WM_HWIN CreatePear(int idx, char * txt);
-WM_HWIN CreatePear(int idx, char * txt)
+WM_HWIN CreateWifiPassword(char *wifi);
+WM_HWIN CreateWifiPassword(char *wifi)
 {
     WM_HWIN hWin;
-    if (idx == 0)
-    {
-        strcpy(crc_text, "1234");
-        strcpy(zip_text, zipCode);
-        strcpy(customer_text, ownersName);
-        strcpy(mac_text, "00:11:22:44:55:66");
-    }
-    else if (idx == 1)
-    {
-        strcpy(customer_text, txt);
-    }
-    else if (idx == 2)
-    {
-        strcpy(zip_text, txt);
-    }
 
+//    strcpy(wifiNetwork, wifi);
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }

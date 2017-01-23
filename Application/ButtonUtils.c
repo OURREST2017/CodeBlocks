@@ -475,7 +475,7 @@ void drawCoolButton(char * but, int w, int h, int col, int bor)
     }
     else
     {
-        GUI_SetColor((bor == 0) ? 0x00cccccc : GUI_RED);
+        GUI_SetColor((bor == 0) ? 0x00cccccc : 0x4343cf);
     }
     if (bor)
     {
@@ -606,7 +606,7 @@ void CreateDecoration(int xSize, int ySize, int LineHeight, WHEEL * pWheel)
     //
     hMemLBorder = GUI_MEMDEV_CreateFixed(0, 0, 4, ySize, GUI_MEMDEV_NOTRANS, GUI_MEMDEV_APILIST_32, GUI_COLOR_CONV_8888);
     hMemPrev = GUI_MEMDEV_Select(hMemLBorder);
-    GUI_SetColor(GUI_LIGHTGREEN);
+    GUI_SetColor(GUI_LIGHTGRAY);
     GUI_DrawVLine(0, 0, ySize - 1);
     GUI_SetColor(GUI_LIGHTGRAY);
     GUI_FillRect(1, 0, 3, ySize - 1);
@@ -615,7 +615,7 @@ void CreateDecoration(int xSize, int ySize, int LineHeight, WHEEL * pWheel)
     //
     hMemRBorder = GUI_MEMDEV_CreateFixed(0, 0, 4, ySize, GUI_MEMDEV_NOTRANS, GUI_MEMDEV_APILIST_32, GUI_COLOR_CONV_8888);
     GUI_MEMDEV_Select(hMemRBorder);
-    GUI_SetColor(GUI_LIGHTGREEN);
+    GUI_SetColor(GUI_LIGHTGRAY);
     GUI_DrawVLine(3, 0, ySize - 1);
     GUI_SetColor(GUI_LIGHTGRAY);
     GUI_FillRect(0, 0, 2, ySize - 1);
@@ -647,9 +647,9 @@ void CreateDecoration(int xSize, int ySize, int LineHeight, WHEEL * pWheel)
     GUI_DrawGradientV(1, (ySize / 2) - (LineHeight / 2) + 1, xSize - 2, (ySize / 2) - 1,                    0x88FFFFFF, 0x55AAAAAA);
     GUI_DrawGradientV(1, (ySize / 2),                        xSize - 2, (ySize / 2) + (LineHeight / 2) - 2, 0xBB000000, 0xBB000000);
     GUI_MEMDEV_Select(hMemPrev);
-//    //
-//    // Store result
-//    //
+    //
+    // Store result
+    //
     pWheel->hMemLBorder = hMemLBorder;
     pWheel->hMemRBorder = hMemRBorder;
     pWheel->hMemOverlay = hMemOverlay;
@@ -672,7 +672,7 @@ int CreateListWheel(int x, int y, int xSize, int ySize, int Id,
     LISTWHEEL_SetLineHeight(hWin, LineHeight);
     LISTWHEEL_SetTextColor(hWin, LISTWHEEL_CI_SEL, 0x008800);
     LISTWHEEL_SetTextColor(hWin, LISTWHEEL_CI_UNSEL, 0x808080);
-   for (i = 0; i < NumItems; i++)
+    for (i = 0; i < NumItems; i++)
     {
         LISTWHEEL_AddString(hWin, *(apText + i));
     }
@@ -703,7 +703,7 @@ void _cbBkWheel(WM_MESSAGE * pMsg)
         break;
     case WM_PAINT:
         break;
-    default://        TEXT_SetFont(hItem, &GUI_FontFranklinGothicDemi133);
+    default:
 
         WM_DefaultProc(pMsg);
     }

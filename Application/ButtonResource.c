@@ -907,3 +907,21 @@ GUI_CONST_STORAGE GUI_BITMAP bmdn_r = {
   &_Paldn_r   // Pointer to palette
 };
 
+int returnSkin(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo)
+{
+    GUI_POINT poly[] = {
+        {0,25},{15,15},{15,22},{40,22},{40,28},{15,28},{15,35}
+//         {0,25},{25,15},{25,22},{55,22},{55,28},{25,28},{25,35}
+       };
+    switch (pDrawItemInfo->Cmd)
+    {
+    case WIDGET_ITEM_DRAW_BACKGROUND:
+        GUI_SetColor(GUI_WHITE);
+        GUI_AA_FillPolygon(poly, 7,0,0);
+        break;
+    default:
+        return BUTTON_DrawSkinFlex(pDrawItemInfo);
+    }
+}
+
+

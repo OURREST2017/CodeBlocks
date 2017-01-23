@@ -43,6 +43,7 @@ extern void buttonPush16_cb(WM_MESSAGE *);
 extern void buttonPush22_cb(WM_MESSAGE *);
 extern void button22_cb(WM_MESSAGE *);
 extern void button20_cb(WM_MESSAGE *);
+extern int returnSkin(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo);
 
 extern int color_scheme;
 extern void initColors();
@@ -85,6 +86,8 @@ extern  WM_HWIN CreateTriacPanelWin(void);
 extern  WM_HWIN CreateFanMode(void);
 extern  WM_HWIN CreateEditSchedule(char *);
 extern  WM_HWIN CreateWifiConnect(void);
+extern  WM_HWIN CreateTempuratureLimits(void);
+extern  WM_HWIN CreateMobilePair();
 
 extern void loadConfig();
 char * updateTime(char *tm, int dr);
@@ -105,6 +108,8 @@ typedef struct periods_s
     char *label;
     char *startTime;
     char *stopTime;
+    int startMinutes;
+    int stopMinutes;
 } periods_s;
 
 typedef struct days_s
@@ -130,6 +135,10 @@ typedef struct hvacConfig_s
     int heatingStages;
 } hvacConfig_s;
 
+int tempTimerSet;
+int upperDegreeLimit;
+int lowerDegreeLimit;
+
 int state;
 int temperature;
 struct schedules_s schedules[5];
@@ -137,6 +146,7 @@ struct schedules_s schedules[5];
 //char ** wifi_networks;
 int wifi_count;
 char myWifiNetwork[50];
+char myWifiPassword[20];
 
 char thermo_rooms[6][30];
 char changeOver[20];

@@ -31,6 +31,7 @@
 #define ID_BUTTON_VACATION (GUI_ID_USER + 0x0C)
 #define ID_BUTTON_HELP (GUI_ID_USER + 0x0D)
 #define ID_BUTTON_RETURN (GUI_ID_USER + 0x0E)
+#define ID_TEXT_TITLE (GUI_ID_USER + 0x10)
 
 /*********************************************************************
 *
@@ -42,13 +43,14 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "SET SCHEDULE", ID_BUTTON_SET_SCHEDULE, 20, 230, 143, 28, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "EDIT", ID_BUTTON_EDIT, 375, 230, 80, 28, 0, 0x0, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
-    { TEXT_CreateIndirect,   "SETTINGS: SCHEDULE", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
+    { TEXT_CreateIndirect,   "SETTINGS:", ID_TEXT_HEADER, 90, 0, 150, 50, 0, 0x64, 0 },
+    { TEXT_CreateIndirect,   "", ID_TEXT_TITLE, 250, 0, 200, 50, 0, 0x64, 0 },
     { BUTTON_CreateIndirect, "All Days", ID_BUTTON_ALL_DAYS, 20, 90, 200, 42, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Weekday/Weekend", ID_BUTTON_WEEKEND, 20, 150, 200, 42, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Each Day", ID_BUTTON_EACH_DAY, 255, 90, 200, 42, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Vacation", ID_BUTTON_VACATION, 255, 150, 200, 42, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "HELP", ID_BUTTON_HELP, 204, 230, 80, 28, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "return", ID_BUTTON_RETURN, 20, 0, 50, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "", ID_BUTTON_RETURN, 15, 0, 100, 50, 0, 0x0, 0 },
 };
 static char schedule[20];
 static int vacation_border, allDays_border, weekend_border, eachDay_border;
@@ -98,19 +100,19 @@ static void invalidateButtons(WM_HWIN hWin)
 
     hItem = WM_GetDialogItem(hWin, ID_BUTTON_ALL_DAYS);
     WM_InvalidateWindow(hItem);
-//    WM_SetCallback(hItem, allDays_cb);
+    WM_SetCallback(hItem, allDays_cb);
 
     hItem = WM_GetDialogItem(hWin, ID_BUTTON_WEEKEND);
     WM_InvalidateWindow(hItem);
-//    WM_SetCallback(hItem, weekend_cb);
+    WM_SetCallback(hItem, weekend_cb);
 
     hItem = WM_GetDialogItem(hWin, ID_BUTTON_EACH_DAY);
     WM_InvalidateWindow(hItem);
-//    WM_SetCallback(hItem, eachDay_cb);
+    WM_SetCallback(hItem, eachDay_cb);
 
     hItem = WM_GetDialogItem(hWin, ID_BUTTON_VACATION);
     WM_InvalidateWindow(hItem);
- //   WM_SetCallback(hItem, vacation_cb);
+    WM_SetCallback(hItem, vacation_cb);
 
 }
 
@@ -131,12 +133,18 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         break;
     case WM_INIT_DIALOG:
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
-        TEXT_SetFont(hItem, GUI_FONT_32B_1);
-        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetFont(hItem, GUI_FONT_32_1);
+        TEXT_SetTextAlign(hItem, GUI_TA_RIGHT | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_TITLE);
+        TEXT_SetTextAlign(hItem, GUI_TA_LEFT | GUI_TA_VCENTER);
+        TEXT_SetFont(hItem, GUI_FONT_32B_1);
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
+        TEXT_SetText(hItem, "Schedule");
+       //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_RETURN);
-        WM_SetCallback(hItem, return_cb);
+        BUTTON_SetSkin(hItem, returnSkin);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ALL_DAYS);
         WM_SetCallback(hItem, allDays_cb);
@@ -303,17 +311,20 @@ WM_HWIN CreateSettingsSchedule(void)
     eachDay_border = 0;
     weekend_border = 0;
 
-    if (strcmp(selectedSchedule, "all days") == 0)
+    if (strcmp(selectedSchedule, "all days") == 0 ||
+        strcmp(selectedSchedule, "All Days") == 0)
     {
         allDays_border = 1;
 
     }
-    else if (strcmp(selectedSchedule, "each day") == 0)
+    else if (strcmp(selectedSchedule, "each day") == 0 ||
+        strcmp(selectedSchedule, "Each Day") == 0)
     {
         eachDay_border = 1;
 
     }
-    else if (strcmp(selectedSchedule, "weekend") == 0)
+    else if (strcmp(selectedSchedule, "weekend") == 0 ||
+        strcmp(selectedSchedule, "Weekend") == 0)
     {
         weekend_border = 1;
 

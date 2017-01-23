@@ -144,9 +144,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         }
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        BUTTON_SetSkin(hItem, buttonSkin);
-
-//        WM_SetCallback(hItem, buttonOn16_cb);
+//        BUTTON_SetSkin(hItem, buttonSkin);
+        WM_SetCallback(hItem, buttonOn16_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
         WM_SetCallback(hItem, buttonOn16_cb);

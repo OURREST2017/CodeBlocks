@@ -212,12 +212,17 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch (Id)
             {
             case ID_BUTTON_ABC:
-                CreateAlphaKeyboard(text_index, txt_buffer, edit_title, "Alpha");
+                CreateAlphaKeyboard(text_index, txt_buffer, edit_title, from_screen);
                 break;
             case ID_BUTTON_CANCEL:
                 if (strcmp(from_screen, "Edit Room") == 0)
                 {
                     CreateEditRoom(text_index);
+                }
+                else if (strcmp(from_screen, "wifi") == 0)
+                {
+                    strcpy(myWifiPassword, txt_buffer);
+                    CreateWifiSetup();
                 }
                 else
                 {
@@ -229,6 +234,11 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 {
                     strcpy(thermo_rooms[text_index], txt_buffer);
                     CreateEditRoom(text_index);
+                }
+                else if (strcmp(from_screen, "wifi") == 0)
+                {
+                    strcpy(myWifiPassword, txt_buffer);
+                    CreateWifiSetup();
                 }
                 else
                 {

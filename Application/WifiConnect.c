@@ -218,15 +218,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 //                wifi = LISTBOX_GetSel(listBox_h );
                 wifi = LISTWHEEL_GetPos(wifiWheel.hWin);
                 strcpy(myWifiNetwork, wifi_networks[wifi]);
-                if (firstTime)
-                {
-                    firstTime = 0;
-                    CreateHomeWin();
-                }
-                else
-                {
-                    CreateWifiSetup();
-                }
+                CreateAlphaKeyboard(-2, "", "Wifi Password", "wifi");
                 GUI_Delay(100);
             }
             break;

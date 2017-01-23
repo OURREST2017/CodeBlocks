@@ -47,8 +47,8 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
-    { TEXT_CreateIndirect, "EDIT SCHEDULE:", ID_TEXT_HEADER, 0, 0, 252, 50, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "", ID_TEXT_TITLE, 280, 0, 189, 50, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "EDIT SCHEDULE:", ID_TEXT_HEADER, 0, 0, 260, 50, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "", ID_TEXT_TITLE, 270, 0, 280, 50, 0, 0x64, 0 },
     { BUTTON_CreateIndirect, "PERIOD", ID_BUTTON_PERIOD, 25, 90, 90, 28, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "START", ID_BUTTON_START, 135, 90, 90, 28, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "STOP", ID_BUTTON_STOP, 245, 90, 90, 28, 0, 0x0, 0 },
@@ -168,6 +168,24 @@ void invalidateButtons(int sel)
 
 
 }
+static char * getTime(int st)
+{
+
+    static char buf[30];
+    if (clockFormat == 24)
+    {
+        sprintf(buf, "%02d:%02d",  st/60, st - (st/60)*60);
+    }
+    else
+    {
+        int sh = st/60;
+        if (sh > 12) sh -= 12;
+        sprintf(buf, "%d:%02d%s",
+                sh, st - (st/60)*60, ((st/60 < 12) ? "am" : "pm"));
+    }
+    return buf;
+}
+
 /*********************************************************************
 *
 *       _cbDialog
@@ -217,13 +235,13 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         start_text = WM_GetDialogItem(pMsg->hWin, ID_TEXT_START_TIME);
         TEXT_SetTextAlign(start_text, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetFont(start_text, GUI_FONT_20B_1);
-        TEXT_SetText(start_text, getPeriod(periods_text[0]).startTime);
+        TEXT_SetText(start_text, getTime(getPeriod(periods_text[0]).startMinutes));
         TEXT_SetTextColor(start_text, GUI_MAKE_COLOR(0x00808080));
         //
         stop_text = WM_GetDialogItem(pMsg->hWin, ID_TEXT_STOP_TIME);
         TEXT_SetFont(stop_text, GUI_FONT_20B_1);
         TEXT_SetTextAlign(stop_text, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        TEXT_SetText(stop_text,  getPeriod(periods_text[0]).stopTime);
+        TEXT_SetText(stop_text,  getTime(getPeriod(periods_text[0]).stopMinutes));
         TEXT_SetTextColor(stop_text, GUI_MAKE_COLOR(0x00808080));
         //
         temp_text = WM_GetDialogItem(pMsg->hWin, ID_TEXT_TEMP_VAR);
@@ -352,8 +370,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                     period++;
                     if (period == 4) period = 0;
                     TEXT_SetText(wake_text, toup(getPeriod(periods_text[period]).label));
-                    TEXT_SetText(start_text, getPeriod(periods_text[period]).startTime);
-                    TEXT_SetText(stop_text, getPeriod(periods_text[period]).stopTime);
+                    TEXT_SetText(start_text, getTime(periods[period].startMinutes));
+                    TEXT_SetText(stop_text, getTime(periods[period].stopMinutes));
                     itoa(getPeriod(periods_text[period]).tempurature, buf, 10);
                     TEXT_SetText(temp_text, buf);
                     break;
@@ -391,8 +409,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                     period--;
                     if (period == -1) period = 3;
                     TEXT_SetText(wake_text, toup(periods[period].label));
-                    TEXT_SetText(start_text, periods[period].startTime);
-                    TEXT_SetText(stop_text, periods[period].stopTime);
+                    TEXT_SetText(start_text, getTime(periods[period].startMinutes));
+                    TEXT_SetText(stop_text, getTime(periods[period].stopMinutes));
                     itoa(periods[period].tempurature, buf, 10);
                     TEXT_SetText(temp_text, buf);
                     break;

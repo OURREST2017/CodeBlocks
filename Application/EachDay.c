@@ -49,6 +49,46 @@
 #define ID_TEXT_SATURDAY (GUI_ID_USER + 0xA6)
 #define ID_TEXT_SUNDAY (GUI_ID_USER + 0xA7)
 
+#define ID_LW_WAKE_HOUR1 (GUI_ID_USER + 0xB1)
+#define ID_LW_WAKE_MINUTE1 (GUI_ID_USER + 0xB2)
+#define ID_TEXT_WAKE_SEP1 (GUI_ID_USER + 0xB3)
+#define ID_LW_WAKE_AMPM1 (GUI_ID_USER + 0xB4)
+
+#define ID_LW_WAKE_HOUR2 (GUI_ID_USER + 0xB5)
+#define ID_LW_WAKE_MINUTE2 (GUI_ID_USER + 0xB6)
+#define ID_TEXT_WAKE_SEP2 (GUI_ID_USER + 0xB7)
+#define ID_LW_WAKE_AMPM2 (GUI_ID_USER + 0xB8)
+
+#define ID_LW_LEAVE_HOUR1 (GUI_ID_USER + 0xB9)
+#define ID_LW_LEAVE_MINUTE1 (GUI_ID_USER + 0xBA)
+#define ID_TEXT_LEAVE_SEP1 (GUI_ID_USER + 0xBB)
+#define ID_LW_LEAVE_AMPM1 (GUI_ID_USER + 0xBC)
+
+#define ID_LW_LEAVE_HOUR2 (GUI_ID_USER + 0xBD)
+#define ID_LW_LEAVE_MINUTE2 (GUI_ID_USER + 0xBE)
+#define ID_TEXT_LEAVE_SEP2 (GUI_ID_USER + 0xBF)
+#define ID_LW_LEAVE_AMPM2 (GUI_ID_USER + 0xC0)
+
+#define ID_LW_RETURN_HOUR1 (GUI_ID_USER + 0xC1)
+#define ID_LW_RETURN_MINUTE1 (GUI_ID_USER + 0xC2)
+#define ID_TEXT_RETURN_SEP1 (GUI_ID_USER + 0xC3)
+#define ID_LW_RETURN_AMPM1 (GUI_ID_USER + 0xC4)
+
+#define ID_LW_RETURN_HOUR2 (GUI_ID_USER + 0xC5)
+#define ID_LW_RETURN_MINUTE2 (GUI_ID_USER + 0xC6)
+#define ID_TEXT_RETURN_SEP2 (GUI_ID_USER + 0xC7)
+#define ID_LW_RETURN_AMPM2 (GUI_ID_USER + 0xC8)
+
+#define ID_LW_SLEEP_HOUR1 (GUI_ID_USER + 0xC9)
+#define ID_LW_SLEEP_MINUTE1 (GUI_ID_USER + 0xCA)
+#define ID_TEXT_SLEEP_SEP1 (GUI_ID_USER + 0xCB)
+#define ID_LW_SLEEP_AMPM1 (GUI_ID_USER + 0xCC)
+
+#define ID_LW_SLEEP_HOUR2 (GUI_ID_USER + 0xCD)
+#define ID_LW_SLEEP_MINUTE2 (GUI_ID_USER + 0xCE)
+#define ID_TEXT_SLEEP_SEP2 (GUI_ID_USER + 0xCF)
+#define ID_LW_SLEEP_AMPM2 (GUI_ID_USER + 0xD0)
+
 /*********************************************************************
 *
 *       _aDialogCreate
@@ -85,9 +125,49 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 28, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "EDIT", ID_BUTTON_EDIT, 375, 230, 80, 28, 0, 0x0, 0 },
 
+    { LISTWHEEL_CreateIndirect, "", ID_LW_WAKE_HOUR1, 144, 56, 25,34, 0, 0x0, 0 },
+    { LISTWHEEL_CreateIndirect, "", ID_LW_WAKE_MINUTE1, 176, 56, 25,34, 0, 0x0, 0 },
+    { TEXT_CreateIndirect, ":", ID_TEXT_WAKE_SEP1, 169, 56, 8, 34, 0, 0x64, 0 },
+    { LISTWHEEL_CreateIndirect, "", ID_LW_WAKE_AMPM1, 204, 56, 25,34, 0, 0x0, 0 },
+
+    { LISTWHEEL_CreateIndirect, "", ID_LW_WAKE_HOUR2, 244, 56, 25,34, 0, 0x0, 0 },
+    { LISTWHEEL_CreateIndirect, "", ID_LW_WAKE_MINUTE2, 276, 56, 25,34, 0, 0x0, 0 },
+    { TEXT_CreateIndirect, ":", ID_TEXT_WAKE_SEP2, 269, 56, 8, 34, 0, 0x64, 0 },
+    { LISTWHEEL_CreateIndirect, "", ID_LW_WAKE_AMPM2, 304, 56, 25,34, 0, 0x0, 0 },
+
+    { LISTWHEEL_CreateIndirect, "", ID_LW_LEAVE_HOUR1, 144, 96, 25,34, 0, 0x0, 0 },
+    { LISTWHEEL_CreateIndirect, "", ID_LW_LEAVE_MINUTE1, 176, 96, 25,34, 0, 0x0, 0 },
+    { TEXT_CreateIndirect, ":", ID_TEXT_LEAVE_SEP1, 169, 96, 8, 34, 0, 0x64, 0 },
+    { LISTWHEEL_CreateIndirect, "", ID_LW_LEAVE_AMPM1, 204, 96, 25,34, 0, 0x0, 0 },
+
+    { LISTWHEEL_CreateIndirect, "", ID_LW_LEAVE_HOUR2, 244, 96, 25,34, 0, 0x0, 0 },
+    { LISTWHEEL_CreateIndirect, "", ID_LW_LEAVE_MINUTE2, 276, 96, 25,34, 0, 0x0, 0 },
+    { TEXT_CreateIndirect, ":", ID_TEXT_LEAVE_SEP2, 269, 96, 8, 34, 0, 0x64, 0 },
+    { LISTWHEEL_CreateIndirect, "", ID_LW_LEAVE_AMPM2, 304, 96, 25,34, 0, 0x0, 0 },
+
+    { LISTWHEEL_CreateIndirect, "", ID_LW_RETURN_HOUR1, 144, 136, 25,34, 0, 0x0, 0 },
+    { LISTWHEEL_CreateIndirect, "", ID_LW_RETURN_MINUTE1, 176, 136, 25,34, 0, 0x0, 0 },
+    { TEXT_CreateIndirect, ":", ID_TEXT_RETURN_SEP1, 169, 136, 8, 36, 0, 0x64, 0 },
+    { LISTWHEEL_CreateIndirect, "", ID_LW_RETURN_AMPM1, 204, 136, 25,34, 0, 0x0, 0 },
+
+    { LISTWHEEL_CreateIndirect, "", ID_LW_RETURN_HOUR2, 244, 136, 25,34, 0, 0x0, 0 },
+    { LISTWHEEL_CreateIndirect, "", ID_LW_RETURN_MINUTE2, 276, 136, 25,34, 0, 0x0, 0 },
+    { TEXT_CreateIndirect, ":", ID_TEXT_RETURN_SEP2, 269, 136, 8, 36, 0, 0x64, 0 },
+    { LISTWHEEL_CreateIndirect, "", ID_LW_RETURN_AMPM2, 304, 136, 25,34, 0, 0x0, 0 },
+
+    { LISTWHEEL_CreateIndirect, "", ID_LW_SLEEP_HOUR1, 144, 176, 25,34, 0, 0x0, 0 },
+    { LISTWHEEL_CreateIndirect, "", ID_LW_SLEEP_MINUTE1, 176, 176, 25,34, 0, 0x0, 0 },
+    { TEXT_CreateIndirect, ":", ID_TEXT_SLEEP_SEP1, 169, 176, 8, 34, 0, 0x64, 0 },
+    { LISTWHEEL_CreateIndirect, "", ID_LW_SLEEP_AMPM1, 204, 176, 25,34, 0, 0x0, 0 },
+
+    { LISTWHEEL_CreateIndirect, "", ID_LW_SLEEP_HOUR2, 244, 176, 25, 34, 0, 0x0, 0 },
+    { LISTWHEEL_CreateIndirect, "", ID_LW_SLEEP_MINUTE2, 276, 176, 25, 34, 0, 0x0, 0 },
+    { TEXT_CreateIndirect, ":", ID_TEXT_SLEEP_SEP2, 269, 176, 8, 34, 0, 0x64, 0 },
+    { LISTWHEEL_CreateIndirect, "", ID_LW_SLEEP_AMPM2, 304, 176, 25,34, 0, 0x0, 0 },
 };
 
-int selected_day;
+static int selected_day, upperDegrees, lowerDegrees;
+
 static struct days_s days[7];
 static void  setDays(WM_HWIN *, int);
 
@@ -164,16 +244,130 @@ static void getPeriods()
     }
 }
 
+static char *hours[2][24] =
+{
+    {
+        "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12",
+        "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", 0
+    },
+    {" 1", " 2", " 3", " 4", " 5", " 6", " 7", " 8", " 9", "10", "11", "12", 0}
+};
+
+static char * minutes[] =
+{
+    "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10",
+    "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
+    "21", "22", "23", "24", "25", "26", "27", "28", "29", "30",
+    "31", "32", "33", "34", "35", "36", "37", "38", "39", "40",
+    "41", "42", "43", "44", "45", "46", "47", "48", "49", "50",
+    "51", "52", "53", "54", "55", "56", "57", "58", "59", 0
+};
+
+static char * ampm[] =
+{
+    "AM", "PM"
+};
+
+static WHEEL _aWheel[6];
+
+extern int CreateListWheel(int, int, int, int, int, char **, int, int, int,
+                           WM_HWIN, WHEEL *, GUI_FONT *, int);
+
+static void _cbBkWheel(WM_MESSAGE * pMsg)
+{
+    WM_HWIN hParent;
+    int     xSize;
+    int     ySize;
+
+    switch (pMsg->MsgId)
+    {
+    case WM_NOTIFY_PARENT:
+        hParent    = WM_GetParent(pMsg->hWin);
+        pMsg->hWin = hParent;
+        WM_SendMessage(hParent, pMsg);
+        break;
+    case WM_PAINT:
+        xSize = WM_GetWindowSizeX(pMsg->hWin);
+        ySize = WM_GetWindowSizeY(pMsg->hWin);
+        GUI_DrawGradientV(0, 0, xSize - 1, ySize - 1, GUI_WHITE, GUI_WHITE);
+        break;
+    default:
+        WM_DefaultProc(pMsg);
+    }
+}
+
+static int _OwnerDraw(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo)
+{
+    switch (pDrawItemInfo->Cmd)
+    {
+    case WIDGET_DRAW_OVERLAY:
+        GUI_SetColor(GUI_DARKGREEN);
+        GUI_DrawHLine(9, 0, 99);
+        GUI_DrawHLine(8, 0, 99);
+        GUI_DrawHLine(26, 0, 99);
+        GUI_DrawHLine(27, 0, 99);
+        GUI_SetColor(0x00dbdbdb);
+        GUI_SetAlpha(170);
+        GUI_FillRect(0,8,40,25);
+        break;
+    default:
+        return LISTWHEEL_OwnerDraw(pDrawItemInfo);
+    }
+    return 0;
+}
+static char * getTimes(int st, int et, int m)
+{
+    static char buf[30];
+    if (m)
+    {
+        sprintf(buf, "%02d:%02d - %02d:%02d",  st/60, st - (st/60)*60, et/60, et - (et/60)*60);
+    }
+    else
+    {
+        int sh = st/60;
+        if (sh > 12) sh -= 12;
+        int eh = et/60;
+        if (eh > 12) eh -= 12;
+        sprintf(buf, "%d:%02d%s - %d:%02d%s",
+                sh, st - (st/60)*60, ((st/60 < 12) ? "am" : "pm"),
+                eh, et - et/60*60, ((et/60 < 12) ? "am" : "pm"));
+    }
+    return buf;
+}
+
+void listWheel(WM_HWIN hItem, char **items, int count, GUI_FONT *font)
+{
+    int i;
+
+    LISTWHEEL_SetLineHeight(hItem, 20);
+    LISTWHEEL_SetFont(hItem, font);
+    LISTWHEEL_SetSnapPosition(hItem, 8);
+    LISTWHEEL_SetTextAlign(hItem, GUI_TA_VCENTER | GUI_TA_HCENTER);
+    LISTWHEEL_SetOwnerDraw(hItem, _OwnerDraw);
+    LISTWHEEL_SetBkColor(hItem, 0, 0xcccccc);
+    LISTWHEEL_SetBkColor(hItem, 1, 0x005500);
+    LISTWHEEL_SetTextColor(hItem, 0, 0x666666);
+    LISTWHEEL_SetTextColor(hItem, 1, GUI_WHITE);
+    //WM_SetTransState(hItem, WM_CF_HASTRANS);
+
+    for (i = 0; i < count; i++)
+    {
+        LISTWHEEL_AddString(hItem, *(items + i));
+    }
+}
 /*********************************************************************
 *
 *       _cbDialog
 */
 static void _cbDialog(WM_MESSAGE * pMsg)
 {
-    WM_HWIN hItem;
+    WM_HWIN hItem, spinWheel;
     int     NCode;
     int     Id;
     char buf[30];
+    int xSize = 28;
+    int ySize = 36;
+    int lh = 20;
 
     switch (pMsg->MsgId)
     {
@@ -225,14 +419,148 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextAlign(hItem, GUI_TA_LEFT);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         TEXT_SetText(hItem, toup(getPeriod(periods_text[0]).label));
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_WAKE_TIME);
+
+        //  WAKE
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_LW_WAKE_HOUR1);
+        listWheel(hItem, hours[(clockFormat == 12)], clockFormat, &FontBig20B);
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_WAKE_SEP1);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetFont(hItem, &FontBig20B);
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
-        sprintf(buf,"%s - %s",
-                getPeriod(periods_text[0]).startTime, getPeriod(periods_text[0]).stopTime);
-        TEXT_SetText(hItem, buf);
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x555555));
+        TEXT_SetText(hItem, ":");
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_LW_WAKE_MINUTE1);
+        listWheel(hItem, minutes, 60, &FontBig20B);
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_LW_WAKE_AMPM1);
+        listWheel(hItem, ampm, 2, &GUI_Font16B_ASCII);
+        if (clockFormat == 24) WM_HideWindow(hItem);
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_LW_WAKE_HOUR2);
+        listWheel(hItem, hours[(clockFormat == 12)], clockFormat, &FontBig20B);
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_WAKE_SEP2);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x555555));
+        TEXT_SetText(hItem, ":");
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_LW_WAKE_MINUTE2);
+        listWheel(hItem, minutes, 60, &FontBig20B);
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_LW_WAKE_AMPM2);
+        listWheel(hItem, ampm, 2, &GUI_Font16B_ASCII);
+        if (clockFormat == 24) WM_HideWindow(hItem);
+
+        // LEAVE
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_LW_LEAVE_HOUR1);
+        listWheel(hItem, hours[(clockFormat == 12)], clockFormat, &FontBig20B);
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_LEAVE_SEP1);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x555555));
+        TEXT_SetText(hItem, ":");
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_LW_LEAVE_MINUTE1);
+        listWheel(hItem, minutes, 60, &FontBig20B);
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_LW_LEAVE_AMPM1);
+        listWheel(hItem, ampm, 2, &GUI_Font16B_ASCII);
+        if (clockFormat == 24) WM_HideWindow(hItem);
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_LW_LEAVE_HOUR2);
+        listWheel(hItem, hours[(clockFormat == 12)], clockFormat, &FontBig20B);
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_LEAVE_SEP2);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x555555));
+        TEXT_SetText(hItem, ":");
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_LW_LEAVE_MINUTE2);
+        listWheel(hItem, minutes, 60, &FontBig20B);
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_LW_LEAVE_AMPM2);
+        listWheel(hItem, ampm, 2, &GUI_Font16B_ASCII);
+        if (clockFormat == 24) WM_HideWindow(hItem);
+
+        // RETURN
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_LW_RETURN_HOUR1);
+        listWheel(hItem, hours[(clockFormat == 12)], clockFormat, &FontBig20B);
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_RETURN_SEP1);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x555555));
+        TEXT_SetText(hItem, ":");
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_LW_RETURN_MINUTE1);
+        listWheel(hItem, minutes, 60, &FontBig20B);
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_LW_RETURN_AMPM1);
+        listWheel(hItem, ampm, 2, &GUI_Font16B_ASCII);
+        if (clockFormat == 24) WM_HideWindow(hItem);
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_LW_RETURN_HOUR2);
+        listWheel(hItem, hours[(clockFormat == 12)], clockFormat, &FontBig20B);
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_RETURN_SEP2);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x555555));
+        TEXT_SetText(hItem, ":");
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_LW_RETURN_MINUTE2);
+        listWheel(hItem, minutes, 60, &FontBig20B);
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_LW_RETURN_AMPM2);
+        listWheel(hItem, ampm, 2, &GUI_Font16B_ASCII);
+        if (clockFormat == 24) WM_HideWindow(hItem);
+
+        // SLEEP
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_LW_SLEEP_HOUR1);
+        listWheel(hItem, hours[(clockFormat == 12)], clockFormat, &FontBig20B);
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SLEEP_SEP1);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x555555));
+        TEXT_SetText(hItem, ":");
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_LW_SLEEP_MINUTE1);
+        listWheel(hItem, minutes, 60, &FontBig20B);
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_LW_SLEEP_AMPM1);
+        listWheel(hItem, ampm, 2, &GUI_Font16B_ASCII);
+        if (clockFormat == 24) WM_HideWindow(hItem);
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_LW_SLEEP_HOUR2);
+        listWheel(hItem, hours[(clockFormat == 12)], clockFormat, &FontBig20B);
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SLEEP_SEP2);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x555555));
+        TEXT_SetText(hItem, ":");
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_LW_SLEEP_MINUTE2);
+        listWheel(hItem, minutes, 60, &FontBig20B);
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_LW_SLEEP_AMPM2);
+        listWheel(hItem, ampm, 2, &GUI_Font16B_ASCII);
+        if (clockFormat == 24) WM_HideWindow(hItem);
+
+        setDays(pMsg->hWin, 0);
+
+//        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_WAKE_TIME);
+//        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+//        TEXT_SetFont(hItem, &FontBig20B);
+//        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
+//        sprintf(buf,"%s - %s",
+//                getPeriod(periods_text[0]).startTime, getPeriod(periods_text[0]).stopTime);
+//        TEXT_SetText(hItem, buf);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_WAKE_TEMP);
         TEXT_SetFont(hItem, &FontBig20B);
@@ -240,21 +568,20 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         sprintf(buf,"%d", getPeriod(periods_text[0]).tempurature);
         TEXT_SetText(hItem, buf);
-        //
+//        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_LEAVE);
         TEXT_SetFont(hItem, &FontBig20B);
         TEXT_SetTextAlign(hItem, GUI_TA_LEFT);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         TEXT_SetText(hItem, toup(getPeriod(periods_text[1]).label));
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_LEAVE_TIME);
-        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        TEXT_SetFont(hItem, &FontBig20B);
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
-        sprintf(buf,"%s - %s",
-                getPeriod(periods_text[1]).startTime, getPeriod(periods_text[1]).stopTime);
-        TEXT_SetText(hItem, buf);
-        //
+//        //
+//        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_LEAVE_TIME);
+//        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+//        TEXT_SetFont(hItem, &FontBig20B);
+//        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
+//        TEXT_SetText(hItem, getTimes(getPeriod(periods_text[1]).stopMinutes,
+//                            getPeriod(periods_text[1]).startMinutes, metric));
+//
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_LEAVE_TEMP);
         TEXT_SetFont(hItem, &FontBig20B);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
@@ -267,36 +594,34 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextAlign(hItem, GUI_TA_LEFT);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         TEXT_SetText(hItem, toup(getPeriod(periods_text[2]).label));
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_RETURN_TIME);
-        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        TEXT_SetFont(hItem, &FontBig20B);
-        sprintf(buf,"%s - %s",
-                getPeriod(periods_text[2]).startTime, getPeriod(periods_text[2]).stopTime);
-        TEXT_SetText(hItem, buf);
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
-        //
+//        //
+//        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_RETURN_TIME);
+//        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+//        TEXT_SetFont(hItem, &FontBig20B);
+//        TEXT_SetText(hItem, getTimes(getPeriod(periods_text[2]).stopMinutes,
+//                            getPeriod(periods_text[2]).startMinutes, metric));
+//        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
+//        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_RETURN_TEMP);
         TEXT_SetFont(hItem, &FontBig20B);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         sprintf(buf,"%d", getPeriod(periods_text[2]).tempurature);
         TEXT_SetText(hItem, buf);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
-        //
+//        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SLEEP);
         TEXT_SetFont(hItem, &FontBig20B);
         TEXT_SetTextAlign(hItem, GUI_TA_LEFT);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         TEXT_SetText(hItem, toup(getPeriod(periods_text[3]).label));
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SLEEP_TIME);
-        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        TEXT_SetFont(hItem, &FontBig20B);
-        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
-        sprintf(buf,"%s - %s",
-                getPeriod(periods_text[3]).startTime, getPeriod(periods_text[3]).stopTime);
-        TEXT_SetText(hItem, buf);
-        //
+//        //
+//        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SLEEP_TIME);
+//        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+//        TEXT_SetFont(hItem, &FontBig20B);
+//        TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
+//        TEXT_SetText(hItem, getTimes(getPeriod(periods_text[3]).stopMinutes,
+//                            getPeriod(periods_text[3]).startMinutes, metric));
+//        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SLEEP_TEMP);
         TEXT_SetFont(hItem, &FontBig20B);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
@@ -411,7 +736,58 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     }
 }
 
+static void setDay(WM_HWIN *hWin, int minutes, WM_HWIN **lw)
+{
+    WM_HWIN *hItem;
+    int hour = minutes/60;
+    int minute = minutes - hour*60;
+    if (minute == 60) minute = 0;
+    int pm = hour > 12;
+    if (clockFormat == 12 && pm) hour -= 13;
+    if (clockFormat == 12 && !pm) hour--;
+
+    int vars[] = {hour, minute, pm};
+
+    int i;
+    for (i=0;i<3;i++) {
+        hItem = WM_GetDialogItem(hWin, lw[i]);
+        LISTWHEEL_SetPos(hItem, vars[i]);
+        LISTWHEEL_SetSel(hItem, vars[i]);
+    }
+}
+
 static void setDays(WM_HWIN *hWin, int d)
+{
+    WM_HWIN  hItem;
+
+    selectedDay = getDay(days_text[d]);
+
+    WM_HWIN *lws[] = {ID_LW_WAKE_HOUR1, ID_LW_WAKE_MINUTE1, ID_LW_WAKE_AMPM1};
+    setDay(hWin, getPeriod(periods_text[0]).startMinutes, lws);
+
+    lws[0] = ID_LW_WAKE_HOUR2; lws[1] = ID_LW_WAKE_MINUTE2; lws[2] = ID_LW_WAKE_AMPM2;
+    setDay(hWin, getPeriod(periods_text[0]).stopMinutes, lws);
+
+    lws[0] = ID_LW_LEAVE_HOUR1; lws[1] = ID_LW_LEAVE_MINUTE1; lws[2] = ID_LW_LEAVE_AMPM1;
+    setDay(hWin, getPeriod(periods_text[1]).startMinutes, lws);
+
+    lws[0] = ID_LW_LEAVE_HOUR2; lws[1] = ID_LW_LEAVE_MINUTE2; lws[2] = ID_LW_LEAVE_AMPM2;
+    setDay(hWin, getPeriod(periods_text[1]).stopMinutes, lws);
+
+    lws[0] = ID_LW_RETURN_HOUR1; lws[1] = ID_LW_RETURN_MINUTE1; lws[2] = ID_LW_RETURN_AMPM1;
+    setDay(hWin, getPeriod(periods_text[2]).startMinutes, lws);
+
+    lws[0] = ID_LW_RETURN_HOUR2; lws[1] = ID_LW_RETURN_MINUTE2; lws[2] = ID_LW_RETURN_AMPM2;
+    setDay(hWin, getPeriod(periods_text[2]).stopMinutes, lws);
+
+    lws[0] = ID_LW_SLEEP_HOUR1; lws[1] = ID_LW_SLEEP_MINUTE1; lws[2] = ID_LW_SLEEP_AMPM1;
+    setDay(hWin, getPeriod(periods_text[3]).startMinutes, lws);
+
+    lws[0] = ID_LW_SLEEP_HOUR2; lws[1] = ID_LW_SLEEP_MINUTE2; lws[2] = ID_LW_SLEEP_AMPM2;
+    setDay(hWin, getPeriod(periods_text[3]).stopMinutes, lws);
+}
+
+static void setDays1(WM_HWIN *hWin, int d)
 {
     char buf [20];
     WM_HWIN  hItem;

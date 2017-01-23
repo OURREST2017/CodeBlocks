@@ -1,4 +1,7 @@
 #include "main.h"
+#define TRANS0    0xAA000000
+#define TRANS1    0xEE000000
+#define TRANS2    0xFF000000
 
 void MainTask(void)
 {
@@ -6,21 +9,40 @@ void MainTask(void)
     WM_HWIN       win;
     WM_HWIN       hBkWheel;
 
-  WM_SetCreateFlags(WM_CF_MEMDEV);
+    WM_SetCreateFlags(WM_CF_MEMDEV);
+ //   WM_SetBkWindowColor(GUI_WHITE);
     color_scheme = 0;
     initColors();
     loadConfig();
     //saveConfig();
     holdMode = 0;
 
-    if (testing) {
+    if (testing)
+    {
         state = 99;
-    } else if (firstTime) {
+    }
+    else if (firstTime)
+    {
         state =14;
-    } else {
+    }
+    else
+    {
         state = 1;
     }
+    char * apText[] =
+    {
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        NULL
+    };
 
+
+    int lh = 20;
     while(1)
     {
         switch (state)
@@ -43,17 +65,17 @@ void MainTask(void)
 //
 //        GUI_ExecCreatedDialog(win);
 
-            //WINDOW_CreateEx(50,50,200,100,WM_HBKWIN,WM_CF_SHOW,0,10,cb);
-//              hBkWheel = WM_CreateWindowAsChild(10, 80, 450, 272,
-//                                     WM_HBKWIN, WM_CF_SHOW, _cbBkWheel, 0);
+//            win = WINDOW_CreateEx(50,50,200,100,WM_HBKWIN,WM_CF_SHOW,0,10,cb);
+
 //
-           //CreateScreenLockout();
-              GUI_Delay(100);
-           CreateHomeWin();
-           state=0;
+            //CreateScreenLockout();
+
+            // GUI_Delay(100);
+            CreateHomeWin();
+            state=0;
             break;
         case 2:
-            // not used
+            CreateEachDay();
             state=0;
             break;
         case 3:
@@ -64,7 +86,7 @@ void MainTask(void)
         case 4:
             CreateSettings();
             GUI_Delay(100);
-           state=0;
+            state=0;
             break;
         case 5:
             CreateFanMode();

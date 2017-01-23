@@ -50,9 +50,8 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "Tempurature Limits", ID_BUTTON_TEMPURATURE_LIMITS, 242, 115, 220, 36, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Keyboard Lockout", ID_BUTTON_KEYBOARD_LOCKOUT, 242, 160, 220, 36, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Schedule Periods", ID_BUTTON_SCHEDULING_PERIODS, 242, 205, 220, 36, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "return", ID_BUTTON_RETURN, 20, 0, 50, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "", ID_BUTTON_RETURN, 15, 0, 150, 50, 0, 0x0, 0 },
 };
-
 /*********************************************************************
 *
 *       _cbDialog
@@ -72,7 +71,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         break;
     case WM_INIT_DIALOG:
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_RETURN);
-        WM_SetCallback(hItem, return_cb);
+        BUTTON_SetSkin(hItem, returnSkin);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetFont(hItem, GUI_FONT_32B_1);
@@ -180,6 +179,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 break;
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
+                CreateTempuratureLimits();
                 state=45;
             }
             break;

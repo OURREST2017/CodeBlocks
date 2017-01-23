@@ -9,7 +9,6 @@ static cJSON *config_root;
 char * toup(char *s)
 {
     int i;
-    char *t;
     static char o[100];
     for (i=0; i<strlen(s); i++)
     {
@@ -50,6 +49,7 @@ void loadConfig()
     struct periods_s periods;
     struct hvacConfig_s hvacConfig;
 
+    tempTimerSet = 0;
     if ((f = fopen("config_def.json", "rb")) != 0)
     {
         fseek(f, 0, SEEK_END);
@@ -142,6 +142,15 @@ void loadConfig()
                     periods.label = cJSON_GetObjectItem(p,"label")->valuestring;
                     periods.startTime = cJSON_GetObjectItem(p,"startTime")->valuestring;
                     periods.stopTime = cJSON_GetObjectItem(p,"stopTime")->valuestring;
+
+                    int hh, mm;
+                    sscanf(periods.startTime, "%d:%d", &hh, &mm);
+                    if (strchr(periods.startTime, 'a') == NULL)  hh += 12;
+                    periods.startMinutes = hh*60+mm;
+                    sscanf(periods.stopTime, "%d:%d", &hh, &mm);
+                    if (strchr(periods.stopTime, 'a') == NULL) hh += 12;
+                    periods.stopMinutes = hh*60+mm;
+
                     days.periods[j] = periods;
                 }
                 schedules[i].days[k] = days;
@@ -161,6 +170,9 @@ void loadConfig()
     strcpy(thermo_rooms[3], "Room 4");
     strcpy(thermo_rooms[4], "Room 5");
     strcpy(thermo_rooms[5], "Room 6");
+
+    upperDegreeLimit = 78;
+    lowerDegreeLimit = 68;
 
     time( &rawtime );
     info = localtime( &rawtime );
