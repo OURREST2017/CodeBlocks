@@ -63,12 +63,10 @@
 			<Add option="-Wall" />
 		</Compiler>
 		<Linker>
+			<Add option="-Wl,-Bstatic" />
 			<Add library="GUI/Library/GUI.a" />
 			<Add library="Lib/GUISim.a" />
 		</Linker>
-		<Unit filename="Application/AllDays.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="Application/AlphaKeyboard.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -79,9 +77,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/ClockFormat.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/Colors.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/CoolingStages.c">
@@ -100,6 +95,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/EditRoom.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/EditSchedule.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/FanControl.c">
@@ -123,6 +121,9 @@
 		<Unit filename="Application/Languages.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="Application/ListBoxCorners.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="Application/LoadConfig.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -133,6 +134,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/PassFail.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/Pear.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/Preferences.c">
@@ -151,6 +155,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/Schedule.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/ScheduleHelp.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/SchedulePeriods.c">
@@ -186,13 +193,10 @@
 		<Unit filename="Application/TriacPanelWin.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Application/Vacation.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="Application/Watermark.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Application/WeekendSchedule.c">
+		<Unit filename="Application/WifiConnect.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/WifiDisconnect.c">
@@ -208,7 +212,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/cJSON.h" />
-		<Unit filename="Application/config_def.json" />
 		<Unit filename="Application/main.h" />
 		<Unit filename="Config/GUIConf.c">
 			<Option compilerVar="CC" />
@@ -223,6 +226,7 @@
 		</Unit>
 		<Unit filename="GUI/Include/BUTTON.h" />
 		<Unit filename="GUI/Include/BUTTON_Private.h" />
+		<Unit filename="GUI/Include/CALENDAR.h" />
 		<Unit filename="GUI/Include/CHECKBOX.h" />
 		<Unit filename="GUI/Include/CHECKBOX_Private.h" />
 		<Unit filename="GUI/Include/CHOOSECOLOR.h" />
@@ -249,11 +253,14 @@
 		<Unit filename="GUI/Include/GUI_JPEG_Private.h" />
 		<Unit filename="GUI/Include/GUI_Private.h" />
 		<Unit filename="GUI/Include/GUI_SIM_Win32.h" />
+		<Unit filename="GUI/Include/GUI_SPRITE_Private.h" />
 		<Unit filename="GUI/Include/GUI_SetOrientation.h" />
 		<Unit filename="GUI/Include/GUI_SetOrientationCX.h" />
 		<Unit filename="GUI/Include/GUI_Type.h" />
 		<Unit filename="GUI/Include/GUI_VNC.h" />
 		<Unit filename="GUI/Include/GUI_Version.h" />
+		<Unit filename="GUI/Include/GUI__BiDi2_Brackets_800.h" />
+		<Unit filename="GUI/Include/GUI__BiDi2_Types_800.h" />
 		<Unit filename="GUI/Include/Global.h" />
 		<Unit filename="GUI/Include/HEADER.h" />
 		<Unit filename="GUI/Include/HEADER_Private.h" />
@@ -261,6 +268,9 @@
 		<Unit filename="GUI/Include/ICONVIEW_Private.h" />
 		<Unit filename="GUI/Include/IMAGE.h" />
 		<Unit filename="GUI/Include/IMAGE_Private.h" />
+		<Unit filename="GUI/Include/IP_FS.h" />
+		<Unit filename="GUI/Include/KNOB.h" />
+		<Unit filename="GUI/Include/KNOB_Private.h" />
 		<Unit filename="GUI/Include/LCD.h" />
 		<Unit filename="GUI/Include/LCDSIM_Private.h" />
 		<Unit filename="GUI/Include/LCD_ConfDefaults.h" />
@@ -285,12 +295,15 @@
 		<Unit filename="GUI/Include/RADIO_Private.h" />
 		<Unit filename="GUI/Include/SCROLLBAR.h" />
 		<Unit filename="GUI/Include/SCROLLBAR_Private.h" />
+		<Unit filename="GUI/Include/SEGGER.h" />
 		<Unit filename="GUI/Include/SIM.h" />
 		<Unit filename="GUI/Include/SIM_GetRegions.h" />
 		<Unit filename="GUI/Include/SLIDER.h" />
 		<Unit filename="GUI/Include/SLIDER_Private.h" />
 		<Unit filename="GUI/Include/SPINBOX.h" />
 		<Unit filename="GUI/Include/SPINBOX_Private.h" />
+		<Unit filename="GUI/Include/SWIPELIST.h" />
+		<Unit filename="GUI/Include/SWIPELIST_Private.h" />
 		<Unit filename="GUI/Include/TEXT.h" />
 		<Unit filename="GUI/Include/TEXT_Private.h" />
 		<Unit filename="GUI/Include/TREEVIEW.h" />

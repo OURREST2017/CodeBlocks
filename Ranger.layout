@@ -2,276 +2,231 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Release" />
-	<File name="Application\SchedulePeriods.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Application\AlphaKeyboard.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2429" topLine="6" />
-		</Cursor>
-	</File>
-	<File name="Application\RoundedFonts.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="6137" topLine="193" />
-		</Cursor>
-	</File>
-	<File name="Application\CoolingStages.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2717" topLine="72" />
-		</Cursor>
-	</File>
-	<File name="GUI\Include\BUTTON.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="5409" topLine="99" />
-		</Cursor>
-	</File>
-	<File name="Application\SchedulingOptions.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2058" topLine="22" />
-		</Cursor>
-	</File>
-	<File name="Application\ScreenLockout.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3294" topLine="11" />
-		</Cursor>
-	</File>
-	<File name="GUI\Include\CHECKBOX.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2398" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="Application\HeatingStages.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="4918" topLine="75" />
-		</Cursor>
-	</File>
-	<File name="Application\DeleteThermo.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3019" topLine="21" />
-		</Cursor>
-	</File>
-	<File name="Application\Profile.c" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="6330" topLine="86" />
-		</Cursor>
-	</File>
-	<File name="Application\SettingsSchedule.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3237" topLine="27" />
-		</Cursor>
-	</File>
-	<File name="GUI\Include\LCD.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3432" topLine="52" />
-		</Cursor>
-	</File>
-	<File name="Application\Settings.c" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="119471" topLine="601" />
-		</Cursor>
-	</File>
-	<File name="Application\SystemsChangeOver.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2045" topLine="26" />
-		</Cursor>
-	</File>
-	<File name="Application\Resources.c" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3503" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="Application\ThermostatControls.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="5196" topLine="88" />
-		</Cursor>
-	</File>
-	<File name="Application\ThermostatLocations.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3020" topLine="6" />
-		</Cursor>
-	</File>
-	<File name="Application\AllDays.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="7986" topLine="173" />
-		</Cursor>
-	</File>
-	<File name="Application\TriacPanelWin.c" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2856" topLine="9" />
-		</Cursor>
-	</File>
-	<File name="Application\FanControl.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2388" topLine="84" />
-		</Cursor>
-	</File>
-	<File name="Application\Vacation.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="8261" topLine="185" />
-		</Cursor>
-	</File>
-	<File name="Application\Preferences.c" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3767" topLine="15" />
-		</Cursor>
-	</File>
-	<File name="Application\Ranger.c" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2741" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="Application\TempuratureScale.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3510" topLine="40" />
-		</Cursor>
-	</File>
-	<File name="Application\NumericKeyboard.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="13116" topLine="158" />
-		</Cursor>
-		<Folding>
-			<Collapse line="96" />
-		</Folding>
-	</File>
-	<File name="Application\WeekendSchedule.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="8780" topLine="196" />
-		</Cursor>
-	</File>
-	<File name="Application\FanMode.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2218" topLine="4" />
-		</Cursor>
-	</File>
-	<File name="GUI\Include\WM.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="11950" topLine="263" />
-		</Cursor>
-	</File>
-	<File name="Application\ButtonUtils.c" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="10440" topLine="64" />
-		</Cursor>
-		<Folding>
-			<Collapse line="70" />
-			<Collapse line="116" />
-			<Collapse line="162" />
-			<Collapse line="209" />
-			<Collapse line="255" />
-			<Collapse line="289" />
-			<Collapse line="302" />
-		</Folding>
-	</File>
-	<File name="Application\WifiDisconnect.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2969" topLine="21" />
-		</Cursor>
-	</File>
-	<File name="Application\EditRoom.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2244" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="GUI\Include\GUI.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="84529" topLine="1913" />
-		</Cursor>
-	</File>
-	<File name="Application\Schedule.c" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="5330" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="Application\WifiSetup.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2748" topLine="13" />
-		</Cursor>
-	</File>
-	<File name="Application\EachDay.c" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="10451" topLine="167" />
-		</Cursor>
-	</File>
-	<File name="Application\ClockFormat.c" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3230" topLine="31" />
-		</Cursor>
-	</File>
-	<File name="Application\AlphaKeyboard.c" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="13042" topLine="215" />
+			<Cursor1 position="9017" topLine="125" />
 		</Cursor>
 	</File>
 	<File name="Application\BackupHeat.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="5278" topLine="74" />
+			<Cursor1 position="2753" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="Application\SystemSetup.c" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="GUI\Include\LISTBOX.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="3312" topLine="0" />
+			<Cursor1 position="1997" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="Application\KeyboardLockout.c" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Application\ButtonUtils.c" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="4287" topLine="68" />
+			<Cursor1 position="2232" topLine="53" />
 		</Cursor>
 	</File>
-	<File name="Application\PassFail.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Application\ClockFormat.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2487" topLine="9" />
+			<Cursor1 position="2790" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="Application\LoadConfig.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Application\CoolingStages.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="3919" topLine="69" />
-		</Cursor>
-	</File>
-	<File name="Application\Mode.c" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="5243" topLine="102" />
-		</Cursor>
-	</File>
-	<File name="GUI\Include\GUI_SIM_Win32.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="4286" topLine="57" />
+			<Cursor1 position="2800" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="Application\DateTime.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="4220" topLine="22" />
+			<Cursor1 position="4342" topLine="69" />
+		</Cursor>
+		<Folding>
+			<Collapse line="52" />
+			<Collapse line="57" />
+			<Collapse line="63" />
+			<Collapse line="70" />
+			<Collapse line="76" />
+			<Collapse line="86" />
+		</Folding>
+	</File>
+	<File name="Application\DaylightSavingTime.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2781" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="Application\main.h" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Application\DeleteThermo.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1166" topLine="6" />
+			<Cursor1 position="2467" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="Application\EachDay.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="6646" topLine="135" />
+		</Cursor>
+	</File>
+	<File name="Application\EditRoom.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2782" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="Application\EditSchedule.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="15169" topLine="341" />
+		</Cursor>
+	</File>
+	<File name="Application\FanControl.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2813" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="Application\FanMode.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2794" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="Application\HeatingStages.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2800" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="Application\HomeWin.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="8671" topLine="137" />
+		</Cursor>
+	</File>
+	<File name="Application\HvacType.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3027" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="Application\Pear.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4963" topLine="72" />
+		</Cursor>
+	</File>
+	<File name="Application\KeyboardLockout.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2816" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="Application\Languages.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2043" topLine="1" />
+			<Cursor1 position="2801" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="Application\Colors.c" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Application\LoadConfig.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2786" topLine="139" />
+			<Cursor1 position="2208" topLine="26" />
 		</Cursor>
 	</File>
-	<File name="Application\HomeWin.c" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Application\main.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="12959" topLine="0" />
+			<Cursor1 position="1585" topLine="18" />
 		</Cursor>
 	</File>
-	<File name="Application\DaylightSavingTime.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Application\Mode.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2033" topLine="6" />
+			<Cursor1 position="3907" topLine="58" />
+		</Cursor>
+	</File>
+	<File name="Application\NumericKeyboard.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="8876" topLine="90" />
+		</Cursor>
+	</File>
+	<File name="Application\Preferences.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3713" topLine="33" />
+		</Cursor>
+	</File>
+	<File name="Application\Profile.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4028" topLine="49" />
+		</Cursor>
+	</File>
+	<File name="Application\Ranger.c" open="1" top="1" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="202" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="Application\Schedule.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3554" topLine="48" />
+		</Cursor>
+	</File>
+	<File name="Application\ScheduleHelp.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2677" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="Application\SchedulingOptions.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2850" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="Application\ScreenLockout.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4298" topLine="44" />
+		</Cursor>
+	</File>
+	<File name="Application\Settings.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="92451" topLine="393" />
+		</Cursor>
+		<Folding>
+			<Collapse line="59" />
+			<Collapse line="126" />
+		</Folding>
+	</File>
+	<File name="Application\SettingsSchedule.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4184" topLine="69" />
+		</Cursor>
+	</File>
+	<File name="Application\SystemsChangeOver.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2679" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="Application\SystemSetup.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="5558" topLine="114" />
+		</Cursor>
+	</File>
+	<File name="Application\TempuratureScale.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2821" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="Application\ThermostatControls.c" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3304" topLine="47" />
+		</Cursor>
+	</File>
+	<File name="Application\ThermostatLocations.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3226" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="Application\WifiConnect.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3035" topLine="39" />
+		</Cursor>
+	</File>
+	<File name="Application\WifiDisconnect.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2467" topLine="41" />
+		</Cursor>
+	</File>
+	<File name="Application\WifiSetup.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4149" topLine="31" />
+		</Cursor>
+	</File>
+	<File name="GUI\Include\WIDGET.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="6076" topLine="125" />
 		</Cursor>
 	</File>
 	<File name="Config\GUIConf.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2130" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="GUI\Include\GUI_Type.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1698" topLine="6" />
+			<Cursor1 position="2170" topLine="0" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>
