@@ -73,6 +73,9 @@
 		<Unit filename="Application/BackupHeat.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="Application/ButtonResource.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="Application/ButtonUtils.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -115,16 +118,19 @@
 		<Unit filename="Application/HvacType.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="Application/ImageResources.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="Application/KeyboardLockout.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/Languages.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Application/ListBoxCorners.c">
+		<Unit filename="Application/LoadConfig.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Application/LoadConfig.c">
+		<Unit filename="Application/MobilePair.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/Mode.c">
@@ -136,9 +142,6 @@
 		<Unit filename="Application/PassFail.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Application/Pear.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="Application/Preferences.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -146,9 +149,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/Ranger.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/Resources.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/RoundedFonts.c">
@@ -181,6 +181,9 @@
 		<Unit filename="Application/SystemsChangeOver.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="Application/TempuratureLimits.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="Application/TempuratureScale.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -190,16 +193,16 @@
 		<Unit filename="Application/ThermostatLocations.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Application/TriacPanelWin.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/Watermark.c">
+		<Unit filename="Application/TriacPanel.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/WifiConnect.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/WifiDisconnect.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/WifiPassword.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/WifiSetup.c">
