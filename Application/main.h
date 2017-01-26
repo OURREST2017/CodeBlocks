@@ -44,6 +44,7 @@ extern void buttonPush22_cb(WM_MESSAGE *);
 extern void button22_cb(WM_MESSAGE *);
 extern void button20_cb(WM_MESSAGE *);
 extern int returnSkin(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo);
+extern int degreesBigSkin(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo);
 
 extern int color_scheme;
 extern void initColors();
@@ -153,6 +154,8 @@ char changeOver[20];
 char configVersion[10];
 char serialNumber[30];
 char fanControl[30];
+char fanMode[10];
+
 char firmwareUrl[10];
 int dateTime;
 int epochTime;

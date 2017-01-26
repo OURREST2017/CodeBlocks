@@ -54,7 +54,7 @@ static WHEEL code[2];
 char temps[35][10] = {};
 
 static int CreateListWheel(int x, int y, int xSize, int ySize, int Id, int TextAlign,
-                            WM_HWIN hParent, WHEEL * pWheel, GUI_FONT *pFont, int lh, int pos)
+                           WM_HWIN hParent, WHEEL * pWheel, GUI_FONT *pFont, int lh, int pos)
 {
     WM_HWIN                      hWin;
     int                          i;
@@ -143,16 +143,17 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetFont(hItem, &FontBig20B);
 
         int i;
-        for (i=65;i<100;i++) {
+        for (i=65; i<100; i++)
+        {
             itoa(i, buffer, 10);
             strcpy(temps[i-65], buffer);
         }
         spinWheel = WM_CreateWindowAsChild(95, 80, 480, 140, pMsg->hWin, WM_CF_SHOW, _cbBkWheel, 0);
         CreateListWheel(  0, 0,  80, 125, GUI_ID_LISTWHEEL0, GUI_TA_VCENTER | GUI_TA_HCENTER, spinWheel,
-                        &code[0], GUI_FONT_D36X48, 70, lowerDegreeLimit-65);
+                          &code[0], GUI_FONT_D36X48, 70, lowerDegreeLimit-65);
         CreateListWheel(  200, 0,  80, 125, GUI_ID_LISTWHEEL0, GUI_TA_VCENTER | GUI_TA_HCENTER, spinWheel,
-                         &code[1], GUI_FONT_D36X48, 70, upperDegreeLimit-65);
-       //
+                          &code[1], GUI_FONT_D36X48, 70, upperDegreeLimit-65);
+        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
         WM_SetCallback(hItem, buttonOn16_cb);
         //

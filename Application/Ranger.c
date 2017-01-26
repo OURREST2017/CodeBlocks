@@ -1,7 +1,4 @@
 #include "main.h"
-#define TRANS0    0xAA000000
-#define TRANS1    0xEE000000
-#define TRANS2    0xFF000000
 
 void MainTask(void)
 {
@@ -10,11 +7,11 @@ void MainTask(void)
     WM_HWIN       hBkWheel;
 
     WM_SetCreateFlags(WM_CF_MEMDEV);
- //   WM_SetBkWindowColor(GUI_WHITE);
+    WM_SetBkWindowColor(GUI_WHITE);
     color_scheme = 0;
     initColors();
     loadConfig();
-    //saveConfig();
+    saveConfig();
     holdMode = 0;
 
     if (testing)
@@ -23,26 +20,12 @@ void MainTask(void)
     }
     else if (firstTime)
     {
-        state =14;
+        state = 14;
     }
     else
     {
         state = 1;
     }
-    char * apText[] =
-    {
-        "01",
-        "02",
-        "03",
-        "04",
-        "05",
-        "06",
-        "07",
-        NULL
-    };
-
-
-    int lh = 20;
     while(1)
     {
         switch (state)
@@ -50,7 +33,7 @@ void MainTask(void)
         case 0:
             break;
         case 99:
-            CreateTriacPanelWin();
+            CreateTriacPanel();
             state = 0;
             break;
         case 1:
@@ -61,15 +44,6 @@ void MainTask(void)
 //          TEXT_SetFont(twin, GUI_FONT_24_ASCII);
 //           WM_HWIN but =  WM_GetDialogItem(win, GUI_ID_OK);
 //            WM_MoveTo(but, 220,180);
-//
-//
-//        GUI_ExecCreatedDialog(win);
-
-//            win = WINDOW_CreateEx(50,50,200,100,WM_HBKWIN,WM_CF_SHOW,0,10,cb);
-
-//
-            //CreateScreenLockout();
-
             // GUI_Delay(100);
             CreateHomeWin();
             state=0;

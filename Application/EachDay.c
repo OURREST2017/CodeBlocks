@@ -372,7 +372,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        GUI_DrawBitmap(&bmwatermark, 0,50);
+        GUI_DrawBitmap(&bmwatermark,45,50);
         GUI_SetColor(0xcecece);
         GUI_DrawHLine(92, 0, 479);
         GUI_DrawHLine(132, 0, 479);

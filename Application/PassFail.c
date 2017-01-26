@@ -79,7 +79,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                CreateTriacPanelWin();
+                CreateTriacPanel();
                 break;
             }
             break;
@@ -87,7 +87,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                CreateTriacPanelWin();
+                CreateTriacPanel();
                 break;
             }
             break;

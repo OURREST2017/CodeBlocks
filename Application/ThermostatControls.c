@@ -48,7 +48,6 @@ static WM_HWIN cooling, heating;
 
 static int checkBoxSkin(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo)
 {
-    //GUI_ErrorOut1("D",pDrawItemInfo->Cmd);
     char buf[20];
     switch (pDrawItemInfo->Cmd)
     {
@@ -100,7 +99,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        GUI_DrawBitmap(&bmwatermark, 0,50);
+        GUI_DrawBitmap(&bmwatermark,45,50);
         break;
     case WM_INIT_DIALOG:
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);

@@ -33,10 +33,10 @@
 #define ID_IMAGE_8_IMAGE_0 0x08
 
 extern const U8 time_date_image[2443];
-extern const U8 lock_image[1479];
+//extern const U8 lock_image[1479];
 extern const U8 schedule_image[3247];
 extern const U8 languages_image[2395];
-extern const U8 profile_image[1977];
+//extern const U8 profile_image[1977];
 extern const U8 preferences_image[1027];
 extern const U8 setup_image[1001];
 extern const U8 pear_image[3358];
@@ -59,7 +59,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { TEXT_CreateIndirect, "Time/Date", ID_TEXT_0, 10, 128, 80, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Lock", ID_TEXT_1, 126, 128, 59, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Schedule", ID_TEXT_2, 237, 128, 80, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Pair", ID_TEXT_4, 25, 230, 61, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Mobile\nPair", ID_TEXT_4, 25, 230, 61, 40, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Languages", ID_TEXT_3, 365, 128, 80, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Profile", ID_TEXT_5, 112, 230, 80, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Preferences", ID_TEXT_6, 240, 230, 80, 20, 0, 0x64, 0 },
@@ -82,18 +82,12 @@ static const void * _GetImageById(U32 Id, U32 * pSize)
     case ID_IMAGE_1_IMAGE_0:
         *pSize = sizeof(time_date_image);
         return (const void *)time_date_image;
-    case ID_IMAGE_2_IMAGE_0:
-        *pSize = sizeof(lock_image);
-        return (const void *)lock_image;
     case ID_IMAGE_3_IMAGE_0:
         *pSize = sizeof(schedule_image);
         return (const void *)schedule_image;
     case ID_IMAGE_4_IMAGE_0:
         *pSize = sizeof(languages_image);
         return (const void *)languages_image;
-    case ID_IMAGE_5_IMAGE_0:
-        *pSize = sizeof(profile_image);
-        return (const void *)profile_image;
     case ID_IMAGE_6_IMAGE_0:
         *pSize = sizeof(preferences_image);
         return (const void *)preferences_image;
@@ -103,6 +97,9 @@ static const void * _GetImageById(U32 Id, U32 * pSize)
     }
     return NULL;
 }
+
+extern GUI_CONST_STORAGE GUI_BITMAP bmlock ;
+extern GUI_CONST_STORAGE GUI_BITMAP bmprofile ;
 
 /*********************************************************************
 *
@@ -119,7 +116,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        GUI_DrawBitmap(&bmwatermark, 0,50);
+        GUI_DrawBitmap(&bmwatermark, 45,50);
+        GUI_DrawBitmap(&bmlock, 133, 70);
+        GUI_DrawBitmap(&bmprofile, 130, 180);
         break;
     case WM_INIT_DIALOG:
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_RETURN);
@@ -139,8 +138,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         IMAGE_SetPNG(hItem, pData, FileSize);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_IMAGE_LOCK);
-        pData = _GetImageById(ID_IMAGE_2_IMAGE_0, &FileSize);
-        IMAGE_SetPNG(hItem, pData, FileSize);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_IMAGE_SCHEDULE);
         pData = _GetImageById(ID_IMAGE_3_IMAGE_0, &FileSize);
@@ -151,8 +148,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         IMAGE_SetPNG(hItem, pData, FileSize);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_IMAGE_PROFILE);
-        pData = _GetImageById(ID_IMAGE_5_IMAGE_0, &FileSize);
-        IMAGE_SetPNG(hItem, pData, FileSize);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_IMAGE_PREFERENCES);
         pData = _GetImageById(ID_IMAGE_6_IMAGE_0, &FileSize);

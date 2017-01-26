@@ -153,8 +153,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 *
 *       CreateTriacPanelWin
 */
-WM_HWIN CreateTriacPanelWin(void);
-WM_HWIN CreateTriacPanelWin(void)
+WM_HWIN CreateTriacPanel(void);
+WM_HWIN CreateTriacPanel(void)
 {
     WM_HWIN hWin;
 
