@@ -98,7 +98,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         WM_SetCallback(hItem, button22_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_COOLING_STAGES);
-         WM_SetCallback(hItem, button22_cb);
+        WM_SetCallback(hItem, button22_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HEATING_STAGES);
         WM_SetCallback(hItem, button22_cb);
@@ -112,15 +112,18 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                state=4;
+                GUI_Delay(100);
+                CreateSettings();
+                //state=4;
             }
             break;
         case ID_BUTTON_THERMO_LOCATION:
             switch(NCode)
             {
-           case WM_NOTIFICATION_RELEASED:
+            case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                state=20;
+                CreateThermostatLocations();
+                //state=20;
             }
             break;
         case ID_BUTTON_SYSTEM_TYPE:
@@ -128,7 +131,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                state=21;
+                CreateHvacType();
+                ///state=21;
             }
             break;
         case ID_BUTTON_THERMO_CONTROLS:
@@ -136,7 +140,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                state=22;
+                CreateThermostatControls();
+                // state=22;
             }
             break;
         case ID_BUTTON_FAN_CONTROLS:
@@ -148,7 +153,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 break;
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                state=23;
+                CreateFanControl();
+                //state=23;
             }
             break;
         case ID_BUTTON_WIFI_SETUP:
@@ -160,7 +166,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 break;
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                state=24;
+                CreateWifiSetup();
+                //state=24;
             }
             break;
         case ID_BUTTON_BACKUP_HEAT:
@@ -172,7 +179,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 break;
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                state=25;
+                CreateBackupHeat();
+                //state=25;
             }
             break;
         case ID_BUTTON_COOLING_STAGES:
@@ -184,7 +192,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 break;
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                state=26;
+                CreateCoolingStages();
+                //state=26;
             }
             break;
         case ID_BUTTON_HEATING_STAGES:
@@ -196,7 +205,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 break;
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                state=27;
+                CreateHeatingStages();
+                //state=27;
             }
             break;
         }

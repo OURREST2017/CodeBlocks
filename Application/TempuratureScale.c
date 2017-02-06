@@ -75,14 +75,14 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 
         if (celcius)
         {
-             WM_SetCallback(farenheitButton, buttonOff22_cb);
+            WM_SetCallback(farenheitButton, buttonOff22_cb);
             WM_SetCallback(celciusButton, buttonOn22_cb);
         }
         else
         {
             WM_SetCallback(farenheitButton, buttonOn22_cb);
             WM_SetCallback(celciusButton, buttonOff22_cb);
-       }
+        }
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
         WM_SetCallback(hItem, buttonOn16_cb);
@@ -99,7 +99,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                state = 16;
+                GUI_Delay(100);
+                CreatePreferences();
+                //state = 16;
                 break;
             }
             break;
@@ -107,8 +109,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                state = 16;
                 metric = celcius;
+                GUI_Delay(100);
+                CreatePreferences();
+                //state = 16;
                 break;
             }
             break;

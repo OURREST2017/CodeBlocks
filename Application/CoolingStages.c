@@ -96,7 +96,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                state=17;
+                GUI_Delay(100);
+            CreateSystemSetup();
+                //state=17;
             }
             break;
         case ID_BUTTON_SAVE:
@@ -104,7 +106,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 coolingStages = (one_mode == 1) ? 1 : 2;
-                state=17;
+                GUI_Delay(100);
+            CreateSystemSetup();
+                //state=17;
             }
             break;
         case ID_BUTTON_1_STAGE:

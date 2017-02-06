@@ -98,7 +98,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             case WM_NOTIFICATION_CLICKED:
                 break;
             case WM_NOTIFICATION_RELEASED:
-                state=17;
+            CreateSystemSetup();
+                //state=17;
             }
             break;
         case ID_BUTTON_SAVE:
@@ -108,7 +109,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 break;
             case WM_NOTIFICATION_RELEASED:
                 backupHeat = backupHeat_mode;
-                state=17;
+            CreateSystemSetup();
+                //state=17;
             }
             break;
         case ID_BUTTON_YES:

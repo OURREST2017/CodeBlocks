@@ -182,7 +182,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                state=17;
+                GUI_Delay(100);
+                CreateSystemSetup();
+                //state=17;
                 break;
             }
             break;
@@ -190,8 +192,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                CreateWifiConnect();
                 GUI_Delay(100);
+                CreateWifiConnect();
                 break;
             }
             break;
@@ -203,11 +205,16 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 WM_SetCallback(hItem, buttonPush16_cb);
                 break;
             case WM_NOTIFICATION_RELEASED:
-                if (firstTime) {
+                GUI_Delay(100);
+                if (firstTime)
+                {
                     state = 1;
-                } else {
-                    state=17;
-               }
+                }
+                else
+                {
+                    CreateSystemSetup();
+                    //state=17;
+                }
                 break;
             }
             break;

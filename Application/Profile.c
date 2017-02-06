@@ -183,7 +183,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                state = 4;
+                GUI_Delay(100);
+                CreateSettings();
+                //state = 4;
                 break;
             }
             break;
@@ -191,7 +193,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                state = 4;
+                GUI_Delay(100);
+                CreateSettings();
+                //state = 4;
                 break;
             }
             break;

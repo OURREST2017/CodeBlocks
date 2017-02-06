@@ -97,7 +97,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                state = 16;
+                GUI_Delay(100);
+                CreatePreferences();
+                //state = 16;
                 break;
             }
             break;
@@ -113,7 +115,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 {
                     strcpy(keyboardLock, "locked");
                 }
-                state = 16;
+                GUI_Delay(100);
+                CreatePreferences();
+                //state = 16;
                 break;
             }
             break;

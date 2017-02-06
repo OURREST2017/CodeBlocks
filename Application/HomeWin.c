@@ -37,27 +37,21 @@
 #define ID_TEXT_LOWER_TEMP (GUI_ID_USER + 0x38)
 #define ID_TEXT_UPPER (GUI_ID_USER + 0x39)
 #define ID_TEXT_LOWER (GUI_ID_USER + 0x40)
-#define ID_BUTTON_DEGREES (GUI_ID_USER + 0x41)
-#define ID_BUTTON_DEGREES_SET (GUI_ID_USER + 0x42)
-#define ID_BUTTON_DEGREES_HEAT (GUI_ID_USER + 0x43)
-#define ID_BUTTON_DEGREES_COOL (GUI_ID_USER + 0x44)
+#define ID_BUTTON_OUT_DEGREES (GUI_ID_USER + 0x41)
 
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "HomeWin", ID_HOME_WINDOW, 0, 0, 480, 272, 0, 0x0, 0 },
+    { HEADER_CreateIndirect, "Header", ID_HEADER, 0, 0, 480, 50, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "COOL", ID_BUTTON_COOL, 384, 233, 75, 28, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "MODE", ID_BUTTON_MODE, 12, 233, 75, 28, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "HOLD", ID_BUTTON_HOLD, 198, 233, 75, 28, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "HEAT", ID_BUTTON_HEAT, 292, 233, 75, 28, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "", ID_BUTTON_DEGREES_HEAT, 335, 206, 10, 10, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "", ID_BUTTON_DEGREES_COOL, 427, 206, 10, 10, 0, 0x0, 0 },
 
     { BUTTON_CreateIndirect, "FAN", ID_BUTTON_FAN, 104, 233, 75, 28, 0, 0x0, 0 },
     { IMAGE_CreateIndirect, "Image", ID_IMAGE_UP, 390, 70, 50, 50, 0, 0, 0 },
     { IMAGE_CreateIndirect, "Image", ID_IMAGE_DN, 390, 140, 50, 50, 0, 0, 0 },
     { TEXT_CreateIndirect, "In_T_Panel", ID_TEXT_INSIDE_TEMP, 162, 88, 135, 100, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "", ID_BUTTON_DEGREES, 285, 87, 100, 100, 0, 0x0, 0 },
-    { HEADER_CreateIndirect, "Header", ID_HEADER, 0, 0, 480, 50, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Button_Up", ID_BUTTON_UP, 390, 70, 50, 50, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Button_Dn", ID_BUTTON_DN, 390, 140, 50, 50, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "SETTINGS", ID_BUTTON_SETTINGS, 14, 110, 104, 30, 0, 0x0, 0 },
@@ -73,8 +67,8 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { TEXT_CreateIndirect, "HUMIDITY", ID_TEXT_HUMIDITY, 165, 176, 160, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "INDOOR", ID_TEXT_INDOOR, 165, 62, 89, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "SET_TO", ID_TEXT_SET_TO, 380, 122, 89, 20, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "", ID_BUTTON_DEGREES_SET, 451, 124, 10, 10, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_WIFI, 320, 0, 50, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "", ID_BUTTON_OUT_DEGREES, 400, 0, 50, 50, 0, 0x0, 0 },
 
     { TEXT_CreateIndirect, "UPPER", ID_TEXT_UPPER, 355, 54, 89, 80, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "", ID_TEXT_UPPER_TEMP, 351, 70, 89, 80, 0, 0x64, 0 },
@@ -87,12 +81,11 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "Button_Dn", ID_BUTTON_LOWER_DN, 433, 162, 36, 36, 0, 0x0, 0 },
 };
 
-
 static int holdButtonOn = 0, timerTemp;
 static int cool_border, heat_border;
 static GUI_TIMER_HANDLE tempTimer_h;
 
-static WM_HWIN holdButton, insideTempText, upButton, dnButton;
+static WM_HWIN holdButton, insideTempText, insideHumidityText, upButton, dnButton;
 static WM_HWIN upUpperButton, dnUpperButton, upLowerButton, dnLowerButton;
 static WM_HWIN modeButton, fanButton, heatButton, coolButton;
 
@@ -115,9 +108,22 @@ static int wifiSkin(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo)
         GUI_SetColor(0x666666);
         GUI_FillRect(21,(y+=5),26,ys);
         GUI_FillRect(14,(y+=5),19,ys);
-        GUI_SetColor(0xdbdbdb);
+        GUI_SetColor(0xeeeeee);
         GUI_FillRect(7,(y+=5),12,ys);
         GUI_FillRect(0,(y+=5),5,ys);
+      break;
+    default:
+        return BUTTON_DrawSkinFlex(pDrawItemInfo);
+    }
+}
+static int outDegrees(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo)
+{
+    switch (pDrawItemInfo->Cmd)
+    {
+    case WIDGET_ITEM_DRAW_BACKGROUND:
+        GUI_SetPenSize(1);
+        GUI_SetColor(GUI_WHITE);
+        GUI_AA_DrawArc(4, 12, 2,2,0,360);
         break;
     default:
         return BUTTON_DrawSkinFlex(pDrawItemInfo);
@@ -191,20 +197,14 @@ static void upButton_cb(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        GUI_DrawBitmap(&bmup_nb, 0, 0);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-
-static void upButtonPush_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        GUI_DrawBitmap(&bmup_r, 0, 0);
+        if (BUTTON_IsPressed(pMsg->hWin))
+        {
+            GUI_DrawBitmap(&bmup_r, 0, 0);
+        }
+        else
+        {
+            GUI_DrawBitmap(&bmup_nb, 0, 0);
+        }
         break;
     default:
         BUTTON_Callback(pMsg);
@@ -217,20 +217,15 @@ static void dnButton_cb(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        GUI_DrawBitmap(&bmdn_nb, 0, 0);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
+        if (BUTTON_IsPressed(pMsg->hWin))
+        {
+            GUI_DrawBitmap(&bmdn_r, 1, 0);
 
-static void dnButtonPush_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        GUI_DrawBitmap(&bmdn_r, 0, 0);
+        }
+        else
+        {
+            GUI_DrawBitmap(&bmdn_nb, 0, 0);
+        }
         break;
     default:
         BUTTON_Callback(pMsg);
@@ -398,7 +393,6 @@ static void autoMode(WM_HWIN hWin)
         WM_ShowWindow(hItem);
         hItem = WM_GetDialogItem(hWin, ID_TEXT_SET_TO);
         WM_ShowWindow(hItem);
-
     }
 }
 
@@ -431,11 +425,25 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         GUI_DrawVLine(341, 75, 170);
         GUI_DrawGradientV(0, 200, 480, 225, 0x00cacaca, 0x00838383);
 
-        if (strcmp(hvacMode, "auto") == 0) {
-            GUI_SetColor(0x808080);
+        GUI_SetColor(0x808080);
+        GUI_SetPenSize(4);
+        GUI_AA_DrawArc(290, 90, 6,6,0,360);
+        GUI_SetPenSize(1);
+        GUI_SetColor(GUI_WHITE);
+        GUI_AA_DrawArc(394, 7, 2,2,0,360);
+        GUI_AA_DrawArc(337, 209, 2,2,0,360);
+        GUI_AA_DrawArc(429, 209, 2,2,0,360);
+
+        GUI_SetColor(0x808080);
+        if (strcmp(hvacMode, "auto") == 0)
+        {
             GUI_SetPenSize(3);
             GUI_AA_DrawArc(428, 72, 4,4,0,360);
             GUI_AA_DrawArc(428, 145, 4,4,0,360);
+        }
+        else
+        {
+            GUI_AA_DrawArc(453, 127, 2,2,0,360);
         }
         break;
     case WM_INIT_DIALOG:
@@ -443,6 +451,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_WIFI);
         BUTTON_SetSkin(hItem, wifiSkin);
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_OUT_DEGREES);
+        BUTTON_SetSkin(hItem, outDegrees);
 
         dateText = WM_GetDialogItem(pMsg->hWin, ID_TEXT_DATE);
         TEXT_SetText(dateText, date_buf);
@@ -491,10 +502,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetText(insideTempText, buffer);
         TEXT_SetFont(insideTempText, GUI_FONT_D80);
         TEXT_SetTextColor(insideTempText, 0x00808080);
-
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DEGREES);
-        BUTTON_SetText(hItem, "inside");
-        BUTTON_SetSkin(hItem, degreesBigSkin);
         //
         upButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_UP);
         WM_SetCallback(upButton, upButton_cb);
@@ -508,20 +515,12 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetFont(hItem, &GUI_FontRounded16);
         TEXT_SetTextColor(hItem, 0x00FFFFFF);
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DEGREES_COOL);
-        BUTTON_SetText(hItem, "cool-to");
-        BUTTON_SetSkin(hItem, degreesBigSkin);
-
         sprintf(buffer, "%d °", heatToDegrees);
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEATTO);
         TEXT_SetFont(hItem, &GUI_FontRounded16);
         TEXT_SetText(hItem, buffer);
         TEXT_SetTextColor(hItem, 0x00FFFFFF);
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DEGREES_HEAT);
-        BUTTON_SetText(hItem, "heat-to");
-        BUTTON_SetSkin(hItem, degreesBigSkin);
-
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_MODE);
         TEXT_SetText(hItem, toup(hvacMode));
         TEXT_SetFont(hItem, &GUI_FontRounded16);
@@ -539,10 +538,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextColor(hItem, 0x00FFFFFF);
         //
         sprintf(buffer, "%d%% HUMIDITY", insideHumidity);
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HUMIDITY);
-        TEXT_SetFont(hItem, &FontBig20B);
-        TEXT_SetTextColor(hItem, 0x808080);
-        TEXT_SetText(hItem, buffer);
+        insideHumidityText = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HUMIDITY);
+        TEXT_SetFont(insideHumidityText, &FontBig20B);
+        TEXT_SetTextColor(insideHumidityText, 0x808080);
+        TEXT_SetText(insideHumidityText, buffer);
         //
         textIndoor = WM_GetDialogItem(pMsg->hWin, ID_TEXT_INDOOR);
         TEXT_SetText(textIndoor, "INDOOR");
@@ -555,18 +554,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextColor(hItem, 0x808080);
         TEXT_SetFont(hItem, &GUI_FontRounded16);
 
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DEGREES_SET);
-        BUTTON_SetText(hItem, "set-to");
-        BUTTON_SetSkin(hItem, degreesBigSkin);
-        if (strcmp(hvacMode, "auto") == 0)
-        {
-            WM_HideWindow(hItem);
-        }
-        else
-        {
-            WM_ShowWindow(hItem);
-        }
-        // AUTO BUTTONS
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_UPPER);
         TEXT_SetTextColor(hItem, 0x808080);
         TEXT_SetFont(hItem, &GUI_FontRounded16);
@@ -587,7 +574,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextColor(hItem, 0x808080);
         TEXT_SetFont(hItem, &GUI_FontD36x48);
 
-
         upUpperButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_UPPER_UP);
         WM_SetCallback(upUpperButton, upUpperButton_cb);
         //
@@ -606,6 +592,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
         NCode = pMsg->Data.v;
+        GUI_TIMER_SetPeriod(lockTimer_h, idleTimeOut);
+        GUI_TIMER_Restart(lockTimer_h);
         switch(Id)
         {
         case ID_BUTTON_SETTINGS:
@@ -614,6 +602,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             case WM_NOTIFICATION_CLICKED:
                 break;
             case WM_NOTIFICATION_RELEASED:
+                GUI_TIMER_SetPeriod(lockTimer_h, 9999999);
+                GUI_TIMER_Restart(lockTimer_h);
                 CreateSettings();
                 GUI_Delay(100);
             }
@@ -693,7 +683,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             case WM_NOTIFICATION_CLICKED:
                 break;
             case WM_NOTIFICATION_RELEASED:
-                state=5;
+                CreateFanMode();
+                //state=5;
                 break;
             }
             break;
@@ -701,8 +692,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
-                WM_SetCallback(upButton, upButtonPush_cb);
-                WM_MoveTo(upButton, 390, 70);
+                GUI_TIMER_SetPeriod(lockTimer_h, idleTimeOut);
+                GUI_TIMER_Restart(lockTimer_h);
+
                 GUI_TIMER_SetPeriod(tempTimer_h, 333000);
                 GUI_TIMER_Restart(tempTimer_h);
                 if (strcmp(hvacMode, "heat") == 0)
@@ -738,10 +730,11 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                     TEXT_SetText(insideTempText, buffer);
                 }
                 break;
-
             case WM_NOTIFICATION_RELEASED:
-                WM_SetCallback(upButton, upButton_cb);
-                WM_MoveTo(upButton, 390, 70);
+                GUI_TIMER_SetPeriod(tempTimer_h, 3000);
+                GUI_TIMER_Restart(tempTimer_h);
+                break;
+            case WM_NOTIFICATION_MOVED_OUT:
                 GUI_TIMER_SetPeriod(tempTimer_h, 3000);
                 GUI_TIMER_Restart(tempTimer_h);
                 break;
@@ -751,8 +744,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
-                WM_SetCallback(dnButton, dnButtonPush_cb);
-                WM_MoveTo(dnButton, 391, 140);
+                GUI_TIMER_SetPeriod(lockTimer_h, idleTimeOut);
+                GUI_TIMER_Restart(lockTimer_h);
                 GUI_TIMER_SetPeriod(tempTimer_h, 3333000);
                 GUI_TIMER_Restart(tempTimer_h );
                 //  }
@@ -789,20 +782,20 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                     TEXT_SetText(insideTempText, buffer);
                 }
                 break;
-
             case WM_NOTIFICATION_RELEASED:
-                WM_SetCallback(dnButton, dnButton_cb);
-                WM_MoveTo(dnButton, 390, 140);
                 GUI_TIMER_SetPeriod(tempTimer_h, 3000);
                 GUI_TIMER_Restart(tempTimer_h );
+                break;
+            case WM_NOTIFICATION_MOVED_OUT:
+                GUI_TIMER_SetPeriod(tempTimer_h, 3000);
+                GUI_TIMER_Restart(tempTimer_h );
+                break;
             }
             break;
         case ID_BUTTON_UPPER_UP:
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
-                WM_SetCallback(dnButton, upButtonPush_cb);
-                //WM_MoveTo(dnButton, 391, 140);
                 upperDegreeLimit++;
                 if (upperDegreeLimit == 100) upperDegreeLimit = 99;
                 sprintf(buffer,"%d °", upperDegreeLimit);
@@ -815,8 +808,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
-                WM_SetCallback(dnButton, upButtonPush_cb);
-                //WM_MoveTo(dnButton, 391, 140);
                 upperDegreeLimit--;
                 if (upperDegreeLimit == 64) upperDegreeLimit = 65;
                 sprintf(buffer,"%d °", upperDegreeLimit);
@@ -829,8 +820,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
-                WM_SetCallback(dnButton, dnButtonPush_cb);
-                //WM_MoveTo(dnButton, 391, 140);
                 lowerDegreeLimit++;
                 if (lowerDegreeLimit == 100) lowerDegreeLimit = 99;
                 sprintf(buffer,"%d °", lowerDegreeLimit);
@@ -843,8 +832,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
-                WM_SetCallback(dnButton, dnButtonPush_cb);
-                //WM_MoveTo(dnButton, 391, 140);
                 lowerDegreeLimit--;
                 if (lowerDegreeLimit == 64) lowerDegreeLimit = 65;
                 sprintf(buffer,"%d °", lowerDegreeLimit);
@@ -885,9 +872,16 @@ static void dateTimer(GUI_TIMER_MESSAGE * pTM)
     TEXT_SetText(dateText, date_buf);
     TEXT_SetText(timeText, time_buf);
 
+    char buffer[10];
+    sprintf(buffer,"%d",insideTemp);
+    TEXT_SetText(insideTempText, buffer);
+    sprintf(buffer,"%d%% HUMIDITY",insideHumidity);
+    TEXT_SetText(insideHumidityText, buffer);
+
     GUI_TIMER_SetPeriod(pTM->hTimer, 60000);
     GUI_TIMER_Restart(pTM->hTimer);
 }
+
 /*********************************************************************
 *
 *       CreateHomeWin
@@ -908,12 +902,13 @@ WM_HWIN CreateHomeWin(void)
         strftime(time_buf, 20, "%I:%M %p", localtime(&now));
     }
     cool_border = strcmp(hvacMode, "cool") == 0;
-    heat_border =  strcmp(hvacMode, "heat") == 0;
+    heat_border = strcmp(hvacMode, "heat") == 0;
     holdMode = 0;
+
+    GUI_TIMER_Create(dateTimer, 60000, 0, 0);
 
     if (!tempTimerSet)
     {
-        GUI_TIMER_Create(dateTimer, 60000, 0, 0);
         tempTimer_h = GUI_TIMER_Create(tempTimer, 4000, 0, 0);
         tempTimerSet = 1;
     }

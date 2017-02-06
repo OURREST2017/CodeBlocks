@@ -20,7 +20,6 @@
 
 #include "main.h"
 
-
 #define ID_WINDOW_0 (GUI_ID_USER + 0x02)
 #define ID_HEADER_0 (GUI_ID_USER + 0x07)
 #define ID_TEXT_HEADER (GUI_ID_USER + 0x08)
@@ -57,12 +56,27 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { TEXT_CreateIndirect, "Text", ID_TEXT_START_TIME, 144, 60, 80, 23, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_STOP_TIME, 251, 62, 81, 22, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "TEMP", ID_TEXT_TEMP_VAR, 363, 63, 80, 20, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "", ID_BUTTON_UP, 45, 120, 48, 48, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "", ID_BUTTON_UP, 45, 124, 48, 48, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_DN, 45, 168, 48, 48, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 28, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "WEEKDAY", ID_BUTTON_WEEKDAY, 162, 230, 129, 28, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 375, 230, 80, 28, 0, 0x0, 0 },
 };
+
+static WM_HWIN periodButton, startButton, stopButton, tempButton;
+static WM_HWIN period_text, start_text, stop_text, temp_text;
+static WM_HWIN upButton, dnButton, weekdayButton;
+
+static int period_idx, tempurature, period, selected_period;
+
+static struct periods_s getPeriod(char * p);
+static int getPeriodInt(char * p);
+static void setSchedule(char *sched, char *day, char *per, struct periods_s period);
+static struct days_s selectedDay;
+static struct schedules_s selectedSchedule;
+
+static char *periods_text[] = {"wake","leave","return","sleep"};
+static char edit_title[20];
 
 static int period_on, start_on, stop_on, temp_on;
 
@@ -86,36 +100,19 @@ static void tempButton_cb(WM_MESSAGE * pMsg)
     scheduleButton(pMsg, "TEMP", temp_on);
 }
 
-static WM_HWIN periodButton, startButton, stopButton, tempButton;
-static WM_HWIN wake_text, start_text, stop_text, temp_text;
-static WM_HWIN upButton, dnButton, weekdayButton;
-static int selected_period, tempurature, period;
-static struct periods_s periods[4];
-static struct periods_s getPeriod(char * p);
-static struct days_s selectedDay;
-
-static char *periods_text[] = {"wake","leave","return","sleep"};
-static char edit_title[20];
-
 static void upButton_cb(WM_MESSAGE * pMsg)
 {
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        GUI_DrawBitmap(&bmup_nb, 0, 0);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-
-static void upButtonPush_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        GUI_DrawBitmap(&bmup_r, 0, 0);
+        if (BUTTON_IsPressed(pMsg->hWin))
+        {
+            GUI_DrawBitmap(&bmup_r, 0, 0);
+        }
+        else
+        {
+            GUI_DrawBitmap(&bmup_nb, 0, 0);
+        }
         break;
     default:
         BUTTON_Callback(pMsg);
@@ -128,7 +125,14 @@ static void dnButton_cb(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        GUI_DrawBitmap(&bmdn_nb, 0, 0);
+        if (BUTTON_IsPressed(pMsg->hWin))
+        {
+            GUI_DrawBitmap(&bmdn_r, 0, 0);
+        }
+        else
+        {
+            GUI_DrawBitmap(&bmdn_nb, 0, 0);
+        }
         break;
     default:
         BUTTON_Callback(pMsg);
@@ -136,20 +140,7 @@ static void dnButton_cb(WM_MESSAGE * pMsg)
     }
 }
 
-static void dnButtonPush_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        GUI_DrawBitmap(&bmdn_r, 0, 0);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
-
-void invalidateButtons(int sel)
+static void invalidateButtons(int sel)
 {
     WM_InvalidateWindow(periodButton);
     WM_InvalidateWindow(startButton);
@@ -157,17 +148,16 @@ void invalidateButtons(int sel)
     WM_InvalidateWindow(stopButton);
     WM_InvalidateWindow(tempButton);
 
-    WM_MoveTo(upButton, 45+sel*110,120);
+    WM_MoveTo(upButton, 45+sel*110,124);
     WM_MoveTo(dnButton, 45+sel*110,168);
 
-    selected_period = sel;
+    period_idx = sel;
     period_on = (sel == 0);
     start_on  = (sel == 1);
     stop_on   = (sel == 2);
     temp_on   = (sel == 3);
-
-
 }
+
 static char * getTime(int st)
 {
 
@@ -226,11 +216,11 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         tempButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_TEMPURATURE);
         WM_SetCallback(tempButton, tempButton_cb);
         //
-        wake_text = WM_GetDialogItem(pMsg->hWin, ID_TEXT_WAKE);
-        TEXT_SetFont(wake_text, GUI_FONT_20B_1);
-        TEXT_SetTextAlign(wake_text, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        TEXT_SetTextColor(wake_text, GUI_MAKE_COLOR(0x00808080));
-        TEXT_SetText(wake_text, toup(getPeriod(periods_text[0]).label));
+        period_text = WM_GetDialogItem(pMsg->hWin, ID_TEXT_WAKE);
+        TEXT_SetFont(period_text, GUI_FONT_20B_1);
+        TEXT_SetTextAlign(period_text, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetTextColor(period_text, GUI_MAKE_COLOR(0x00808080));
+        TEXT_SetText(period_text, toup(getPeriod(periods_text[0]).label));
         //
         start_text = WM_GetDialogItem(pMsg->hWin, ID_TEXT_START_TIME);
         TEXT_SetTextAlign(start_text, GUI_TA_HCENTER | GUI_TA_VCENTER);
@@ -281,12 +271,12 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
         WM_SetCallback(hItem, buttonOn16_cb);
+        invalidateButtons(0);
+
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
         NCode = pMsg->Data.v;
-        char buf[10], *am;
-        int hh, mm;
 
         switch(Id)
         {
@@ -294,7 +284,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                state = 13;
+                GUI_Delay(100);
+                CreateSettingsSchedule();
+                //state = 13;
                 break;
             }
             break;
@@ -302,7 +294,15 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                state = 13;
+                GUI_Delay(100);
+                int i;
+                for (i=0; i<4; i++)
+                {
+                    setSchedule(selectedSchedule.label, selectedDay.label, periods_text[i],
+                                selectedDay.periods[getPeriodInt(periods_text[i])]);
+                }
+                CreateSettingsSchedule();
+                //state = 13;
                 break;
             }
             break;
@@ -310,16 +310,15 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                GUI_Delay(100);
                 if (strcmp(edit_title, "weekend") ==  0)
                 {
-                    CreateEditSchedule("weekday");
+                    CreateEditSchedule("weekday", "weekday");
                 }
                 else
                 {
-                    CreateEditSchedule("weekend");
+                    CreateEditSchedule("weekend", "weekend");
                 }
-                GUI_Delay(100);
-
             }
             break;
         case ID_BUTTON_PERIOD:
@@ -358,36 +357,46 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
-                WM_SetCallback(upButton, upButtonPush_cb);
-                WM_MoveTo(upButton, (45+selected_period*110),120);
                 break;
             case WM_NOTIFICATION_RELEASED:
-                WM_SetCallback(upButton, upButton_cb);
-                WM_MoveTo(upButton, 45+selected_period*110,120);
-                switch(selected_period)
+                switch(period_idx)
                 {
                 case 0:
                     period++;
                     if (period == 4) period = 0;
-                    TEXT_SetText(wake_text, toup(getPeriod(periods_text[period]).label));
-                    TEXT_SetText(start_text, getTime(periods[period].startMinutes));
-                    TEXT_SetText(stop_text, getTime(periods[period].stopMinutes));
-                    itoa(getPeriod(periods_text[period]).tempurature, buf, 10);
+                    selected_period = getPeriodInt(periods_text[period]);
+                    TEXT_SetText(period_text, toup(selectedDay.periods[selected_period].label));
+                    TEXT_SetText(start_text, getTime(selectedDay.periods[selected_period].startMinutes));
+                    TEXT_SetText(stop_text, getTime(selectedDay.periods[selected_period].stopMinutes));
+                    itoa(selectedDay.periods[selected_period].tempurature, buf, 10);
                     TEXT_SetText(temp_text, buf);
                     break;
                 case 1:
                     TEXT_GetText(start_text, buf, 10);
                     TEXT_SetText(start_text, updateTime(buf,1));
+                    selectedDay.periods[selected_period].startMinutes++;
+                    if (selectedDay.periods[selected_period].startMinutes == 1441)
+                    {
+                        selectedDay.periods[selected_period].startMinutes = 0;
+                    }
+                    selectedDay.periods[selected_period].startTime = updateTime(buf,1);
                     break;
                 case 2:
                     TEXT_GetText(stop_text, buf, 10);
                     TEXT_SetText(stop_text, updateTime(buf, 1));
+                    selectedDay.periods[selected_period].stopMinutes++;
+                    if (selectedDay.periods[selected_period].stopMinutes == 1441)
+                    {
+                        selectedDay.periods[selected_period].stopMinutes = 0;
+                    }
+                    selectedDay.periods[selected_period].stopTime = updateTime(buf,1);
                     break;
                 case 3:
-                    periods[selected_period].tempurature++;
-                    if (periods[selected_period].tempurature == 110) periods[selected_period].tempurature = 110;
-                    itoa(periods[selected_period].tempurature, buf, 10);
+                    tempurature = selectedDay.periods[selected_period].tempurature + 1;
+                    if (tempurature == 111) tempurature = 110;
+                    itoa(tempurature, buf, 10);
                     TEXT_SetText(temp_text, buf);
+                    selectedDay.periods[selected_period].tempurature = tempurature;
                     break;
                 }
                 break;
@@ -397,36 +406,46 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
-                WM_SetCallback(dnButton, dnButtonPush_cb);
-                WM_MoveTo(dnButton, (45+selected_period*110)+1,168);
                 break;
             case WM_NOTIFICATION_RELEASED:
-                WM_SetCallback(dnButton, dnButton_cb);
-                WM_MoveTo(dnButton, 45+selected_period*110,168);
-                switch(selected_period)
+                switch(period_idx)
                 {
                 case 0:
                     period--;
                     if (period == -1) period = 3;
-                    TEXT_SetText(wake_text, toup(periods[period].label));
-                    TEXT_SetText(start_text, getTime(periods[period].startMinutes));
-                    TEXT_SetText(stop_text, getTime(periods[period].stopMinutes));
-                    itoa(periods[period].tempurature, buf, 10);
+                    selected_period = getPeriodInt(periods_text[period]);
+                    TEXT_SetText(period_text, toup(selectedDay.periods[selected_period].label));
+                    TEXT_SetText(start_text, getTime(selectedDay.periods[selected_period].startMinutes));
+                    TEXT_SetText(stop_text, getTime(selectedDay.periods[selected_period].stopMinutes));
+                    itoa(selectedDay.periods[selected_period].tempurature, buf, 10);
                     TEXT_SetText(temp_text, buf);
                     break;
                 case 1:
                     TEXT_GetText(start_text, buf, 10);
                     TEXT_SetText(start_text, updateTime(buf, -1));
+                    selectedDay.periods[selected_period].startMinutes--;
+                    if (selectedDay.periods[selected_period].startMinutes == -1)
+                    {
+                        selectedDay.periods[selected_period].startMinutes = 1440;
+                    }
+                    selectedDay.periods[selected_period].startTime = updateTime(buf, -1);
                     break;
                 case 2:
                     TEXT_GetText(stop_text, buf, 10);
                     TEXT_SetText(stop_text, updateTime(buf, -1));
+                    selectedDay.periods[selected_period].stopMinutes--;
+                    if (selectedDay.periods[selected_period].stopMinutes == -1)
+                    {
+                        selectedDay.periods[selected_period].stopMinutes = 1440;
+                    }
+                    selectedDay.periods[selected_period].stopTime = updateTime(buf,1);
                     break;
                 case 3:
-                    periods[selected_period].tempurature--;
-                    if (periods[selected_period].tempurature == 64) periods[selected_period].tempurature = 65;
-                    itoa(periods[selected_period].tempurature, buf, 10);
+                    tempurature = selectedDay.periods[selected_period].tempurature - 1;
+                    if (tempurature == 64) tempurature = 65;
+                    itoa(tempurature, buf, 10);
                     TEXT_SetText(temp_text, buf);
+                    selectedDay.periods[selected_period].tempurature = tempurature;
                     break;
                 }
                 break;
@@ -439,59 +458,87 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     }
 }
 
-static struct days_s getPeriods(char * p)
+static int getPeriodInt(char * s)
 {
-    struct days_s days;
-    int i,k,j;
-
-    int sz1 = sizeof(schedules) / sizeof(schedules[0]);
-
-    for (i=0; i<sz1; i++)
+    int i;
+    for (i=0; i<4; i++)
     {
-        for (k=0; k<schedules[i].day_count; k++)
+        if (strcmp(selectedDay.periods[i].label, s) == 0)
         {
-            if (strcmp(schedules[i].days[k].label,p) == 0)
+            return i;
+        }
+    }
+}
+
+static struct periods_s getPeriod(char * s)
+{
+    int i;
+    for (i=0; i<4; i++)
+    {
+        if (strcmp(selectedDay.periods[i].label, s) == 0)
+        {
+            return selectedDay.periods[i];
+        }
+    }
+}
+
+static void setSchedule(char *sched, char *day, char *per, struct periods_s period)
+{
+    int i,j,k;
+    for (i=0; i<5; i++)
+    {
+        if (strcmp(schedules[i].label, sched) == 0)
+        {
+            for (j=0; j<schedules[j].day_count; j++)
             {
-                days = schedules[i].days[k];
-                for (j=0; j<4; j++)
+                if (strcmp(schedules[i].days[j].label, day) == 0)
                 {
-                    periods[j] = schedules[i].days[k].periods[j];
+                    for (k=0; k<4; k++)
+                    {
+                        if (strcmp(schedules[i].days[j].periods[k].label, per) == 0)
+                        {
+                            schedules[i].days[j].periods[k] = period;
+                            return;
+                        }
+                    }
                 }
             }
         }
     }
-    return days;
-}
-
-static struct periods_s getPeriod(char * p)
-{
-    int sz1 = sizeof(periods) / sizeof(periods[0]);
-    int i;
-    for (i=0; i<sz1; i++)
-    {
-        if (strcmp(selectedDay.periods[i].label, p) == 0)
-        {
-            return selectedDay.periods[i];
-            break;
-        }
-    }
-
 }
 
 /*********************************************************************
 *
 *       CreateWindow
 */
-WM_HWIN CreateEditSchedule(char *per);
-WM_HWIN CreateEditSchedule(char *per)
+WM_HWIN CreateEditSchedule(char *sched, char *day);
+WM_HWIN CreateEditSchedule(char *sched, char *day)
 {
     WM_HWIN hWin;
+    int i,j;
+    strcpy(edit_title, day);
 
-    strcpy(edit_title, per);
-    selectedDay = getPeriods(per);
+    for (i=0; i<5; i++)
+    {
+        if (strcmp(schedules[i].label, sched) == 0)
+        {
+            selectedSchedule = schedules[i];
+            break;
+        }
+    }
+
+    for (i=0; i<selectedSchedule.day_count; i++)
+    {
+        if (strcmp(selectedSchedule.days[i].label, day) == 0)
+        {
+            selectedDay = selectedSchedule.days[i];
+            break;
+        }
+    }
+
     period = 0;
-
     period_on = 1;
+    selected_period = getPeriodInt(periods_text[period]);
 
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;

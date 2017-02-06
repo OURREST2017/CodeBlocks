@@ -87,7 +87,9 @@
 #define ID_LW_SLEEP_HOUR2 (GUI_ID_USER + 0xCD)
 #define ID_LW_SLEEP_MINUTE2 (GUI_ID_USER + 0xCE)
 #define ID_TEXT_SLEEP_SEP2 (GUI_ID_USER + 0xCF)
-#define ID_LW_SLEEP_AMPM2 (GUI_ID_USER + 0xD0)
+#define ID_LW_SLEEP_AMPM2 (GUI_ID_USER + 0xD1)
+
+#define ID_BUTTON_SAVE (GUI_ID_USER + 0xD2)
 
 /*********************************************************************
 *
@@ -124,46 +126,47 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 
     { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 28, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "EDIT", ID_BUTTON_EDIT, 375, 230, 80, 28, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 375, 230, 80, 28, 0, 0x0, 0 },
 
     { LISTWHEEL_CreateIndirect, "", ID_LW_WAKE_HOUR1, 144, 56, 25,34, 0, 0x0, 0 },
     { LISTWHEEL_CreateIndirect, "", ID_LW_WAKE_MINUTE1, 176, 56, 25,34, 0, 0x0, 0 },
     { TEXT_CreateIndirect, ":", ID_TEXT_WAKE_SEP1, 169, 56, 8, 34, 0, 0x64, 0 },
     { LISTWHEEL_CreateIndirect, "", ID_LW_WAKE_AMPM1, 204, 56, 25,34, 0, 0x0, 0 },
 
-    { LISTWHEEL_CreateIndirect, "", ID_LW_WAKE_HOUR2, 244, 56, 25,34, 0, 0x0, 0 },
-    { LISTWHEEL_CreateIndirect, "", ID_LW_WAKE_MINUTE2, 276, 56, 25,34, 0, 0x0, 0 },
-    { TEXT_CreateIndirect, ":", ID_TEXT_WAKE_SEP2, 269, 56, 8, 34, 0, 0x64, 0 },
-    { LISTWHEEL_CreateIndirect, "", ID_LW_WAKE_AMPM2, 304, 56, 25,34, 0, 0x0, 0 },
+    { LISTWHEEL_CreateIndirect, "", ID_LW_WAKE_HOUR2, 260, 56, 25,34, 0, 0x0, 0 },
+    { LISTWHEEL_CreateIndirect, "", ID_LW_WAKE_MINUTE2, 292, 56, 25,34, 0, 0x0, 0 },
+    { TEXT_CreateIndirect, ":", ID_TEXT_WAKE_SEP2, 285, 56, 8, 34, 0, 0x64, 0 },
+    { LISTWHEEL_CreateIndirect, "", ID_LW_WAKE_AMPM2, 320, 56, 25,34, 0, 0x0, 0 },
 
     { LISTWHEEL_CreateIndirect, "", ID_LW_LEAVE_HOUR1, 144, 96, 25,34, 0, 0x0, 0 },
     { LISTWHEEL_CreateIndirect, "", ID_LW_LEAVE_MINUTE1, 176, 96, 25,34, 0, 0x0, 0 },
     { TEXT_CreateIndirect, ":", ID_TEXT_LEAVE_SEP1, 169, 96, 8, 34, 0, 0x64, 0 },
     { LISTWHEEL_CreateIndirect, "", ID_LW_LEAVE_AMPM1, 204, 96, 25,34, 0, 0x0, 0 },
 
-    { LISTWHEEL_CreateIndirect, "", ID_LW_LEAVE_HOUR2, 244, 96, 25,34, 0, 0x0, 0 },
-    { LISTWHEEL_CreateIndirect, "", ID_LW_LEAVE_MINUTE2, 276, 96, 25,34, 0, 0x0, 0 },
-    { TEXT_CreateIndirect, ":", ID_TEXT_LEAVE_SEP2, 269, 96, 8, 34, 0, 0x64, 0 },
-    { LISTWHEEL_CreateIndirect, "", ID_LW_LEAVE_AMPM2, 304, 96, 25,34, 0, 0x0, 0 },
+    { LISTWHEEL_CreateIndirect, "", ID_LW_LEAVE_HOUR2, 260, 96, 25,34, 0, 0x0, 0 },
+    { LISTWHEEL_CreateIndirect, "", ID_LW_LEAVE_MINUTE2, 292, 96, 25,34, 0, 0x0, 0 },
+    { TEXT_CreateIndirect, ":", ID_TEXT_LEAVE_SEP2, 285, 96, 8, 34, 0, 0x64, 0 },
+    { LISTWHEEL_CreateIndirect, "", ID_LW_LEAVE_AMPM2, 320, 96, 25,34, 0, 0x0, 0 },
 
     { LISTWHEEL_CreateIndirect, "", ID_LW_RETURN_HOUR1, 144, 136, 25,34, 0, 0x0, 0 },
     { LISTWHEEL_CreateIndirect, "", ID_LW_RETURN_MINUTE1, 176, 136, 25,34, 0, 0x0, 0 },
     { TEXT_CreateIndirect, ":", ID_TEXT_RETURN_SEP1, 169, 136, 8, 36, 0, 0x64, 0 },
     { LISTWHEEL_CreateIndirect, "", ID_LW_RETURN_AMPM1, 204, 136, 25,34, 0, 0x0, 0 },
 
-    { LISTWHEEL_CreateIndirect, "", ID_LW_RETURN_HOUR2, 244, 136, 25,34, 0, 0x0, 0 },
-    { LISTWHEEL_CreateIndirect, "", ID_LW_RETURN_MINUTE2, 276, 136, 25,34, 0, 0x0, 0 },
-    { TEXT_CreateIndirect, ":", ID_TEXT_RETURN_SEP2, 269, 136, 8, 36, 0, 0x64, 0 },
-    { LISTWHEEL_CreateIndirect, "", ID_LW_RETURN_AMPM2, 304, 136, 25,34, 0, 0x0, 0 },
+    { LISTWHEEL_CreateIndirect, "", ID_LW_RETURN_HOUR2, 260, 136, 25,34, 0, 0x0, 0 },
+    { LISTWHEEL_CreateIndirect, "", ID_LW_RETURN_MINUTE2, 292, 136, 25,34, 0, 0x0, 0 },
+    { TEXT_CreateIndirect, ":", ID_TEXT_RETURN_SEP2, 285, 136, 8, 36, 0, 0x64, 0 },
+    { LISTWHEEL_CreateIndirect, "", ID_LW_RETURN_AMPM2, 320, 136, 25,34, 0, 0x0, 0 },
 
     { LISTWHEEL_CreateIndirect, "", ID_LW_SLEEP_HOUR1, 144, 176, 25,34, 0, 0x0, 0 },
     { LISTWHEEL_CreateIndirect, "", ID_LW_SLEEP_MINUTE1, 176, 176, 25,34, 0, 0x0, 0 },
     { TEXT_CreateIndirect, ":", ID_TEXT_SLEEP_SEP1, 169, 176, 8, 34, 0, 0x64, 0 },
     { LISTWHEEL_CreateIndirect, "", ID_LW_SLEEP_AMPM1, 204, 176, 25,34, 0, 0x0, 0 },
 
-    { LISTWHEEL_CreateIndirect, "", ID_LW_SLEEP_HOUR2, 244, 176, 25, 34, 0, 0x0, 0 },
-    { LISTWHEEL_CreateIndirect, "", ID_LW_SLEEP_MINUTE2, 276, 176, 25, 34, 0, 0x0, 0 },
-    { TEXT_CreateIndirect, ":", ID_TEXT_SLEEP_SEP2, 269, 176, 8, 34, 0, 0x64, 0 },
-    { LISTWHEEL_CreateIndirect, "", ID_LW_SLEEP_AMPM2, 304, 176, 25,34, 0, 0x0, 0 },
+    { LISTWHEEL_CreateIndirect, "", ID_LW_SLEEP_HOUR2, 260, 176, 25, 34, 0, 0x0, 0 },
+    { LISTWHEEL_CreateIndirect, "", ID_LW_SLEEP_MINUTE2, 292, 176, 25, 34, 0, 0x0, 0 },
+    { TEXT_CreateIndirect, ":", ID_TEXT_SLEEP_SEP2, 285, 176, 8, 34, 0, 0x64, 0 },
+    { LISTWHEEL_CreateIndirect, "", ID_LW_SLEEP_AMPM2, 320, 176, 25,34, 0, 0x0, 0 },
 };
 
 static int selected_day, upperDegrees, lowerDegrees;
@@ -211,6 +214,7 @@ static struct periods_s getPeriod(char * d)
     }
 
 }
+
 static struct days_s getDay(char * d)
 {
     int sz1 = sizeof(days) / sizeof(days[0]);
@@ -224,6 +228,7 @@ static struct days_s getDay(char * d)
         }
     }
 }
+
 static void getPeriods()
 {
     int i,k,j;
@@ -302,12 +307,12 @@ static int _OwnerDraw(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo)
     {
     case WIDGET_DRAW_OVERLAY:
         GUI_SetColor(GUI_DARKGREEN);
-        GUI_DrawHLine(9, 0, 99);
         GUI_DrawHLine(8, 0, 99);
+        GUI_DrawHLine(7, 0, 99);
         GUI_DrawHLine(26, 0, 99);
         GUI_DrawHLine(27, 0, 99);
-        GUI_SetColor(0x00dbdbdb);
-        GUI_SetAlpha(170);
+        GUI_SetColor(0xeeeeee);
+        GUI_SetAlpha(220);
         GUI_FillRect(0,8,40,25);
         break;
     default:
@@ -344,10 +349,10 @@ void listWheel(WM_HWIN hItem, char **items, int count, GUI_FONT *font)
     LISTWHEEL_SetSnapPosition(hItem, 8);
     LISTWHEEL_SetTextAlign(hItem, GUI_TA_VCENTER | GUI_TA_HCENTER);
     LISTWHEEL_SetOwnerDraw(hItem, _OwnerDraw);
-    LISTWHEEL_SetBkColor(hItem, 0, 0xcccccc);
-    LISTWHEEL_SetBkColor(hItem, 1, 0x005500);
+    LISTWHEEL_SetBkColor(hItem, 0, 0xdbdbdb);
+    LISTWHEEL_SetBkColor(hItem, 1, 0xdbdbdb);
     LISTWHEEL_SetTextColor(hItem, 0, 0x666666);
-    LISTWHEEL_SetTextColor(hItem, 1, GUI_WHITE);
+    LISTWHEEL_SetTextColor(hItem, 1, 0x666666);
     //WM_SetTransState(hItem, WM_CF_HASTRANS);
 
     for (i = 0; i < count; i++)
@@ -632,9 +637,12 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
         WM_SetCallback(hItem, buttonOn16_cb);
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_EDIT);
+//        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_EDIT);
+//        WM_SetCallback(hItem, buttonOn16_cb);
+
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
         WM_SetCallback(hItem, buttonOn16_cb);
-        break;
+       break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
         NCode = pMsg->Data.v;
@@ -648,6 +656,14 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 selected_day = 0;
                 setDays(pMsg->hWin, 0);
                 resetFonts(pMsg->hWin, ID_TEXT_MONDAY);
+                break;
+            }
+            break;
+        case ID_LW_LEAVE_HOUR1:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_SEL_CHANGED:
+                //GUI_ErrorOut("S");
                 break;
             }
             break;
@@ -715,7 +731,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                state = 13;
+                GUI_Delay(100);
+                CreateSettingsSchedule();
+                //state = 13;
                 break;
             }
             break;
@@ -723,8 +741,17 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                CreateEditSchedule(days_text[selected_day]);
                 GUI_Delay(100);
+                CreateEditSchedule("each day", days_text[selected_day]);
+                break;
+            }
+            break;
+        case ID_BUTTON_SAVE:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_RELEASED:
+                GUI_Delay(100);
+                CreateSettingsSchedule();
                 break;
             }
             break;
@@ -749,10 +776,11 @@ static void setDay(WM_HWIN *hWin, int minutes, WM_HWIN **lw)
     int vars[] = {hour, minute, pm};
 
     int i;
-    for (i=0;i<3;i++) {
+    for (i=0; i<3; i++)
+    {
         hItem = WM_GetDialogItem(hWin, lw[i]);
         LISTWHEEL_SetPos(hItem, vars[i]);
-        LISTWHEEL_SetSel(hItem, vars[i]);
+        //LISTWHEEL_SetSel(hItem, vars[i]);
     }
 }
 
@@ -765,25 +793,39 @@ static void setDays(WM_HWIN *hWin, int d)
     WM_HWIN *lws[] = {ID_LW_WAKE_HOUR1, ID_LW_WAKE_MINUTE1, ID_LW_WAKE_AMPM1};
     setDay(hWin, getPeriod(periods_text[0]).startMinutes, lws);
 
-    lws[0] = ID_LW_WAKE_HOUR2; lws[1] = ID_LW_WAKE_MINUTE2; lws[2] = ID_LW_WAKE_AMPM2;
+    lws[0] = ID_LW_WAKE_HOUR2;
+    lws[1] = ID_LW_WAKE_MINUTE2;
+    lws[2] = ID_LW_WAKE_AMPM2;
     setDay(hWin, getPeriod(periods_text[0]).stopMinutes, lws);
 
-    lws[0] = ID_LW_LEAVE_HOUR1; lws[1] = ID_LW_LEAVE_MINUTE1; lws[2] = ID_LW_LEAVE_AMPM1;
+    lws[0] = ID_LW_LEAVE_HOUR1;
+    lws[1] = ID_LW_LEAVE_MINUTE1;
+    lws[2] = ID_LW_LEAVE_AMPM1;
     setDay(hWin, getPeriod(periods_text[1]).startMinutes, lws);
 
-    lws[0] = ID_LW_LEAVE_HOUR2; lws[1] = ID_LW_LEAVE_MINUTE2; lws[2] = ID_LW_LEAVE_AMPM2;
+    lws[0] = ID_LW_LEAVE_HOUR2;
+    lws[1] = ID_LW_LEAVE_MINUTE2;
+    lws[2] = ID_LW_LEAVE_AMPM2;
     setDay(hWin, getPeriod(periods_text[1]).stopMinutes, lws);
 
-    lws[0] = ID_LW_RETURN_HOUR1; lws[1] = ID_LW_RETURN_MINUTE1; lws[2] = ID_LW_RETURN_AMPM1;
+    lws[0] = ID_LW_RETURN_HOUR1;
+    lws[1] = ID_LW_RETURN_MINUTE1;
+    lws[2] = ID_LW_RETURN_AMPM1;
     setDay(hWin, getPeriod(periods_text[2]).startMinutes, lws);
 
-    lws[0] = ID_LW_RETURN_HOUR2; lws[1] = ID_LW_RETURN_MINUTE2; lws[2] = ID_LW_RETURN_AMPM2;
+    lws[0] = ID_LW_RETURN_HOUR2;
+    lws[1] = ID_LW_RETURN_MINUTE2;
+    lws[2] = ID_LW_RETURN_AMPM2;
     setDay(hWin, getPeriod(periods_text[2]).stopMinutes, lws);
 
-    lws[0] = ID_LW_SLEEP_HOUR1; lws[1] = ID_LW_SLEEP_MINUTE1; lws[2] = ID_LW_SLEEP_AMPM1;
+    lws[0] = ID_LW_SLEEP_HOUR1;
+    lws[1] = ID_LW_SLEEP_MINUTE1;
+    lws[2] = ID_LW_SLEEP_AMPM1;
     setDay(hWin, getPeriod(periods_text[3]).startMinutes, lws);
 
-    lws[0] = ID_LW_SLEEP_HOUR2; lws[1] = ID_LW_SLEEP_MINUTE2; lws[2] = ID_LW_SLEEP_AMPM2;
+    lws[0] = ID_LW_SLEEP_HOUR2;
+    lws[1] = ID_LW_SLEEP_MINUTE2;
+    lws[2] = ID_LW_SLEEP_AMPM2;
     setDay(hWin, getPeriod(periods_text[3]).stopMinutes, lws);
 }
 

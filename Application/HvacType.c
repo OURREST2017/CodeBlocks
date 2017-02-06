@@ -127,14 +127,15 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                GUI_Delay(100);
                 if (firstTime)
                 {
                     CreateThermostatLocations();
-                    GUI_Delay(100);
                 }
                 else
                 {
-                    state=17;
+                    CreateSystemSetup();
+                    //state=17;
                 }
             }
             break;
@@ -142,6 +143,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                GUI_Delay(100);
                 if (forcedAir_mode)
                 {
                     strcpy(hvacType,"air");
@@ -157,11 +159,11 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 if (firstTime)
                 {
                     CreateWifiConnect();
-                    GUI_Delay(100);
                 }
                 else
                 {
-                    state=17;
+                    CreateSystemSetup();
+                    //state=17;
                 }
             }
             break;

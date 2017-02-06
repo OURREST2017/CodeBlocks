@@ -131,8 +131,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     int     NCode;
     int     Id;
     char buf[10];
-        int ch = 60;
-        int h = 120;
+    int ch = 60;
+    int h = 120;
 
     switch (pMsg->MsgId)
     {
@@ -215,7 +215,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                state = 4;
+                GUI_Delay(100);
+                CreateSettings();
+                //state = 4;
                 break;
             }
             break;
@@ -232,7 +234,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 //                sprintf(buf, "%d,%d,%d,%d,%d,%d",
 //                        current_hour, current_minute, current_ampm,current_day, current_month, current_year);
 //                GUI_ErrorOut(buf);
-                state = 4;
+                GUI_Delay(100);
+                CreateSettings();
+                // state = 4;
                 break;
             }
             break;

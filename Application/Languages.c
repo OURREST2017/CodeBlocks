@@ -98,7 +98,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                state=4;
+                GUI_Delay(100);
+                CreateSettings();
+                //state=4;
                 break;
             }
             break;
@@ -106,6 +108,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                GUI_Delay(100);
                 if (eng_mode)
                 {
                     strcpy(language, "english");
@@ -118,11 +121,11 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 if (firstTime)
                 {
                     CreateThermostatLocations();
-                    GUI_Delay(100);
                 }
                 else
                 {
-                    state=4;
+                    CreateSettings();
+                    //state=4;
                 }
                 break;
             }

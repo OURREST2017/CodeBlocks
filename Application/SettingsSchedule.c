@@ -52,6 +52,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "HELP", ID_BUTTON_HELP, 204, 230, 80, 28, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_RETURN, 15, 0, 100, 50, 0, 0x0, 0 },
 };
+
 static char schedule[20];
 static int vacation_border, allDays_border, weekend_border, eachDay_border;
 
@@ -142,7 +143,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetFont(hItem, GUI_FONT_32B_1);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         TEXT_SetText(hItem, "Schedule");
-       //
+        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_RETURN);
         BUTTON_SetSkin(hItem, returnSkin);
         //
@@ -177,14 +178,16 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
-                state=4;
+                GUI_Delay(100);
+                CreateSettings();
+                //state=4;
             }
             break;
         case ID_BUTTON_SET_SCHEDULE:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                strcpy(selectedSchedule, schedule);
+                strcpy(currentSchedule, schedule);
                 break;
             }
             break;
@@ -192,13 +195,14 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                GUI_Delay(100);
                 if (vacation_border)
                 {
-                    CreateEditSchedule("vacation");
+                    CreateEditSchedule("vacation", "vacation");
                 }
                 else if (weekend_border)
                 {
-                    CreateEditSchedule("weekend");
+                    CreateEditSchedule("weekend", "weekend");
                 }
                 else if (eachDay_border)
                 {
@@ -206,9 +210,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 }
                 else
                 {
-                    CreateEditSchedule("all days");
+                    CreateEditSchedule("all days", "all days");
                 }
-                GUI_Delay(100);
                 break;
             }
             break;
@@ -284,8 +287,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                CreateScheduleHelp();
                 GUI_Delay(100);
+                CreateScheduleHelp();
                 break;
             }
             break;
@@ -311,20 +314,17 @@ WM_HWIN CreateSettingsSchedule(void)
     eachDay_border = 0;
     weekend_border = 0;
 
-    if (strcmp(selectedSchedule, "all days") == 0 ||
-        strcmp(selectedSchedule, "All Days") == 0)
+    if (strcasecmp(currentSchedule, "all days") == 0 )
     {
         allDays_border = 1;
 
     }
-    else if (strcmp(selectedSchedule, "each day") == 0 ||
-        strcmp(selectedSchedule, "Each Day") == 0)
+    else if (strcasecmp(currentSchedule, "each day") == 0)
     {
         eachDay_border = 1;
 
     }
-    else if (strcmp(selectedSchedule, "weekend") == 0 ||
-        strcmp(selectedSchedule, "Weekend") == 0)
+    else if (strcasecmp(currentSchedule, "weekend") == 0)
     {
         weekend_border = 1;
 

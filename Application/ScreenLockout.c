@@ -170,7 +170,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                state = 4;
+                GUI_Delay(100);
+                CreateSettings();
+                //state = 4;
                 break;
             }
             break;
@@ -184,7 +186,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 lockCode[3] = LISTWHEEL_GetPos(code[3].hWin) + 48;
                 lockCode[4] = '\0';
 
-                state = 4;
+                GUI_Delay(100);
+                CreateSettings();
+                //state = 4;
                 break;
             }
             break;

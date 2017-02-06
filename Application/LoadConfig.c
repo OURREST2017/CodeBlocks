@@ -8,7 +8,6 @@ static cJSON *config_root;
 char * toup(char *s)
 {
     int i;
-    char *t;
     static char o[100];
     for (i=0; i<strlen(s); i++)
     {
@@ -70,7 +69,6 @@ void loadConfig()
         dst = getBoolObject(config_root,"dst");
         enableSchedule = getBoolObject(config_root,"enableSchedule");
         epochTime = getIntObject(config_root,"epochTime");
-
         strcpy(fanControl, getStringObject(config_root,"fanControl"));
         strcpy(firstNameText, getStringObject(config_root,"firstNameText"));
         strcpy(selectedFanMode, getStringObject(config_root,"fanMode"));
@@ -91,7 +89,7 @@ void loadConfig()
         nextFwVersion = getStringObject(config_root,"nextFwVersion");
         strcpy(ownersName,  getStringObject(config_root,"ownersName"));
         resetUnit = getIntObject(config_root,"reset");
-        strcpy(selectedSchedule, getStringObject(config_root,"selectedSchedule"));
+        strcpy(currentSchedule, getStringObject(config_root,"currentSchedule"));
         schedulePeriods = getIntObject(config_root,"schedulePeriods");
         strcpy(schedulingOption, getStringObject(config_root,"schedulingOption"));
         securityMode = getStringObject(config_root,"securityMode");
@@ -105,6 +103,7 @@ void loadConfig()
         unitLocked = getBoolObject(config_root,"unitLocked");
         strcpy(zipCode, getStringObject(config_root,"zipCode"));
         testing = getBoolObject(config_root,"testing");
+        serial = "1235678";
 
         cJSON *hvac = cJSON_GetObjectItem(config_root,"hvacConfig");
 
@@ -124,14 +123,12 @@ void loadConfig()
         {
             cJSON *schedules_obj = cJSON_GetArrayItem(schedules_a, i);
             schedules[i].label  = cJSON_GetObjectItem(schedules_obj,"label")->valuestring;
-            printf("schedules.label=%s\n", schedules[i].label);
             schedules[i].systemDefined = cJSON_GetObjectItem(schedules_obj,"systemDefined")->valueint;
             cJSON *days_a = cJSON_GetObjectItem(schedules_obj,"days");
             for (k=0; k<cJSON_GetArraySize(days_a); k++)
             {
                 cJSON *d = cJSON_GetArrayItem(days_a, k);
                 days.label = cJSON_GetObjectItem(d,"label")->valuestring;
-
                 cJSON *periods_a = cJSON_GetObjectItem(d,"periods");
                 for (j=0; j<4; j++)
                 {
@@ -156,11 +153,150 @@ void loadConfig()
         }
         free(data);
     }
+    else
+    {
+        strcpy(changeOver, "automatic");
+        clockFormat = 12;
+        strcpy(configVersion, "1.0.0");
+        coolToDegrees = 72;
+        currFwVersion = "1.0.0";
+        dst = 1;;
+        enableSchedule = 0;
+        epochTime = 0;
+
+        strcpy(fanControl, "thermostat");
+        strcpy(firstNameText, "Frank");
+        strcpy(fanMode, "auto");
+        filterChangeDate = 0;
+        filterLifeInDays = 0;
+        firstTime = 0;
+        strcpy(firmwareUrl, "0");
+        heatToDegrees = 78;
+        holdMode = 0;
+        strcpy(hvacMode, "cool");
+        strcpy(keyboardLock, "unlocked");
+        strcpy(language,  "english");
+        localHumidity = 90;
+
+        localTemp = 72;
+        strcpy(lockCode, "0000");
+        tempuratureScale = 0;
+        metric = 0;
+        nextFwVersion = "1.0.0";
+        strcpy(ownersName, "Frank");
+        resetUnit = 0;
+        strcpy(currentSchedule, "all days");
+        schedulePeriods = 2;
+        strcpy(schedulingOption, "programmable");
+        securityMode = "high";
+
+        strcpy(serialNumber, "1234567890");
+        thermostatControls = 3;
+        tempSetPoint = 72;
+        timeZoneOffset = -5;
+        unitLocked = 1;
+        strcpy(zipCode, "12345");
+        testing = 0;
+
+        struct hvacConfig_s hvacConfig;
+        hvacConfig.backupHeatingType = "no";
+        hvacConfig.hvacType = "air";
+        hvacConfig.coolingStages = 2;
+        hvacConfig.heatingStages = 1;
+
+        strcpy(hvacType, hvacConfig.hvacType);
+        coolingStages = hvacConfig.coolingStages;
+        heatingStages = hvacConfig.heatingStages;
+        strcpy(backupHeatingType, hvacConfig.backupHeatingType);
+
+        char *scheds[] = {"vacation", "weekday", "weekend", "all days", "each day"};
+
+        int hh, mm;
+        int i;
+        for (i=0; i<4; i++)
+        {
+            schedules[i].label = scheds[i];
+            schedules[i].systemDefined = 1;
+
+            schedules[i].days[0].label = scheds[i];
+
+            schedules[i].days[0].periods[0].label = "wake";
+            schedules[i].days[0].periods[0].startTime = "6:00am";
+            schedules[i].days[0].periods[0].stopTime = "8:00am";
+            schedules[i].days[0].periods[0].tempurature = 72;
+            schedules[i].days[0].periods[0].startMinutes = 360;
+            schedules[i].days[0].periods[0].stopMinutes = 480;
+
+            schedules[i].days[0].periods[1].label = "leave";
+            schedules[i].days[0].periods[1].startTime = "8:00am";
+            schedules[i].days[0].periods[1].stopTime = "5:00pm";
+            schedules[i].days[0].periods[1].tempurature = 80;
+            schedules[i].days[0].periods[1].startMinutes = 480;
+            schedules[i].days[0].periods[1].stopMinutes = 1020;
+
+            schedules[i].days[0].periods[2].label = "return";
+            schedules[i].days[0].periods[2].startTime = "5:00pm";
+            schedules[i].days[0].periods[2].stopTime = "10:00pm";
+            schedules[i].days[0].periods[2].tempurature = 72;
+            schedules[i].days[0].periods[2].startMinutes = 1020;
+            schedules[i].days[0].periods[2].stopMinutes = 1200;
+
+            schedules[i].days[0].periods[3].label = "sleep";
+            schedules[i].days[0].periods[3].startTime = "10:00pm";
+            schedules[i].days[0].periods[3].stopTime = "6:00am";
+            schedules[i].days[0].periods[3].tempurature = 78;
+            schedules[i].days[0].periods[3].startMinutes = 1200;
+            schedules[i].days[0].periods[3].stopMinutes = 360;
+
+            schedules[i].day_count = 1;
+        }
+
+        char *dow[] = {"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
+
+        schedules[i].label = scheds[i];
+        schedules[i].systemDefined = 1;
+        schedules[i].day_count = 7;
+
+        int k;
+        for (k=0; k<7; k++)
+        {
+            schedules[i].days[k].label = dow[k];
+
+            schedules[i].days[k].periods[0].label = "wake";
+            schedules[i].days[k].periods[0].startTime = "6:00am";
+            schedules[i].days[k].periods[0].stopTime = "8:00am";
+            schedules[i].days[k].periods[0].tempurature = 72;
+            schedules[i].days[k].periods[0].startMinutes = 360;
+            schedules[i].days[k].periods[0].stopMinutes = 480;
+
+            schedules[i].days[k].periods[1].label = "leave";
+            schedules[i].days[k].periods[1].startTime = "8:00am";
+            schedules[i].days[k].periods[1].stopTime = "5:00pm";
+            schedules[i].days[k].periods[1].tempurature = 80;
+            schedules[i].days[k].periods[1].startMinutes = 480;
+            schedules[i].days[k].periods[1].stopMinutes = 1020;
+
+            schedules[i].days[k].periods[2].label = "return";
+            schedules[i].days[k].periods[2].startTime = "5:00pm";
+            schedules[i].days[k].periods[2].stopTime = "10:00pm";
+            schedules[i].days[k].periods[2].tempurature = 72;
+            schedules[i].days[k].periods[2].startMinutes = 1020;
+            schedules[i].days[k].periods[2].stopMinutes = 1200;
+
+            schedules[i].days[k].periods[3].label = "sleep";
+            schedules[i].days[k].periods[3].startTime = "10:00pm";
+            schedules[i].days[k].periods[3].stopTime = "6:00am";
+            schedules[i].days[k].periods[3].tempurature = 78;
+            schedules[i].days[k].periods[3].startMinutes = 1200;
+            schedules[i].days[k].periods[3].stopMinutes = 360;
+        }
+    }
 
     insideHumidity = 30;
     insideTemp = 72;
     upperDegreeLimit = 82;
     lowerDegreeLimit = 70;
+    idleTimeOut = 360000;
 
     strcpy(myWifiNetwork, "My Wifi Network");
     strcpy(thermo_rooms[0], "Living Room");
@@ -182,19 +318,4 @@ void loadConfig()
     current_hour = info->tm_hour;
     current_minute = info->tm_min;
     current_ampm = (info->tm_hour <= 12) ? 0 : 1;
-}
-
-void saveConfig()
-{
-    FILE *f;
-    char *out;
-
-    if ((f = fopen("config_def1.json", "w")) != 0)
-    {
-        out = cJSON_Print(config_root);
-        fputs(out, f);
-        free(out);
-
-        fclose(f);
-    }
 }

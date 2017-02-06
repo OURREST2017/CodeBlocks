@@ -2,6 +2,7 @@
 
 int color_scheme;
 GUI_COLOR buttonTextColor = 0xffffff;
+//GUI_FONT buttonFont = GUI_FontRounded16;
 
 typedef struct colors
 {
@@ -15,13 +16,14 @@ struct colors color_map[3];
 
 void initColors()
 {
+//    color_map[0].start  = 0x00763c;       // 72 134 108
+//    color_map[0].middle = 0x009e5a;      // 80 158 129
+//    color_map[0].stop   = 0x00b364;       // 99 179 155
+//
     color_map[0].start = 0x48866c;       // 72 134 108
     color_map[0].middle = 0x509e81;      // 80 158 129
     color_map[0].stop  = 0x63b39b;       // 99 179 155
-
-//    color_map[0].start = 0x12c850;       // 72 134 108
-//    color_map[0].middle = 0x1ce15f;      // 80 158 129
-//    color_map[0].stop  = 0x26ff78;      // 99 179 155
+//
     color_map[0].color = "green";
 
 //    18 200 70      12c850

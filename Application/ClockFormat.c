@@ -120,7 +120,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             case WM_NOTIFICATION_CLICKED:
                 break;
             case WM_NOTIFICATION_RELEASED:
-                state = 16;
+                GUI_Delay(100);
+                CreatePreferences();
+                //state = 16;
                 break;
             }
             break;
@@ -131,7 +133,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 break;
             case WM_NOTIFICATION_RELEASED:
                 clockFormat = (hour12_mode == 1) ? 12 : 24;
-                state = 16;
+                GUI_Delay(100);
+                CreatePreferences();
+                //state = 16;
                 break;
             }
             break;

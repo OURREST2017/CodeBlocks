@@ -23,23 +23,6 @@
 #define ID_BUTTON_RETURN (GUI_ID_USER + 0x17)
 
 #define ID_IMAGE_0_IMAGE_0 0x00
-#define ID_IMAGE_1_IMAGE_0 0x01
-#define ID_IMAGE_2_IMAGE_0 0x02
-#define ID_IMAGE_3_IMAGE_0 0x03
-#define ID_IMAGE_4_IMAGE_0 0x04
-#define ID_IMAGE_5_IMAGE_0 0x05
-#define ID_IMAGE_6_IMAGE_0 0x06
-#define ID_IMAGE_7_IMAGE_0 0x07
-#define ID_IMAGE_8_IMAGE_0 0x08
-
-extern const U8 time_date_image[2443];
-//extern const U8 lock_image[1479];
-extern const U8 schedule_image[3247];
-extern const U8 languages_image[2395];
-//extern const U8 profile_image[1977];
-extern const U8 preferences_image[1027];
-extern const U8 setup_image[1001];
-extern const U8 pear_image[3358];
 
 /*********************************************************************
 *
@@ -48,30 +31,28 @@ extern const U8 pear_image[3358];
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
-    { IMAGE_CreateIndirect, "Image", ID_IMAGE_PEAR, 24, 167, 50, 60, 0, 0, 0 },
-    { IMAGE_CreateIndirect, "Image", ID_IMAGE_TIME_DATE, 28, 70, 50, 50, 0, 0, 0 },
-    { IMAGE_CreateIndirect, "Image", ID_IMAGE_LOCK, 138, 70, 38, 50, 0, 0, 0 },
-    { IMAGE_CreateIndirect, "Image", ID_IMAGE_SCHEDULE, 257, 69, 45, 50, 0, 0, 0 },
-    { IMAGE_CreateIndirect, "Image", ID_IMAGE_LANGAGES, 376, 75, 50, 42, 0, 0, 0 },
-    { IMAGE_CreateIndirect, "Image", ID_IMAGE_PROFILE, 131, 180, 45, 39, 0, 0, 0 },
-    { IMAGE_CreateIndirect, "Image", ID_IMAGE_PREFERENCES, 257, 178, 45, 50, 0, 0, 0 },
-    { IMAGE_CreateIndirect, "Image", ID_IMAGE_SETUP, 378, 180, 44, 44, 0, 0, 0 },
-    { TEXT_CreateIndirect, "Time/Date", ID_TEXT_0, 10, 128, 80, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Lock", ID_TEXT_1, 126, 128, 59, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Schedule", ID_TEXT_2, 237, 128, 80, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Mobile\nPair", ID_TEXT_4, 25, 230, 61, 40, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Languages", ID_TEXT_3, 365, 128, 80, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Profile", ID_TEXT_5, 112, 230, 80, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Preferences", ID_TEXT_6, 240, 230, 80, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Setup", ID_TEXT_7, 359, 230, 80, 20, 0, 0x64, 0 },
+    { IMAGE_CreateIndirect, "Image", ID_IMAGE_TIME_DATE, 38, 70, 50, 50, 0, 0, 0 },
+    { IMAGE_CreateIndirect, "Image", ID_IMAGE_LOCK, 150, 66, 38, 50, 0, 0, 0 },
+    { IMAGE_CreateIndirect, "Image", ID_IMAGE_SCHEDULE, 264, 69, 45, 50, 0, 0, 0 },
+    { IMAGE_CreateIndirect, "Image", ID_IMAGE_LANGAGES, 384, 75, 50, 42, 0, 0, 0 },
+    { IMAGE_CreateIndirect, "Image", ID_IMAGE_PEAR, 38, 167, 50, 60, 0, 0, 0 },
+    { IMAGE_CreateIndirect, "Image", ID_IMAGE_PROFILE, 150, 180, 45, 39, 0, 0, 0 },
+    { IMAGE_CreateIndirect, "Image", ID_IMAGE_PREFERENCES, 264, 178, 45, 50, 0, 0, 0 },
+    { IMAGE_CreateIndirect, "Image", ID_IMAGE_SETUP, 384, 180, 44, 44, 0, 0, 0 },
+    { TEXT_CreateIndirect, "Time/Date", ID_TEXT_0, 20, 128, 80, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Lock", ID_TEXT_1, 142, 128, 59, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Schedule", ID_TEXT_2, 246, 128, 80, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Languages", ID_TEXT_3, 370, 128, 80, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Mobile\nPair", ID_TEXT_4, 38, 230, 61, 40, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Profile", ID_TEXT_5, 132, 230, 80, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Preferences", ID_TEXT_6, 246, 230, 80, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Setup", ID_TEXT_7, 366, 230, 80, 20, 0, 0x64, 0 },
     { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "SETTINGS", ID_TEXT_HEADER, 144, 9, 212, 33, 0, 0x64, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_RETURN, 15, 0, 150, 50, 0, 0x0, 0 },
 };
-/*********************************************************************
-*
-*       _GetImageById
-*/
+
+extern const U8 pear_image[3358];
 static const void * _GetImageById(U32 Id, U32 * pSize)
 {
     switch (Id)
@@ -79,27 +60,21 @@ static const void * _GetImageById(U32 Id, U32 * pSize)
     case ID_IMAGE_0_IMAGE_0:
         *pSize = sizeof(pear_image);
         return (const void *)pear_image;
-    case ID_IMAGE_1_IMAGE_0:
-        *pSize = sizeof(time_date_image);
-        return (const void *)time_date_image;
-    case ID_IMAGE_3_IMAGE_0:
-        *pSize = sizeof(schedule_image);
-        return (const void *)schedule_image;
-    case ID_IMAGE_4_IMAGE_0:
-        *pSize = sizeof(languages_image);
-        return (const void *)languages_image;
-    case ID_IMAGE_6_IMAGE_0:
-        *pSize = sizeof(preferences_image);
-        return (const void *)preferences_image;
-    case ID_IMAGE_7_IMAGE_0:
-        *pSize = sizeof(setup_image);
-        return (const void *)setup_image;
     }
     return NULL;
 }
-
+/*********************************************************************
+*
+*       _GetImageById
+*/
 extern GUI_CONST_STORAGE GUI_BITMAP bmlock ;
 extern GUI_CONST_STORAGE GUI_BITMAP bmprofile ;
+extern GUI_CONST_STORAGE GUI_BITMAP bmtime_date;
+extern GUI_CONST_STORAGE GUI_BITMAP bmsetup;
+extern GUI_CONST_STORAGE GUI_BITMAP bmschedule;
+extern GUI_CONST_STORAGE GUI_BITMAP bmprofile;
+extern GUI_CONST_STORAGE GUI_BITMAP bmpreferences;
+extern GUI_CONST_STORAGE GUI_BITMAP bmlanguages;
 
 /*********************************************************************
 *
@@ -117,8 +92,13 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     {
     case WM_PAINT:
         GUI_DrawBitmap(&bmwatermark, 45,50);
-        GUI_DrawBitmap(&bmlock, 133, 70);
-        GUI_DrawBitmap(&bmprofile, 130, 180);
+        GUI_DrawBitmap(&bmtime_date, 38, 70);
+        GUI_DrawBitmap(&bmlock, 150, 66);
+        GUI_DrawBitmap(&bmschedule, 264, 69);
+        GUI_DrawBitmap(&bmlanguages, 384, 75);
+        GUI_DrawBitmap(&bmprofile, 150, 180);
+        GUI_DrawBitmap(&bmpreferences, 264, 178);
+        GUI_DrawBitmap(&bmsetup, 384, 180);
         break;
     case WM_INIT_DIALOG:
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_RETURN);
@@ -134,28 +114,18 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         IMAGE_SetGIF(hItem, pData, FileSize);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_IMAGE_TIME_DATE);
-        pData = _GetImageById(ID_IMAGE_1_IMAGE_0, &FileSize);
-        IMAGE_SetPNG(hItem, pData, FileSize);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_IMAGE_LOCK);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_IMAGE_SCHEDULE);
-        pData = _GetImageById(ID_IMAGE_3_IMAGE_0, &FileSize);
-        IMAGE_SetPNG(hItem, pData, FileSize);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_IMAGE_LANGAGES);
-        pData = _GetImageById(ID_IMAGE_4_IMAGE_0, &FileSize);
-        IMAGE_SetPNG(hItem, pData, FileSize);
-        //
+       //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_IMAGE_PROFILE);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_IMAGE_PREFERENCES);
-        pData = _GetImageById(ID_IMAGE_6_IMAGE_0, &FileSize);
-        IMAGE_SetPNG(hItem, pData, FileSize);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_IMAGE_SETUP);
-        pData = _GetImageById(ID_IMAGE_7_IMAGE_0, &FileSize);
-        IMAGE_SetPNG(hItem, pData, FileSize);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_0);
         TEXT_SetFont(hItem, &GUI_FontRounded16);
@@ -216,7 +186,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 GUI_Delay(100);
-                state=11;
+                CreateDateTime();
+                //state=11;
             }
             break;
         case ID_IMAGE_LOCK:
@@ -224,7 +195,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 GUI_Delay(100);
-                state=12;
+                CreateScreenLockout();
+                //state=12;
             }
             break;
         case ID_IMAGE_SCHEDULE:
@@ -232,7 +204,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 GUI_Delay(100);
-                state=13;
+                CreateSettingsSchedule();
+                // state=13;
             }
             break;
         case ID_IMAGE_LANGAGES:
@@ -240,7 +213,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 GUI_Delay(100);
-                state=14;
+                CreateLanguages();
+                // state=14;
             }
             break;
         case ID_IMAGE_PROFILE:
@@ -248,7 +222,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 GUI_Delay(100);
-                state=15;
+                CreateProfile(0, "");
+                // state=15;
             }
             break;
         case ID_IMAGE_PREFERENCES:
@@ -256,7 +231,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 GUI_Delay(100);
-                state=16;
+                CreatePreferences();
+                //state=16;
             }
             break;
         case ID_IMAGE_SETUP:
@@ -264,7 +240,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 GUI_Delay(100);
-                state=17;
+                CreateSystemSetup();
+                // state=17;
             }
             break;
         case ID_BUTTON_RETURN:

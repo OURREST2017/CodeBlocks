@@ -100,7 +100,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         WM_SetCallback(hItem, button22_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SCHEDULING_PERIODS);
-         WM_SetCallback(hItem, button22_cb);
+        WM_SetCallback(hItem, button22_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
@@ -111,15 +111,18 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                state=4;
+                GUI_Delay(100);
+                CreateSettings();
+                //state=4;
             }
             break;
         case ID_BUTTON_SCHEDULING_OPTIONS:
             switch(NCode)
             {
-           case WM_NOTIFICATION_RELEASED:
+            case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                state=40;
+                CreateSchedulingOptions();
+                //state=40;
             }
             break;
         case ID_BUTTON_TEMPURATURE_SCALE:
@@ -131,7 +134,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 break;
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                state=41;
+                CreateTempuratureScale();
+                //state=41;
             }
             break;
         case ID_BUTTON_CLOCK_FORMAT:
@@ -143,19 +147,21 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 break;
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                state=42;
+                CreateClockFormat();
+                //state=42;
             }
             break;
         case ID_BUTTON_DST:
             switch(NCode)
             {
-             case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_CLICKED:
                 hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DST);
                 WM_SetCallback(hItem, buttonPush22_cb);
                 break;
-           case WM_NOTIFICATION_RELEASED:
+            case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                state=43;
+                CreateDaylightSavingTime();
+                //state=43;
             }
             break;
         case ID_BUTTON_SYSTEM_CHANGE_OVER:
@@ -167,7 +173,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 break;
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                state=44;
+                CreateSystemsChangeOver();
+                //state=44;
             }
             break;
         case ID_BUTTON_TEMPURATURE_LIMITS:
@@ -180,7 +187,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
                 CreateTempuratureLimits();
-                state=45;
+                //state=45;
             }
             break;
         case ID_BUTTON_KEYBOARD_LOCKOUT:
@@ -192,7 +199,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 break;
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                state=46;
+                CreateKeyboardLockout();
+                //state=46;
             }
             break;
         case ID_BUTTON_SCHEDULING_PERIODS:
@@ -204,7 +212,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 break;
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                state=47;
+                CreateSchedulePeriods();
+                //state=47;
             }
             break;
         }

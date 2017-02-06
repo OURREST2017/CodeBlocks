@@ -118,6 +118,9 @@
 		<Unit filename="Application/HvacType.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="Application/IdleWin.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="Application/ImageResources.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -152,6 +155,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/RoundedFonts.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/SaveConfig.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/Schedule.c">

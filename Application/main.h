@@ -5,8 +5,11 @@
 #include <string.h>
 #include <time.h>
 #include <ctype.h>
-
 #include "DIALOG.h"
+
+GUI_TIMER_HANDLE lockTimer_h;
+int idleTimeOut;
+
 extern GUI_CONST_STORAGE GUI_BITMAP GUI_FontRounded16;
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontRounded22;
 extern GUI_CONST_STORAGE GUI_FONT FontBig20B;
@@ -50,6 +53,7 @@ extern int color_scheme;
 extern void initColors();
 
 extern  WM_HWIN CreateHomeWin(void);
+extern  WM_HWIN CreateIdleWin(void);
 extern  WM_HWIN CreateMode(void);
 extern  WM_HWIN CreateSettings(void);
 extern  WM_HWIN CreateFanControl(void);
@@ -85,7 +89,7 @@ extern  WM_HWIN CreateWifiDisconnect(void);
 extern  WM_HWIN CreatePassFail(char *);
 extern  WM_HWIN CreateTriacPanelWin(void);
 extern  WM_HWIN CreateFanMode(void);
-extern  WM_HWIN CreateEditSchedule(char *);
+extern  WM_HWIN CreateEditSchedule(char *, char *);
 extern  WM_HWIN CreateWifiConnect(void);
 extern  WM_HWIN CreateTempuratureLimits(void);
 extern  WM_HWIN CreateMobilePair();
@@ -144,7 +148,6 @@ int state;
 int temperature;
 struct schedules_s schedules[5];
 
-//char ** wifi_networks;
 int wifi_count;
 char myWifiNetwork[50];
 char myWifiPassword[20];
@@ -171,7 +174,7 @@ char firstNameText[30];
 char ownersName[30];
 int dst;
 char keyboardLock[20];
-char selectedSchedule[10];
+char currentSchedule[10];
 char *currFwVersion;
 int enableSchedule;
 int filterChangeDate;
@@ -204,6 +207,10 @@ char backupHeatingType[10];
 
 int testing;
 int insideTemp;
+int reset;
+char *serial;
+int tempHold;
+int thermoControls;
 
 int current_year;
 int current_day;
@@ -214,7 +221,5 @@ int current_dst;
 int current_hour;
 int current_minute;
 int current_ampm;
-
-
 
 #endif

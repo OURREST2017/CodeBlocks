@@ -180,7 +180,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 if (firstTime) {
                     CreateHvacType();
                 } else {
-                  state=17;
+            CreateSystemSetup();
+                  //state=17;
                 }
             }
             break;
