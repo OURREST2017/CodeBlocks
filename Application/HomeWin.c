@@ -905,10 +905,10 @@ WM_HWIN CreateHomeWin(void)
     heat_border = strcmp(hvacMode, "heat") == 0;
     holdMode = 0;
 
-    GUI_TIMER_Create(dateTimer, 60000, 0, 0);
 
     if (!tempTimerSet)
     {
+        GUI_TIMER_Create(dateTimer, 60000, 0, 0);
         tempTimer_h = GUI_TIMER_Create(tempTimer, 4000, 0, 0);
         tempTimerSet = 1;
     }

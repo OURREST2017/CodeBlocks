@@ -54,7 +54,7 @@ void MainTask(void)
 //    int compressorRunTime, fanRunTime;
 //    int timeToDesiredTemp, timeToDesiredTempSave;
 //    counter = 0;
-
+//
     while(1)
     {
 //        if (counter == 600) // 30 seconds
@@ -81,13 +81,13 @@ void MainTask(void)
         case 0:
             break;
         case 1:
-            GUI_TIMER_SetPeriod(lockTimer_h, idleTimeOut);
-            GUI_TIMER_Restart(lockTimer_h);
+//            GUI_TIMER_SetPeriod(lockTimer_h, idleTimeOut);
+//            GUI_TIMER_Restart(lockTimer_h);
             CreateHomeWin();
             state=0;
             break;
         case 2:
-            GUI_TIMER_SetPeriod(lockTimer_h, 9999999);
+            //GUI_TIMER_SetPeriod(lockTimer_h, 9999999);
             CreateLanguages();
             state=0;
             break;
