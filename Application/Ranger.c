@@ -36,6 +36,7 @@ void MainTask(void)
     holdMode = 0;
     state = 1;
 
+
 //    if (testing)
 //    {
 //        state = 99;
