@@ -104,6 +104,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/EditScheduleHelp c" />
+		<Unit filename="Application/EditScheduleHelp.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="Application/FanControl.c">
 			<Option compilerVar="CC" />
 		</Unit>
