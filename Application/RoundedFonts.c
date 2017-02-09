@@ -1,24 +1,9 @@
-
 #include "GUI.h"
 
 #ifndef GUI_CONST_STORAGE
   #define GUI_CONST_STORAGE const
 #endif
 
-/*********************************************************************
-*                                                                    *
-*       GUI_FontRounded16                                            *
-*                                                                    *
-*  Used in                                                           *
-*  - GUIDEMO.c              (GUIDEMO_DispHint())                     *
-*  - GUIDEMO_Automotive.c                                            *
-*  - GUIDEMO_Bitmap.c                                                *
-*  - GUIDEMO_Cursor.c                                                *
-*  - GUIDEMO_IconView.c                                              *
-*  - GUIDEMO_Speedometer.c                                           *
-*                                                                    *
-**********************************************************************
-*/
 GUI_CONST_STORAGE unsigned char acGUI_FontRounded16_0020[  1] = { // Code 0020, SPACE
   0x00
 };

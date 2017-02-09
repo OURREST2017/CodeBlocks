@@ -1,4 +1,4 @@
-#include "main.h"
+#include "ranger.h"
 #include <stdlib.h>
 #include <time.h>
 #include "cJSON.h"
@@ -16,6 +16,61 @@ char * toup(char *s)
     o[i] = '\0';
     return o;
 }
+
+char * tolow(char *s)
+{
+    int i;
+    static char o[100];
+    for (i=0; i<strlen(s); i++)
+    {
+        o[i] = tolower(s[i]);
+    }
+    o[i] = '\0';
+    return o;
+}
+
+int  scheduleTempurature(char * tm, char *day)
+{
+    int i,k;
+    int hh, mm, startMinutes, stopMinutes;
+    struct days_s selectedDay;
+
+    sscanf(tm, "%d:%d", &hh, &mm);
+    if (strchr(tm, 'a') == NULL)  hh += 12;
+    int st = hh*60+mm;
+
+    for (k=0; k<selectedSchedule.day_count; k++)
+    {
+        if (strcmp(selectedSchedule.days[k].label, day) != 0) continue;
+        selectedDay = selectedSchedule.days[k];
+
+        for (i=0; i<4; i++)
+        {
+            sscanf(selectedDay.periods[i].startTime, "%d:%d", &hh, &mm);
+            if (strchr(selectedDay.periods[i].startTime, 'a') == NULL)  hh += 12;
+            startMinutes = hh*60+mm;
+            sscanf(selectedDay.periods[i].stopTime, "%d:%d", &hh, &mm);
+            if (strchr(selectedDay.periods[i].stopTime, 'a') == NULL) hh += 12;
+            stopMinutes = hh*60+mm;
+            if (stopMinutes < startMinutes)
+            {
+                if (st < stopMinutes || st >= startMinutes)
+                {
+                    return selectedDay.periods[i].tempurature;
+                }
+            }
+            else
+            {
+                if (st >= startMinutes && st <= stopMinutes)
+                {
+                    return selectedDay.periods[i].tempurature;
+                }
+            }
+        }
+    }
+    return 78;
+}
+
 
 int getIntObject(cJSON *j, char * o)
 {
@@ -37,9 +92,6 @@ char * getStringObject(cJSON *j, char * o)
 
 void loadConfig()
 {
-    time_t rawtime;
-    struct tm *info;
-
     FILE *f;
     long len;
     char *data;
@@ -66,12 +118,13 @@ void loadConfig()
         strcpy(configVersion, getStringObject(config_root,"configVersion"));
         coolToDegrees = getIntObject(config_root,"coolToDegrees");
         currFwVersion = getStringObject(config_root,"currFwVersion");
+        strcpy(currentSchedule, getStringObject(config_root,"currentSchedule"));
         dst = getBoolObject(config_root,"dst");
         enableSchedule = getBoolObject(config_root,"enableSchedule");
         epochTime = getIntObject(config_root,"epochTime");
         strcpy(fanControl, getStringObject(config_root,"fanControl"));
         strcpy(firstNameText, getStringObject(config_root,"firstNameText"));
-        strcpy(selectedFanMode, getStringObject(config_root,"fanMode"));
+        strcpy(fanMode, getStringObject(config_root,"fanMode"));
         filterChangeDate = getIntObject(config_root,"filterChangeDate");
         filterLifeInDays = getIntObject(config_root,"filterLifeInDays");
         firstTime = getBoolObject(config_root,"firstTime");
@@ -89,7 +142,6 @@ void loadConfig()
         nextFwVersion = getStringObject(config_root,"nextFwVersion");
         strcpy(ownersName,  getStringObject(config_root,"ownersName"));
         resetUnit = getIntObject(config_root,"reset");
-        strcpy(currentSchedule, getStringObject(config_root,"currentSchedule"));
         schedulePeriods = getIntObject(config_root,"schedulePeriods");
         strcpy(schedulingOption, getStringObject(config_root,"schedulingOption"));
         securityMode = getStringObject(config_root,"securityMode");
@@ -103,7 +155,6 @@ void loadConfig()
         unitLocked = getBoolObject(config_root,"unitLocked");
         strcpy(zipCode, getStringObject(config_root,"zipCode"));
         testing = getBoolObject(config_root,"testing");
-        serial = "1235678";
 
         cJSON *hvac = cJSON_GetObjectItem(config_root,"hvacConfig");
 
@@ -209,6 +260,14 @@ void loadConfig()
         heatingStages = hvacConfig.heatingStages;
         strcpy(backupHeatingType, hvacConfig.backupHeatingType);
 
+        strcpy(myWifiNetwork, "My Wifi Network");
+        strcpy(thermo_rooms[0], "Living Room");
+        strcpy(thermo_rooms[1], "Master Bedroom");
+        strcpy(thermo_rooms[2], "Office");
+        strcpy(thermo_rooms[3], "Room 4");
+        strcpy(thermo_rooms[4], "Room 5");
+        strcpy(thermo_rooms[5], "Room 6");
+
         char *scheds[] = {"vacation", "weekday", "weekend", "all days", "each day"};
 
         int hh, mm;
@@ -251,7 +310,8 @@ void loadConfig()
             schedules[i].day_count = 1;
         }
 
-        char *dow[] = {"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
+        char *dow[] = {"monday", "tuesday", "wednesday",
+                       "thursday", "friday", "saturday", "sunday"};
 
         schedules[i].label = scheds[i];
         schedules[i].systemDefined = 1;
@@ -298,13 +358,19 @@ void loadConfig()
     lowerDegreeLimit = 70;
     idleTimeOut = 360000;
 
-    strcpy(myWifiNetwork, "My Wifi Network");
-    strcpy(thermo_rooms[0], "Living Room");
-    strcpy(thermo_rooms[1], "Master Bedroom");
-    strcpy(thermo_rooms[2], "Office");
-    strcpy(thermo_rooms[3], "Room 4");
-    strcpy(thermo_rooms[4], "Room 5");
-    strcpy(thermo_rooms[5], "Room 6");
+    int i;
+    for (i=0; i<5; i++)
+    {
+        if (strcmp(schedules[i].label, currentSchedule) == 0)
+        {
+            selectedSchedule = schedules[i];
+            break;
+        }
+    }
+
+#ifdef WIN32
+    time_t rawtime;
+    struct tm *info;
 
     time( &rawtime );
     info = localtime( &rawtime );
@@ -318,4 +384,37 @@ void loadConfig()
     current_hour = info->tm_hour;
     current_minute = info->tm_min;
     current_ampm = (info->tm_hour <= 12) ? 0 : 1;
+#else
+    RTC_TimeTypeDef tm;
+    RTC_DateTypeDef dt;
+
+    BSP_RTC_GetTime(&tm);
+    BSP_RTC_GetDate(&dt);
+
+    current_year = dt.Year + 2000;
+    current_day =  dt.Date;
+    current_month = dt.Month;
+    current_wday = dt.WeekDay;
+    current_dst = dt.daylight;
+
+    current_hour = tm.Hour;
+    current_minute = tm.Minutes;
+    current_ampm = (tm.Hour <= 12) ? 0 : 1;
+#endif
+
+//        struct tm my_time = { .tm_year=112, // = year 2012
+//                          .tm_mon=9,    // = 10th month
+//                          .tm_mday=9,   // = 9th day
+//                          .tm_hour=8,   // = 8 hours
+//                          .tm_min=10,   // = 10 minutes
+//                          .tm_sec=20    // = 20 secs
+//    };
+//
+//    char t[50];
+//    strftime(t, 50, "%A %c", &my_time);
+
+    int far = 20 * 1.8 + 32;
+    int cel = (72 - 32) / 1.8;
+
+
 }

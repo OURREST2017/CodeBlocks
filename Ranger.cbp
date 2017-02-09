@@ -103,6 +103,7 @@
 		<Unit filename="Application/EditSchedule.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="Application/EditScheduleHelp c" />
 		<Unit filename="Application/FanControl.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -221,7 +222,8 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/cJSON.h" />
-		<Unit filename="Application/main.h" />
+		<Unit filename="Application/config_def.json" />
+		<Unit filename="Application/ranger.h" />
 		<Unit filename="Config/GUIConf.c">
 			<Option compilerVar="CC" />
 		</Unit>

@@ -1,4 +1,4 @@
-#include "main.h"
+#include "ranger.h"
 
 int color_scheme;
 GUI_COLOR buttonTextColor = 0xffffff;

@@ -1,4 +1,4 @@
-#include "main.h"
+#include "ranger.h"
 
 #define ID_WINDOW_0 (GUI_ID_USER + 0x03)
 #define ID_IMAGE_PEAR (GUI_ID_USER + 0x04)
@@ -17,7 +17,6 @@
 #define ID_TEXT_5 (GUI_ID_USER + 0x11)
 #define ID_TEXT_6 (GUI_ID_USER + 0x12)
 #define ID_TEXT_7 (GUI_ID_USER + 0x13)
-#define ID_HEADER_0 (GUI_ID_USER + 0x14)
 #define ID_IMAGE_RETURN (GUI_ID_USER + 0x15)
 #define ID_TEXT_HEADER (GUI_ID_USER + 0x16)
 #define ID_BUTTON_RETURN (GUI_ID_USER + 0x17)
@@ -47,7 +46,6 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { TEXT_CreateIndirect, "Profile", ID_TEXT_5, 132, 230, 80, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Preferences", ID_TEXT_6, 246, 230, 80, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Setup", ID_TEXT_7, 366, 230, 80, 20, 0, 0x64, 0 },
-    { HEADER_CreateIndirect, "Header", ID_HEADER_0, 0, 0, 480, 50, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "SETTINGS", ID_TEXT_HEADER, 144, 9, 212, 33, 0, 0x64, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_RETURN, 15, 0, 150, 50, 0, 0x0, 0 },
 };
@@ -91,7 +89,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        GUI_DrawBitmap(&bmwatermark, 45,50);
+        GUI_DrawGradientV(0, 0, 480, 50, 0x63b39b, 0x48866c);
+        GUI_DrawBitmap(&bmwatermark, 45,52);
         GUI_DrawBitmap(&bmtime_date, 38, 70);
         GUI_DrawBitmap(&bmlock, 150, 66);
         GUI_DrawBitmap(&bmschedule, 264, 69);

@@ -1,4 +1,4 @@
-#include "main.h"
+#include "ranger.h"
 #include <stdlib.h>
 
 void writeString(char *s, char *x, char *c, FILE *f)

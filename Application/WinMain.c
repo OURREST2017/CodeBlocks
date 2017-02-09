@@ -1,3 +1,5 @@
+#ifdef WIN32
+
 #include <windows.h>
 
 #include "GUI_SIM_Win32.h"
@@ -67,5 +69,4 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
     }
     SIM_GUI_Exit();
 }
-
-/*************************** End of file ****************************/
+#endif // WIN32

@@ -1,8 +1,7 @@
-#include "main.h"
+#include "ranger.h"
 
 #define ID_HOME_WINDOW     (GUI_ID_USER + 0x00)
 #define ID_TEXT_INSIDE_TEMP       (GUI_ID_USER + 0x07)
-#define ID_HEADER     (GUI_ID_USER + 0x08)
 #define ID_TEXT_DATE     (GUI_ID_USER + 0x10)
 #define ID_TEXT_OUT_TEMP     (GUI_ID_USER + 0x11)
 #define ID_TEXT_TIME     (GUI_ID_USER + 0x12)
@@ -18,17 +17,14 @@
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "HomeWin", ID_HOME_WINDOW, 0, 0, 480, 272, 0, 0x0, 0 },
-    { HEADER_CreateIndirect, "Header", ID_HEADER, 0, 0, 480, 50, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "", ID_TEXT_IDLE, 0, 0, 480, 270, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "In_T_Panel", ID_TEXT_INSIDE_TEMP, 162, 118, 135, 100, 0, 0x64, 0 },
-//    { BUTTON_CreateIndirect, "", ID_BUTTON_DEGREES, 285, 107, 100, 100, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "", ID_TEXT_DATE, 10, 0, 140, 50, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "", ID_TEXT_TIME, 160, 0, 150, 50, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Out_T_Temp", ID_TEXT_OUT_TEMP, 386, 7, 72, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "OUSIDE", ID_TEXT_OUTSIDE, 389, 26, 61, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "INDOOR", ID_TEXT_INDOOR, 165, 92, 89, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "HUMIDITY", ID_TEXT_HUMIDITY, 165, 206, 160, 20, 0, 0x64, 0 },
-//    { BUTTON_CreateIndirect, "", ID_BUTTON_DEGREES_SET, 451, 124, 10, 10, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_WIFI, 320, 0, 50, 50, 0, 0x0, 0 },
 
 };
@@ -84,6 +80,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
+        GUI_DrawGradientV(0, 0, 480, 50, 0x63b39b, 0x48866c);
         GUI_DrawBitmap(&bmwatermark, 45,50);
         GUI_SetColor(0x808080);
         GUI_SetPenSize(3);

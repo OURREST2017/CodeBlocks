@@ -74,7 +74,7 @@ extern  WM_HWIN CreateWifiSetup(void);
 extern  WM_HWIN CreateBackupHeat(void);
 extern  WM_HWIN CreateCoolingStages(void);
 extern  WM_HWIN CreateHeatingStages(void);
-extern  WM_HWIN CreateEachDay(void);
+extern  WM_HWIN CreateEachDay(char *);
 extern  WM_HWIN CreateSchedulingOptions(void);
 extern  WM_HWIN CreateTempuratureScale(void);
 extern  WM_HWIN CreateClockFormat(void);
@@ -92,7 +92,8 @@ extern  WM_HWIN CreateFanMode(void);
 extern  WM_HWIN CreateEditSchedule(char *, char *);
 extern  WM_HWIN CreateWifiConnect(void);
 extern  WM_HWIN CreateTempuratureLimits(void);
-extern  WM_HWIN CreateMobilePair();
+extern  WM_HWIN CreateMobilePair(void);
+extern  WM_HWIN CreateEditScheduleHelp(char *,char *);
 
 extern void loadConfig();
 char * updateTime(char *tm, int dr);
@@ -139,6 +140,8 @@ typedef struct hvacConfig_s
     int coolingStages;
     int heatingStages;
 } hvacConfig_s;
+
+struct schedules_s selectedSchedule;
 
 int tempTimerSet;
 int upperDegreeLimit;
