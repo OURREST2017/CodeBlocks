@@ -1,8 +1,7 @@
 #include "ranger.h"
 
-#ifndef WIN32
+#ifndef CODEBLOCK
 #include "main.h"
-#include "stm32f4xx_hal.h"
 #include "cmsis_os.h"
 #include "calibration.h"
 
@@ -26,7 +25,7 @@ void MainTask(void)
 {
 	GUI_Init();
 
-#ifndef WIN32
+#ifndef CODEBLOCK
     WM_MULTIBUF_Enable(1);
     RTC_TimeTypeDef tm;
     RTC_DateTypeDef dt;
@@ -43,6 +42,7 @@ void MainTask(void)
 
     BSP_RTC_SetTime(&tm);
     BSP_RTC_SetDate(&dt);
+//    BSP_BACKUP_SaveParameter(RTC_BKP_DR0,0x32F2);
 
 	/* Check for calibration */
     if (CalibrationIsDone() == 0)
@@ -101,7 +101,7 @@ void MainTask(void)
     }
 }
 
-#ifndef WIN32
+#ifndef CODEBLOCK
 void BSP_GUI_Init(void) {
 
 GUI_Thread_ThreadId = osThreadCreate(osThread(GUI_Thread), NULL);

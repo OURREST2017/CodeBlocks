@@ -1,7 +1,6 @@
-#ifdef WIN32
-
+#include "ranger.h"
+#ifdef CODEBLOCK
 #include <windows.h>
-
 #include "GUI_SIM_Win32.h"
 #include "LCD_SIM.h"
 #include "GUI.h"
@@ -69,4 +68,5 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
     }
     SIM_GUI_Exit();
 }
-#endif // WIN32
+
+#endif // CODEBLOCK

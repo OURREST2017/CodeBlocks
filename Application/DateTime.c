@@ -108,7 +108,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     WM_HWIN hItem, spinWheel;
     int     NCode;
     int     Id;
-    char buf[10];
     int ch = 60;
     int h = 120;
 
@@ -210,7 +209,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 current_day = LISTWHEEL_GetPos(_aWheel[3].hWin);
                 current_month = LISTWHEEL_GetPos(_aWheel[4].hWin);
                 current_year = LISTWHEEL_GetPos(_aWheel[5].hWin) + 2010;
-#ifndef WIN32
+#ifndef CODEBLOCK
                 RTC_TimeTypeDef tm;
                 RTC_DateTypeDef dt;
 
@@ -220,7 +219,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 dt.WeekDay = current_wday;
                 //current_dst = dt.daylight;
 
-                tm.Hour = current_hour; current_ampm
+                tm.Hours = current_hour;
                 tm.Minutes = current_minute;
                //= (tm.Hour <= 12) ? 0 : 1;
 

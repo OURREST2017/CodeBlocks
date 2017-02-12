@@ -30,23 +30,23 @@ void initColors()
 //    28 225 95      1ce15f
 //    38 255 120     26ff78
 
-    color_map[1].start = 0x272780;
-    color_map[1].middle = 0x38389e;
-    color_map[1].stop  = 0x4343bf;
-    color_map[1].color = "red";
-
-    color_map[2].start = 0xdfc4d8;
-    color_map[2].middle = 0xdfcddb;
-    color_map[2].stop  = 0xdfdfdf;
-    color_map[2].color = "gray";
-
-    HEADER_SKINFLEX_PROPS PropsH;
-    HEADER_GetSkinFlexProps(&PropsH, 0);
-    PropsH.aColorUpper[0] = color_map[color_scheme].stop;
-    PropsH.aColorUpper[1] = color_map[color_scheme].middle;
-    PropsH.aColorLower[0] = color_map[color_scheme].middle;
-    PropsH.aColorLower[1] = color_map[color_scheme].start;
-    HEADER_SetSkinFlexProps(&PropsH, 0);
+//    color_map[1].start = 0x272780;
+//    color_map[1].middle = 0x38389e;
+//    color_map[1].stop  = 0x4343bf;
+//    color_map[1].color = "red";
+//
+//    color_map[2].start = 0xdfc4d8;
+//    color_map[2].middle = 0xdfcddb;
+//    color_map[2].stop  = 0xdfdfdf;
+//    color_map[2].color = "gray";
+//
+//    HEADER_SKINFLEX_PROPS PropsH;
+//    HEADER_GetSkinFlexProps(&PropsH, 0);
+//    PropsH.aColorUpper[0] = color_map[color_scheme].stop;
+//    PropsH.aColorUpper[1] = color_map[color_scheme].middle;
+//    PropsH.aColorLower[0] = color_map[color_scheme].middle;
+//    PropsH.aColorLower[1] = color_map[color_scheme].start;
+//    HEADER_SetSkinFlexProps(&PropsH, 0);
 }
 
 void edit_text_cb(WM_MESSAGE * pMsg)

@@ -86,6 +86,7 @@ extern GUI_CONST_STORAGE GUI_BITMAP bmdn_small_p;
 extern GUI_CONST_STORAGE GUI_BITMAP bmup_small_p;
 extern GUI_CONST_STORAGE GUI_BITMAP bmsmall_degree;
 extern GUI_CONST_STORAGE GUI_BITMAP bmbig_degree;
+static char *weekDays[] = {"Sun","Mon","Tue","Wed","Thu","Fri","Sat","Sun"};
 
 static void hold_button_on(WM_MESSAGE * pMsg)
 {
@@ -816,7 +817,7 @@ static void tempTimer(GUI_TIMER_MESSAGE * pTM)
 
 static void dateTimer(GUI_TIMER_MESSAGE * pTM)
 {
-#ifdef WIN32
+#ifdef CODEBLOCK
     time_t now = time(NULL);
     strftime(date_buf, 20, "%a %m/%d/%Y", localtime(&now));
     if (clockFormat == 24)
@@ -863,7 +864,7 @@ WM_HWIN CreateHomeWin(void);
 WM_HWIN CreateHomeWin(void)
 {
     WM_HWIN hWin;
-#ifdef WIN32
+#ifdef CODEBLOCK
     time_t now = time(NULL);
 
     strftime(date_buf, 20, "%a %m/%d/%Y", localtime(&now));
