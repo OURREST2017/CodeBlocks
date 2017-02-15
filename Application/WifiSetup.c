@@ -28,9 +28,6 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "WIFI SETUP", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 28, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Select WIFI Network", ID_BUTTON_DISCONNECT, 128, 230, 222, 28, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 378, 230, 80, 28, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_1, 0, 60, 180, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_2, 186, 60, 260, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_3, 0, 82, 180, 20, 0, 0x64, 0 },
@@ -45,6 +42,9 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { TEXT_CreateIndirect, "Text", ID_TEXT_12, 145, 172, 175, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_13, 321, 172, 87, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_14, 106, 188, 232, 20, 0, 0x64, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Select WIFI Network", ID_BUTTON_DISCONNECT, 128, 230, 222, BUTHEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 378, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
 };
 
 /*********************************************************************
@@ -60,7 +60,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        GUI_DrawGradientV(0, 0, 480, 50, 0x63b39b, 0x48866c);
+        GUI_DrawGradientV(0, 0, 480, 50, color_map[0].stop, color_map[0].start);
         GUI_DrawBitmap(&bmwatermark,45,52);
         break;
     case WM_INIT_DIALOG:

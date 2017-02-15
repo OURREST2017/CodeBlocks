@@ -29,8 +29,8 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, customer_text, ID_BUTTON_CUSTOMER, 176, 90, 230, 30, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, zip_text, ID_BUTTON_ZIP, 176, 125, 230, 30, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, mac_text, ID_BUTTON_MAC, 176, 160, 230, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 28, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 375, 230, 80, 28, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 375, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
 };
 
 static void profile_cb(WM_MESSAGE * pMsg)
@@ -67,7 +67,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        GUI_DrawGradientV(0, 0, 480, 50, 0x63b39b, 0x48866c);
+        GUI_DrawGradientV(0, 0, 480, 50, color_map[0].stop, color_map[0].start);
         GUI_DrawBitmap(&bmwatermark,45,52);
         break;
     case WM_INIT_DIALOG:

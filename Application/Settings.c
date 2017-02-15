@@ -89,7 +89,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        GUI_DrawGradientV(0, 0, 480, 50, 0x63b39b, 0x48866c);
+        GUI_DrawGradientV(0, 0, 480, 50, color_map[0].stop, color_map[0].start);
         GUI_DrawBitmap(&bmwatermark, 45,52);
         GUI_DrawBitmap(&bmtime_date, 38, 70);
         GUI_DrawBitmap(&bmlock, 150, 66);
@@ -172,6 +172,14 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         NCode = pMsg->Data.v;
         switch(Id)
         {
+        case ID_BUTTON_RETURN:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_RELEASED:
+                GUI_Delay(100);
+                state=1;
+            }
+            break;
         case ID_IMAGE_PEAR:
             switch(NCode)
             {
@@ -241,15 +249,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 GUI_Delay(100);
                 CreateSystemSetup();
                 // state=17;
-            }
-            break;
-        case ID_BUTTON_RETURN:
-            switch(NCode)
-            {
-            case WM_NOTIFICATION_CLICKED:
-                GUI_Delay(100);
-                GUI_EndDialog(pMsg->hWin, 0);
-                state=1;
             }
             break;
         }

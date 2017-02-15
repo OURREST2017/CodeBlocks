@@ -4,25 +4,15 @@ int color_scheme;
 GUI_COLOR buttonTextColor = 0xffffff;
 //GUI_FONT buttonFont = GUI_FontRounded16;
 
-typedef struct colors
-{
-    GUI_COLOR start;
-    GUI_COLOR middle;
-    GUI_COLOR stop;
-    char * color;
-} colors;
-
-struct colors color_map[3];
-
 void initColors()
 {
 //    color_map[0].start  = 0x00763c;       // 72 134 108
-//    color_map[0].middle = 0x009e5a;      // 80 158 129
+//    color_map[0].middle = 0x009e5a;       // 80 158 129
 //    color_map[0].stop   = 0x00b364;       // 99 179 155
 //
-    color_map[0].start = 0x48866c;       // 72 134 108
-    color_map[0].middle = 0x509e81;      // 80 158 129
-    color_map[0].stop  = 0x63b39b;       // 99 179 155
+    color_map[0].start = 0x48866c;
+    color_map[0].middle = 0x509e81;
+    color_map[0].stop  = 0x63b39b;
 //
     color_map[0].color = "green";
 
@@ -39,14 +29,6 @@ void initColors()
     color_map[2].middle = 0xdfcddb;
     color_map[2].stop  = 0xdfdfdf;
     color_map[2].color = "gray";
-
-    HEADER_SKINFLEX_PROPS PropsH;
-    HEADER_GetSkinFlexProps(&PropsH, 0);
-    PropsH.aColorUpper[0] = color_map[color_scheme].stop;
-    PropsH.aColorUpper[1] = color_map[color_scheme].middle;
-    PropsH.aColorLower[0] = color_map[color_scheme].middle;
-    PropsH.aColorLower[1] = color_map[color_scheme].start;
-    HEADER_SetSkinFlexProps(&PropsH, 0);
 }
 
 void edit_text_cb(WM_MESSAGE * pMsg)
@@ -509,7 +491,7 @@ void drawButton(char * but, int col)
     rect.x0 = 0;
     rect.y0 = 0;
     rect.x1 = 73;
-    rect.y1 = 26;
+    rect.y1 = BUTHEIGHT-2;
     GUI_DrawGradientRoundedV(0, 0, rect.x1, rect.y1, 4, color_map[col].stop, color_map[col].start);
     GUI_SetFont(&GUI_FontRounded16);
     GUI_SetColor(buttonTextColor);

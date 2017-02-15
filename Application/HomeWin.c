@@ -35,28 +35,30 @@
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "HomeWin", ID_HOME_WINDOW, 0, 0, 480, 272, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "COOL", ID_BUTTON_COOL, 384, 233, 75, 28, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "MODE", ID_BUTTON_MODE, 12, 233, 75, 28, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "HOLD", ID_BUTTON_HOLD, 198, 233, 75, 28, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "HEAT", ID_BUTTON_HEAT, 292, 233, 75, 28, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "FAN", ID_BUTTON_FAN, 104, 233, 75, 28, 0, 0x0, 0 },
-
-    { TEXT_CreateIndirect, "In_T_Panel", ID_TEXT_INSIDE_TEMP, 162, 88, 135, 100, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "", ID_BUTTON_UP, 390, 70, 50, 50, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "", ID_BUTTON_DN, 390, 140, 50, 50, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "SETTINGS", ID_BUTTON_SETTINGS, 14, 110, 104, 30, 0, 0x0, 0 },
-    { TEXT_CreateIndirect, "Cool_T_Panel", ID_TEXT_COOLTO, 411, 204, 34, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Heat_T_Panel", ID_TEXT_HEATTO, 319, 204, 36, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "AUTO", ID_TEXT_MODE, 33, 204, 45, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "AUTO", ID_TEXT_FAN, 125, 204, 43, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "ON SCHED", ID_TEXT_HOLD, 200, 204, 100, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "", ID_TEXT_DATE, 10, 0, 140, 50, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "", ID_TEXT_TIME, 160, 0, 150, 50, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Out_T_Temp", ID_TEXT_OUT_TEMP, 386, 7, 72, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "OUSIDE", ID_TEXT_OUTSIDE, 389, 26, 61, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "HUMIDITY", ID_TEXT_HUMIDITY, 165, 176, 160, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "INDOOR", ID_TEXT_INDOOR, 165, 62, 89, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "SET_TO", ID_TEXT_SET_TO, 380, 122, 89, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "OUTSIDE", ID_TEXT_OUTSIDE, 389, 26, 61, 20, 0, 0x64, 0 },
+    { BUTTON_CreateIndirect, "SETTINGS", ID_BUTTON_SETTINGS, 14, 110, 104, BUTHEIGHT, 0, 0x0, 0 },
+    { TEXT_CreateIndirect, "INDOOR", ID_TEXT_INDOOR, 165, 60, 89, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "In_T_Panel", ID_TEXT_INSIDE_TEMP, 162, 86, 135, 100, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "HUMIDITY", ID_TEXT_HUMIDITY, 165, 174, 160, 20, 0, 0x64, 0 },
+
+    { BUTTON_CreateIndirect, "", ID_BUTTON_UP, 380, 62, 60, 60, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "", ID_BUTTON_DN, 380, 139, 60, 60, 0, 0x0, 0 },
+    { TEXT_CreateIndirect, "SET_TO", ID_TEXT_SET_TO, 372, 120, 89, 20, 0, 0x64, 0 },
+
+    { TEXT_CreateIndirect, "AUTO", ID_TEXT_MODE, 33, 202, 45, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "AUTO", ID_TEXT_FAN, 125, 202, 43, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "ON SCHED", ID_TEXT_HOLD, 200, 202, 100, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Cool_T_Panel", ID_TEXT_COOLTO, 411, 202, 34, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Heat_T_Panel", ID_TEXT_HEATTO, 319, 202, 36, 20, 0, 0x64, 0 },
+
+    { BUTTON_CreateIndirect, "COOL", ID_BUTTON_COOL, 384, 233, 75, BUTHEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "MODE", ID_BUTTON_MODE, 12, 233, 75, BUTHEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "HOLD", ID_BUTTON_HOLD, 198, 233, 75, BUTHEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "HEAT", ID_BUTTON_HEAT, 292, 233, 75, BUTHEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "FAN", ID_BUTTON_FAN, 104, 233, 75, BUTHEIGHT, 0, 0x0, 0 },
 
     { TEXT_CreateIndirect, "UPPER", ID_TEXT_UPPER, 355, 54, 89, 80, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "", ID_TEXT_UPPER_TEMP, 351, 70, 89, 80, 0, 0x64, 0 },
@@ -86,6 +88,13 @@ extern GUI_CONST_STORAGE GUI_BITMAP bmdn_small_p;
 extern GUI_CONST_STORAGE GUI_BITMAP bmup_small_p;
 extern GUI_CONST_STORAGE GUI_BITMAP bmsmall_degree;
 extern GUI_CONST_STORAGE GUI_BITMAP bmbig_degree;
+
+extern GUI_CONST_STORAGE GUI_BITMAP bmdn;
+extern GUI_CONST_STORAGE GUI_BITMAP bmdn_p;
+extern GUI_CONST_STORAGE GUI_BITMAP bmup;
+extern GUI_CONST_STORAGE GUI_BITMAP bmup_p;
+
+static char *weekDays[] = {"Sun","Mon","Tue","Wed","Thu","Fri","Sat","Sun"};
 
 static void hold_button_on(WM_MESSAGE * pMsg)
 {
@@ -156,11 +165,11 @@ static void upButton_cb(WM_MESSAGE * pMsg)
     case WM_PAINT:
         if (BUTTON_IsPressed(pMsg->hWin))
         {
-            GUI_DrawBitmap(&bmup_r, 0, 0);
+            GUI_DrawBitmap(&bmup_p, 0, 0);
         }
         else
         {
-            GUI_DrawBitmap(&bmup_nb, 0, 0);
+            GUI_DrawBitmap(&bmup, 0, 0);
         }
         break;
     default:
@@ -176,11 +185,11 @@ static void dnButton_cb(WM_MESSAGE * pMsg)
     case WM_PAINT:
         if (BUTTON_IsPressed(pMsg->hWin))
         {
-            GUI_DrawBitmap(&bmdn_r, 1, 0);
+            GUI_DrawBitmap(&bmdn_p, 1, 0);
         }
         else
         {
-            GUI_DrawBitmap(&bmdn_nb, 0, 0);
+            GUI_DrawBitmap(&bmdn, 0, 0);
         }
         break;
     default:
@@ -370,7 +379,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        GUI_DrawGradientV(0, 0, 480, 50, 0x63b39b, 0x48866c);
+        GUI_DrawGradientV(0, 0, 480, 50, color_map[0].stop, color_map[0].start);
 
         int x = 320;
         int y = 7;
@@ -390,7 +399,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         GUI_DrawVLine(340, 75, 170);
         GUI_DrawVLine(341, 75, 170);
 
-        GUI_DrawGradientV(0, 200, 480, 225, 0x00cacaca, 0x00838383);
+        GUI_DrawGradientV(0, 198, 480, 223, 0x00cacaca, 0x00838383);
 
         GUI_SetColor(0xFFFFFF);
         GUI_SetFont(&GUI_Font16B_1);
@@ -407,7 +416,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         else
         {
             GUI_SetColor(0x808080);
-            GUI_DispStringAt("°", 451,121);
+            GUI_DispStringAt("°", 443,119);
         }
         break;
     case WM_INIT_DIALOG:
@@ -423,7 +432,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetFont(timeText, &GUI_FontRounded22);
         TEXT_SetTextColor(timeText, textColor);
         //
-        sprintf(buffer, "%d  |  %d%%", localTemp, localHumidity);
+        sprintf(buffer, "%d   |  %d%%", localTemp, localHumidity);
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_OUT_TEMP);
         TEXT_SetText(hItem, buffer);
         TEXT_SetFont(hItem, &GUI_FontRounded16);
@@ -564,12 +573,25 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 CreateSettings();
             }
             break;
+        case ID_BUTTON_HEAT:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_CLICKED:
+                color_map[0].start  = 0x00763c;       // 72 134 108
+                color_map[0].middle = 0x009e5a;       // 80 158 129
+                color_map[0].stop   = 0x00b364;       // 99 179 155
+                CreateHomeWin();
+                break;
+            }
+            break;
         case ID_BUTTON_COOL:
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
-                break;
-            case WM_NOTIFICATION_RELEASED:
+                color_map[0].start = 0x48866c;       // 72 134 108
+                color_map[0].middle = 0x509e81;      // 80 158 129
+                color_map[0].stop  = 0x63b39b;       // 99 179 155
+                CreateHomeWin();
                 break;
             }
             break;
@@ -624,15 +646,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 break;
             }
             break;
-        case ID_BUTTON_HEAT:
-            switch(NCode)
-            {
-            case WM_NOTIFICATION_CLICKED:
-                break;
-            case WM_NOTIFICATION_RELEASED:
-                break;
-            }
-            break;
         case ID_BUTTON_FAN:
             switch(NCode)
             {
@@ -654,6 +667,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 
                 GUI_TIMER_SetPeriod(tempTimer_h, 333000);
                 GUI_TIMER_Restart(tempTimer_h);
+                WM_MoveWindow(upButton, -1, 0);
                 if (strcmp(hvacMode, "heat") == 0)
                 {
                     heatToDegrees++;
@@ -690,6 +704,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             case WM_NOTIFICATION_RELEASED:
                 GUI_TIMER_SetPeriod(tempTimer_h, 3000);
                 GUI_TIMER_Restart(tempTimer_h);
+                WM_MoveWindow(upButton, 1, 0);
                 break;
             case WM_NOTIFICATION_MOVED_OUT:
                 GUI_TIMER_SetPeriod(tempTimer_h, 3000);
@@ -705,6 +720,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 GUI_TIMER_Restart(lockTimer_h);
                 GUI_TIMER_SetPeriod(tempTimer_h, 3333000);
                 GUI_TIMER_Restart(tempTimer_h );
+                WM_MoveWindow(dnButton, -1, 0);
                 //
                 if (strcmp(hvacMode, "heat") == 0)
                 {
@@ -742,6 +758,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             case WM_NOTIFICATION_RELEASED:
                 GUI_TIMER_SetPeriod(tempTimer_h, 3000);
                 GUI_TIMER_Restart(tempTimer_h );
+                WM_MoveWindow(dnButton, 1, 0);
                 break;
             case WM_NOTIFICATION_MOVED_OUT:
                 GUI_TIMER_SetPeriod(tempTimer_h, 3000);
@@ -816,9 +833,9 @@ static void tempTimer(GUI_TIMER_MESSAGE * pTM)
 
 static void dateTimer(GUI_TIMER_MESSAGE * pTM)
 {
-#ifdef WIN32
+#ifdef CODEBLOCK
     time_t now = time(NULL);
-    strftime(date_buf, 20, "%a %m/%d/%Y", localtime(&now));
+    strftime(date_buf, 20, "%a %m/%d/%y", localtime(&now));
     if (clockFormat == 24)
     {
         strftime(time_buf, 20, "%H:%M", localtime(&now));
@@ -839,7 +856,7 @@ static void dateTimer(GUI_TIMER_MESSAGE * pTM)
     } else {
         sprintf(time_buf, "%d:%d", tm.Hours, tm.Minutes);
     }
- 	sprintf(date_buf, "%s %02d/%02d/%d", weekDays[dt.WeekDay], dt.Month, dt.Date, dt.Year+2000);
+ 	sprintf(date_buf, "%s %02d/%02d/%d", weekDays[dt.WeekDay], dt.Month, dt.Date, dt.Year);
 #endif
 
     TEXT_SetText(dateText, date_buf);
@@ -863,10 +880,10 @@ WM_HWIN CreateHomeWin(void);
 WM_HWIN CreateHomeWin(void)
 {
     WM_HWIN hWin;
-#ifdef WIN32
+#ifdef CODEBLOCK
     time_t now = time(NULL);
 
-    strftime(date_buf, 20, "%a %m/%d/%Y", localtime(&now));
+    strftime(date_buf, 20, "%a %m/%d/%y", localtime(&now));
     if (clockFormat == 24)
     {
         strftime(time_buf, 20, "%H:%M", localtime(&now));
@@ -886,8 +903,8 @@ WM_HWIN CreateHomeWin(void)
     } else {
         sprintf(time_buf, "%d:%d", tm.Hours, tm.Minutes);
     }
- 	sprintf(date_buf, "%s %02d/%02d/%d", weekDays[dt.WeekDay], dt.Month, dt.Date, dt.Year+2000);
-#endif // WIN32
+ 	sprintf(date_buf, "%s %02d/%02d/%d", weekDays[dt.WeekDay], dt.Month, dt.Date, dt.Year);
+#endif
 
     cool_border = strcmp(hvacMode, "cool") == 0;
     heat_border = strcmp(hvacMode, "heat") == 0;

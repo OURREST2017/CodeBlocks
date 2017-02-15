@@ -26,7 +26,6 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { TEXT_CreateIndirect, "INDOOR", ID_TEXT_INDOOR, 165, 92, 89, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "HUMIDITY", ID_TEXT_HUMIDITY, 165, 206, 160, 20, 0, 0x64, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_WIFI, 320, 0, 50, 50, 0, 0x0, 0 },
-
 };
 
 static int timerTemp;
@@ -80,7 +79,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        GUI_DrawGradientV(0, 0, 480, 50, 0x63b39b, 0x48866c);
+        GUI_DrawGradientV(0, 0, 480, 50, color_map[0].stop, color_map[0].start);
         GUI_DrawBitmap(&bmwatermark, 45,50);
         GUI_SetColor(0x808080);
         GUI_SetPenSize(3);
@@ -160,8 +159,9 @@ static void tempTimer(GUI_TIMER_MESSAGE * pTM)
 
 static void dateTimer(GUI_TIMER_MESSAGE * pTM)
 {
+#ifdef CODEBLOCK
     time_t now = time(NULL);
-    strftime(date_buf, 20, "%a %m/%d/%Y", localtime(&now));
+    strftime(date_buf, 20, "%a %m/%d/%y", localtime(&now));
     if (clockFormat == 24)
     {
         strftime(time_buf, 20, "%H:%M", localtime(&now));
@@ -170,6 +170,21 @@ static void dateTimer(GUI_TIMER_MESSAGE * pTM)
     {
         strftime(time_buf, 20, "%I:%M %p", localtime(&now));
     }
+#else
+    RTC_TimeTypeDef tm;
+    RTC_DateTypeDef dt;
+
+    BSP_RTC_GetTime(&tm);
+    BSP_RTC_GetDate(&dt);
+
+    if (clockFormat == 24) {
+    	sprintf(time_buf, "%d:%d", tm.Hours, tm.Minutes);
+    } else {
+        sprintf(time_buf, "%d:%d", tm.Hours, tm.Minutes);
+    }
+ 	sprintf(date_buf, "%s %02d/%02d/%d", weekDays[dt.WeekDay], dt.Month, dt.Date, dt.Year);
+#endif
+
     TEXT_SetText(dateText, date_buf);
     TEXT_SetText(timeText, time_buf);
 
@@ -184,9 +199,10 @@ WM_HWIN CreateIdleWin(void);
 WM_HWIN CreateIdleWin(void)
 {
     WM_HWIN hWin;
+#ifdef CODEBLOCK
     time_t now = time(NULL);
 
-    strftime(date_buf, 20, "%a %m/%d/%Y", localtime(&now));
+    strftime(date_buf, 20, "%a %m/%d/%y", localtime(&now));
     if (clockFormat == 24)
     {
         strftime(time_buf, 20, "%H:%M", localtime(&now));
@@ -195,12 +211,23 @@ WM_HWIN CreateIdleWin(void)
     {
         strftime(time_buf, 20, "%I:%M %p", localtime(&now));
     }
+#else
+    RTC_TimeTypeDef tm;
+    BSP_RTC_GetTime(&tm);
+    RTC_DateTypeDef dt;
+    BSP_RTC_GetDate(&dt);
+
+    if (clockFormat == 24) {
+    	sprintf(time_buf, "%d:%d", tm.Hours, tm.Minutes);
+    } else {
+        sprintf(time_buf, "%d:%d", tm.Hours, tm.Minutes);
+    }
+ 	sprintf(date_buf, "%s %02d/%02d/%d", weekDays[dt.WeekDay], dt.Month, dt.Date, dt.Year);
+#endif
 
     if (!tempTimerSet)
     {
         GUI_TIMER_Create(dateTimer, 60000, 0, 0);
-        tempTimer_h = GUI_TIMER_Create(tempTimer, 4000, 0, 0);
-        tempTimerSet = 1;
     }
 
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);

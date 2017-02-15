@@ -27,20 +27,20 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "EDIT SCHEDULE:", ID_TEXT_HEADER, 0, 0, 260, 50, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "", ID_TEXT_TITLE, 270, 0, 280, 50, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "PERIOD", ID_BUTTON_PERIOD, 25, 90, 90, 28, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "START", ID_BUTTON_START, 135, 90, 90, 28, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "STOP", ID_BUTTON_STOP, 245, 90, 90, 28, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_TEMPURATURE, 355, 90, 90, 28, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "PERIOD", ID_BUTTON_PERIOD, 25, 90, 90, BUTHEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "START", ID_BUTTON_START, 135, 90, 90, BUTHEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "STOP", ID_BUTTON_STOP, 245, 90, 90, BUTHEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "TEMP", ID_BUTTON_TEMPURATURE, 355, 90, 90, BUTHEIGHT, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "WAKE", ID_TEXT_WAKE, 31, 60, 83, 23, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_START_TIME, 144, 60, 80, 23, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_STOP_TIME, 251, 62, 81, 22, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "TEMP", ID_TEXT_TEMP_VAR, 363, 63, 80, 20, 0, 0x64, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_UP, 45, 124, 48, 48, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_DN, 45, 168, 48, 48, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 28, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "WEEKDAY", ID_BUTTON_WEEKDAY, 236, 230, 110, 28, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "HELP", ID_BUTTON_HELP, 200, 230, 80, 28, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 375, 230, 80, 28, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "WEEKDAY", ID_BUTTON_WEEKDAY, 236, 230, 110, BUTHEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "HELP", ID_BUTTON_HELP, 200, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 375, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
 };
 
 static WM_HWIN periodButton, startButton, stopButton, tempButton;
@@ -169,7 +169,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        GUI_DrawGradientV(0, 0, 480, 50, 0x63b39b, 0x48866c);
+        GUI_DrawGradientV(0, 0, 480, 50, color_map[0].stop, color_map[0].start);
         GUI_DrawBitmap(&bmwatermark,45,52);
         break;
     case WM_INIT_DIALOG:
@@ -269,7 +269,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_CANCEL:
             switch(NCode)
             {
-            case WM_NOTIFICATION_RELEASED:
+            case WM_NOTIFICATION_CLICKED:
                 GUI_Delay(100);
                 CreateSettingsSchedule();
                 //state = 13;
@@ -279,7 +279,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_HELP:
             switch(NCode)
             {
-            case WM_NOTIFICATION_RELEASED:
+            case WM_NOTIFICATION_CLICKED:
                 GUI_Delay(100);
                 CreateEditScheduleHelp(edit_sched, edit_title);
                 //state = 13;
@@ -309,7 +309,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_WEEKDAY:
             switch(NCode)
             {
-            case WM_NOTIFICATION_RELEASED:
+            case WM_NOTIFICATION_CLICKED:
                 GUI_Delay(100);
                 if (strcmp(edit_title, "weekend") ==  0)
                 {
@@ -324,7 +324,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_PERIOD:
             switch(NCode)
             {
-            case WM_NOTIFICATION_RELEASED:
+            case WM_NOTIFICATION_CLICKED:
                 invalidateButtons(0);
                 break;
             }
@@ -332,7 +332,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_START:
             switch(NCode)
             {
-            case WM_NOTIFICATION_RELEASED:
+            case WM_NOTIFICATION_CLICKED:
                 invalidateButtons(1);
                 break;
             }
@@ -340,7 +340,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_STOP:
             switch(NCode)
             {
-            case WM_NOTIFICATION_RELEASED:
+            case WM_NOTIFICATION_CLICKED:
                 invalidateButtons(2);
                 break;
             }
@@ -348,7 +348,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_TEMPURATURE:
             switch(NCode)
             {
-            case WM_NOTIFICATION_RELEASED:
+            case WM_NOTIFICATION_CLICKED:
                 invalidateButtons(3);
                 break;
             }
@@ -357,8 +357,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
-                break;
-            case WM_NOTIFICATION_RELEASED:
                 switch(period_idx)
                 {
                 case 0:
@@ -406,8 +404,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
-                break;
-            case WM_NOTIFICATION_RELEASED:
                 switch(period_idx)
                 {
                 case 0:

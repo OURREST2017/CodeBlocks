@@ -20,14 +20,14 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "THERMOSTAT LOCATIONS", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 375, 230, 80, 28, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "BACK", ID_BUTTON_BACK, 20, 230, 80, 28, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_ROOM1, 30, 70, 200, 34, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_ROOM2, 30, 120, 200, 34, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_ROOM3, 30, 170, 200, 34, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_ROOM4, 250, 70, 200, 34, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_ROOM5, 250, 120, 200, 34, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_ROOM6, 250, 170, 200, 34, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 375, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "BACK", ID_BUTTON_BACK, 20, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
 };
 /*********************************************************************
 *
@@ -42,7 +42,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        GUI_DrawGradientV(0, 0, 480, 50, 0x63b39b, 0x48866c);
+        GUI_DrawGradientV(0, 0, 480, 50, color_map[0].stop, color_map[0].start);
         GUI_DrawBitmap(&bmwatermark,45,52);
         break;
     case WM_INIT_DIALOG:

@@ -19,16 +19,16 @@
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "SET SCHEDULE", ID_BUTTON_SET_SCHEDULE, 20, 230, 143, 28, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "EDIT", ID_BUTTON_EDIT, 375, 230, 80, 28, 0, 0x0, 0 },
     { TEXT_CreateIndirect,   "SETTINGS:", ID_TEXT_HEADER, 90, 0, 150, 50, 0, 0x64, 0 },
     { TEXT_CreateIndirect,   "", ID_TEXT_TITLE, 250, 0, 200, 50, 0, 0x64, 0 },
     { BUTTON_CreateIndirect, "All Days", ID_BUTTON_ALL_DAYS, 20, 90, 200, 42, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Weekday/Weekend", ID_BUTTON_WEEKEND, 20, 150, 200, 42, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Each Day", ID_BUTTON_EACH_DAY, 255, 90, 200, 42, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Vacation", ID_BUTTON_VACATION, 255, 150, 200, 42, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "HELP", ID_BUTTON_HELP, 200, 230, 80, 28, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_RETURN, 15, 0, 100, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "HELP", ID_BUTTON_HELP, 200, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "SET SCHEDULE", ID_BUTTON_SET_SCHEDULE, 20, 230, 143, BUTHEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "EDIT", ID_BUTTON_EDIT, 375, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
 };
 
 static char schedule[20];
@@ -107,7 +107,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        GUI_DrawGradientV(0, 0, 480, 50, 0x63b39b, 0x48866c);
+        GUI_DrawGradientV(0, 0, 480, 50, color_map[0].stop, color_map[0].start);
         GUI_DrawBitmap(&bmwatermark,45,52);
         break;
     case WM_INIT_DIALOG:
@@ -155,7 +155,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         case ID_BUTTON_RETURN:
             switch(NCode)
             {
-            case WM_NOTIFICATION_CLICKED:
+            case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
                 CreateSettings();
                 //state=4;

@@ -1,8 +1,7 @@
 #include "ranger.h"
 
-#ifndef WIN32
+#ifndef CODEBLOCK
 #include "main.h"
-#include "stm32f4xx_hal.h"
 #include "cmsis_os.h"
 #include "calibration.h"
 
@@ -26,28 +25,34 @@ void MainTask(void)
 {
 	GUI_Init();
 
-#ifndef WIN32
+#ifndef CODEBLOCK
     WM_MULTIBUF_Enable(1);
+    //rtc_configuration();
     RTC_TimeTypeDef tm;
     RTC_DateTypeDef dt;
 
-    tm.Hours = 4;
-    tm.Minutes = 43;
-    tm.DayLightSaving = 1;
-    tm.TimeFormat = 64;
+    BSP_RTC_GetDate(&dt);
 
-    dt.Date = 9;
-    dt.Month = 2;
-    dt.Year = 17;
-    dt.WeekDay = 4;
+    if (dt.Year == 0) {
+		tm.Hours = 4;
+		tm.Minutes = 43;
+		tm.DayLightSaving = 1;
+		tm.TimeFormat = 64;
 
-    BSP_RTC_SetTime(&tm);
-    BSP_RTC_SetDate(&dt);
+		dt.Date = 9;
+		dt.Month = 2;
+		dt.Year = 17;
+		dt.WeekDay = 4;
+
+		BSP_RTC_SetTime(&tm);
+		BSP_RTC_SetDate(&dt);
+		//BSP_BACKUP_SaveParameter(RTC_BKP_DR2,&tm);
+    }
 
 	/* Check for calibration */
     if (CalibrationIsDone() == 0)
     {
-       CalibrationInit();
+      CalibrationInit();
     }
 #endif
 
@@ -64,7 +69,7 @@ void MainTask(void)
     }
     else if (firstTime)
     {
-         lockTimer_h = GUI_TIMER_Create(lockTimer, idleTimeOut, 0, 0);
+       lockTimer_h = GUI_TIMER_Create(lockTimer, idleTimeOut, 0, 0);
        state = 2;
     }
     else
@@ -84,9 +89,9 @@ void MainTask(void)
             state = 0;
             break;
         case 1:
-            // GUI_Delay(100);
             GUI_TIMER_SetPeriod(lockTimer_h, idleTimeOut);
             GUI_TIMER_Restart(lockTimer_h);
+            GUI_Delay(100);
             CreateHomeWin();
             state=0;
             break;
@@ -101,10 +106,9 @@ void MainTask(void)
     }
 }
 
-#ifndef WIN32
+#ifndef CODEBLOCK
 void BSP_GUI_Init(void) {
-
-GUI_Thread_ThreadId = osThreadCreate(osThread(GUI_Thread), NULL);
+    GUI_Thread_ThreadId = osThreadCreate(osThread(GUI_Thread), NULL);
 	/* TODO: add error check */
 }
 #endif

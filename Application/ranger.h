@@ -1,11 +1,18 @@
 #ifndef __MAIN_H
 #define __MAIN_H
 
+//#define CODEBLOCK
+#ifndef CODEBLOCK
+#include "stm32f4xx_hal.h"
+#endif
+
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
 #include <ctype.h>
 #include "DIALOG.h"
+
+#define BUTHEIGHT 32
 
 GUI_TIMER_HANDLE lockTimer_h;
 int idleTimeOut;
@@ -141,7 +148,16 @@ typedef struct hvacConfig_s
     int heatingStages;
 } hvacConfig_s;
 
+typedef struct colors
+{
+    GUI_COLOR start;
+    GUI_COLOR middle;
+    GUI_COLOR stop;
+    char * color;
+} colors;
+
 struct schedules_s selectedSchedule;
+struct colors color_map[3];
 
 int tempTimerSet;
 int upperDegreeLimit;

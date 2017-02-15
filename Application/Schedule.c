@@ -26,11 +26,11 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "COOL TO", ID_BUTTON_COOL_TO, 360, 77, 80, 30, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_UP, 42, 118, 58, 40, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_DOWN, 42, 168, 58, 40, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 15, 229, 80, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "WEEKDAY", ID_BUTTON_WEEKDAY, 188, 230, 80, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 384, 231, 80, 30, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "Edit Schedule for:", ID_TEXT_0, 77, 8, 187, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "WEEKEND", ID_TEXT_1, 257, 9, 119, 20, 0, 0x64, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 15, 229, 80, BUTHEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "WEEKDAY", ID_BUTTON_WEEKDAY, 188, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 384, 231, 80, BUTHEIGHT, 0, 0x0, 0 },
 };
 
 /*********************************************************************
@@ -46,7 +46,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        GUI_DrawGradientV(0, 0, 480, 50, 0x63b39b, 0x48866c);
+        GUI_DrawGradientV(0, 0, 480, 50, color_map[0].stop, color_map[0].start);
         GUI_DrawBitmap(&bmwatermark,45,52);
         break;
     case WM_INIT_DIALOG:

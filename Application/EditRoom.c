@@ -14,11 +14,11 @@
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0,0, 0, 480, 272, 0, 0x0, 0 },
+    { TEXT_CreateIndirect, "EDIT ROOM", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
     { BUTTON_CreateIndirect, "CHANGE\nNAME", ID_BUTTON_CHANGE, 60, 105, 145, 70, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "DELETE\nTHERMOSTAT", ID_BUTTON_DELETE, 250, 105, 145, 70, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 28, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 375, 230, 80, 28, 0, 0x0, 0 },
-    { TEXT_CreateIndirect, "EDIT ROOM", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 375, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
 };
 
 static int cool, room_number;
@@ -36,7 +36,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        GUI_DrawGradientV(0, 0, 480, 50, 0x63b39b, 0x48866c);
+        GUI_DrawGradientV(0, 0, 480, 50, color_map[0].stop, color_map[0].start);
         GUI_DrawBitmap(&bmwatermark,45,52);
         break;
     case WM_INIT_DIALOG:

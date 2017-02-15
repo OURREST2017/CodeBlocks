@@ -21,8 +21,8 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { TEXT_CreateIndirect, "Text", ID_TEXT_2, 0, 129, 200, 30, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_3, 206, 94, 168, 30, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_4, 206, 129, 178, 30, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "RESET", ID_BUTTON_RESET, 20, 230, 80, 28, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 375, 230, 80, 28, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "RESET", ID_BUTTON_RESET, 20, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 375, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
 };
 
 static char customer_text[30], mac_text[30], zip_text[12], crc_text[10], keyboard_text[50];
@@ -41,7 +41,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        GUI_DrawGradientV(0, 0, 480, 50, 0x63b39b, 0x48866c);
+        GUI_DrawGradientV(0, 0, 480, 50, color_map[0].stop, color_map[0].start);
         GUI_DrawBitmap(&bmwatermark,45,52);
         break;
     case WM_INIT_DIALOG:

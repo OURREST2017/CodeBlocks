@@ -28,7 +28,7 @@ void saveConfig()
 
     if ((f = fopen("config_def5.json", "w")) == 0)
     {
-        return 1;
+        return;
     }
 
     fputs("{\n", f);

@@ -368,7 +368,7 @@ void loadConfig()
         }
     }
 
-#ifdef WIN32
+#ifdef CODEBLOCK
     time_t rawtime;
     struct tm *info;
 
@@ -395,11 +395,11 @@ void loadConfig()
     current_day =  dt.Date;
     current_month = dt.Month;
     current_wday = dt.WeekDay;
-    current_dst = dt.daylight;
+    //current_dst = dt.daylight;
 
-    current_hour = tm.Hour;
+    current_hour = tm.Hours;
     current_minute = tm.Minutes;
-    current_ampm = (tm.Hour <= 12) ? 0 : 1;
+    //current_ampm = (tm.Hour <= 12) ? 0 : 1;
 #endif
 
 //        struct tm my_time = { .tm_year=112, // = year 2012
@@ -413,8 +413,8 @@ void loadConfig()
 //    char t[50];
 //    strftime(t, 50, "%A %c", &my_time);
 
-    int far = 20 * 1.8 + 32;
-    int cel = (72 - 32) / 1.8;
+//    int far = 20 * 1.8 + 32;
+//    int cel = (72 - 32) / 1.8;
 
 
 }

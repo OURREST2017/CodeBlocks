@@ -17,8 +17,8 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { TEXT_CreateIndirect, "FAN MODE", ID_TEXT_HEADER, 146, 9, 480, 50, 0, 0x64, 0 },
     { BUTTON_CreateIndirect, "AUTO", ID_BUTTON_AUTO, 129, 130, 80, 30, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "ON", ID_BUTTON_ON, 260, 130, 80, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 21, 225, 80, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 375, 225, 80, 30, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 21, 225, 80, BUTHEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 375, 225, 80, BUTHEIGHT, 0, 0x0, 0 },
 };
 
 static int auto_mode;
@@ -36,7 +36,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        GUI_DrawGradientV(0, 0, 480, 50, 0x63b39b, 0x48866c);
+        GUI_DrawGradientV(0, 0, 480, 50, color_map[0].stop, color_map[0].start);
         GUI_DrawBitmap(&bmwatermark,45,52);
         break;
     case WM_INIT_DIALOG:
