@@ -74,7 +74,7 @@ void MainTask(void)
     }
     else
     {
-        lockTimer_h = GUI_TIMER_Create(lockTimer, idleTimeOut, 0, 0);
+        //lockTimer_h = GUI_TIMER_Create(lockTimer, idleTimeOut, 0, 0);
         state = 1;
     }
     state = 1;
@@ -89,8 +89,8 @@ void MainTask(void)
             state = 0;
             break;
         case 1:
-            GUI_TIMER_SetPeriod(lockTimer_h, idleTimeOut);
-            GUI_TIMER_Restart(lockTimer_h);
+            //GUI_TIMER_SetPeriod(lockTimer_h, idleTimeOut);
+            //GUI_TIMER_Restart(lockTimer_h);
             GUI_Delay(100);
             CreateHomeWin();
             state=0;

@@ -557,8 +557,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
         NCode = pMsg->Data.v;
-        GUI_TIMER_SetPeriod(lockTimer_h, idleTimeOut);
-        GUI_TIMER_Restart(lockTimer_h);
+        //GUI_TIMER_SetPeriod(lockTimer_h, idleTimeOut);
+        //GUI_TIMER_Restart(lockTimer_h);
         switch(Id)
         {
         case ID_BUTTON_SETTINGS:
@@ -567,8 +567,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             case WM_NOTIFICATION_CLICKED:
                 break;
             case WM_NOTIFICATION_RELEASED:
-                GUI_TIMER_SetPeriod(lockTimer_h, 9999999);
-                GUI_TIMER_Restart(lockTimer_h);
+                //GUI_TIMER_SetPeriod(lockTimer_h, 9999999);
+                //GUI_TIMER_Restart(lockTimer_h);
                 GUI_Delay(100);
                 CreateSettings();
             }
@@ -662,8 +662,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
-                GUI_TIMER_SetPeriod(lockTimer_h, idleTimeOut);
-                GUI_TIMER_Restart(lockTimer_h);
+                //GUI_TIMER_SetPeriod(lockTimer_h, idleTimeOut);
+                //GUI_TIMER_Restart(lockTimer_h);
 
                 GUI_TIMER_SetPeriod(tempTimer_h, 333000);
                 GUI_TIMER_Restart(tempTimer_h);
@@ -716,8 +716,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
-                GUI_TIMER_SetPeriod(lockTimer_h, idleTimeOut);
-                GUI_TIMER_Restart(lockTimer_h);
+                //GUI_TIMER_SetPeriod(lockTimer_h, idleTimeOut);
+                //GUI_TIMER_Restart(lockTimer_h);
                 GUI_TIMER_SetPeriod(tempTimer_h, 3333000);
                 GUI_TIMER_Restart(tempTimer_h );
                 WM_MoveWindow(dnButton, -1, 0);
