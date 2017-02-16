@@ -27,16 +27,19 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "EDIT SCHEDULE:", ID_TEXT_HEADER, 0, 0, 260, 50, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "", ID_TEXT_TITLE, 270, 0, 280, 50, 0, 0x64, 0 },
+
     { BUTTON_CreateIndirect, "PERIOD", ID_BUTTON_PERIOD, 25, 90, 90, BUTHEIGHT, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "START", ID_BUTTON_START, 135, 90, 90, BUTHEIGHT, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "STOP", ID_BUTTON_STOP, 245, 90, 90, BUTHEIGHT, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "TEMP", ID_BUTTON_TEMPURATURE, 355, 90, 90, BUTHEIGHT, 0, 0x0, 0 },
+
     { TEXT_CreateIndirect, "WAKE", ID_TEXT_WAKE, 31, 60, 83, 23, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_START_TIME, 144, 60, 80, 23, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_STOP_TIME, 251, 62, 81, 22, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "TEMP", ID_TEXT_TEMP_VAR, 363, 63, 80, 20, 0, 0x64, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_UP, 45, 124, 48, 48, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_DN, 45, 168, 48, 48, 0, 0x0, 0 },
+
     { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "WEEKDAY", ID_BUTTON_WEEKDAY, 236, 230, 110, BUTHEIGHT, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "HELP", ID_BUTTON_HELP, 200, 230, 80, BUTHEIGHT, 0, 0x0, 0 },

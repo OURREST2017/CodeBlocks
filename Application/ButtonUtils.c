@@ -628,8 +628,8 @@ void CreateDecoration(int xSize, int ySize, int LineHeight, WHEEL * pWheel)
     GUI_DrawHLine((ySize / 2) - (LineHeight / 2),     0, xSize - 1);
     GUI_SetColor(0x44000000);
     GUI_DrawHLine((ySize / 2) + (LineHeight / 2) - 1, 0, xSize - 1);
-    GUI_DrawGradientV(1, (ySize / 2) - (LineHeight / 2) + 1, xSize - 2, (ySize / 2) - 1,                    0x88FFFFFF, 0x55AAAAAA);
-    GUI_DrawGradientV(1, (ySize / 2),                        xSize - 2, (ySize / 2) + (LineHeight / 2) - 2, 0xBB000000, 0xBB000000);
+    //GUI_DrawGradientV(1, (ySize / 2) - (LineHeight / 2) + 1, xSize - 2, (ySize / 2) - 1,                    0x88FFFFFF, 0x55AAAAAA);
+    //GUI_DrawGradientV(1, (ySize / 2),                        xSize - 2, (ySize / 2) + (LineHeight / 2) - 2, 0xBB000000, 0xBB000000);
     GUI_MEMDEV_Select(hMemPrev);
     //
     // Store result
@@ -673,24 +673,6 @@ int CreateListWheel(int x, int y, int xSize, int ySize, int Id,
     // Fill WHEEL structure
     pWheel->hWin = hWin;
     return 0;
-}
-
-void _cbBkWheel(WM_MESSAGE * pMsg)
-{
-    WM_HWIN hParent;
-    int     xSize;
-    int     ySize;
-
-    switch (pMsg->MsgId)
-    {
-    case WM_NOTIFY_PARENT:
-        break;
-    case WM_PAINT:
-        break;
-    default:
-
-        WM_DefaultProc(pMsg);
-    }
 }
 
 char * updateTime(char *tm, int dr)
@@ -746,7 +728,7 @@ void scheduleButton(WM_MESSAGE * pMsg, char *nm, int on)
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        drawButton16(nm,90, 26, on, 0);
+        drawButton16(nm,90, BUTHEIGHT, on, 0);
         break;
     default:
         BUTTON_Callback(pMsg);

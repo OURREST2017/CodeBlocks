@@ -15,8 +15,8 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "THERMOSTAT CONTROLS", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "Cooling", ID_BUTTON_COOLING, 175, 103, 160, 32, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Heating", ID_BUTTON_HEATING, 175, 152, 160, 32, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Cooling", ID_BUTTON_COOLING, 120, 103, 240, 40, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Heating", ID_BUTTON_HEATING, 120, 152, 240, 40, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 380, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
 };
