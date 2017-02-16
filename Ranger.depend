@@ -712,86 +712,86 @@
 1483411840 source:c:\users\bob.messer\documents\rest\ranger\application\basicsetup.c
 	"main.h"
 
-1486579571 source:c:\users\bob.messer\documents\rest\ranger\application\clockformat.c
+1487171849 source:c:\users\bob.messer\documents\rest\ranger\application\clockformat.c
 	"ranger.h"
 
-1486579571 source:c:\users\bob.messer\documents\rest\ranger\application\coolingstages.c
+1487171850 source:c:\users\bob.messer\documents\rest\ranger\application\coolingstages.c
 	"ranger.h"
 
-1486579571 source:c:\users\bob.messer\documents\rest\ranger\application\daylightsavingtime.c
+1487171850 source:c:\users\bob.messer\documents\rest\ranger\application\daylightsavingtime.c
 	"ranger.h"
 
-1486596645 source:c:\users\bob.messer\documents\rest\ranger\application\eachday.c
+1487171850 source:c:\users\bob.messer\documents\rest\ranger\application\eachday.c
 	"ranger.h"
 
-1486596587 source:c:\users\bob.messer\documents\rest\ranger\application\editschedule.c
+1487243098 source:c:\users\bob.messer\documents\rest\ranger\application\editschedule.c
 	"ranger.h"
 
 1483579202 source:c:\users\bob.messer\documents\rest\ranger\application\fan.c
 	"main.h"
 
-1486579571 source:c:\users\bob.messer\documents\rest\ranger\application\fancontrol.c
+1487171850 source:c:\users\bob.messer\documents\rest\ranger\application\fancontrol.c
 	"ranger.h"
 
-1486579571 source:c:\users\bob.messer\documents\rest\ranger\application\heatingstages.c
+1487171850 source:c:\users\bob.messer\documents\rest\ranger\application\heatingstages.c
 	"ranger.h"
 
-1486660311 source:c:\users\bob.messer\documents\rest\ranger\application\homewin.c
+1487244749 source:c:\users\bob.messer\documents\rest\ranger\application\homewin.c
 	"ranger.h"
 
-1486579571 source:c:\users\bob.messer\documents\rest\ranger\application\keyboardlockout.c
+1487243098 source:c:\users\bob.messer\documents\rest\ranger\application\keyboardlockout.c
 	"ranger.h"
 
-1486579571 source:c:\users\bob.messer\documents\rest\ranger\application\languages.c
+1487171850 source:c:\users\bob.messer\documents\rest\ranger\application\languages.c
 	"ranger.h"
 
-1486579571 source:c:\users\bob.messer\documents\rest\ranger\application\mode.c
+1487171850 source:c:\users\bob.messer\documents\rest\ranger\application\mode.c
 	"ranger.h"
 
-1486670762 source:c:\users\bob.messer\documents\rest\ranger\application\ranger.c
+1487173549 source:c:\users\bob.messer\documents\rest\ranger\application\ranger.c
 	"ranger.h"
 	"main.h"
-	"stm32f4xx_hal.h"
 	"cmsis_os.h"
 	"calibration.h"
 
-1486579875 source:c:\users\bob.messer\documents\rest\ranger\application\schedule.c
+1487171850 source:c:\users\bob.messer\documents\rest\ranger\application\schedule.c
 	"ranger.h"
 
-1486579838 source:c:\users\bob.messer\documents\rest\ranger\application\scheduleperiods.c
+1487171849 source:c:\users\bob.messer\documents\rest\ranger\application\scheduleperiods.c
 	"ranger.h"
 
-1486579838 source:c:\users\bob.messer\documents\rest\ranger\application\schedulingoptions.c
+1487171849 source:c:\users\bob.messer\documents\rest\ranger\application\schedulingoptions.c
 	"ranger.h"
 
-1486579838 source:c:\users\bob.messer\documents\rest\ranger\application\settings.c
+1487171850 source:c:\users\bob.messer\documents\rest\ranger\application\settings.c
 	"ranger.h"
 
-1486593648 source:c:\users\bob.messer\documents\rest\ranger\application\settingsschedule.c
+1487171850 source:c:\users\bob.messer\documents\rest\ranger\application\settingsschedule.c
 	"ranger.h"
 
-1486579838 source:c:\users\bob.messer\documents\rest\ranger\application\systemschangeover.c
+1487171850 source:c:\users\bob.messer\documents\rest\ranger\application\systemschangeover.c
 	"ranger.h"
 
-1486579838 source:c:\users\bob.messer\documents\rest\ranger\application\systemsetup.c
+1487171850 source:c:\users\bob.messer\documents\rest\ranger\application\systemsetup.c
 	"ranger.h"
 
 1484244268 source:c:\users\bob.messer\documents\rest\ranger\application\systemtype.c
 	"main.h"
 
-1486579838 source:c:\users\bob.messer\documents\rest\ranger\application\tempuraturescale.c
+1487171850 source:c:\users\bob.messer\documents\rest\ranger\application\tempuraturescale.c
 	"ranger.h"
 
-1486579838 source:c:\users\bob.messer\documents\rest\ranger\application\thermostatcontrols.c
+1487243224 source:c:\users\bob.messer\documents\rest\ranger\application\thermostatcontrols.c
 	"ranger.h"
 
-1486579838 source:c:\users\bob.messer\documents\rest\ranger\application\thermostatlocations.c
+1487171850 source:c:\users\bob.messer\documents\rest\ranger\application\thermostatlocations.c
 	"ranger.h"
 
-1486579838 source:c:\users\bob.messer\documents\rest\ranger\application\wifisetup.c
+1487171850 source:c:\users\bob.messer\documents\rest\ranger\application\wifisetup.c
 	"ranger.h"
 
-1486669613 source:c:\users\bob.messer\documents\rest\ranger\application\winmain.c
+1486869786 source:c:\users\bob.messer\documents\rest\ranger\application\winmain.c
+	"ranger.h"
 	<windows.h>
 	"GUI_SIM_Win32.h"
 	"LCD_SIM.h"
@@ -803,7 +803,7 @@
 1472650010 c:\users\bob.messer\documents\rest\ranger\gui\include\lcd_sim.h
 	"LCD.h"
 
-1486579571 source:c:\users\bob.messer\documents\rest\ranger\application\backupheat.c
+1487171628 source:c:\users\bob.messer\documents\rest\ranger\application\backupheat.c
 	"ranger.h"
 
 1472650008 source:c:\users\bob.messer\documents\rest\ranger\config\guiconf.c
@@ -815,31 +815,31 @@
 1472650008 source:c:\users\bob.messer\documents\rest\ranger\config\simconf.c
 	"LCD_SIM.h"
 
-1486579571 source:c:\users\bob.messer\documents\rest\ranger\application\alphakeyboard.c
+1487171849 source:c:\users\bob.messer\documents\rest\ranger\application\alphakeyboard.c
 	"ranger.h"
 
-1486579571 source:c:\users\bob.messer\documents\rest\ranger\application\numerickeyboard.c
+1487171850 source:c:\users\bob.messer\documents\rest\ranger\application\numerickeyboard.c
 	"ranger.h"
 
 1484160654 source:c:\users\bob.messer\documents\rest\ranger\application\colors.c
 	"main.h"
 
-1486669288 source:c:\users\bob.messer\documents\rest\ranger\application\datetime.c
+1487171849 source:c:\users\bob.messer\documents\rest\ranger\application\datetime.c
 	"ranger.h"
 
 1483635998 source:c:\users\bob.messer\documents\rest\ranger\application\screenlock.c
 	"DIALOG.h"
 
-1486578195 source:c:\users\bob.messer\documents\rest\ranger\application\preferences.c
+1487171850 source:c:\users\bob.messer\documents\rest\ranger\application\preferences.c
 	"ranger.h"
 
-1486580261 source:c:\users\bob.messer\documents\rest\ranger\application\screenlockout.c
+1487242752 source:c:\users\bob.messer\documents\rest\ranger\application\screenlockout.c
 	"ranger.h"
 
-1486579838 source:c:\users\bob.messer\documents\rest\ranger\application\profile.c
+1487171850 source:c:\users\bob.messer\documents\rest\ranger\application\profile.c
 	"ranger.h"
 
-1486571319 source:c:\users\bob.messer\documents\rest\ranger\application\buttonutils.c
+1487243136 source:c:\users\bob.messer\documents\rest\ranger\application\buttonutils.c
 	"ranger.h"
 
 1483755922 source:c:\users\bob.messer\documents\rest\ranger\application\dn_s.c
@@ -850,19 +850,19 @@
 	<stdlib.h>
 	"GUI.h"
 
-1486579853 source:c:\users\bob.messer\documents\rest\ranger\application\fanmode.c
+1487171850 source:c:\users\bob.messer\documents\rest\ranger\application\fanmode.c
 	"ranger.h"
 
-1486670792 source:c:\users\bob.messer\documents\rest\ranger\application\loadconfig.c
+1486871874 source:c:\users\bob.messer\documents\rest\ranger\application\loadconfig.c
 	"ranger.h"
 	<stdlib.h>
 	<time.h>
 	"cJSON.h"
 
-1486571655 source:c:\users\bob.messer\documents\rest\ranger\application\roundedfonts.c
+1486571656 source:c:\users\bob.messer\documents\rest\ranger\application\roundedfonts.c
 	"GUI.h"
 
-1483753470 source:c:\users\bob.messer\documents\rest\ranger\application\up.c
+1487183893 source:c:\users\bob.messer\documents\rest\ranger\application\up.c
 	<stdlib.h>
 	"GUI.h"
 
@@ -890,14 +890,14 @@
 	<stdlib.h>
 	"DIALOG.h"
 
-1486579571 source:c:\users\bob.messer\documents\rest\ranger\application\editroom.c
+1487171850 source:c:\users\bob.messer\documents\rest\ranger\application\editroom.c
 	"ranger.h"
 
 1484014304 source:c:\users\bob.messer\documents\rest\ranger\application\watermark.c
 	<stdlib.h>
 	"GUI.h"
 
-1486579571 source:c:\users\bob.messer\documents\rest\ranger\application\deletethermo.c
+1487171850 source:c:\users\bob.messer\documents\rest\ranger\application\deletethermo.c
 	"ranger.h"
 
 1484173621 source:c:\users\bob.messer\documents\rest\ranger\application\colors_bw.c
@@ -916,16 +916,16 @@
 
 1484222542 c:\users\bob.messer\documents\rest\ranger\application\cjson.h
 
-1486579838 source:c:\users\bob.messer\documents\rest\ranger\application\wifidisconnect.c
+1487171850 source:c:\users\bob.messer\documents\rest\ranger\application\wifidisconnect.c
 	"ranger.h"
 
 1484255878 source:c:\users\bob.messer\documents\rest\ranger\application\triacpanelwin.c
 	"main.h"
 
-1486579571 source:c:\users\bob.messer\documents\rest\ranger\application\passfail.c
+1487171850 source:c:\users\bob.messer\documents\rest\ranger\application\passfail.c
 	"ranger.h"
 
-1486579571 source:c:\users\bob.messer\documents\rest\ranger\application\hvactype.c
+1487171850 source:c:\users\bob.messer\documents\rest\ranger\application\hvactype.c
 	"ranger.h"
 
 1484317341 source:c:\users\bob.messer\documents\rest\ranger\application\return.c
@@ -944,7 +944,7 @@
 1484328651 source:c:\users\bob.messer\documents\rest\ranger\application\demi133.c
 	"GUI.h"
 
-1486579838 source:c:\users\bob.messer\documents\rest\ranger\application\schedulehelp.c
+1487171861 source:c:\users\bob.messer\documents\rest\ranger\application\schedulehelp.c
 	"ranger.h"
 
 1484421333 source:c:\users\bob.messer\documents\rest\ranger\application\weekend.c
@@ -954,7 +954,7 @@
 	<stdlib.h>
 	"GUI.h"
 
-1486579838 source:c:\users\bob.messer\documents\rest\ranger\application\wificonnect.c
+1487171850 source:c:\users\bob.messer\documents\rest\ranger\application\wificonnect.c
 	"ranger.h"
 
 1484516048 source:c:\users\bob.messer\documents\rest\ranger\application\listboxcorners.c
@@ -963,7 +963,7 @@
 1484763686 source:c:\users\bob.messer\documents\rest\ranger\application\pear.c
 	"main.h"
 
-1486236046 source:c:\users\bob.messer\documents\rest\ranger\application\buttonresource.c
+1487185676 source:c:\users\bob.messer\documents\rest\ranger\application\buttonresource.c
 	"DIALOG.h"
 
 1484745271 source:c:\users\bob.messer\documents\rest\ranger\application\widget_listwheel.c
@@ -978,7 +978,7 @@
 	<stdlib.h>
 	"GUI.h"
 
-1486579838 source:c:\users\bob.messer\documents\rest\ranger\application\wifipassword.c
+1487171850 source:c:\users\bob.messer\documents\rest\ranger\application\wifipassword.c
 	"ranger.h"
 
 1484858225 source:c:\users\bob.messer\documents\rest\ranger\application\wifi2_green.c
@@ -1005,21 +1005,21 @@
 	<stdlib.h>
 	"GUI.h"
 
-1486571655 source:c:\users\bob.messer\documents\rest\ranger\application\imageresources.c
+1486571656 source:c:\users\bob.messer\documents\rest\ranger\application\imageresources.c
 	"GUI.h"
 	<stdlib.h>
 
-1486579571 source:c:\users\bob.messer\documents\rest\ranger\application\mobilepair.c
+1487171850 source:c:\users\bob.messer\documents\rest\ranger\application\mobilepair.c
 	"ranger.h"
 
-1486579838 source:c:\users\bob.messer\documents\rest\ranger\application\tempuraturelimits.c
+1487171850 source:c:\users\bob.messer\documents\rest\ranger\application\tempuraturelimits.c
 	"ranger.h"
 
 1485200779 source:c:\users\bob.messer\documents\rest\ranger\application\lock.c
 	<stdlib.h>
 	"GUI.h"
 
-1486639586 source:c:\users\bob.messer\documents\rest\ranger\application\triacpanel.c
+1487171850 source:c:\users\bob.messer\documents\rest\ranger\application\triacpanel.c
 	"ranger.h"
 
 1485134580 source:c:\users\bob.messer\documents\rest\ranger\application\jsmn.c
@@ -1028,20 +1028,33 @@
 1485134580 c:\users\bob.messer\documents\rest\ranger\application\jsmn.h
 	<stddef.h>
 
-1486571319 source:c:\users\bob.messer\documents\rest\ranger\application\saveconfig.c
+1487127124 source:c:\users\bob.messer\documents\rest\ranger\application\saveconfig.c
 	"ranger.h"
 	<stdlib.h>
 
-1486579867 source:c:\users\bob.messer\documents\rest\ranger\application\idlewin.c
+1487244816 source:c:\users\bob.messer\documents\rest\ranger\application\idlewin.c
 	"ranger.h"
 
-1486593648 c:\users\bob.messer\documents\rest\ranger\application\ranger.h
+1487242277 c:\users\bob.messer\documents\rest\ranger\application\ranger.h
+	"stm32f4xx_hal.h"
 	<stdio.h>
 	<string.h>
 	<time.h>
 	<ctype.h>
 	"DIALOG.h"
 
-1486579571 source:c:\users\bob.messer\documents\rest\ranger\application\editschedulehelp.c
+1487171849 source:c:\users\bob.messer\documents\rest\ranger\application\editschedulehelp.c
 	"ranger.h"
+
+1487183913 source:c:\users\bob.messer\documents\rest\ranger\application\dn.c
+	<stdlib.h>
+	"GUI.h"
+
+1487184210 source:c:\users\bob.messer\documents\rest\ranger\application\dn_p.c
+	<stdlib.h>
+	"GUI.h"
+
+1487184231 source:c:\users\bob.messer\documents\rest\ranger\application\up_p.c
+	<stdlib.h>
+	"GUI.h"
 

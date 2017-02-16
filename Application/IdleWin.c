@@ -28,7 +28,6 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "", ID_BUTTON_WIFI, 320, 0, 50, 50, 0, 0x0, 0 },
 };
 
-static int timerTemp;
 static GUI_TIMER_HANDLE tempTimer_h;
 
 static WM_HWIN insideTempText;
@@ -147,18 +146,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     }
 }
 
-static void tempTimer(GUI_TIMER_MESSAGE * pTM)
-{
-    char buf[10];
-    sprintf(buf,"%d",insideTemp);
-    TEXT_SetText(insideTempText, buf);
-    TEXT_SetText(textIndoor, "INDOOR");
-    GUI_TIMER_SetPeriod(pTM->hTimer, 4000);
-    GUI_TIMER_Restart(pTM->hTimer);
-}
-
-static void dateTimer(GUI_TIMER_MESSAGE * pTM)
-{
+static void setDateTime() {
 #ifdef CODEBLOCK
     time_t now = time(NULL);
     strftime(date_buf, 20, "%a %m/%d/%y", localtime(&now));
@@ -184,7 +172,11 @@ static void dateTimer(GUI_TIMER_MESSAGE * pTM)
     }
  	sprintf(date_buf, "%s %02d/%02d/%d", weekDays[dt.WeekDay], dt.Month, dt.Date, dt.Year);
 #endif
+}
 
+static void dateTimer(GUI_TIMER_MESSAGE * pTM)
+{
+    setDateTime();
     TEXT_SetText(dateText, date_buf);
     TEXT_SetText(timeText, time_buf);
 
@@ -199,31 +191,8 @@ WM_HWIN CreateIdleWin(void);
 WM_HWIN CreateIdleWin(void)
 {
     WM_HWIN hWin;
-#ifdef CODEBLOCK
-    time_t now = time(NULL);
 
-    strftime(date_buf, 20, "%a %m/%d/%y", localtime(&now));
-    if (clockFormat == 24)
-    {
-        strftime(time_buf, 20, "%H:%M", localtime(&now));
-    }
-    else
-    {
-        strftime(time_buf, 20, "%I:%M %p", localtime(&now));
-    }
-#else
-    RTC_TimeTypeDef tm;
-    BSP_RTC_GetTime(&tm);
-    RTC_DateTypeDef dt;
-    BSP_RTC_GetDate(&dt);
-
-    if (clockFormat == 24) {
-    	sprintf(time_buf, "%d:%d", tm.Hours, tm.Minutes);
-    } else {
-        sprintf(time_buf, "%d:%d", tm.Hours, tm.Minutes);
-    }
- 	sprintf(date_buf, "%s %02d/%02d/%d", weekDays[dt.WeekDay], dt.Month, dt.Date, dt.Year);
-#endif
+    setDateTime();
 
     if (!tempTimerSet)
     {

@@ -831,8 +831,7 @@ static void tempTimer(GUI_TIMER_MESSAGE * pTM)
     GUI_TIMER_Restart(pTM->hTimer);
 }
 
-static void dateTimer(GUI_TIMER_MESSAGE * pTM)
-{
+static void setDateTime() {
 #ifdef CODEBLOCK
     time_t now = time(NULL);
     strftime(date_buf, 20, "%a %m/%d/%y", localtime(&now));
@@ -858,7 +857,11 @@ static void dateTimer(GUI_TIMER_MESSAGE * pTM)
     }
  	sprintf(date_buf, "%s %02d/%02d/%d", weekDays[dt.WeekDay], dt.Month, dt.Date, dt.Year);
 #endif
+}
 
+static void dateTimer(GUI_TIMER_MESSAGE * pTM)
+{
+    setDateTime();
     TEXT_SetText(dateText, date_buf);
     TEXT_SetText(timeText, time_buf);
 
@@ -880,32 +883,7 @@ WM_HWIN CreateHomeWin(void);
 WM_HWIN CreateHomeWin(void)
 {
     WM_HWIN hWin;
-#ifdef CODEBLOCK
-    time_t now = time(NULL);
-
-    strftime(date_buf, 20, "%a %m/%d/%y", localtime(&now));
-    if (clockFormat == 24)
-    {
-        strftime(time_buf, 20, "%H:%M", localtime(&now));
-    }
-    else
-    {
-        strftime(time_buf, 20, "%I:%M %p", localtime(&now));
-    }
-#else
-    RTC_TimeTypeDef tm;
-    BSP_RTC_GetTime(&tm);
-    RTC_DateTypeDef dt;
-    BSP_RTC_GetDate(&dt);
-
-    if (clockFormat == 24) {
-    	sprintf(time_buf, "%d:%d", tm.Hours, tm.Minutes);
-    } else {
-        sprintf(time_buf, "%d:%d", tm.Hours, tm.Minutes);
-    }
- 	sprintf(date_buf, "%s %02d/%02d/%d", weekDays[dt.WeekDay], dt.Month, dt.Date, dt.Year);
-#endif
-
+    setDateTime();
     cool_border = strcmp(hvacMode, "cool") == 0;
     heat_border = strcmp(hvacMode, "heat") == 0;
     holdMode = 0;

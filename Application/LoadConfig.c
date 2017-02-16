@@ -156,6 +156,15 @@ void loadConfig()
         strcpy(zipCode, getStringObject(config_root,"zipCode"));
         testing = getBoolObject(config_root,"testing");
 
+        strcpy(myWifiNetwork, getStringObject(config_root,"myWifiNetwork"));
+
+        strcpy(thermo_rooms[0], getStringObject(config_root,"thermo1"));
+        strcpy(thermo_rooms[1], getStringObject(config_root,"thermo2"));
+        strcpy(thermo_rooms[2], getStringObject(config_root,"thermo3"));
+        strcpy(thermo_rooms[3], getStringObject(config_root,"thermo4"));
+        strcpy(thermo_rooms[4], getStringObject(config_root,"thermo5"));
+        strcpy(thermo_rooms[5], getStringObject(config_root,"thermo6"));
+
         cJSON *hvac = cJSON_GetObjectItem(config_root,"hvacConfig");
 
         hvacConfig.backupHeatingType = cJSON_GetObjectItem(hvac, "backupHeatingType")->valuestring;
