@@ -87,6 +87,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 auto_mode = 0;
                 WM_SetCallback(autoButton, buttonOff22_cb);
                 WM_SetCallback(onButton, buttonOn22_cb);
+                fanOn();
                 break;
             }
             break;
@@ -105,11 +106,11 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 state=1;
                 if (auto_mode)
                 {
-                    strcpy(selectedFanMode, "auto");
+                    strcpy(fanMode, "auto");
                 }
                 else
                 {
-                    strcpy(selectedFanMode, "on");
+                    strcpy(fanMode, "on");
                 }
                 break;
             }
@@ -132,7 +133,7 @@ WM_HWIN CreateFanMode(void)
     WM_HWIN hWin;
 
     auto_mode = 0;
-    if (strcmp(selectedFanMode, "auto") == 0) auto_mode = 1;
+    if (strcmp(fanMode, "auto") == 0) auto_mode = 1;
 
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;

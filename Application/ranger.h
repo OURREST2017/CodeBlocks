@@ -1,7 +1,7 @@
 #ifndef __MAIN_H
 #define __MAIN_H
 
-//#define CODEBLOCK
+#define CODEBLOCK
 #ifndef CODEBLOCK
 #include "stm32f4xx_hal.h"
 #endif
@@ -94,7 +94,7 @@ extern  WM_HWIN CreateAlphaKeyboard(int, char *, char *,char *);
 extern  WM_HWIN CreateEditRoom(int);
 extern  WM_HWIN CreateWifiDisconnect(void);
 extern  WM_HWIN CreatePassFail(char *);
-extern  WM_HWIN CreateTriacPanelWin(void);
+extern  WM_HWIN CreateTriacPanel(void);
 extern  WM_HWIN CreateFanMode(void);
 extern  WM_HWIN CreateEditSchedule(char *, char *);
 extern  WM_HWIN CreateWifiConnect(void);
@@ -184,7 +184,6 @@ int epochTime;
 char  currentScheme[10];
 int statControl;
 int holdMode;
-char selectedFanMode[5];
 char hvacMode[10];
 char language[12];
 int tempuratureScale;

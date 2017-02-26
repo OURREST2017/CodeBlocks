@@ -108,7 +108,6 @@ void loadConfig()
         data=(char*)malloc(len+1);
         fread(data, 1, len, f);
         fclose(f);
-
         config_root = cJSON_Parse(data);
 
         dateTime =  101010101;

@@ -46,7 +46,6 @@ void MainTask(void)
 
 		BSP_RTC_SetTime(&tm);
 		BSP_RTC_SetDate(&dt);
-		//BSP_BACKUP_SaveParameter(RTC_BKP_DR2,&tm);
     }
 
 	/* Check for calibration */
@@ -78,6 +77,7 @@ void MainTask(void)
         state = 1;
     }
     state = 1;
+    int counter = 0;
     while(1)
     {
         switch (state)
@@ -85,7 +85,7 @@ void MainTask(void)
         case 0:
             break;
         case 99:
-           // CreateTriacPanelWin();
+            CreateTriacPanel();
             state = 0;
             break;
         case 1:
@@ -103,6 +103,12 @@ void MainTask(void)
        }
         GUI_Exec();
         GUI_Delay(50);
+#ifdef CODEBLOCK
+        if (counter++ > 100) {
+            controlCode();
+            counter = 0;
+        }
+@endif
     }
 }
 

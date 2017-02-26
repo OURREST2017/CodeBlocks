@@ -31,6 +31,7 @@
 #define ID_TEXT_LOWER_TEMP (GUI_ID_USER + 0x38)
 #define ID_TEXT_UPPER (GUI_ID_USER + 0x39)
 #define ID_TEXT_LOWER (GUI_ID_USER + 0x40)
+#define ID_BUTTON_WIFI    (GUI_ID_USER + 0x41)
 
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
@@ -69,6 +70,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { TEXT_CreateIndirect, "", ID_TEXT_LOWER_TEMP, 351, 142, 89, 80, 0, 0x64, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_LOWER_UP, 432, 132, 36, 36, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_LOWER_DN, 433, 162, 36, 36, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "", ID_BUTTON_WIFI, 320, 0, 50, 50, 0, 0x0, 0 },
 };
 
 static int holdButtonOn = 0, timerTemp;
@@ -303,6 +305,27 @@ static void dnLowerButtonPush_cb(WM_MESSAGE * pMsg)
         break;
     }
 }
+static void wifi_cb(WM_MESSAGE * pMsg)
+{
+    int x = 0;
+    int y = 7;
+    int ys = 35;
+    int xw = 6;
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        GUI_SetColor(0x666666);
+        GUI_FillRect(x+21,(y+=5),x+26,ys);
+        GUI_FillRect(x+14,(y+=5),x+19,ys);
+        GUI_SetColor(0xeeeeee);
+        GUI_FillRect(x+7,(y+=5),x+12,ys);
+        GUI_FillRect(x,(y+=5),x+5,ys);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
 
 static void autoMode(WM_HWIN hWin)
 {
@@ -362,7 +385,6 @@ static void autoMode(WM_HWIN hWin)
 }
 
 WM_HWIN dateText, timeText, textIndoor;
-extern void wifi_cb(WM_MESSAGE *);
 
 /*********************************************************************
 *
@@ -381,16 +403,16 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     case WM_PAINT:
         GUI_DrawGradientV(0, 0, 480, 50, color_map[0].stop, color_map[0].start);
 
-        int x = 320;
-        int y = 7;
-        int ys = 35;
-        int xw = 6;
-        GUI_SetColor(0x666666);
-        GUI_FillRect(x+21,(y+=5),x+26,ys);
-        GUI_FillRect(x+14,(y+=5),x+19,ys);
-        GUI_SetColor(0xeeeeee);
-        GUI_FillRect(x+7,(y+=5),x+12,ys);
-        GUI_FillRect(x,(y+=5),x+5,ys);
+//        int x = 320;
+//        int y = 7;
+//        int ys = 35;
+//        int xw = 6;
+//        GUI_SetColor(0x666666);
+//        GUI_FillRect(x+21,(y+=5),x+26,ys);
+//        GUI_FillRect(x+14,(y+=5),x+19,ys);
+//        GUI_SetColor(0xeeeeee);
+//        GUI_FillRect(x+7,(y+=5),x+12,ys);
+//        GUI_FillRect(x,(y+=5),x+5,ys);
 
         GUI_DrawBitmap(&bmwatermark, 45,52);
         GUI_DrawBitmap(&bmbig_degree, 282,82);
@@ -468,6 +490,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetFont(insideTempText, GUI_FONT_D80);
         TEXT_SetTextColor(insideTempText, 0x00808080);
         //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_WIFI);
+        WM_SetCallback(hItem, wifi_cb);
+
         upButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_UP);
         WM_SetCallback(upButton, upButton_cb);
         //
@@ -561,6 +586,14 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         //GUI_TIMER_Restart(lockTimer_h);
         switch(Id)
         {
+        case ID_BUTTON_WIFI:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_RELEASED:
+                GUI_Delay(100);
+                CreateTriacPanel();
+            }
+            break;
         case ID_BUTTON_SETTINGS:
             switch(NCode)
             {
@@ -831,7 +864,8 @@ static void tempTimer(GUI_TIMER_MESSAGE * pTM)
     GUI_TIMER_Restart(pTM->hTimer);
 }
 
-static void setDateTime() {
+static void setDateTime()
+{
 #ifdef CODEBLOCK
     time_t now = time(NULL);
     strftime(date_buf, 20, "%a %m/%d/%y", localtime(&now));
@@ -850,12 +884,15 @@ static void setDateTime() {
     BSP_RTC_GetTime(&tm);
     BSP_RTC_GetDate(&dt);
 
-    if (clockFormat == 24) {
-    	sprintf(time_buf, "%d:%d", tm.Hours, tm.Minutes);
-    } else {
+    if (clockFormat == 24)
+    {
         sprintf(time_buf, "%d:%d", tm.Hours, tm.Minutes);
     }
- 	sprintf(date_buf, "%s %02d/%02d/%d", weekDays[dt.WeekDay], dt.Month, dt.Date, dt.Year);
+    else
+    {
+        sprintf(time_buf, "%d:%d", tm.Hours, tm.Minutes);
+    }
+    sprintf(date_buf, "%s %02d/%02d/%d", weekDays[dt.WeekDay], dt.Month, dt.Date, dt.Year);
 #endif
 }
 

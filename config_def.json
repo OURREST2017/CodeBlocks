@@ -24,7 +24,7 @@
         "heatingStages": 1,
         "hvacType": "air"
     },
-    "hvacMode": "heat",
+    "hvacMode": "cool",
     "keyboardLock": "unlocked",
     "language": "english",
     "localHumidity": 99,

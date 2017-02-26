@@ -34,6 +34,7 @@ static WM_HWIN insideTempText;
 
 static char date_buf[20];
 static char time_buf[20];
+extern GUI_CONST_STORAGE GUI_BITMAP bmbig_degree;
 
 static int wifiSkin(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo)
 {
@@ -56,7 +57,6 @@ static int wifiSkin(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo)
 }
 
 WM_HWIN dateText, timeText, textIndoor;
-extern void wifi_cb(WM_MESSAGE *);
 
 /*********************************************************************
 *
@@ -79,11 +79,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     {
     case WM_PAINT:
         GUI_DrawGradientV(0, 0, 480, 50, color_map[0].stop, color_map[0].start);
-        GUI_DrawBitmap(&bmwatermark, 45,50);
-        GUI_SetColor(0x808080);
-        GUI_SetPenSize(3);
-        GUI_AA_DrawArc(285,107,6,6,0,360);
-        break;
+        GUI_DrawBitmap(&bmwatermark, 45,52);
+        GUI_DrawBitmap(&bmbig_degree, 282,108);
+       break;
     case WM_INIT_DIALOG:
         hItem = pMsg->hWin;
 
