@@ -1,7 +1,7 @@
 #ifndef __MAIN_H
 #define __MAIN_H
 
-#define CODEBLOCK
+//#define CODEBLOCK
 #ifndef CODEBLOCK
 #include "stm32f4xx_hal.h"
 #endif
