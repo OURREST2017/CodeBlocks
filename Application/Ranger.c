@@ -108,7 +108,7 @@ void MainTask(void)
             controlCode();
             counter = 0;
         }
-@endif
+#endif
     }
 }
 
