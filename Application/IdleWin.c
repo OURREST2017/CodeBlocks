@@ -29,12 +29,14 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 };
 
 static GUI_TIMER_HANDLE tempTimer_h;
+static char *weekDays[] = {"Sun","Mon","Tue","Wed","Thu","Fri","Sat","Sun"};
 
 static WM_HWIN insideTempText;
 
 static char date_buf[20];
 static char time_buf[20];
 extern GUI_CONST_STORAGE GUI_BITMAP bmbig_degree;
+extern GUI_CONST_STORAGE GUI_FONT GUI_FontTahoma129hAA4D;
 
 static int wifiSkin(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo)
 {
@@ -80,7 +82,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     case WM_PAINT:
         GUI_DrawGradientV(0, 0, 480, 50, color_map[0].stop, color_map[0].start);
         GUI_DrawBitmap(&bmwatermark, 45,52);
-        GUI_DrawBitmap(&bmbig_degree, 282,108);
+        GUI_DrawBitmap(&bmbig_degree, 296,108);
        break;
     case WM_INIT_DIALOG:
         hItem = pMsg->hWin;
@@ -114,7 +116,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         sprintf(buffer,"%d",insideTemp);
         insideTempText = WM_GetDialogItem(pMsg->hWin, ID_TEXT_INSIDE_TEMP);
         TEXT_SetText(insideTempText, buffer);
-        TEXT_SetFont(insideTempText, GUI_FONT_D80);
+        TEXT_SetFont(insideTempText, &GUI_FontTahoma129hAA4D);
         TEXT_SetTextColor(insideTempText, 0x00808080);
 //        WM_HideWindow(insideTempText);
 
@@ -164,9 +166,9 @@ static void setDateTime() {
     BSP_RTC_GetDate(&dt);
 
     if (clockFormat == 24) {
-    	sprintf(time_buf, "%d:%d", tm.Hours, tm.Minutes);
+    	sprintf(time_buf, "%d:%02d", tm.Hours, tm.Minutes);
     } else {
-        sprintf(time_buf, "%d:%d", tm.Hours, tm.Minutes);
+        sprintf(time_buf, "%d:%02d", tm.Hours, tm.Minutes);
     }
  	sprintf(date_buf, "%s %02d/%02d/%d", weekDays[dt.WeekDay], dt.Month, dt.Date, dt.Year);
 #endif

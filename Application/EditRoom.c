@@ -43,7 +43,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetTextColor(hItem, 0x00FFFFFF);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        TEXT_SetFont(hItem, GUI_FONT_32B_1);
+        TEXT_SetFont(hItem, HEADER_FONT_BOLD);
         TEXT_SetText(hItem, thermo_rooms[room_number]);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CHANGE);

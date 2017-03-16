@@ -43,7 +43,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     case WM_INIT_DIALOG:
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_0);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        TEXT_SetFont(hItem, GUI_FONT_32B_1);
+        TEXT_SetFont(hItem, HEADER_FONT_BOLD);
         TEXT_SetText(hItem, "CLOCK FORMAT");
         TEXT_SetTextColor(hItem,GUI_MAKE_COLOR(0x00FFFFFF));
         //

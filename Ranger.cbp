@@ -82,12 +82,16 @@
 		<Unit filename="Application/ClockFormat.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="Application/CoolTo.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="Application/CoolingStages.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/DateTime.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="Application/DateTime.c.lw" />
 		<Unit filename="Application/DaylightSavingTime.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -103,7 +107,6 @@
 		<Unit filename="Application/EditSchedule.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Application/EditScheduleHelp c" />
 		<Unit filename="Application/EditScheduleHelp.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -111,6 +114,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/FanMode.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/HeatTo.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/HeatingStages.c">
@@ -132,6 +138,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/Languages.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/LightGreen.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/LoadConfig.c">
@@ -179,6 +188,7 @@
 		<Unit filename="Application/ScreenLockout.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="Application/ScreenLockout.c.lw" />
 		<Unit filename="Application/Settings.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -189,6 +199,36 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/SystemsChangeOver.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/Tahoma129hAA4D.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/Tahoma19hAA4B.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/Tahoma23hAA2.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/Tahoma29hAA2.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/Tahoma33hAA2.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/Tahoma33hAA2_B.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/Tahoma35hAA2.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/Tahoma35hAA2Bold.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/Tahoma35hAA4.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/Tahoma87hAA2.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/TempuratureLimits.c">
@@ -204,6 +244,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/TriacPanel.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/Verdana16hAA4B.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/WifiConnect.c">
@@ -225,7 +268,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/cJSON.h" />
-		<Unit filename="Application/config_def.json" />
+		<Unit filename="Application/hvacControlCode.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="Application/ranger.h" />
 		<Unit filename="Config/GUIConf.c">
 			<Option compilerVar="CC" />

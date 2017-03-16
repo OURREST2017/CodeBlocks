@@ -38,7 +38,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         WINDOW_SetBkColor(hItem, 0x0FFee0C0);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_0);
-        TEXT_SetFont(hItem, GUI_FONT_32B_1);
+        TEXT_SetFont(hItem, HEADER_FONT_BOLD);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         sprintf(buf, "PASS/FAIL: %s", gpioPin);

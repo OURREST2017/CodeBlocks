@@ -62,8 +62,8 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { TEXT_CreateIndirect, "TIME", ID_TEXT_SLEEP_TIME, 144, 185, 200, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "TEMP", ID_TEXT_SLEEP_TEMP, 363, 185, 80, 20, 0, 0x64, 0 },
 
-    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_CANCEL, 20, 230, 80, 28, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "EDIT", ID_BUTTON_EDIT, 375, 230, 80, 28, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_CANCEL, 20, 230, 80, 32, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "EDIT", ID_BUTTON_EDIT, 375, 230, 80, 32, 0, 0x0, 0 },
 };
 
 static int selected_day, upperDegrees, lowerDegrees;
@@ -78,6 +78,11 @@ static struct periods_s periods[7];
 static char *periods_text[] = {"wake","leave","return","sleep"};
 static char *days_text[] = {"monday","tuesday","wednesday","thursday","friday","saturday","sunday"};
 
+extern GUI_CONST_STORAGE GUI_FONT GUI_FontTahoma33hAA2;
+extern GUI_CONST_STORAGE GUI_FONT GUI_FontTahoma33hAA2_B;
+extern GUI_CONST_STORAGE GUI_FONT GUI_FontTahoma23hAA2;
+extern GUI_CONST_STORAGE GUI_FONT GUI_FontLucidaSans23hAA4B;
+
 static int week_days[] =
 {
     ID_TEXT_MONDAY,ID_TEXT_TUESDAY,ID_TEXT_WEDNESDAY,
@@ -91,10 +96,10 @@ static void resetFonts(WM_HWIN win, int id)
     for (i=0; i<7; i++)
     {
         txt = WM_GetDialogItem(win, week_days[i]);
-        TEXT_SetFont(txt, GUI_FONT_32_1);
+        TEXT_SetFont(txt, &GUI_FontTahoma33hAA2);
     }
     txt = WM_GetDialogItem(win, id);
-    TEXT_SetFont(txt, GUI_FONT_32B_1);
+    TEXT_SetFont(txt, &GUI_FontTahoma33hAA2_B);
 }
 
 static struct periods_s getPeriod(char * d)
@@ -166,7 +171,6 @@ static char * getTimes(int st, int et, int m)
     }
     return buf;
 }
-
 /*********************************************************************
 *
 *       _cbDialog
@@ -190,14 +194,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         GUI_DrawHLine(92, 0, 479);
         GUI_DrawHLine(132, 0, 479);
         GUI_DrawHLine(172, 0, 479);
-
-        GUI_SetColor(0x808080);
-        GUI_SetFont(&GUI_Font20B_1);
-        GUI_SetTextMode(GUI_TM_TRANS);
-        GUI_DispStringAt("°", 412,63);
-        GUI_DispStringAt("°", 412,103);
-        GUI_DispStringAt("°", 412,143);
-        GUI_DispStringAt("°", 412,183);
         break;
     case WM_INIT_DIALOG:
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_MONDAY);
@@ -205,33 +201,33 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         if (selected_day == 0)
         {
-            TEXT_SetFont(hItem, GUI_FONT_32B_1);
+            TEXT_SetFont(hItem, &GUI_FontTahoma33hAA2_B);
         }
         else
         {
-            TEXT_SetFont(hItem, GUI_FONT_32_1);
+            TEXT_SetFont(hItem, &GUI_FontTahoma33hAA2);
         }
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_TUESDAY);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         if (selected_day == 1)
         {
-            TEXT_SetFont(hItem, GUI_FONT_32B_1);
+            TEXT_SetFont(hItem, &GUI_FontTahoma33hAA2_B);
         }
         else
         {
-            TEXT_SetFont(hItem, GUI_FONT_32_1);
+            TEXT_SetFont(hItem, &GUI_FontTahoma33hAA2);
         }
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_WEDNESDAY);
         if (selected_day == 2)
         {
-            TEXT_SetFont(hItem, GUI_FONT_32B_1);
+            TEXT_SetFont(hItem, &GUI_FontTahoma33hAA2_B);
         }
         else
         {
-            TEXT_SetFont(hItem, GUI_FONT_32_1);
+            TEXT_SetFont(hItem, &GUI_FontTahoma33hAA2);
         }
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
@@ -239,11 +235,11 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_THURSDAY);
         if (selected_day == 3)
         {
-            TEXT_SetFont(hItem, GUI_FONT_32B_1);
+            TEXT_SetFont(hItem, &GUI_FontTahoma33hAA2_B);
         }
         else
         {
-            TEXT_SetFont(hItem, GUI_FONT_32_1);
+            TEXT_SetFont(hItem, &GUI_FontTahoma33hAA2);
         }
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
@@ -251,11 +247,11 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_FRIDAY);
         if (selected_day == 4)
         {
-            TEXT_SetFont(hItem, GUI_FONT_32B_1);
+            TEXT_SetFont(hItem, &GUI_FontTahoma33hAA2_B);
         }
         else
         {
-            TEXT_SetFont(hItem, GUI_FONT_32_1);
+            TEXT_SetFont(hItem, &GUI_FontTahoma33hAA2);
         }
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
@@ -263,11 +259,11 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SATURDAY);
         if (selected_day == 5)
         {
-            TEXT_SetFont(hItem, GUI_FONT_32B_1);
+            TEXT_SetFont(hItem, &GUI_FontTahoma33hAA2_B);
         }
         else
         {
-            TEXT_SetFont(hItem, GUI_FONT_32_1);
+            TEXT_SetFont(hItem, &GUI_FontTahoma33hAA2);
         }
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
@@ -276,72 +272,72 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         if (selected_day == 6)
         {
-            TEXT_SetFont(hItem, GUI_FONT_32B_1);
+            TEXT_SetFont(hItem, &GUI_FontTahoma33hAA2_B);
         }
         else
         {
-            TEXT_SetFont(hItem, GUI_FONT_32_1);
+            TEXT_SetFont(hItem, &GUI_FontTahoma33hAA2);
         }
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_WAKE);
-        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetFont(hItem, &GUI_FontTahoma23hAA2);
         TEXT_SetTextAlign(hItem, GUI_TA_LEFT);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         TEXT_SetText(hItem, toup(getPeriod(periods_text[0]).label));
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_WAKE_TIME);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetFont(hItem, &GUI_FontTahoma23hAA2);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_WAKE_TEMP);
-        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetFont(hItem, &GUI_FontTahoma23hAA2);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_LEAVE);
-        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetFont(hItem, &GUI_FontTahoma23hAA2);
         TEXT_SetTextAlign(hItem, GUI_TA_LEFT);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_LEAVE_TIME);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetFont(hItem, &GUI_FontTahoma23hAA2);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_LEAVE_TEMP);
-        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetFont(hItem, &GUI_FontTahoma23hAA2);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_RETURN);
-        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetFont(hItem, &GUI_FontTahoma23hAA2);
         TEXT_SetTextAlign(hItem, GUI_TA_LEFT);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_RETURN_TIME);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetFont(hItem, &GUI_FontTahoma23hAA2);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_RETURN_TEMP);
-        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetFont(hItem, &GUI_FontTahoma23hAA2);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SLEEP);
-        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetFont(hItem, &GUI_FontTahoma23hAA2);
         TEXT_SetTextAlign(hItem, GUI_TA_LEFT);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SLEEP_TIME);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetFont(hItem, &GUI_FontTahoma23hAA2);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SLEEP_TEMP);
-        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetFont(hItem, &GUI_FontTahoma23hAA2);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00808080));
         //
@@ -481,7 +477,7 @@ static void setDays(WM_HWIN *hWin, int d)
                                 getPeriod(periods_text[0]).stopMinutes, metric));
 
     hItem = WM_GetDialogItem(hWin, ID_TEXT_WAKE_TEMP);
-    sprintf(buf,"%d", getPeriod(periods_text[0]).tempurature);
+    sprintf(buf,"%d°", getPeriod(periods_text[0]).tempurature);
     TEXT_SetText(hItem, buf);
 
 
@@ -493,7 +489,7 @@ static void setDays(WM_HWIN *hWin, int d)
                                 getPeriod(periods_text[1]).stopMinutes, metric));
 
     hItem = WM_GetDialogItem(hWin, ID_TEXT_LEAVE_TEMP);
-    sprintf(buf,"%d", getPeriod(periods_text[1]).tempurature);
+    sprintf(buf,"%d°", getPeriod(periods_text[1]).tempurature);
     TEXT_SetText(hItem, buf);
 
 
@@ -517,7 +513,7 @@ static void setDays(WM_HWIN *hWin, int d)
                                 getPeriod(periods_text[3]).stopMinutes, metric));
 
     hItem = WM_GetDialogItem(hWin, ID_TEXT_SLEEP_TEMP);
-    sprintf(buf,"%d", getPeriod(periods_text[3]).tempurature);
+    sprintf(buf,"%d°", getPeriod(periods_text[3]).tempurature);
     TEXT_SetText(hItem, buf);
 }
 /*********************************************************************

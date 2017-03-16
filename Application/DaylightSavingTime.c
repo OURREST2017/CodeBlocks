@@ -14,7 +14,7 @@
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
-    { TEXT_CreateIndirect, "DAYLIGHT SAVING TM", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "DAYLIGHT SAVING TIME", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
     { BUTTON_CreateIndirect, "On", ID_BUTTON_ON, 120, 90, 240, 40, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Off", ID_BUTTON_OFF, 120, 145, 240, 40, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
@@ -42,7 +42,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         break;
     case WM_INIT_DIALOG:
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
-        TEXT_SetFont(hItem, GUI_FONT_32B_1);
+        TEXT_SetFont(hItem, HEADER_FONT_BOLD);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         //

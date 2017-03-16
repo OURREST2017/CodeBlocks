@@ -10,10 +10,14 @@ void initColors()
 //    color_map[0].middle = 0x009e5a;       // 80 158 129
 //    color_map[0].stop   = 0x00b364;       // 99 179 155
 //
-    color_map[0].start = 0x48866c;
-    color_map[0].middle = 0x509e81;
-    color_map[0].stop  = 0x63b39b;
+//    color_map[0].start = 0x48866c;
+//    color_map[0].middle = 0x509e81;
+//    color_map[0].stop  = 0x63b39b;
 //
+    color_map[0].start  = 0x00763c;       // 72 134 108
+    color_map[0].middle = 0x009e5a;       // 80 158 129
+    color_map[0].stop   = 0x00b364;       // 99 179 155
+
     color_map[0].color = "green";
 
 //    18 200 70      12c850
@@ -29,41 +33,6 @@ void initColors()
     color_map[2].middle = 0xdfcddb;
     color_map[2].stop  = 0xdfdfdf;
     color_map[2].color = "gray";
-}
-
-void edit_text_cb(WM_MESSAGE * pMsg)
-{
-    int xw,yw;
-    char   nm[6];
-    WM_HWIN win = pMsg->hWin;
-    GUI_RECT r;
-    WIDGET *w;
-    w = BUTTON_GetpWidget(win);
-    r = w->Win.Rect;
-    BUTTON_GetText(win, nm, 6);
-    xw = (r.x1-r.x0);
-    yw = r.y1-r.y0;
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        GUI_SetTextMode(GUI_TM_TRANS);
-        GUI_SetPenSize(3);
-        GUI_SetColor(0xe2e2e2);
-        GUI_AA_FillRoundedRect(4,4,xw-4,yw-2,4);
-        GUI_SetColor(0xaaaaaa);
-        GUI_AA_DrawRoundedRect(2,2,xw-2,yw-2, 10);
-        GUI_SetColor(GUI_DARKGRAY);
-        GUI_SetFont(GUI_FONT_D24X32);
-        r.x0 = 0;
-        r.y0 = 0;
-        r.x1 = xw;
-        r.y1 = yw;
-        GUI_DispStringInRect(nm, &r, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
 }
 
 void buttonOn16_cb(WM_MESSAGE * pMsg)
@@ -283,12 +252,15 @@ void drawButton16(char * but, int w, int h, int col, int bor)
         GUI_DrawGradientRoundedV(0, 0, rect.x1, rect.y1, 4, color_map[2].stop, color_map[2].start);
     }
     GUI_SetFont(&GUI_FontRounded16);
-    GUI_SetColor((col == 2) ? GUI_BLACK : buttonTextColor);
+    //GUI_SetColor((col == 2) ? GUI_BLACK : buttonTextColor);
+    if (col == 0) GUI_SetColor(0x666666);
+    if (col == 1) GUI_SetColor(buttonTextColor);
+    if (col == 2) GUI_SetColor(GUI_BLACK);
     GUI_SetTextMode(GUI_TM_TRANS);
     GUI_DispStringInRect(but, &rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
-    GUI_SetColor(0x509e81);
-    GUI_SetPenSize(2);
-    if (bor) GUI_AA_DrawRoundedRect(0, 0, rect.x1, rect.y1, 8);
+    //GUI_SetColor(0x509e81);
+    //GUI_SetPenSize(2);
+    //if (bor) GUI_AA_DrawRoundedRect(0, 0, rect.x1, rect.y1, 8);
 }
 
 void drawButtonOff16(char * but, int w, int h, int col)
@@ -303,8 +275,8 @@ void drawButtonOff16(char * but, int w, int h, int col)
     GUI_SetColor((col == 2) ? GUI_BLACK : buttonTextColor);
     GUI_SetTextMode(GUI_TM_TRANS);
     GUI_DispStringInRect(but, &rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
-    GUI_SetColor(0x00cccccc);
-    GUI_SetPenSize(2);
+    //GUI_SetColor(0x00cccccc);
+    //GUI_SetPenSize(2);
     //GUI_AA_DrawRoundedRect(0, 0, rect.x1, rect.y1, 6);
 }
 
@@ -651,7 +623,7 @@ int CreateListWheel(int x, int y, int xSize, int ySize, int Id,
     LISTWHEEL_SetFont(hWin, pFont);
     LISTWHEEL_SetTextAlign(hWin, TextAlign);
     LISTWHEEL_SetSnapPosition(hWin, (ySize - LineHeight) / 2);
-    LISTWHEEL_SetOwnerDraw(hWin, OwnerDraw);
+    //LISTWHEEL_SetOwnerDraw(hWin, OwnerDraw);
     LISTWHEEL_SetUserData(hWin, &pWheel, sizeof(pWheel));
     LISTWHEEL_SetLineHeight(hWin, LineHeight);
     LISTWHEEL_SetTextColor(hWin, LISTWHEEL_CI_SEL, 0x008800);
@@ -669,7 +641,7 @@ int CreateListWheel(int x, int y, int xSize, int ySize, int Id,
     LISTWHEEL_SetSel(hWin, pos);
 
     // Create overlay devices
-    CreateDecoration(xSize, ySize, LineHeight, pWheel);
+    //CreateDecoration(xSize, ySize, LineHeight, pWheel);
     // Fill WHEEL structure
     pWheel->hWin = hWin;
     return 0;
@@ -736,4 +708,58 @@ void scheduleButton(WM_MESSAGE * pMsg, char *nm, int on)
     }
 }
 
+int returnSkin(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo)
+{
+    GUI_POINT poly[] =
+    {
+        {0,25},{15,15},{15,21},{35,21},{35,29},{15,29},{15,35}
+    };
+    switch (pDrawItemInfo->Cmd)
+    {
+    case WIDGET_ITEM_DRAW_BACKGROUND:
+        GUI_SetColor(GUI_WHITE);
+        GUI_AA_FillPolygon(poly, 7,0,0);
+        break;
+    default:
+        return BUTTON_DrawSkinFlex(pDrawItemInfo);
+    }
+}
+
+int degreesBigSkin(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo)
+{
+    char nm[20];
+    switch (pDrawItemInfo->Cmd)
+    {
+    case WIDGET_ITEM_DRAW_BACKGROUND:
+        BUTTON_GetText(pDrawItemInfo->hWin, nm, 20);
+        if (strcmp(nm, "cool-to") == 0)
+        {
+            GUI_SetColor(GUI_WHITE);
+            GUI_SetPenSize(1);
+            GUI_AA_DrawArc(3,3,2,2,0,360);
+        }
+        else if (strcmp(nm, "heat-to") == 0)
+        {
+            GUI_SetColor(GUI_WHITE);
+            GUI_SetPenSize(1);
+            GUI_AA_DrawArc(3,3,2,2,0,360);
+        }
+        else if (strcmp(nm, "set-to") == 0)
+        {
+            GUI_SetColor(0x808080);
+            GUI_SetPenSize(1);
+            GUI_AA_DrawArc(3,3,2,2,0,360);
+        }
+        else if (strcmp(nm, "inside") == 0)
+        {
+            GUI_SetColor(0x808080);
+            GUI_SetPenSize(3);
+            GUI_AA_DrawArc(7,7,6,6,0,360);
+        }
+        BUTTON_SetText(pDrawItemInfo->hWin,"");
+       break;
+    default:
+        return BUTTON_DrawSkinFlex(pDrawItemInfo);
+    }
+}
 

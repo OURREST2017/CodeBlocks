@@ -114,7 +114,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetTextColor(hItem, 0x00FFFFFF);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        TEXT_SetFont(hItem, GUI_FONT_32B_1);
+        TEXT_SetFont(hItem, HEADER_FONT_BOLD);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_OFF);
         WM_SetCallback(hItem, off_cb);
@@ -209,6 +209,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 heat = 0;
                 eheat = 0;
                 invalidateButtons( pMsg->hWin);
+                if (autob)strcpy(hvacMode, "auto");
+                GUI_Delay(100);
+                CreateTempuratureLimits();
                 break;
             }
             break;

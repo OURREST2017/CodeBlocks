@@ -117,7 +117,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         BUTTON_SetSkinFlexProps(&Props, BUTTON_SKINFLEX_PI_PRESSED);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
-        TEXT_SetFont(hItem, GUI_FONT_32B_1);
+        TEXT_SetFont(hItem, HEADER_FONT_BOLD);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         sprintf(buf, "EDIT: %s", edit_title);
@@ -136,7 +136,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         {
             hItem = WM_GetDialogItem(pMsg->hWin, i);
             BUTTON_SetFont(hItem, &GUI_FontRounded22);
-            if (i > 2061)
+            if (i > 2061 && strcmp(edit_title, "Zip Code") == 0)
             {
                 WM_DisableWindow(hItem);
                 WM_SetCallback(hItem, keys_disable_cb);

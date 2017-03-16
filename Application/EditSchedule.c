@@ -51,6 +51,7 @@ static WM_HWIN period_text, start_text, stop_text, temp_text;
 static WM_HWIN upButton, dnButton, weekdayButton;
 
 static int period_idx, tempurature, period, selected_period;
+extern GUI_CONST_STORAGE GUI_FONT GUI_FontTahoma23hAA2;
 
 static struct periods_s getPeriod(char * p);
 static int getPeriodInt(char * p);
@@ -61,6 +62,8 @@ static char *periods_text[] = {"wake","leave","return","sleep"};
 static char edit_title[20], edit_sched[20];
 
 static int period_on, start_on, stop_on, temp_on;
+extern GUI_CONST_STORAGE GUI_BITMAP bmup_s_lg;
+extern GUI_CONST_STORAGE GUI_BITMAP bmdn_s_lg;
 
 static void periodButton_cb(WM_MESSAGE * pMsg)
 {
@@ -93,7 +96,7 @@ static void upButton_cb(WM_MESSAGE * pMsg)
         }
         else
         {
-            GUI_DrawBitmap(&bmup_nb, 0, 0);
+            GUI_DrawBitmap(&bmup_s_lg, 0, 0);
         }
         break;
     default:
@@ -113,7 +116,7 @@ static void dnButton_cb(WM_MESSAGE * pMsg)
         }
         else
         {
-            GUI_DrawBitmap(&bmdn_nb, 0, 0);
+            GUI_DrawBitmap(&bmdn_s_lg, 0, 0);
         }
         break;
     default:
@@ -177,13 +180,13 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         break;
     case WM_INIT_DIALOG:
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
-        TEXT_SetFont(hItem, GUI_FONT_32_1);
+        TEXT_SetFont(hItem, HEADER_FONT);
         TEXT_SetTextAlign(hItem, GUI_TA_RIGHT | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_TITLE);
         TEXT_SetTextAlign(hItem, GUI_TA_LEFT | GUI_TA_VCENTER);
-        TEXT_SetFont(hItem, GUI_FONT_32B_1);
+        TEXT_SetFont(hItem, HEADER_FONT_BOLD);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         TEXT_SetText(hItem, toup(edit_title));
         //
@@ -200,25 +203,25 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         WM_SetCallback(tempButton, tempButton_cb);
         //
         period_text = WM_GetDialogItem(pMsg->hWin, ID_TEXT_WAKE);
-        TEXT_SetFont(period_text, GUI_FONT_20B_1);
+        TEXT_SetFont(period_text, &GUI_FontTahoma23hAA2);
         TEXT_SetTextAlign(period_text, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(period_text, GUI_MAKE_COLOR(0x00808080));
         TEXT_SetText(period_text, toup(getPeriod(periods_text[0]).label));
         //
         start_text = WM_GetDialogItem(pMsg->hWin, ID_TEXT_START_TIME);
         TEXT_SetTextAlign(start_text, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        TEXT_SetFont(start_text, GUI_FONT_20B_1);
+        TEXT_SetFont(start_text, &GUI_FontTahoma23hAA2);
         TEXT_SetText(start_text, getTime(getPeriod(periods_text[0]).startMinutes));
         TEXT_SetTextColor(start_text, GUI_MAKE_COLOR(0x00808080));
         //
         stop_text = WM_GetDialogItem(pMsg->hWin, ID_TEXT_STOP_TIME);
-        TEXT_SetFont(stop_text, GUI_FONT_20B_1);
+        TEXT_SetFont(stop_text, &GUI_FontTahoma23hAA2);
         TEXT_SetTextAlign(stop_text, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetText(stop_text,  getTime(getPeriod(periods_text[0]).stopMinutes));
         TEXT_SetTextColor(stop_text, GUI_MAKE_COLOR(0x00808080));
         //
         temp_text = WM_GetDialogItem(pMsg->hWin, ID_TEXT_TEMP_VAR);
-        TEXT_SetFont(temp_text, GUI_FONT_20B_1);
+        TEXT_SetFont(temp_text, &GUI_FontTahoma23hAA2);
         TEXT_SetTextAlign(temp_text, GUI_TA_HCENTER | GUI_TA_VCENTER);
         sprintf(buf, "%d°",  getPeriod(periods_text[0]).tempurature);
         TEXT_SetText(temp_text, buf);

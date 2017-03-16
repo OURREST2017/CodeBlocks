@@ -4,8 +4,14 @@
 #define ID_BUTTON_CANCEL (GUI_ID_USER + 0x05)
 #define ID_BUTTON_SAVE (GUI_ID_USER + 0x06)
 #define ID_TEXT_HEADER (GUI_ID_USER + 0x08)
-#define ID_TEXT_UPPER (GUI_ID_USER + 0x39)
-#define ID_TEXT_LOWER (GUI_ID_USER + 0x40)
+#define ID_TEXT_UPPER (GUI_ID_USER + 0x09)
+#define ID_TEXT_LOWER (GUI_ID_USER + 0x0A)
+#define ID_BUTTON_LOWER_UP  (GUI_ID_USER + 0x0B)
+#define ID_BUTTON_LOWER_DN  (GUI_ID_USER + 0x0C)
+#define ID_BUTTON_UPPER_UP  (GUI_ID_USER + 0x0D)
+#define ID_BUTTON_UPPER_DN  (GUI_ID_USER + 0x0E)
+#define ID_TEXT_LOWER_TXT  (GUI_ID_USER + 0x10)
+#define ID_TEXT_UPPER_TXT  (GUI_ID_USER + 0x11)
 
 /*********************************************************************
 *
@@ -14,82 +20,136 @@
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
-    { TEXT_CreateIndirect, "TEMPUTATURE LIMITS", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "UPPER LIMIT", ID_TEXT_UPPER, 280, 56, 150, 80, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "LOWER LIMIT", ID_TEXT_LOWER, 80, 56, 160, 80, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "AUTO TEMPURATURE SETTINGS", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "COOL\nTO", ID_TEXT_LOWER, 346, 110, 100, 80, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "HEAT\nTO", ID_TEXT_UPPER, 38, 110, 100, 80, 0, 0x64, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_LOWER_UP, 287, 62, 60, 60, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_LOWER_DN, 287, 194, 60, 60, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_UPPER_UP, 145, 62, 60, 60, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_UPPER_DN, 145, 194, 60, 60, 0, 0x0, 0 },
+    { TEXT_CreateIndirect, "", ID_TEXT_UPPER_TXT, 123, 110, 94, 80, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "", ID_TEXT_LOWER_TXT, 263, 110, 94, 80, 0, 0x64, 0 },
+
     { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 375, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
 };
 
 static WM_HWIN upUpperButton, dnUpperButton, upLowerButton, dnLowerButton;
-int upperDegree, lowerDegree;
+static int upperDegree, lowerDegree;
 
-extern GUI_CONST_STORAGE GUI_BITMAP bmup_g;
-extern GUI_CONST_STORAGE GUI_BITMAP bmdn_g;
-extern void CreateDecoration(int,int,int, WHEEL *);
-extern int OwnerDraw(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo);
-static WHEEL code[2];
-char temps[35][10] = {};
+extern GUI_CONST_STORAGE GUI_BITMAP bmup_s_lg;
+extern GUI_CONST_STORAGE GUI_BITMAP bmdn_s_lg;
 
-static int CreateListWheel(int x, int y, int xSize, int ySize, int Id, int TextAlign,
-                           WM_HWIN hParent, WHEEL * pWheel, GUI_FONT *pFont, int lh, int pos)
+extern GUI_CONST_STORAGE GUI_BITMAP bmbut_up_blue;
+extern GUI_CONST_STORAGE GUI_BITMAP bmbut_dn_blue;
+extern GUI_CONST_STORAGE GUI_BITMAP bmbut_up_red;
+extern GUI_CONST_STORAGE GUI_BITMAP bmbut_dn_red;
+
+extern GUI_CONST_STORAGE GUI_FONT GUI_FontTahoma29hAA2;
+extern GUI_CONST_STORAGE GUI_FONT GUI_FontTahoma87hAA2;
+
+static void up_heat(WM_MESSAGE * pMsg)
 {
-    WM_HWIN                      hWin;
-    int                          i;
-    int                          LineHeight;
-
-    LineHeight    = lh;
-    pWheel->pFont = pFont;
-    hWin          = LISTWHEEL_CreateUser(x, y, xSize, ySize, hParent, WM_CF_SHOW | WM_CF_HASTRANS, 0, Id, NULL, sizeof(void *));
-    LISTWHEEL_SetFont(hWin, pFont);
-    LISTWHEEL_SetTextAlign(hWin, TextAlign);
-    LISTWHEEL_SetSnapPosition(hWin, (ySize - LineHeight) / 2);
-    LISTWHEEL_SetOwnerDraw(hWin, OwnerDraw);
-    LISTWHEEL_SetUserData(hWin, &pWheel, sizeof(pWheel));
-    LISTWHEEL_SetLineHeight(hWin, LineHeight);
-    LISTWHEEL_SetTextColor(hWin, LISTWHEEL_CI_SEL, 0x008800);
-    LISTWHEEL_SetTextColor(hWin, LISTWHEEL_CI_UNSEL, 0x808080);
-
-    for (i = 0; i < 35; i++)
-    {
-        LISTWHEEL_AddString(hWin, temps[i]);
-    }
-    if (TextAlign & GUI_TA_RIGHT)
-    {
-        LISTWHEEL_SetRBorder(hWin, 10);
-    }
-    CreateDecoration(xSize, ySize, LineHeight, pWheel);
-    //
-    // Fill WHEEL structure
-    //
-    pWheel->hWin = hWin;
-    LISTWHEEL_SetPos(hWin, pos);
-    LISTWHEEL_SetSel(hWin, pos);
-
-    pWheel->hWin = hWin;
-    return 0;
-}
-
-static void _cbBkWheel(WM_MESSAGE * pMsg)
-{
-    WM_HWIN hParent;
-    int     xSize;
-    int     ySize;
-
     switch (pMsg->MsgId)
     {
-    case WM_NOTIFY_PARENT:
-        hParent    = WM_GetParent(pMsg->hWin);
-        pMsg->hWin = hParent;
-        WM_SendMessage(hParent, pMsg);
-        break;
     case WM_PAINT:
-        xSize = WM_GetWindowSizeX(pMsg->hWin);
-        ySize = WM_GetWindowSizeY(pMsg->hWin);
-        GUI_DrawGradientV(0, 0, xSize - 1, ySize - 1, GUI_WHITE, GUI_WHITE);
+        if (BUTTON_IsPressed(pMsg->hWin))
+        {
+            GUI_DrawBitmap(&bmbut_up_red, 0, 0);
+        }
+        else
+        {
+            GUI_DrawBitmap(&bmbut_up_red, 0, 0);
+        }
         break;
     default:
-        WM_DefaultProc(pMsg);
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+
+static void dn_heat(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        if (BUTTON_IsPressed(pMsg->hWin))
+        {
+            GUI_DrawBitmap(&bmbut_dn_red, 0, 0);
+        }
+        else
+        {
+            GUI_DrawBitmap(&bmbut_dn_red, 0, 0);
+        }
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+static void up_cool(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        if (BUTTON_IsPressed(pMsg->hWin))
+        {
+            GUI_DrawBitmap(&bmbut_up_blue, 0, 0);
+        }
+        else
+        {
+            GUI_DrawBitmap(&bmbut_up_blue, 0, 0);
+        }
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+
+static void dn_cool(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        if (BUTTON_IsPressed(pMsg->hWin))
+        {
+            GUI_DrawBitmap(&bmbut_dn_blue, 0, 0);
+        }
+        else
+        {
+            GUI_DrawBitmap(&bmbut_dn_blue, 0, 0);
+        }
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+
+static void text_box_cb(WM_MESSAGE * pMsg)
+{
+    char buf[50];
+    GUI_RECT rt;
+    WM_GetClientRect(&rt);
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        GUI_SetColor(0xeaeaea);
+        GUI_AA_FillRoundedRect(0,0,rt.x1,rt.y1,10);
+        GUI_SetColor(0x808080);
+        GUI_SetPenSize(2);
+        GUI_AA_DrawRoundedRect(0,0,rt.x1,rt.y1,10);
+        TEXT_GetText(pMsg->hWin, buf, 10);
+
+        GUI_SetColor(GUI_BLACK);
+        GUI_SetTextMode(GUI_TEXTMODE_TRANS);
+        GUI_SetFont(&GUI_FontTahoma87hAA2);
+        GUI_DispStringInRect(buf, &rt, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        break;
+    default:
+        TEXT_Callback(pMsg);
+        break;
     }
 }
 
@@ -102,7 +162,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     WM_HWIN hItem, spinWheel;
     int     NCode;
     int     Id;
-    char buffer[10];
+    char buf[10];
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
@@ -112,29 +172,41 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     case WM_INIT_DIALOG:
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
-        TEXT_SetFont(hItem, GUI_FONT_32B_1);
+        TEXT_SetFont(hItem, &GUI_FontTahoma29hAA2);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_UPPER);
-        TEXT_SetTextColor(hItem, 0x808080);
-        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetTextColor(hItem, 0x4343bf);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetFont(hItem, &GUI_FontRounded22);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_LOWER);
-        TEXT_SetTextColor(hItem, 0x808080);
-        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetTextColor(hItem, 0x7a5114);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetFont(hItem, &GUI_FontRounded22);
 
-        int i;
-        for (i=65; i<100; i++)
-        {
-            itoa(i, buffer, 10);
-            strcpy(temps[i-65], buffer);
-        }
-        spinWheel = WM_CreateWindowAsChild(95, 80, 480, 140, pMsg->hWin, WM_CF_SHOW, _cbBkWheel, 0);
-        CreateListWheel(  0, 0,  80, 125, GUI_ID_LISTWHEEL0, GUI_TA_VCENTER | GUI_TA_HCENTER, spinWheel,
-                          &code[0], GUI_FONT_D36X48, 70, lowerDegreeLimit-65);
-        CreateListWheel(  200, 0,  80, 125, GUI_ID_LISTWHEEL0, GUI_TA_VCENTER | GUI_TA_HCENTER, spinWheel,
-                          &code[1], GUI_FONT_D36X48, 70, upperDegreeLimit-65);
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_LOWER_UP);
+        WM_SetCallback(hItem, up_cool);
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_LOWER_DN);
+        WM_SetCallback(hItem, dn_cool);
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_UPPER_UP);
+        WM_SetCallback(hItem, up_heat);
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_UPPER_DN);
+        WM_SetCallback(hItem, dn_heat);
+        //
+        sprintf(buf, "%d", lowerDegree);
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_LOWER_TXT);
+        TEXT_SetText(hItem, buf);
+        WM_SetCallback(hItem, text_box_cb);
+        //
+        sprintf(buf, "%d", upperDegree);
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_UPPER_TXT);
+        TEXT_SetText(hItem, buf);
+        WM_SetCallback(hItem, text_box_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
         WM_SetCallback(hItem, buttonOn16_cb);
@@ -147,13 +219,60 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         NCode = pMsg->Data.v;
         switch(Id)
         {
-        case ID_BUTTON_CANCEL:
+         case ID_BUTTON_LOWER_UP:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_RELEASED:
+            	lowerDegree++;
+                if (lowerDegree == 86) lowerDegree = 85;
+                sprintf(buf, "%d", lowerDegree);
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_LOWER_TXT);
+                TEXT_SetText(hItem, buf);
+                break;
+            }
+            break;
+        case ID_BUTTON_LOWER_DN:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_RELEASED:
+                lowerDegree--;
+                if (lowerDegree == 64) lowerDegree = 65;
+                sprintf(buf, "%d", lowerDegree);
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_LOWER_TXT);
+                TEXT_SetText(hItem, buf);
+                break;
+            }
+            break;
+        case ID_BUTTON_UPPER_UP:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_RELEASED:
+                upperDegree++;
+                if (upperDegree == 86) upperDegree = 85;
+                sprintf(buf, "%d", upperDegree);
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_UPPER_TXT);
+                TEXT_SetText(hItem, buf);
+                break;
+            }
+            break;
+        case ID_BUTTON_UPPER_DN:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_RELEASED:
+                upperDegree--;
+                if (upperDegree == 64) upperDegree = 65;
+                sprintf(buf, "%d", upperDegree);
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_UPPER_TXT);
+                TEXT_SetText(hItem, buf);
+                break;
+            }
+            break;
+       case ID_BUTTON_CANCEL:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                CreatePreferences();
-                //state = 16;
+                CreateHomeWin();
                 break;
             }
             break;
@@ -161,12 +280,12 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                upperDegreeLimit = atoi(temps[LISTWHEEL_GetPos(code[1].hWin)]);
-                lowerDegreeLimit = atoi(temps[LISTWHEEL_GetPos(code[0].hWin)]);
+                upperDegreeLimit = upperDegree;
+                lowerDegreeLimit = lowerDegree;
+                coolToDegrees = lowerDegree;
+                heatToDegrees = upperDegree;
                 GUI_Delay(100);
-                CreatePreferences();
-
-                //state = 16;
+                CreateHomeWin();
                 break;
             }
             break;
@@ -187,6 +306,8 @@ WM_HWIN CreateTempuratureLimits(void)
 {
     WM_HWIN hWin;
 
+    lowerDegree = lowerDegreeLimit;
+    upperDegree = upperDegreeLimit;
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }

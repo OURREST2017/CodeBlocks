@@ -1,7 +1,7 @@
 #ifndef __MAIN_H
 #define __MAIN_H
 
-//#define CODEBLOCK
+#define CODEBLOCK
 #ifndef CODEBLOCK
 #include "stm32f4xx_hal.h"
 #endif
@@ -12,7 +12,10 @@
 #include <ctype.h>
 #include "DIALOG.h"
 
+#define DEBUG_MODE 1
 #define BUTHEIGHT 32
+#define HEADER_FONT &GUI_FontTahoma35hAA2
+#define HEADER_FONT_BOLD &GUI_FontTahoma35hAA2Bold
 
 GUI_TIMER_HANDLE lockTimer_h;
 int idleTimeOut;
@@ -21,6 +24,9 @@ extern GUI_CONST_STORAGE GUI_BITMAP GUI_FontRounded16;
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontRounded22;
 extern GUI_CONST_STORAGE GUI_FONT FontBig20B;
 extern GUI_CONST_STORAGE GUI_BITMAP bmwatermark;
+extern GUI_CONST_STORAGE GUI_FONT GUI_FontTahoma35hAA2;
+extern GUI_CONST_STORAGE GUI_FONT GUI_FontTahoma35hAA4;
+extern GUI_CONST_STORAGE GUI_FONT GUI_FontTahoma35hAA2Bold;
 
 extern void drawButton16(char *, int, int, int, int);
 extern void drawButton(char *, int);
@@ -158,6 +164,10 @@ typedef struct colors
 
 struct schedules_s selectedSchedule;
 struct colors color_map[3];
+
+int fan_control;
+int heat_control;
+int cool_control;
 
 int tempTimerSet;
 int upperDegreeLimit;

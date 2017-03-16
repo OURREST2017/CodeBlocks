@@ -19,7 +19,7 @@
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
-    { TEXT_CreateIndirect,   "SETTINGS:", ID_TEXT_HEADER, 90, 0, 150, 50, 0, 0x64, 0 },
+    { TEXT_CreateIndirect,   "SETTINGS:", ID_TEXT_HEADER, 80, 0, 160, 50, 0, 0x64, 0 },
     { TEXT_CreateIndirect,   "", ID_TEXT_TITLE, 250, 0, 200, 50, 0, 0x64, 0 },
     { BUTTON_CreateIndirect, "All Days", ID_BUTTON_ALL_DAYS, 20, 90, 200, 42, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Weekday/Weekend", ID_BUTTON_WEEKEND, 20, 150, 200, 42, 0, 0x0, 0 },
@@ -112,13 +112,13 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         break;
     case WM_INIT_DIALOG:
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
-        TEXT_SetFont(hItem, GUI_FONT_32_1);
+        TEXT_SetFont(hItem, HEADER_FONT);
         TEXT_SetTextAlign(hItem, GUI_TA_RIGHT | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_TITLE);
         TEXT_SetTextAlign(hItem, GUI_TA_LEFT | GUI_TA_VCENTER);
-        TEXT_SetFont(hItem, GUI_FONT_32B_1);
+        TEXT_SetFont(hItem, HEADER_FONT_BOLD);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         TEXT_SetText(hItem, "Schedule");
         //

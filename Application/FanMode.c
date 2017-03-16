@@ -41,7 +41,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         break;
     case WM_INIT_DIALOG:
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
-        TEXT_SetFont(hItem, GUI_FONT_32B_1);
+        TEXT_SetFont(hItem, HEADER_FONT_BOLD);
         TEXT_SetTextColor(hItem, 0x00FFFFFF);
         //
         autoButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_AUTO);
@@ -87,7 +87,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 auto_mode = 0;
                 WM_SetCallback(autoButton, buttonOff22_cb);
                 WM_SetCallback(onButton, buttonOn22_cb);
-                fanOn();
+                //fanOn(); TODO: fix this
                 break;
             }
             break;
@@ -107,7 +107,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 if (auto_mode)
                 {
                     strcpy(fanMode, "auto");
-                }
+               }
                 else
                 {
                     strcpy(fanMode, "on");

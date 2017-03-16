@@ -362,9 +362,14 @@ void loadConfig()
 
     insideHumidity = 30;
     insideTemp = 72;
-    upperDegreeLimit = 82;
+
+    upperDegreeLimit = 74;
     lowerDegreeLimit = 70;
     idleTimeOut = 360000;
+
+    heat_control = 0;
+    fan_control = 0;
+    cool_control = 0;
 
     int i;
     for (i=0; i<5; i++)
