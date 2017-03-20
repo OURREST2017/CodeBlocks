@@ -159,7 +159,7 @@ void hvacControlCode()
     {
     	schedule_temp = scheduleTempurature(getTime(), currentSchedule);
         sprintf(buf,"%d, %s",schedule_temp, getTime());
-        TEXT_SetText(textDebug, buf);
+        //TEXT_SetText(textDebug, buf);
         if (inside_temp > (float)schedule_temp)
         {
             compressorOn();

@@ -422,7 +422,7 @@ WM_HWIN hvacHeat, hvacCool, hvacFan, holdText;
 static int but_pressed;
 
 static void holdModeOptions() {
-    TEXT_SetText(textDebug, (holdMode == 0) ? "false" : "true");
+    //TEXT_SetText(textDebug, (holdMode == 0) ? "false" : "true");
     holdButtonOn = holdMode;
     if (!holdMode)
     {

@@ -1,6 +1,7 @@
 #include "ranger.h"
+
 extern WHEEL dateTimeWheels[6], screenLockWheels[4];
-;
+
 #ifndef CODEBLOCK
 #include "main.h"
 #include "cmsis_os.h"
@@ -18,7 +19,8 @@ uint32_t GUI_FreeMem = 0;
 
 static void lockTimer(GUI_TIMER_MESSAGE * pTM)
 {
-    CreateIdleWin();
+//  WM_HideWindow(homeWin);
+//  WM_ShowWindow(idleWin);
 }
 static void GUIThread(void const * argument)
 #else
@@ -100,7 +102,7 @@ void MainTask(void)
             screenState = 0;
             break;
         case 1:
-            GUI_TIMER_SetPeriod(lockTimer_h, idleTimeOut);
+            GUI_TIMER_SetPeriod(lockTimer_h, 5000);
             GUI_TIMER_Restart(lockTimer_h);
             WM_ShowWindow(homeWin);
             screenState = 0;
