@@ -50,8 +50,7 @@ static WM_HWIN periodButton, startButton, stopButton, tempButton;
 static WM_HWIN period_text, start_text, stop_text, temp_text;
 static WM_HWIN upButton, dnButton, weekdayButton;
 
-static int period_idx, tempurature, period, selected_period;
-extern GUI_CONST_STORAGE GUI_FONT GUI_FontTahoma23hAA2;
+static int period_idx, period, selected_period;
 
 static struct periods_s getPeriod(char * p);
 static int getPeriodInt(char * p);
@@ -145,7 +144,6 @@ static void invalidateButtons(int sel)
 
 static char * getTime(int st)
 {
-
     static char buf[30];
     if (clockFormat == 24)
     {
@@ -203,27 +201,27 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         WM_SetCallback(tempButton, tempButton_cb);
         //
         period_text = WM_GetDialogItem(pMsg->hWin, ID_TEXT_WAKE);
-        TEXT_SetFont(period_text, &GUI_FontTahoma23hAA2);
+        TEXT_SetFont(period_text, &GUI_FontTahoma23hAA4B);
         TEXT_SetTextAlign(period_text, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(period_text, GUI_MAKE_COLOR(0x00808080));
         TEXT_SetText(period_text, toup(getPeriod(periods_text[0]).label));
         //
         start_text = WM_GetDialogItem(pMsg->hWin, ID_TEXT_START_TIME);
         TEXT_SetTextAlign(start_text, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        TEXT_SetFont(start_text, &GUI_FontTahoma23hAA2);
+        TEXT_SetFont(start_text, &GUI_FontTahoma23hAA4B);
         TEXT_SetText(start_text, getTime(getPeriod(periods_text[0]).startMinutes));
         TEXT_SetTextColor(start_text, GUI_MAKE_COLOR(0x00808080));
         //
         stop_text = WM_GetDialogItem(pMsg->hWin, ID_TEXT_STOP_TIME);
-        TEXT_SetFont(stop_text, &GUI_FontTahoma23hAA2);
+        TEXT_SetFont(stop_text, &GUI_FontTahoma23hAA4B);
         TEXT_SetTextAlign(stop_text, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetText(stop_text,  getTime(getPeriod(periods_text[0]).stopMinutes));
         TEXT_SetTextColor(stop_text, GUI_MAKE_COLOR(0x00808080));
         //
         temp_text = WM_GetDialogItem(pMsg->hWin, ID_TEXT_TEMP_VAR);
-        TEXT_SetFont(temp_text, &GUI_FontTahoma23hAA2);
+        TEXT_SetFont(temp_text, &GUI_FontTahoma23hAA4B);
         TEXT_SetTextAlign(temp_text, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        sprintf(buf, "%d°",  getPeriod(periods_text[0]).tempurature);
+        sprintf(buf, "%d°",  getPeriod(periods_text[0]).temperature);
         TEXT_SetText(temp_text, buf);
         TEXT_SetTextColor(temp_text, GUI_MAKE_COLOR(0x00808080));
         //
@@ -277,8 +275,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 GUI_Delay(100);
-                CreateSettingsSchedule();
-                //state = 13;
+                screenState = 21;
                 break;
             }
             break;
@@ -306,10 +303,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                if (strcmp(edit_sched, "each day") == 0) {
                     CreateEachDay(edit_title);
                 } else {
-                    CreateSettingsSchedule();
+                    screenState = 21;
                 }
-                //state = 13;
-                break;
+                 break;
             }
             break;
         case ID_BUTTON_WEEKDAY:
@@ -372,7 +368,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                     TEXT_SetText(period_text, toup(selectedDay.periods[selected_period].label));
                     TEXT_SetText(start_text, getTime(selectedDay.periods[selected_period].startMinutes));
                     TEXT_SetText(stop_text, getTime(selectedDay.periods[selected_period].stopMinutes));
-                    itoa(selectedDay.periods[selected_period].tempurature, buf, 10);
+                    itoa(selectedDay.periods[selected_period].temperature, buf, 10);
                     TEXT_SetText(temp_text, buf);
                     break;
                 case 1:
@@ -396,11 +392,11 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                     selectedDay.periods[selected_period].stopTime = updateTime(buf,1);
                     break;
                 case 3:
-                    tempurature = selectedDay.periods[selected_period].tempurature + 1;
-                    if (tempurature == 111) tempurature = 110;
-                    sprintf(buf, "%d°", tempurature);
+                    temperature = selectedDay.periods[selected_period].temperature + 1;
+                    if (temperature == 111) temperature = 110;
+                    sprintf(buf, "%d°", temperature);
                     TEXT_SetText(temp_text, buf);
-                    selectedDay.periods[selected_period].tempurature = tempurature;
+                    selectedDay.periods[selected_period].temperature = temperature;
                     break;
                 }
                 break;
@@ -419,7 +415,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                     TEXT_SetText(period_text, toup(selectedDay.periods[selected_period].label));
                     TEXT_SetText(start_text, getTime(selectedDay.periods[selected_period].startMinutes));
                     TEXT_SetText(stop_text, getTime(selectedDay.periods[selected_period].stopMinutes));
-                    itoa(selectedDay.periods[selected_period].tempurature, buf, 10);
+                    itoa(selectedDay.periods[selected_period].temperature, buf, 10);
                     TEXT_SetText(temp_text, buf);
                     break;
                 case 1:
@@ -443,11 +439,11 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                     selectedDay.periods[selected_period].stopTime = updateTime(buf,1);
                     break;
                 case 3:
-                    tempurature = selectedDay.periods[selected_period].tempurature - 1;
-                    if (tempurature == 64) tempurature = 65;
-                    sprintf(buf, "%d°", tempurature);
+                    temperature = selectedDay.periods[selected_period].temperature - 1;
+                    if (temperature == 64) temperature = 65;
+                    sprintf(buf, "%d°", temperature);
                     TEXT_SetText(temp_text, buf);
-                    selectedDay.periods[selected_period].tempurature = tempurature;
+                    selectedDay.periods[selected_period].temperature = temperature;
                     break;
                 }
                 break;
@@ -515,17 +511,18 @@ static void setSchedule(char *sched, char *day, char *per, struct periods_s peri
 *
 *       CreateWindow
 */
-WM_HWIN CreateEditSchedule(char *sched, char *day);
-WM_HWIN CreateEditSchedule(char *sched, char *day)
+WM_HWIN CreateEditSchedule();
+WM_HWIN CreateEditSchedule()
 {
     WM_HWIN hWin;
-    int i,j;
-    strcpy(edit_title, day);
-    strcpy(edit_sched, sched);
+    int i;
+
+    strcpy(edit_title, scheduleDay);
+    strcpy(edit_sched, schedulePeriod);
 
     for (i=0; i<5; i++)
     {
-        if (strcmp(schedules[i].label, sched) == 0)
+        if (strcmp(schedules[i].label, tolow(schedulePeriod)) == 0)
         {
             selectedSchedule = schedules[i];
             break;
@@ -534,7 +531,7 @@ WM_HWIN CreateEditSchedule(char *sched, char *day)
 
     for (i=0; i<selectedSchedule.day_count; i++)
     {
-        if (strcmp(selectedSchedule.days[i].label, day) == 0)
+        if (strcmp(selectedSchedule.days[i].label, tolow(scheduleDay)) == 0)
         {
             selectedDay = selectedSchedule.days[i];
             break;
@@ -545,7 +542,8 @@ WM_HWIN CreateEditSchedule(char *sched, char *day)
     period_on = 1;
     selected_period = getPeriodInt(periods_text[period]);
 
-    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    editScheduleWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    //WM_HideWindow(hWin);
     return hWin;
 }
 

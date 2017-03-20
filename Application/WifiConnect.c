@@ -187,14 +187,14 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
                 firstTime = 0;
-                CreateHomeWin();
+                WM_HideWindow(wifiConnectWin);
+                screenState = 1;
             }
             break;
         case ID_BUTTON_SAVE:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-//                wifi = LISTBOX_GetSel(listBox_h );
                 wifi = LISTWHEEL_GetPos(wifiWheel.hWin);
                 strcpy(myWifiNetwork, wifi_networks[wifi]);
                 CreateAlphaKeyboard(-2, "", "Wifi Password", "wifi");
@@ -218,7 +218,7 @@ WM_HWIN CreateWifiConnect(void)
 {
     WM_HWIN hWin;
 
-    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    wifiConnectWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
 

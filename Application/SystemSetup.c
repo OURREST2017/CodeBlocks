@@ -92,8 +92,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                CreateSettings();
-                //state=4;
+                WM_HideWindow(systemSetupWin);
+                screenState = 4;
             }
             break;
         case ID_BUTTON_THERMO_LOCATION:
@@ -205,7 +205,7 @@ WM_HWIN CreateSystemSetup(void)
 {
     WM_HWIN hWin;
 
-    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    systemSetupWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
 

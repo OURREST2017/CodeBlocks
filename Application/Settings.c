@@ -119,7 +119,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         hItem = WM_GetDialogItem(pMsg->hWin, ID_IMAGE_SCHEDULE);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_IMAGE_LANGAGES);
-       //
+        //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_IMAGE_PROFILE);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_IMAGE_PREFERENCES);
@@ -177,15 +177,16 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                state=1;
+                WM_HideWindow(settingsWin);
+                screenState = 1;
             }
             break;
         case ID_IMAGE_PEAR:
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
-                CreateMobilePair();
                 GUI_Delay(100);
+                screenState = 10;
             }
             break;
         case ID_IMAGE_TIME_DATE:
@@ -193,8 +194,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 GUI_Delay(100);
-                CreateDateTime();
-                //state=11;
+                screenState = 11;
             }
             break;
         case ID_IMAGE_LOCK:
@@ -202,8 +202,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 GUI_Delay(100);
-                CreateScreenLockout();
-                //state=12;
+                screenState = 12;
             }
             break;
         case ID_IMAGE_SCHEDULE:
@@ -211,8 +210,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 GUI_Delay(100);
-                CreateSettingsSchedule();
-                // state=13;
+                screenState = 13;
             }
             break;
         case ID_IMAGE_LANGAGES:
@@ -220,8 +218,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 GUI_Delay(100);
-                CreateLanguages();
-                // state=14;
+                screenState = 14;
             }
             break;
         case ID_IMAGE_PROFILE:
@@ -229,8 +226,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 GUI_Delay(100);
-                CreateProfile(0, "");
-                // state=15;
+                WM_HideWindow(settingsWin);
+                screenState = 15;
             }
             break;
         case ID_IMAGE_PREFERENCES:
@@ -238,8 +235,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 GUI_Delay(100);
-                CreatePreferences();
-                //state=16;
+                screenState = 16;
             }
             break;
         case ID_IMAGE_SETUP:
@@ -247,8 +243,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 GUI_Delay(100);
-                CreateSystemSetup();
-                // state=17;
+                screenState = 17;
             }
             break;
         }
@@ -265,6 +260,7 @@ WM_HWIN CreateSettings(void)
     WM_HWIN hWin;
 
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    WM_HideWindow(hWin);
     return hWin;
 }
 

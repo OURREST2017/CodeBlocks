@@ -88,8 +88,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                CreateSettings();
-                //state = 4;
+                WM_HideWindow(mobilePairWin);
+                screenState = 4;
                 break;
             }
             break;
@@ -116,7 +116,7 @@ WM_HWIN CreateMobilePair();
 WM_HWIN CreateMobilePair()
 {
     WM_HWIN hWin;
-    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    mobilePairWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
 

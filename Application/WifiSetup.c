@@ -187,7 +187,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 GUI_Delay(100);
                 if (firstTime)
                 {
-                    state = 1;
+                    screenState = 1;
                 }
                 else
                 {

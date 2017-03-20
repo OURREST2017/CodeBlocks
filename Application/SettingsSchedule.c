@@ -31,7 +31,6 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "EDIT", ID_BUTTON_EDIT, 375, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
 };
 
-static char schedule[20];
 static int vacation_border, allDays_border, weekend_border, eachDay_border;
 
 static void schedButton(WM_MESSAGE * pMsg, char *nm, int bor)
@@ -157,15 +156,15 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                CreateSettings();
-                //state=4;
+                WM_HideWindow(settingsScheduleWin);
+                screenState = 4;
             }
             break;
         case ID_BUTTON_SET_SCHEDULE:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                strcpy(currentSchedule, tolow(schedule));
+                strcpy(currentSchedule, tolow(schedulePeriod));
                 int i;
                 for (i=0; i<5; i++)
                 {
@@ -183,21 +182,29 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
+                WM_HideWindow(settingsScheduleWin);
                 if (vacation_border)
                 {
-                    CreateEditSchedule("vacation", "vacation");
+                    strcpy(schedulePeriod,"vacation" );
+                    strcpy(scheduleDay,"vacation" );
+                    screenState = 20;
                 }
                 else if (weekend_border)
                 {
-                    CreateEditSchedule("weekend", "weekend");
+                    strcpy(schedulePeriod,"weekend" );
+                    strcpy(scheduleDay,"weekend" );
+                    screenState = 20;
                 }
                 else if (eachDay_border)
                 {
-                    CreateEachDay("monday");
+                    strcpy(scheduleDay,"monday" );
+                    screenState = 22;
                 }
                 else
                 {
-                    CreateEditSchedule("all days", "all days");
+                    strcpy(schedulePeriod,"all days" );
+                    strcpy(scheduleDay,"all days" );
+                    screenState = 20;
                 }
                 break;
             }
@@ -210,7 +217,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 WM_SetCallback(hItem, buttonPush22_cb);
                 break;
             case WM_NOTIFICATION_RELEASED:
-                strcpy(schedule, "All Days");
+                strcpy(schedulePeriod, "All Days");
                 vacation_border = 0;
                 allDays_border = 1;
                 eachDay_border = 0;
@@ -227,7 +234,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 WM_SetCallback(hItem, buttonPush22_cb);
                 break;
             case WM_NOTIFICATION_RELEASED:
-                strcpy(schedule, "Weekend");
+                strcpy(schedulePeriod, "Weekend");
                 vacation_border = 0;
                 allDays_border = 0;
                 eachDay_border = 0;
@@ -244,7 +251,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 WM_SetCallback(hItem, buttonPush22_cb);
                 break;
             case WM_NOTIFICATION_RELEASED:
-                strcpy(schedule, "Each Day");
+                strcpy(schedulePeriod, "Each Day");
                 vacation_border = 0;
                 allDays_border = 0;
                 eachDay_border = 1;
@@ -261,7 +268,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 WM_SetCallback(hItem, buttonPush22_cb);
                 break;
             case WM_NOTIFICATION_RELEASED:
-                strcpy(schedule, "Vacation");
+                strcpy(schedulePeriod, "Vacation");
                 vacation_border = 1;
                 allDays_border = 0;
                 eachDay_border = 0;
@@ -301,6 +308,7 @@ WM_HWIN CreateSettingsSchedule(void)
     eachDay_border = 0;
     weekend_border = 0;
 
+    strcpy(schedulePeriod, currentSchedule);
     if (strcasecmp(currentSchedule, "all days") == 0 )
     {
         allDays_border = 1;
@@ -319,6 +327,7 @@ WM_HWIN CreateSettingsSchedule(void)
     }
 
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    WM_HideWindow(hWin);
     return hWin;
 }
 

@@ -36,7 +36,6 @@ static WM_HWIN insideTempText;
 static char date_buf[20];
 static char time_buf[20];
 extern GUI_CONST_STORAGE GUI_BITMAP bmbig_degree;
-extern GUI_CONST_STORAGE GUI_FONT GUI_FontTahoma129hAA4D;
 
 static int wifiSkin(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo)
 {
@@ -116,7 +115,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         sprintf(buffer,"%d",insideTemp);
         insideTempText = WM_GetDialogItem(pMsg->hWin, ID_TEXT_INSIDE_TEMP);
         TEXT_SetText(insideTempText, buffer);
-        TEXT_SetFont(insideTempText, &GUI_FontTahoma129hAA4D);
+        TEXT_SetFont(insideTempText, &GUI_FontTahoma129hAA4B);
         TEXT_SetTextColor(insideTempText, 0x00808080);
 //        WM_HideWindow(insideTempText);
 
@@ -200,6 +199,8 @@ WM_HWIN CreateIdleWin(void)
     }
 
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    WM_HideWindow(hWin);
+
     return hWin;
 }
 

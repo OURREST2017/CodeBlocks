@@ -14,19 +14,33 @@
 
 #define DEBUG_MODE 1
 #define BUTHEIGHT 32
-#define HEADER_FONT &GUI_FontTahoma35hAA2
-#define HEADER_FONT_BOLD &GUI_FontTahoma35hAA2Bold
+#define HEADER_FONT &GUI_FontTahoma35hAA4
+#define HEADER_FONT_BOLD &GUI_FontTahoma35hAA4B
+
+WM_HWIN textDebug;
 
 GUI_TIMER_HANDLE lockTimer_h;
-int idleTimeOut;
+WM_HWIN homeWin, idleWin, screenLockoutWin, dateTimeWin, settingsWin, languagesWin;
+WM_HWIN settingsScheduleWin, editScheduleWin, eachDayWin, preferencesWin, systemSetupWin;
+WM_HWIN mobilePairWin, profileWin, modeWin, fanModeWin, coolToWin, heatToWin, temperatureLimitsWin;
+WM_HWIN alphaKeyboardWin, numericKeyboardWin, settingsHelpWin, wifiPasswordWin;
+WM_HWIN hvacModeText, fanModeText, heatToText, coolToText, wifiConnectWin, triacWin;
 
 extern GUI_CONST_STORAGE GUI_BITMAP GUI_FontRounded16;
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontRounded22;
 extern GUI_CONST_STORAGE GUI_FONT FontBig20B;
-extern GUI_CONST_STORAGE GUI_BITMAP bmwatermark;
-extern GUI_CONST_STORAGE GUI_FONT GUI_FontTahoma35hAA2;
+extern GUI_CONST_STORAGE GUI_FONT GUI_FontVerdana16hAA4B;
+extern GUI_CONST_STORAGE GUI_FONT GUI_FontTahoma129hAA4B;
+extern GUI_CONST_STORAGE GUI_FONT GUI_FontTahoma19hAA4B;
+extern GUI_CONST_STORAGE GUI_FONT GUI_FontTahoma23hAA4B;
+extern GUI_CONST_STORAGE GUI_FONT GUI_FontTahoma29hAA4B;
+extern GUI_CONST_STORAGE GUI_FONT GUI_FontTahoma33hAA4;
+extern GUI_CONST_STORAGE GUI_FONT GUI_FontTahoma33hAA4B;
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontTahoma35hAA4;
-extern GUI_CONST_STORAGE GUI_FONT GUI_FontTahoma35hAA2Bold;
+extern GUI_CONST_STORAGE GUI_FONT GUI_FontTahoma35hAA4B;
+extern GUI_CONST_STORAGE GUI_FONT GUI_FontTahoma87hAA4B;
+
+extern GUI_CONST_STORAGE GUI_BITMAP bmwatermark;
 
 extern void drawButton16(char *, int, int, int, int);
 extern void drawButton(char *, int);
@@ -46,7 +60,6 @@ extern GUI_CONST_STORAGE GUI_BITMAP bmdn_nb;
 extern GUI_CONST_STORAGE GUI_BITMAP bmdn_r;
 extern GUI_CONST_STORAGE GUI_BITMAP bmup_r;
 
-extern void return_cb(WM_MESSAGE *);
 extern void return_cb(WM_MESSAGE *);
 extern void buttonOn16_cb(WM_MESSAGE *);
 extern void buttonOff16_cb(WM_MESSAGE *);
@@ -87,7 +100,7 @@ extern  WM_HWIN CreateWifiSetup(void);
 extern  WM_HWIN CreateBackupHeat(void);
 extern  WM_HWIN CreateCoolingStages(void);
 extern  WM_HWIN CreateHeatingStages(void);
-extern  WM_HWIN CreateEachDay(char *);
+extern  WM_HWIN CreateEachDay();
 extern  WM_HWIN CreateSchedulingOptions(void);
 extern  WM_HWIN CreateTempuratureScale(void);
 extern  WM_HWIN CreateClockFormat(void);
@@ -102,10 +115,13 @@ extern  WM_HWIN CreateWifiDisconnect(void);
 extern  WM_HWIN CreatePassFail(char *);
 extern  WM_HWIN CreateTriacPanel(void);
 extern  WM_HWIN CreateFanMode(void);
-extern  WM_HWIN CreateEditSchedule(char *, char *);
+extern  WM_HWIN CreateEditSchedule();
 extern  WM_HWIN CreateWifiConnect(void);
+extern  WM_HWIN CreateWifiDisonnect(void);
 extern  WM_HWIN CreateTempuratureLimits(void);
 extern  WM_HWIN CreateMobilePair(void);
+extern  WM_HWIN CreateCoolTo(void);
+extern  WM_HWIN CreateHeatTo(void);
 extern  WM_HWIN CreateEditScheduleHelp(char *,char *);
 
 extern void loadConfig();
@@ -123,7 +139,7 @@ typedef struct
 
 typedef struct periods_s
 {
-    int tempurature;
+    int temperature;
     char *label;
     char *startTime;
     char *stopTime;
@@ -165,15 +181,19 @@ typedef struct colors
 struct schedules_s selectedSchedule;
 struct colors color_map[3];
 
+int screenLockDig[4];
+char schedulePeriod[20];
+char scheduleDay[20];
 int fan_control;
 int heat_control;
 int cool_control;
+int idleTimeOut;
 
 int tempTimerSet;
 int upperDegreeLimit;
 int lowerDegreeLimit;
 
-int state;
+int screenState;
 int temperature;
 struct schedules_s schedules[5];
 
@@ -196,7 +216,7 @@ int statControl;
 int holdMode;
 char hvacMode[10];
 char language[12];
-int tempuratureScale;
+int temperatureScale;
 char lockCode[5];
 char firstNameText[30];
 char ownersName[30];
@@ -249,5 +269,47 @@ int current_dst;
 int current_hour;
 int current_minute;
 int current_ampm;
+
+char  propertyId[50];
+char  propertyName[50];
+
+// 1, 4, 6, or 8 periods per day, lets start with 4.
+// 12am - 6am, 6am - 12pm, 12pm-6pm, etc.
+char  periodStartTime[50];
+char  periodEndTime[50];
+int hvacFailure;
+
+// Run times are in minutes
+int compressorTotalRuntime;
+int compressorLongestRuntime;
+int compressorShortestRuntime;
+int compressorRunCount;
+int blowerTotalRuntime;
+int blowerLongestRuntime;
+int blowerShortestRuntime;
+int blowerRunCount;
+int tempHighOutside;
+int tempLowOutside;
+int tempHighInside;
+int tempLowInside;
+int tempHighSetPoint;
+int tempLowSetPoint;
+int humidityHighOutside;
+int humidityLowOutside;
+int humidityHighInside;
+int humidityLowInside;
+
+// location
+char  streetLine1[50];
+char streetLine2 [50];
+char city[50];
+char state_us[20];
+char zip[12];
+
+char firstName[20];
+char lastName[30] ;
+char email[50];
+char phone[20];
+
 
 #endif

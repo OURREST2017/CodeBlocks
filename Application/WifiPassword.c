@@ -53,7 +53,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_1);
         TEXT_SetTextAlign(hItem, GUI_TA_RIGHT | GUI_TA_VCENTER);
         TEXT_SetFont(hItem, &GUI_FontRounded22);
-        TEXT_SetText(hItem, "REST Id:");
+        TEXT_SetText(hItem, "REST ID:");
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00008080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_2);
@@ -90,8 +90,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                CreateSettings();
-                //state = 4;
+                WM_HideWindow(wifiPasswordWin);
+                screenState = 4;
                 break;
             }
             break;
@@ -120,7 +120,7 @@ WM_HWIN CreateWifiPassword(char *wifi)
     WM_HWIN hWin;
 
 //    strcpy(wifiNetwork, wifi);
-    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    wifiPasswordWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
 

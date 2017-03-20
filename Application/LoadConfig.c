@@ -29,6 +29,42 @@ char * tolow(char *s)
     return o;
 }
 
+void setCurrentTime() {
+#ifdef CODEBLOCK
+    time_t rawtime;
+    struct tm *info;
+
+    time( &rawtime );
+    info = localtime( &rawtime );
+
+    current_year = info->tm_year + 1900;
+    current_day = info->tm_mday;
+    current_month = info->tm_mon;
+    current_wday = info->tm_wday;
+    current_dst = info->tm_isdst;
+
+    current_hour = info->tm_hour;
+    current_minute = info->tm_min;
+    current_ampm = (info->tm_hour <= 12) ? 0 : 1;
+#else
+    RTC_TimeTypeDef tm;
+    RTC_DateTypeDef dt;
+
+    BSP_RTC_GetTime(&tm);
+    BSP_RTC_GetDate(&dt);
+
+    current_year = dt.Year + 2000;
+    current_day =  dt.Date;
+    current_month = dt.Month;
+    current_wday = dt.WeekDay;
+    //current_dst = dt.daylight;
+
+    current_hour = tm.Hours;
+    current_minute = tm.Minutes;
+    //current_ampm = (tm.Hour <= 12) ? 0 : 1;
+#endif
+}
+
 int  scheduleTempurature(char * tm, char *day)
 {
     int i,k;
@@ -56,14 +92,14 @@ int  scheduleTempurature(char * tm, char *day)
             {
                 if (st < stopMinutes || st >= startMinutes)
                 {
-                    return selectedDay.periods[i].tempurature;
+                    return selectedDay.periods[i].temperature;
                 }
             }
             else
             {
                 if (st >= startMinutes && st <= stopMinutes)
                 {
-                    return selectedDay.periods[i].tempurature;
+                    return selectedDay.periods[i].temperature;
                 }
             }
         }
@@ -111,7 +147,6 @@ void loadConfig()
         config_root = cJSON_Parse(data);
 
         dateTime =  101010101;
-
         strcpy(changeOver, getStringObject(config_root,"changeOver"));
         clockFormat = getIntObject(config_root,"clockFormat");
         strcpy(configVersion, getStringObject(config_root,"configVersion"));
@@ -136,7 +171,7 @@ void loadConfig()
 
         localTemp = getIntObject(config_root,"localTemp");
         strcpy(lockCode, getStringObject(config_root,"lockCode"));
-        tempuratureScale = getIntObject(config_root,"metric");
+        temperatureScale = getIntObject(config_root,"metric");
         metric = getBoolObject(config_root,"metric");
         nextFwVersion = getStringObject(config_root,"nextFwVersion");
         strcpy(ownersName,  getStringObject(config_root,"ownersName"));
@@ -184,7 +219,7 @@ void loadConfig()
             schedules[i].label  = cJSON_GetObjectItem(schedules_obj,"label")->valuestring;
             schedules[i].systemDefined = cJSON_GetObjectItem(schedules_obj,"systemDefined")->valueint;
             cJSON *days_a = cJSON_GetObjectItem(schedules_obj,"days");
-            for (k=0; k<cJSON_GetArraySize(days_a); k++)
+           for (k=0; k<cJSON_GetArraySize(days_a); k++)
             {
                 cJSON *d = cJSON_GetArrayItem(days_a, k);
                 days.label = cJSON_GetObjectItem(d,"label")->valuestring;
@@ -192,7 +227,7 @@ void loadConfig()
                 for (j=0; j<4; j++)
                 {
                     cJSON *p = cJSON_GetArrayItem(periods_a, j);
-                    periods.tempurature = cJSON_GetObjectItem(p,"tempurature")->valueint;
+                    periods.temperature = cJSON_GetObjectItem(p,"temperature")->valueint;
                     periods.label = cJSON_GetObjectItem(p,"label")->valuestring;
                     periods.startTime = cJSON_GetObjectItem(p,"startTime")->valuestring;
                     periods.stopTime = cJSON_GetObjectItem(p,"stopTime")->valuestring;
@@ -206,7 +241,7 @@ void loadConfig()
                     periods.stopMinutes = hh*60+mm;
                     days.periods[j] = periods;
                 }
-                schedules[i].days[k] = days;
+          schedules[i].days[k] = days;
             }
             schedules[i].day_count = k;
         }
@@ -239,7 +274,7 @@ void loadConfig()
 
         localTemp = 72;
         strcpy(lockCode, "0000");
-        tempuratureScale = 0;
+        temperatureScale = 0;
         metric = 0;
         nextFwVersion = "1.0.0";
         strcpy(ownersName, "Frank");
@@ -290,28 +325,28 @@ void loadConfig()
             schedules[i].days[0].periods[0].label = "wake";
             schedules[i].days[0].periods[0].startTime = "6:00am";
             schedules[i].days[0].periods[0].stopTime = "8:00am";
-            schedules[i].days[0].periods[0].tempurature = 72;
+            schedules[i].days[0].periods[0].temperature = 72;
             schedules[i].days[0].periods[0].startMinutes = 360;
             schedules[i].days[0].periods[0].stopMinutes = 480;
 
             schedules[i].days[0].periods[1].label = "leave";
             schedules[i].days[0].periods[1].startTime = "8:00am";
             schedules[i].days[0].periods[1].stopTime = "5:00pm";
-            schedules[i].days[0].periods[1].tempurature = 80;
+            schedules[i].days[0].periods[1].temperature = 80;
             schedules[i].days[0].periods[1].startMinutes = 480;
             schedules[i].days[0].periods[1].stopMinutes = 1020;
 
             schedules[i].days[0].periods[2].label = "return";
             schedules[i].days[0].periods[2].startTime = "5:00pm";
             schedules[i].days[0].periods[2].stopTime = "10:00pm";
-            schedules[i].days[0].periods[2].tempurature = 72;
+            schedules[i].days[0].periods[2].temperature = 72;
             schedules[i].days[0].periods[2].startMinutes = 1020;
             schedules[i].days[0].periods[2].stopMinutes = 1200;
 
             schedules[i].days[0].periods[3].label = "sleep";
             schedules[i].days[0].periods[3].startTime = "10:00pm";
             schedules[i].days[0].periods[3].stopTime = "6:00am";
-            schedules[i].days[0].periods[3].tempurature = 78;
+            schedules[i].days[0].periods[3].temperature = 78;
             schedules[i].days[0].periods[3].startMinutes = 1200;
             schedules[i].days[0].periods[3].stopMinutes = 360;
 
@@ -333,28 +368,28 @@ void loadConfig()
             schedules[i].days[k].periods[0].label = "wake";
             schedules[i].days[k].periods[0].startTime = "6:00am";
             schedules[i].days[k].periods[0].stopTime = "8:00am";
-            schedules[i].days[k].periods[0].tempurature = 72;
+            schedules[i].days[k].periods[0].temperature = 72;
             schedules[i].days[k].periods[0].startMinutes = 360;
             schedules[i].days[k].periods[0].stopMinutes = 480;
 
             schedules[i].days[k].periods[1].label = "leave";
             schedules[i].days[k].periods[1].startTime = "8:00am";
             schedules[i].days[k].periods[1].stopTime = "5:00pm";
-            schedules[i].days[k].periods[1].tempurature = 80;
+            schedules[i].days[k].periods[1].temperature = 80;
             schedules[i].days[k].periods[1].startMinutes = 480;
             schedules[i].days[k].periods[1].stopMinutes = 1020;
 
             schedules[i].days[k].periods[2].label = "return";
             schedules[i].days[k].periods[2].startTime = "5:00pm";
             schedules[i].days[k].periods[2].stopTime = "10:00pm";
-            schedules[i].days[k].periods[2].tempurature = 72;
+            schedules[i].days[k].periods[2].temperature = 72;
             schedules[i].days[k].periods[2].startMinutes = 1020;
             schedules[i].days[k].periods[2].stopMinutes = 1200;
 
             schedules[i].days[k].periods[3].label = "sleep";
             schedules[i].days[k].periods[3].startTime = "10:00pm";
             schedules[i].days[k].periods[3].stopTime = "6:00am";
-            schedules[i].days[k].periods[3].tempurature = 78;
+            schedules[i].days[k].periods[3].temperature = 78;
             schedules[i].days[k].periods[3].startMinutes = 1200;
             schedules[i].days[k].periods[3].stopMinutes = 360;
         }
@@ -371,6 +406,8 @@ void loadConfig()
     fan_control = 0;
     cool_control = 0;
 
+    setCurrentTime();
+
     int i;
     for (i=0; i<5; i++)
     {
@@ -381,39 +418,6 @@ void loadConfig()
         }
     }
 
-#ifdef CODEBLOCK
-    time_t rawtime;
-    struct tm *info;
-
-    time( &rawtime );
-    info = localtime( &rawtime );
-
-    current_year = info->tm_year + 1900;
-    current_day = info->tm_mday;
-    current_month = info->tm_mon;
-    current_wday = info->tm_wday;
-    current_dst = info->tm_isdst;
-
-    current_hour = info->tm_hour;
-    current_minute = info->tm_min;
-    current_ampm = (info->tm_hour <= 12) ? 0 : 1;
-#else
-    RTC_TimeTypeDef tm;
-    RTC_DateTypeDef dt;
-
-    BSP_RTC_GetTime(&tm);
-    BSP_RTC_GetDate(&dt);
-
-    current_year = dt.Year + 2000;
-    current_day =  dt.Date;
-    current_month = dt.Month;
-    current_wday = dt.WeekDay;
-    //current_dst = dt.daylight;
-
-    current_hour = tm.Hours;
-    current_minute = tm.Minutes;
-    //current_ampm = (tm.Hour <= 12) ? 0 : 1;
-#endif
 
 //        struct tm my_time = { .tm_year=112, // = year 2012
 //                          .tm_mon=9,    // = 10th month
@@ -431,3 +435,4 @@ void loadConfig()
 
 
 }
+

@@ -95,7 +95,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                state=1;
+                WM_HideWindow(fanModeWin);
+                screenState = 1;
                 break;
             }
             break;
@@ -103,7 +104,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                state=1;
                 if (auto_mode)
                 {
                     strcpy(fanMode, "auto");
@@ -112,6 +112,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 {
                     strcpy(fanMode, "on");
                 }
+                WM_HideWindow(fanModeWin);
+                TEXT_SetText(fanModeText, toup(fanMode));
+                screenState = 1;
                 break;
             }
             break;
@@ -135,7 +138,7 @@ WM_HWIN CreateFanMode(void)
     auto_mode = 0;
     if (strcmp(fanMode, "auto") == 0) auto_mode = 1;
 
-    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    fanModeWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
 

@@ -45,9 +45,6 @@ extern GUI_CONST_STORAGE GUI_BITMAP bmbut_dn_blue;
 extern GUI_CONST_STORAGE GUI_BITMAP bmbut_up_red;
 extern GUI_CONST_STORAGE GUI_BITMAP bmbut_dn_red;
 
-extern GUI_CONST_STORAGE GUI_FONT GUI_FontTahoma29hAA2;
-extern GUI_CONST_STORAGE GUI_FONT GUI_FontTahoma87hAA2;
-
 static void up_heat(WM_MESSAGE * pMsg)
 {
     switch (pMsg->MsgId)
@@ -144,7 +141,7 @@ static void text_box_cb(WM_MESSAGE * pMsg)
 
         GUI_SetColor(GUI_BLACK);
         GUI_SetTextMode(GUI_TEXTMODE_TRANS);
-        GUI_SetFont(&GUI_FontTahoma87hAA2);
+        GUI_SetFont(&GUI_FontTahoma87hAA4B);
         GUI_DispStringInRect(buf, &rt, GUI_TA_HCENTER | GUI_TA_VCENTER);
         break;
     default:
@@ -172,7 +169,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     case WM_INIT_DIALOG:
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
-        TEXT_SetFont(hItem, &GUI_FontTahoma29hAA2);
+        TEXT_SetFont(hItem, &GUI_FontTahoma29hAA4B);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
 
@@ -272,7 +269,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                CreateHomeWin();
+                WM_HideWindow(temperatureLimitsWin);
+                screenState = 1;
                 break;
             }
             break;
@@ -285,7 +283,12 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 coolToDegrees = lowerDegree;
                 heatToDegrees = upperDegree;
                 GUI_Delay(100);
-                CreateHomeWin();
+                WM_HideWindow(temperatureLimitsWin);
+                sprintf(buf, "%d°", coolToDegrees);
+                TEXT_SetText(coolToText, buf);
+                sprintf(buf, "%d°", heatToDegrees);
+                TEXT_SetText(heatToText, buf);
+                screenState = 1;
                 break;
             }
             break;
@@ -308,7 +311,7 @@ WM_HWIN CreateTempuratureLimits(void)
 
     lowerDegree = lowerDegreeLimit;
     upperDegree = upperDegreeLimit;
-    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    temperatureLimitsWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
 

@@ -78,7 +78,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 break;
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                CreateSettingsSchedule();
+                WM_HideWindow(settingsHelpWin);
+                WM_ShowWindow(settingsScheduleWin);
                 break;
             }
             break;
@@ -99,7 +100,7 @@ WM_HWIN CreateScheduleHelp(void)
 {
     WM_HWIN hWin;
 
-    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    settingsHelpWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
 

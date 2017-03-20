@@ -129,6 +129,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                WM_HideWindow(profileWin);
                 CreateAlphaKeyboard(1, ownersName, "Name", "Profile");
                 break;
             }
@@ -137,6 +138,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                WM_HideWindow(profileWin);
                 CreateNumericKeyboard(2, zipCode, "Zip Code", "Profile");
                 break;
             }
@@ -162,8 +164,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                CreateSettings();
-                //state = 4;
+                WM_HideWindow(profileWin);
+                screenState = 4;
                 break;
             }
             break;
@@ -172,8 +174,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                CreateSettings();
-                //state = 4;
+                WM_HideWindow(profileWin);
+                screenState = 4;
                 break;
             }
             break;
@@ -189,27 +191,27 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 *
 *       CreateWindow
 */
-WM_HWIN CreateProfile(int idx, char * txt);
-WM_HWIN CreateProfile(int idx, char * txt)
+WM_HWIN CreateProfile(int profileIdx, char * profileTxt);
+WM_HWIN CreateProfile(int profileIdx, char * profileTxt)
 {
     WM_HWIN hWin;
-    if (idx == 0)
+    if (profileIdx == 0)
     {
         strcpy(crc_text, "1234");
         strcpy(zip_text, zipCode);
         strcpy(customer_text, ownersName);
         strcpy(mac_text, "00:11:22:44:55:66");
     }
-    else if (idx == 1)
+    else if (profileIdx == 1)
     {
-        strcpy(customer_text, txt);
+        strcpy(customer_text, profileTxt);
     }
-    else if (idx == 2)
+    else if (profileIdx == 2)
     {
-        strcpy(zip_text, txt);
+        strcpy(zip_text, profileTxt);
     }
 
-    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    profileWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
 

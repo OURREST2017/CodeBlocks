@@ -38,7 +38,6 @@ extern GUI_CONST_STORAGE GUI_BITMAP bmdn_s_lg;
 
 extern GUI_CONST_STORAGE GUI_BITMAP bmbut_up_blue;
 extern GUI_CONST_STORAGE GUI_BITMAP bmbut_dn_blue;
-extern GUI_CONST_STORAGE GUI_FONT GUI_FontTahoma87hAA2;
 
 static void up_cool(WM_MESSAGE * pMsg)
 {
@@ -97,7 +96,7 @@ static void text_box_cb(WM_MESSAGE * pMsg)
 
         GUI_SetColor(GUI_BLACK);
         GUI_SetTextMode(GUI_TEXTMODE_TRANS);
-        GUI_SetFont(&GUI_FontTahoma87hAA2);
+        GUI_SetFont(&GUI_FontTahoma87hAA4B);
         GUI_DispStringInRect(buf, &rt, GUI_TA_HCENTER | GUI_TA_VCENTER);
         break;
     default:
@@ -185,7 +184,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                CreateHomeWin();
+                WM_HideWindow(coolToWin);
+                screenState = 1;
                 break;
             }
             break;
@@ -195,7 +195,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             case WM_NOTIFICATION_RELEASED:
                 lowerDegreeLimit = lowerDegree;
                 GUI_Delay(100);
-                CreateHomeWin();
+                WM_HideWindow(coolToWin);
+                screenState = 1;
                 break;
             }
             break;
@@ -217,7 +218,7 @@ WM_HWIN CreateCoolTo(void)
     WM_HWIN hWin;
 
     lowerDegree = lowerDegreeLimit;
-    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    coolToWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
 

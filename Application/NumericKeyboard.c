@@ -192,6 +192,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 CreateAlphaKeyboard(text_index, txt_buffer, edit_title, from_screen);
                 break;
             case ID_BUTTON_CANCEL:
+                WM_HideWindow(numericKeyboardWin);
                 if (strcmp(from_screen, "Edit Room") == 0)
                 {
                     CreateEditRoom(text_index);
@@ -207,6 +208,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 }
                 break;
             case ID_BUTTON_DONE:
+                WM_HideWindow(numericKeyboardWin);
                 if (strcmp(from_screen, "Edit Room") == 0)
                 {
                     strcpy(thermo_rooms[text_index], txt_buffer);
@@ -277,7 +279,7 @@ WM_HWIN CreateNumericKeyboard(int room, char * txt, char * title, char * screen)
     strcpy(edit_title, title);
     strcpy(txt_buffer, txt);
     strcpy(from_screen, screen);
-    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    numericKeyboardWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
 

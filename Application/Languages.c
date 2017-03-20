@@ -78,8 +78,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                CreateSettings();
-                //state=4;
+                WM_HideWindow(languagesWin);
+                screenState = 4;
                 break;
             }
             break;
@@ -103,8 +103,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 }
                 else
                 {
-                    CreateSettings();
-                    //state=4;
+                    WM_HideWindow(languagesWin);
+                    screenState = 4;
                 }
                 break;
             }
@@ -157,7 +157,7 @@ WM_HWIN CreateLanguages(void)
     {
         eng_mode = 0;
     }
-    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    languagesWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
 

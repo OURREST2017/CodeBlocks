@@ -234,7 +234,6 @@ void buttonOff22_cb(WM_MESSAGE * pMsg)
     }
 }
 
-
 void drawButton16(char * but, int w, int h, int col, int bor)
 {
     GUI_RECT rect;
@@ -600,8 +599,8 @@ void CreateDecoration(int xSize, int ySize, int LineHeight, WHEEL * pWheel)
     GUI_DrawHLine((ySize / 2) - (LineHeight / 2),     0, xSize - 1);
     GUI_SetColor(0x44000000);
     GUI_DrawHLine((ySize / 2) + (LineHeight / 2) - 1, 0, xSize - 1);
-    //GUI_DrawGradientV(1, (ySize / 2) - (LineHeight / 2) + 1, xSize - 2, (ySize / 2) - 1,                    0x88FFFFFF, 0x55AAAAAA);
-    //GUI_DrawGradientV(1, (ySize / 2),                        xSize - 2, (ySize / 2) + (LineHeight / 2) - 2, 0xBB000000, 0xBB000000);
+    GUI_DrawGradientV(1, (ySize / 2) - (LineHeight / 2) + 1, xSize - 2, (ySize / 2) - 1,                    0x88FFFFFF, 0x55AAAAAA);
+    GUI_DrawGradientV(1, (ySize / 2),                        xSize - 2, (ySize / 2) + (LineHeight / 2) - 2, 0xBB000000, 0xBB000000);
     GUI_MEMDEV_Select(hMemPrev);
     //
     // Store result
@@ -623,7 +622,7 @@ int CreateListWheel(int x, int y, int xSize, int ySize, int Id,
     LISTWHEEL_SetFont(hWin, pFont);
     LISTWHEEL_SetTextAlign(hWin, TextAlign);
     LISTWHEEL_SetSnapPosition(hWin, (ySize - LineHeight) / 2);
-    //LISTWHEEL_SetOwnerDraw(hWin, OwnerDraw);
+    LISTWHEEL_SetOwnerDraw(hWin, OwnerDraw);
     LISTWHEEL_SetUserData(hWin, &pWheel, sizeof(pWheel));
     LISTWHEEL_SetLineHeight(hWin, LineHeight);
     LISTWHEEL_SetTextColor(hWin, LISTWHEEL_CI_SEL, 0x008800);
@@ -641,7 +640,7 @@ int CreateListWheel(int x, int y, int xSize, int ySize, int Id,
     LISTWHEEL_SetSel(hWin, pos);
 
     // Create overlay devices
-    //CreateDecoration(xSize, ySize, LineHeight, pWheel);
+    CreateDecoration(xSize, ySize, LineHeight, pWheel);
     // Fill WHEEL structure
     pWheel->hWin = hWin;
     return 0;

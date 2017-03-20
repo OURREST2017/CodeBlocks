@@ -38,6 +38,7 @@
 #define ID_HVAC_HEAT    (GUI_ID_USER + 0x44)
 #define ID_HVAC_COOL    (GUI_ID_USER + 0x45)
 #define ID_HVAC_FAN    (GUI_ID_USER + 0x46)
+#define ID_TEXT_DEBUG (GUI_ID_USER + 0x47)
 
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
@@ -81,11 +82,12 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "", ID_BUTTON_WIFI, 320, 0, 50, 50, 0, 0x0, 0 },
 
 #ifdef DEBUG_MODE
+    { TEXT_CreateIndirect, "DEBUG", ID_TEXT_DEBUG, 10, 52, 350, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "H", ID_HVAC_HEAT, 260, 14, 15, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "C", ID_HVAC_COOL, 275, 14, 15, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "F", ID_HVAC_FAN , 290, 14, 15, 20, 0, 0x64, 0 },
-//    { BUTTON_CreateIndirect, "", ID_BUTTON_INSIDE_UP, 40, 56, 60, 60, 0, 0x0, 0 },
-//    { BUTTON_CreateIndirect, "", ID_BUTTON_INSIDE_DN, 40, 142, 60, 60, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "", ID_BUTTON_INSIDE_UP, 40, 74, 60, 33, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "", ID_BUTTON_INSIDE_DN, 40, 142, 60, 30, 0, 0x0, 0 },
 #endif
 };
 
@@ -96,6 +98,7 @@ static GUI_TIMER_HANDLE tempTimer_h;
 static WM_HWIN holdButton, insideTempText, insideHumidityText, upButton, dnButton;
 static WM_HWIN upUpperButton, dnUpperButton, upLowerButton, dnLowerButton;
 static WM_HWIN modeButton, fanButton, heatButton, coolButton;
+WM_HWIN textDebug;
 
 static char date_buf[20];
 static char time_buf[20];
@@ -116,10 +119,6 @@ extern GUI_CONST_STORAGE GUI_BITMAP bmdtup;
 extern GUI_CONST_STORAGE GUI_BITMAP bmdtdn;
 extern GUI_CONST_STORAGE GUI_BITMAP bmlocked;
 extern GUI_CONST_STORAGE GUI_BITMAP bmunlocked;
-extern GUI_CONST_STORAGE GUI_FONT GUI_FontTahoma23hAA2;
-extern GUI_CONST_STORAGE GUI_FONT GUI_FontVerdana16hAA4B;
-extern GUI_CONST_STORAGE GUI_FONT GUI_FontTahoma129hAA4D;
-extern GUI_CONST_STORAGE GUI_FONT GUI_FontTahoma19hAA4B;
 
 static char *weekDays[] = {"Sun","Mon","Tue","Wed","Thu","Fri","Sat","Sun"};
 
@@ -418,6 +417,44 @@ static void screen_lock_cb(WM_MESSAGE * pMsg)
         break;
     }
 }
+static WM_HWIN dateText, timeText, textIndoor;
+WM_HWIN hvacHeat, hvacCool, hvacFan, holdText;
+static int but_pressed;
+
+static void holdModeOptions() {
+    TEXT_SetText(textDebug, (holdMode == 0) ? "false" : "true");
+    holdButtonOn = holdMode;
+    if (!holdMode)
+    {
+        WM_SetCallback(holdButton, hold_button_off);
+        WM_EnableWindow(modeButton);
+        WM_EnableWindow(coolButton);
+        WM_EnableWindow(heatButton);
+        WM_EnableWindow(fanButton);
+        WM_SetCallback(modeButton, buttonOn16_cb);
+        WM_SetCallback(fanButton, buttonOn16_cb);
+        WM_SetCallback(coolButton, coolButton_cb);
+        WM_SetCallback(heatButton, heatButton_cb);
+        TEXT_SetText(holdText, "ON SCHED");
+    }
+    else
+    {
+        WM_SetCallback(holdButton, hold_button_on);
+        WM_DisableWindow(modeButton);
+        WM_DisableWindow(coolButton);
+        WM_DisableWindow(heatButton);
+        WM_DisableWindow(fanButton);
+        WM_SetCallback(modeButton, buttonOff16_cb);
+        WM_SetCallback(fanButton, buttonOff16_cb);
+        WM_SetCallback(coolButton, coolButton_cb);
+        WM_SetCallback(heatButton, heatButton_cb);
+        TEXT_SetText(holdText, " ON HOLD");
+    }
+    WM_InvalidateWindow(modeButton);
+    WM_InvalidateWindow(fanButton);
+    WM_InvalidateWindow(coolButton);
+    WM_InvalidateWindow(heatButton);
+}
 
 static void autoMode(WM_HWIN hWin)
 {
@@ -476,10 +513,6 @@ static void autoMode(WM_HWIN hWin)
 //    }
 }
 
-static WM_HWIN dateText, timeText, textIndoor;
-static WM_HWIN hvacHeat, hvacCool, hvacFan;
-static int but_pressed;
-
 static void tempTimer(GUI_TIMER_MESSAGE * pTM)
 {
     char buf[10];
@@ -525,13 +558,17 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextAlign(timeText, GUI_TA_LEFT | GUI_TA_VCENTER);
         TEXT_SetFont(timeText, &GUI_FontRounded22);
         TEXT_SetTextColor(timeText, textColor);
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_WIFI);
+        WM_SetCallback(hItem, wifi_cb);
 
 #ifdef DEBUG_MODE
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_INSIDE_UP);
-        WM_SetCallback(hItem, upButton_cb);
+        WM_SetCallback(hItem, upUpperButton_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_INSIDE_DN);
-        WM_SetCallback(hItem, dnButton_cb);
+        WM_SetCallback(hItem, dnUpperButton_cb);
+
         hvacHeat = WM_GetDialogItem(pMsg->hWin, ID_HVAC_HEAT);
         TEXT_SetFont(hvacHeat, &GUI_FontRounded22);
         TEXT_SetTextColor(hvacHeat, GUI_RED);
@@ -591,59 +628,22 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         coolButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_COOL);
         WM_SetCallback(coolButton, coolButton_cb);
         //
+        textIndoor = WM_GetDialogItem(pMsg->hWin, ID_TEXT_INDOOR);
+        TEXT_SetText(textIndoor, "INDOOR");
+        TEXT_SetTextColor(textIndoor, 0x808080);
+        TEXT_SetFont(textIndoor, &GUI_FontTahoma19hAA4B);
+        //
         sprintf(buffer,"%d",insideTemp);
         insideTempText = WM_GetDialogItem(pMsg->hWin, ID_TEXT_INSIDE_TEMP);
         TEXT_SetText(insideTempText, buffer);
-        TEXT_SetFont(insideTempText, &GUI_FontTahoma129hAA4D);
+        TEXT_SetFont(insideTempText, &GUI_FontTahoma129hAA4B);
         TEXT_SetTextColor(insideTempText, 0x00808080);
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_WIFI);
-        WM_SetCallback(hItem, wifi_cb);
-
-        upButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_UP);
-        WM_SetCallback(upButton, upButton_cb);
-        //
-        dnButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DN);
-        WM_SetCallback(dnButton, dnButton_cb);
-
-        sprintf(buffer, "%d°", coolToDegrees);
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_COOLTO);
-        TEXT_SetText(hItem, buffer);
-        TEXT_SetFont(hItem, &GUI_FontVerdana16hAA4B);
-        TEXT_SetTextColor(hItem, 0x00FFFFFF);
-        //
-        sprintf(buffer, "%d°", heatToDegrees);
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEATTO);
-        TEXT_SetFont(hItem, &GUI_FontVerdana16hAA4B);
-        TEXT_SetText(hItem, buffer);
-        TEXT_SetTextColor(hItem, 0x00FFFFFF);
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_MODE);
-        TEXT_SetText(hItem, toup(hvacMode));
-        TEXT_SetFont(hItem, &GUI_FontVerdana16hAA4B);
-        TEXT_SetTextColor(hItem, 0x00FFFFFF);
-        //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_FAN);
-        TEXT_SetText(hItem,toup(fanMode));
-        TEXT_SetFont(hItem, &GUI_FontVerdana16hAA4B);
-        TEXT_SetTextColor(hItem, 0x00FFFFFF);
-
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HOLD);
-        TEXT_SetTextAlign(dateText, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        TEXT_SetText(hItem, "ON SCHED");
-        TEXT_SetFont(hItem, &GUI_FontVerdana16hAA4B);
-        TEXT_SetTextColor(hItem, 0x00FFFFFF);
         //
         sprintf(buffer, "%d%% HUMIDITY", insideHumidity);
         insideHumidityText = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HUMIDITY);
         TEXT_SetFont(insideHumidityText, &GUI_FontTahoma19hAA4B);
         TEXT_SetTextColor(insideHumidityText, 0x808080);
         TEXT_SetText(insideHumidityText, buffer);
-        //
-        textIndoor = WM_GetDialogItem(pMsg->hWin, ID_TEXT_INDOOR);
-        TEXT_SetText(textIndoor, "INDOOR");
-        TEXT_SetTextColor(textIndoor, 0x808080);
-        TEXT_SetFont(textIndoor, &GUI_FontTahoma19hAA4B);
 
         sprintf(buffer, "SET TO %d°", tempSetPoint);
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SET_TO);
@@ -651,39 +651,45 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextColor(hItem, 0x808080);
         TEXT_SetFont(hItem, &GUI_FontTahoma19hAA4B);
 
-//        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_UPPER);
-//        TEXT_SetTextColor(hItem, 0x808080);
-//        TEXT_SetFont(hItem, &GUI_FontRounded16);
-//
-//        sprintf(buffer, "%d", upperDegreeLimit);
-//        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_UPPER_TEMP);
-//        TEXT_SetText(hItem, buffer);
-//        TEXT_SetTextColor(hItem, 0x808080);
-//        TEXT_SetFont(hItem, &GUI_FontD36x48);
-//
-//        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_LOWER);
-//        TEXT_SetTextColor(hItem, 0x808080);
-//        TEXT_SetFont(hItem, &GUI_FontRounded16);
-//
-//        sprintf(buffer, "%d", lowerDegreeLimit);
-//        hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_LOWER_TEMP);
-//        TEXT_SetText(hItem, buffer);
-//        TEXT_SetTextColor(hItem, 0x808080);
-//        TEXT_SetFont(hItem, &GUI_FontD36x48);
-//
-//        upUpperButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_UPPER_UP);
-//        WM_SetCallback(upUpperButton, upUpperButton_cb);
-//        //
-//        dnUpperButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_UPPER_DN);
-//        WM_SetCallback(dnUpperButton, dnUpperButton_cb);
-//
-//        upLowerButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_LOWER_UP);
-//        WM_SetCallback(upLowerButton, upUpperButton_cb);
-//        //
-//        dnLowerButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_LOWER_DN);
-//        WM_SetCallback(dnLowerButton, dnUpperButton_cb);
+        upButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_UP);
+        WM_SetCallback(upButton, upButton_cb);
+        //
+        dnButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DN);
+        WM_SetCallback(dnButton, dnButton_cb);
+        //
+        hvacModeText = WM_GetDialogItem(pMsg->hWin, ID_TEXT_MODE);
+        TEXT_SetText(hvacModeText, toup(hvacMode));
+        TEXT_SetFont(hvacModeText, &GUI_FontVerdana16hAA4B);
+        TEXT_SetTextColor(hvacModeText, 0x00FFFFFF);
+        //
+        fanModeText = WM_GetDialogItem(pMsg->hWin, ID_TEXT_FAN);
+        TEXT_SetFont(fanModeText, &GUI_FontVerdana16hAA4B);
+        TEXT_SetTextColor(fanModeText, 0x00FFFFFF);
+
+        holdText = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HOLD);
+        TEXT_SetTextAlign(dateText, GUI_TA_HCENTER | GUI_TA_VCENTER);
+        TEXT_SetText(holdText, "ON SCHED");
+        TEXT_SetFont(holdText, &GUI_FontVerdana16hAA4B);
+        TEXT_SetTextColor(holdText, 0x00FFFFFF);
+        //
+        sprintf(buffer, "%d°", heatToDegrees);
+        heatToText = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEATTO);
+        TEXT_SetFont(heatToText, &GUI_FontVerdana16hAA4B);
+        TEXT_SetText(heatToText, buffer);
+        TEXT_SetTextColor(heatToText, 0x00FFFFFF);
+
+        sprintf(buffer, "%d°", coolToDegrees);
+        coolToText = WM_GetDialogItem(pMsg->hWin, ID_TEXT_COOLTO);
+        TEXT_SetText(coolToText, buffer);
+        TEXT_SetFont(coolToText, &GUI_FontVerdana16hAA4B);
+        TEXT_SetTextColor(coolToText, 0x00FFFFFF);
+
+        textDebug = WM_GetDialogItem(pMsg->hWin, ID_TEXT_DEBUG);
+        TEXT_SetTextColor(textDebug, GUI_BLACK);
+        TEXT_SetFont(textDebug, &GUI_FontRounded16);
 
         autoMode(pMsg->hWin);
+        holdModeOptions();
 
         break;
     case WM_NOTIFY_PARENT:
@@ -736,7 +742,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 //                //GUI_TIMER_SetPeriod(lockTimer_h, 9999999);
 //                GUI_TIMER_Restart(lockTimer_h);
 //                GUI_Delay(100);
-                CreateSettings();
+                WM_HideWindow(homeWin);
+                WM_ShowWindow(settingsWin);
+                //CreateSettings();
+                screenState = 0;
            }
             break;
         case ID_BUTTON_HEAT:
@@ -770,7 +779,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HOLD);
                 if (holdButtonOn)
                 {
                     WM_SetCallback(holdButton, hold_button_off);
@@ -782,7 +790,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                     WM_SetCallback(coolButton, coolButton_cb);
                     WM_SetCallback(heatButton, heatButton_cb);
                     WM_SetCallback(fanButton, buttonOn16_cb);
-                    TEXT_SetText(hItem, "ON SCHED");
+                    TEXT_SetText(holdText, "ON SCHED");
                 }
                 else
                 {
@@ -795,7 +803,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                     WM_SetCallback(coolButton, coolButton_cb);
                     WM_SetCallback(heatButton, heatButton_cb);
                     WM_SetCallback(fanButton, buttonOff16_cb);
-                    TEXT_SetText(hItem, " ON HOLD");
+                    TEXT_SetText(holdText, " ON HOLD");
                 }
                 holdButtonOn = !holdButtonOn;
                 holdMode = !holdMode;
@@ -810,7 +818,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
                 CreateFanMode();
-                //state=5;
                 break;
             }
             break;
@@ -1023,28 +1030,28 @@ static void dateTimer(GUI_TIMER_MESSAGE * pTM)
     sprintf(buffer,"%d%% HUMIDITY",insideHumidity);
     TEXT_SetText(insideHumidityText, buffer);
 
-#ifdef DEBUG_MODE
-    WM_HWIN hItem;
-    if (fan_control) {
-        WM_ShowWindow(hvacFan);
-    } else {
-        WM_HideWindow(hvacFan);
-    }
-
-    //GUI_ErrorOut1("H",heat_control);
-    if (heat_control) {
-        WM_ShowWindow(hvacHeat);
-    } else {
-        WM_HideWindow(hvacHeat);
-    }
-
-    if (cool_control) {
-        WM_ShowWindow(hvacCool);
-    } else {
-        WM_HideWindow(hvacCool);
-    }
-#endif
-
+//#ifdef DEBUG_MODE
+//    WM_HWIN hItem;
+//    if (fan_control) {
+//        WM_ShowWindow(hvacFan);
+//    } else {
+//        WM_HideWindow(hvacFan);
+//    }
+//
+//    //GUI_ErrorOut1("H",heat_control);
+//    if (heat_control) {
+//        WM_ShowWindow(hvacHeat);
+//    } else {
+//        WM_HideWindow(hvacHeat);
+//    }
+//
+//    if (cool_control) {
+//        WM_ShowWindow(hvacCool);
+//    } else {
+//        WM_HideWindow(hvacCool);
+//    }
+//#endif
+//
     GUI_TIMER_SetPeriod(pTM->hTimer, 2000);
     GUI_TIMER_Restart(pTM->hTimer);
 }
@@ -1060,7 +1067,6 @@ WM_HWIN CreateHomeWin(void)
     setDateTime();
     cool_border = strcmp(hvacMode, "cool") == 0;
     heat_border = strcmp(hvacMode, "heat") == 0;
-    holdMode = 0;
 
     if (!tempTimerSet)
     {
@@ -1070,6 +1076,7 @@ WM_HWIN CreateHomeWin(void)
     }
 
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    WM_HideWindow(hWin);
     return hWin;
 }
 

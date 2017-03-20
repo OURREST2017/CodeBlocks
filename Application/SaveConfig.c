@@ -62,7 +62,7 @@ void saveConfig()
     writeInt("localTemp", localTemp, ",", f);
     writeString("lockCode", lockCode, ",", f);
     writeBool("metric", metric, ",", f);
-    writeInt("tempuratureScale", metric, ",", f);
+    writeInt("temperatureScale", metric, ",", f);
     writeString("nextFwVersion", nextFwVersion, ",", f);
     writeString("ownersName", ownersName, ",", f);
     writeInt("reset", reset, ",", f);
@@ -84,8 +84,8 @@ void saveConfig()
                     schedules[i].days[0].periods[p].startTime);
             fprintf(f,"            \"stopTime\": \"%s\",\n",
                     schedules[i].days[0].periods[p].stopTime);
-            fprintf(f,"            \"tempurature\": %d\n",
-                    schedules[i].days[0].periods[p].tempurature);
+            fprintf(f,"            \"temperature\": %d\n",
+                    schedules[i].days[0].periods[p].temperature);
             fprintf(f,"          }");
             if (p != 3)
             {
@@ -121,8 +121,8 @@ void saveConfig()
                     schedules[i].days[k].periods[p].startTime);
             fprintf(f,"            \"stopTime\": \"%s\",\n",
                     schedules[i].days[k].periods[p].stopTime);
-            fprintf(f,"            \"tempurature\": %d\n",
-                    schedules[i].days[k].periods[p].tempurature);
+            fprintf(f,"            \"temperature\": %d\n",
+                    schedules[i].days[k].periods[p].temperature);
             fprintf(f,"          }");
             if (p != 3)
             {

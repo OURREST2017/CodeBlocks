@@ -192,7 +192,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                state=1;
+                WM_HideWindow(triacWin);
+                screenState = 1;
                 break;
             }
             break;
@@ -226,7 +227,7 @@ WM_HWIN CreateTriacPanel(void)
     BSP_HVAC_request_xxx_X(HVAC_FUNCTION_RESET);
 #endif
 
-    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    triacWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
 

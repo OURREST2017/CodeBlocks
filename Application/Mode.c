@@ -209,8 +209,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 heat = 0;
                 eheat = 0;
                 invalidateButtons( pMsg->hWin);
-                if (autob)strcpy(hvacMode, "auto");
+                strcpy(hvacMode, "auto");
+                TEXT_SetText(hvacModeText, toup(hvacMode));
                 GUI_Delay(100);
+                WM_HideWindow(modeWin);
                 CreateTempuratureLimits();
                 break;
             }
@@ -236,7 +238,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                state=1;
+                WM_HideWindow(modeWin);
+                screenState = 1;
                 break;
             }
             break;
@@ -249,7 +252,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 if (cool) strcpy(hvacMode, "cool");
                 if (heat) strcpy(hvacMode, "heat");
                 if (eheat) strcpy(hvacMode, "eheat");
-                state=1;
+                WM_HideWindow(modeWin);
+                TEXT_SetText(hvacModeText, toup(hvacMode));
+                screenState = 1;
                 break;
             }
             break;
@@ -280,7 +285,7 @@ WM_HWIN CreateMode(void)
     if (strcmp(hvacMode, "cool") == 0) cool = 1;
     if (strcmp(hvacMode, "eheat") == 0) eheat = 1;
 
-    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    modeWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
 
