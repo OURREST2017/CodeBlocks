@@ -21,8 +21,7 @@ void fanOff()
 {
     if (strcmp(fanMode, "on") == 0) return;
     fan_control = 0;
-    //WM_HideWindow(hvacFan);
-//TEXT_SetText(textDebug, "FOFF");
+    WM_HideWindow(hvacFan);
 #ifndef CODEBLOCK
     BSP_HVAC_request_fan_G(HVAC_FUNCTION_RESET);
 #endif // CODEBLOCK
@@ -31,8 +30,7 @@ void fanOff()
 void fanOn()
 {
     fan_control = 1;
-    //WM_ShowWindow(hvacFan);
-//TEXT_SetText(textDebug, "FON");
+    WM_ShowWindow(hvacFan);
 #ifndef CODEBLOCK
     BSP_HVAC_request_fan_G(HVAC_FUNCTION_SET);
 #endif // CODEBLOCK
@@ -55,7 +53,7 @@ void compressorOn()
 #endif
             fanOn();
             cool_control = 1;
-           //WM_ShowWindow(hvacCool);
+           WM_ShowWindow(hvacCool);
        }
         compressor_state = 1;
         compressor_off_time = 0;
@@ -77,7 +75,7 @@ void compressorOff()
         BSP_HVAC_request_cool_Y(HVAC_FUNCTION_RESET);
 #endif
         cool_control = 0;
-        //WM_HideWindow(hvacCool);
+        WM_HideWindow(hvacCool);
     }
     compressor_state = 0;
 }
@@ -95,7 +93,7 @@ void heatingOn()
             fanOn();
             heat_control = 1;
         }
-        //WM_ShowWindow(hvacHeat);
+        WM_ShowWindow(hvacHeat);
         heating_state = 1;
         heating_off_time = 0;
     }

@@ -18,7 +18,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "HomeWin", ID_HOME_WINDOW, 0, 0, 480, 272, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "", ID_TEXT_IDLE, 0, 0, 480, 270, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "In_T_Panel", ID_TEXT_INSIDE_TEMP, 162, 118, 135, 100, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "In_T_Panel", ID_TEXT_INSIDE_TEMP, 162, 88, 135, 120, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "", ID_TEXT_DATE, 10, 0, 140, 50, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "", ID_TEXT_TIME, 160, 0, 150, 50, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Out_T_Temp", ID_TEXT_OUT_TEMP, 386, 7, 72, 20, 0, 0x64, 0 },
@@ -137,7 +137,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         if (NCode == 1) {
             GUI_TIMER_SetPeriod(lockTimer_h, idleTimeOut);
             GUI_TIMER_Restart(lockTimer_h);
-            CreateHomeWin();
+            WM_HideWindow(idleWin);
+            WM_ShowWindow(homeWin);
         }
     default:
         WM_DefaultProc(pMsg);

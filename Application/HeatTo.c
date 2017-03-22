@@ -18,9 +18,9 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "HEAT TO SETTINGS", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "HEAT\nTO", ID_TEXT_UPPER, 105, 110, 100, 80, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_UPPER_UP, 210, 64, 60, 60, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_UPPER_DN, 210, 191, 60, 60, 0, 0x0, 0 },
-    { TEXT_CreateIndirect, "", ID_TEXT_UPPER_TXT, 186, 110, 94, 80, 0, 0x64, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_UPPER_UP, 217, 64, 60, 60, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_UPPER_DN, 217, 191, 60, 60, 0, 0x0, 0 },
+    { TEXT_CreateIndirect, "", ID_TEXT_UPPER_TXT, 190, 110, 105, 80, 0, 0x64, 0 },
 
     { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 375, 230, 80, BUTHEIGHT, 0, 0x0, 0 },

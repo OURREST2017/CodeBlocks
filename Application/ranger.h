@@ -12,7 +12,7 @@
 #include <ctype.h>
 #include "DIALOG.h"
 
-//#define DEBUG_MODE 1
+#define DEBUG_MODE 1
 #define BUTHEIGHT 32
 #define HEADER_FONT &GUI_FontTahoma35hAA4
 #define HEADER_FONT_BOLD &GUI_FontTahoma35hAA4B

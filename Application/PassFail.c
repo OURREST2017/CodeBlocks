@@ -17,6 +17,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "No", ID_BUTTON_NO, 270, 125, 125, 50, 0, 0x0, 0 },
 };
 static char gpioPin[10];
+static WM_HWIN passFailWin;
 /*********************************************************************
 *
 *       _cbDialog
@@ -60,6 +61,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                WM_DeleteWindow(passFailWin);
                 CreateTriacPanel();
                 break;
             }
@@ -68,6 +70,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                WM_DeleteWindow(passFailWin);
                 CreateTriacPanel();
                 break;
             }
@@ -91,6 +94,6 @@ WM_HWIN CreatePassFail(char * pin)
 
     strcpy(gpioPin, pin);
 
-    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    passFailWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }

@@ -100,7 +100,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 #ifndef CODEBLOCK
                 BSP_HVAC_request_cool_Y(HVAC_FUNCTION_SET);
 #endif
+                WM_HideWindow(homeWin);
                 GUI_Delay(100);
+                WM_DeleteWindow(triacWin);
                 CreatePassFail("AC (Y)");
                 break;
             }
@@ -112,7 +114,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 #ifndef CODEBLOCK
                 BSP_HVAC_request_cool_Y2(HVAC_FUNCTION_SET);
 #endif
+                WM_HideWindow(homeWin);
                 GUI_Delay(100);
+                WM_DeleteWindow(triacWin);
                 CreatePassFail("AC (Y2)");
                 break;
             }
@@ -124,7 +128,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 #ifndef CODEBLOCK
                 BSP_HVAC_request_fan_G(HVAC_FUNCTION_SET);
 #endif
+                WM_HideWindow(homeWin);
                 GUI_Delay(100);
+                WM_DeleteWindow(triacWin);
                 CreatePassFail("FAN (G)");
                 break;
             }
@@ -136,8 +142,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 #ifndef CODEBLOCK
                 BSP_HVAC_request_heat_W(HVAC_FUNCTION_SET);
 #endif
-                CreatePassFail("HEAT (W)");
+                WM_HideWindow(homeWin);
                 GUI_Delay(100);
+                WM_DeleteWindow(triacWin);
+                CreatePassFail("HEAT (W)");
             }
             break;
         case ID_BUTTON_HEAT_W2:
@@ -147,8 +155,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 #ifndef CODEBLOCK
                 BSP_HVAC_request_heat_W2(HVAC_FUNCTION_SET);
 #endif
-                CreatePassFail("HEAT (W2)");
+                WM_HideWindow(homeWin);
                 GUI_Delay(100);
+                WM_DeleteWindow(triacWin);
+                CreatePassFail("HEAT (W2)");
             }
             break;
         case ID_BUTTON_B:
@@ -158,7 +168,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 #ifndef CODEBLOCK
                 BSP_HVAC_request_xxx_B(HVAC_FUNCTION_SET);
 #endif
+                WM_HideWindow(homeWin);
                 GUI_Delay(100);
+                WM_DeleteWindow(triacWin);
                 CreatePassFail("B");
                 break;
             }
@@ -170,7 +182,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 #ifndef CODEBLOCK
                 BSP_HVAC_request_xxx_X(HVAC_FUNCTION_SET);
 #endif
+                WM_HideWindow(homeWin);
                 GUI_Delay(100);
+                WM_DeleteWindow(triacWin);
                 CreatePassFail("X");
                 break;
             }
@@ -182,7 +196,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 #ifndef CODEBLOCK
                 BSP_HVAC_request_xxx_O(HVAC_FUNCTION_SET);
 #endif
+                WM_HideWindow(homeWin);
                 GUI_Delay(100);
+                WM_DeleteWindow(triacWin);
                 CreatePassFail("O");
                 break;
             }
@@ -192,7 +208,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                WM_HideWindow(triacWin);
+                WM_DeleteWindow(triacWin);
                 screenState = 1;
                 break;
             }

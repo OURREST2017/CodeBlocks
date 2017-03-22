@@ -66,6 +66,7 @@ void MainTask(void)
     initColors();
     loadConfig();
 
+    //idleTimeOut = 5000;
     homeWin = CreateHomeWin();
     idleWin = CreateIdleWin();
     dateTimeWin = CreateDateTime();
