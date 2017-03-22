@@ -22,7 +22,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 };
 
 static int dstOn_mode;
-static WM_HWIN dstOnButton, dstOffButton;
+static WM_HWIN dstOnButton, dstOffButton, daylightSavingsTimeWin;
 
 /*********************************************************************
 *
@@ -76,9 +76,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                WM_DeleteWindow(daylightSavingsTimeWin);
                 GUI_Delay(100);
-                CreatePreferences();
-                //state = 16;
+                screenState = 16;
                 break;
             }
             break;
@@ -87,9 +87,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 dst = dstOn_mode;
+                WM_DeleteWindow(daylightSavingsTimeWin);
                 GUI_Delay(100);
-                CreatePreferences();
-                //state = 16;
+                screenState = 16;
                 break;
             }
             break;
@@ -124,14 +124,14 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 *
 *       CreateWindow
 */
-WM_HWIN CreateDaylightSavingTime(void);
-WM_HWIN CreateDaylightSavingTime(void)
+WM_HWIN CreateDaylightSavingsTime(void);
+WM_HWIN CreateDaylightSavingsTime(void)
 {
     WM_HWIN hWin;
 
     dstOn_mode = dst;
 
-    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    daylightSavingsTimeWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
 

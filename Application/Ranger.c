@@ -19,14 +19,15 @@ uint32_t GUI_FreeMem = 0;
 
 static void lockTimer(GUI_TIMER_MESSAGE * pTM)
 {
-//  WM_HideWindow(homeWin);
-//  WM_ShowWindow(idleWin);
+    WM_HideWindow(homeWin);
+    WM_ShowWindow(idleWin);
 }
 static void GUIThread(void const * argument)
 #else
 static void lockTimer(GUI_TIMER_MESSAGE * pTM)
 {
-    CreateIdleWin();
+    WM_HideWindow(homeWin);
+    WM_ShowWindow(idleWin);
 }
 void MainTask(void)
 #endif
@@ -71,6 +72,8 @@ void MainTask(void)
     screenLockoutWin = CreateScreenLockout();
     settingsWin = CreateSettings();
     settingsScheduleWin = CreateSettingsSchedule();
+    preferencesWin = CreatePreferences();
+    systemSetupWin = CreateSystemSetup();
 
     //saveConfig();
 
@@ -92,7 +95,6 @@ void MainTask(void)
     int counter;
     while(1)
     {
-        counter++;
         switch (screenState)
         {
         case 0:
@@ -102,7 +104,7 @@ void MainTask(void)
             screenState = 0;
             break;
         case 1:
-            GUI_TIMER_SetPeriod(lockTimer_h, 5000);
+            GUI_TIMER_SetPeriod(lockTimer_h, idleTimeOut);
             GUI_TIMER_Restart(lockTimer_h);
             WM_ShowWindow(homeWin);
             screenState = 0;
@@ -153,12 +155,13 @@ void MainTask(void)
             break;
         case 16:
             WM_HideWindow(settingsWin);
-            CreatePreferences();
+            WM_ShowWindow(preferencesWin);
+            //CreatePreferences();
             screenState = 0;
             break;
         case 17:
             WM_HideWindow(settingsWin);
-            CreateSystemSetup();
+            WM_ShowWindow(systemSetupWin);
             screenState = 0;
             break;
         case 20:
@@ -189,13 +192,14 @@ void MainTask(void)
         }
         GUI_Exec();
         GUI_Delay(40);
-#ifdef CODEBLOCK
-        if (counter++ > 1000)
-        {
-            hvacControlCode();
-            counter = 0;
-        }
-#endif
+//#ifdef CODEBLOCK
+//        if (counter > 3000)
+//        {
+//            hvacControlCode();
+//            counter = 0;
+//        }
+//        counter++;
+//#endif
     }
 }
 

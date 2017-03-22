@@ -24,7 +24,7 @@ WM_HWIN homeWin, idleWin, screenLockoutWin, dateTimeWin, settingsWin, languagesW
 WM_HWIN settingsScheduleWin, editScheduleWin, eachDayWin, preferencesWin, systemSetupWin;
 WM_HWIN mobilePairWin, profileWin, modeWin, fanModeWin, coolToWin, heatToWin, temperatureLimitsWin;
 WM_HWIN alphaKeyboardWin, numericKeyboardWin, settingsHelpWin, wifiPasswordWin;
-WM_HWIN hvacModeText, fanModeText, heatToText, coolToText, wifiConnectWin, triacWin;
+WM_HWIN hvacModeText, fanModeText, heatToText, coolToText, triacWin;
 
 extern GUI_CONST_STORAGE GUI_BITMAP GUI_FontRounded16;
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontRounded22;
@@ -102,9 +102,9 @@ extern  WM_HWIN CreateCoolingStages(void);
 extern  WM_HWIN CreateHeatingStages(void);
 extern  WM_HWIN CreateEachDay();
 extern  WM_HWIN CreateSchedulingOptions(void);
-extern  WM_HWIN CreateTempuratureScale(void);
+extern  WM_HWIN CreateTemperatureScale(void);
 extern  WM_HWIN CreateClockFormat(void);
-extern  WM_HWIN CreateDaylightSavingTime(void);
+extern  WM_HWIN CreateDaylightSavingsTime(void);
 extern  WM_HWIN CreateSystemsChangeOver(void);
 extern  WM_HWIN CreateKeyboardLockout(void);
 extern  WM_HWIN CreateSchedulePeriods(void);
@@ -118,7 +118,7 @@ extern  WM_HWIN CreateFanMode(void);
 extern  WM_HWIN CreateEditSchedule();
 extern  WM_HWIN CreateWifiConnect(void);
 extern  WM_HWIN CreateWifiDisonnect(void);
-extern  WM_HWIN CreateTempuratureLimits(void);
+extern  WM_HWIN CreateTemperatureLimits(int);
 extern  WM_HWIN CreateMobilePair(void);
 extern  WM_HWIN CreateCoolTo(void);
 extern  WM_HWIN CreateHeatTo(void);
@@ -300,10 +300,10 @@ int humidityHighInside;
 int humidityLowInside;
 
 // location
-char  streetLine1[50];
+char streetLine1[50];
 char streetLine2 [50];
 char city[50];
-char state_us[20];
+char state[20];
 char zip[12];
 
 char firstName[20];

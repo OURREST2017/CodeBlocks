@@ -31,6 +31,8 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "Schedule Periods", ID_BUTTON_SCHEDULING_PERIODS, 242, 205, 220, 36, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_RETURN, 15, 0, 150, 50, 0, 0x0, 0 },
 };
+
+
 /*********************************************************************
 *
 *       _cbDialog
@@ -114,7 +116,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 break;
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                CreateTempuratureScale();
+                CreateTemperatureScale();
                 //state=41;
             }
             break;
@@ -140,7 +142,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 break;
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                CreateDaylightSavingTime();
+                CreateDaylightSavingsTime();
                 //state=43;
             }
             break;
@@ -166,7 +168,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 break;
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                CreateTempuratureLimits();
+                CreateTemperatureLimits(0);
                 //state=45;
             }
             break;
@@ -213,7 +215,8 @@ WM_HWIN CreatePreferences(void)
 {
     WM_HWIN hWin;
 
-    preferencesWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    WM_HideWindow(hWin);
     return hWin;
 }
 

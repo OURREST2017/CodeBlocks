@@ -16,7 +16,10 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "Yes", ID_BUTTON_YES, 100, 125, 125,50, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "No", ID_BUTTON_NO, 270, 125, 125, 50, 0, 0x0, 0 },
 };
+
 static int room_number;
+static WM_HWIN deleteThermoWin;
+
 /*********************************************************************
 *
 *       _cbDialog
@@ -57,6 +60,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                WM_DeleteWindow(deleteThermoWin);
+                GUI_Delay(100);
                 CreateThermostatLocations();
                 break;
             }
@@ -65,6 +70,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                WM_DeleteWindow(deleteThermoWin);
+                GUI_Delay(100);
                 CreateThermostatLocations();
                 break;
             }
@@ -88,7 +95,7 @@ WM_HWIN CreateDeleteThermo(int room)
 
     room_number = room;
 
-    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    deleteThermoWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
 

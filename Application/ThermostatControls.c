@@ -22,7 +22,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 };
 
 static int coolOn, heatOn;
-static WM_HWIN cooling, heating;
+static WM_HWIN cooling, heating, thermostatControlsWin;
 
 /*********************************************************************
 *
@@ -103,8 +103,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                WM_DeleteWindow(thermostatControlsWin);
                 GUI_Delay(100);
-                CreateSystemSetup();
+                screenState = 17;
             }
             break;
         case ID_BUTTON_SAVE:
@@ -115,8 +116,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 if (coolOn == 1 && heatOn == 0) thermostatControls = 1;
                 if (coolOn == 0 && heatOn == 1) thermostatControls = 2;
                 if (coolOn == 1 && heatOn == 1) thermostatControls = 3;
+
+                WM_DeleteWindow(thermostatControlsWin);
                 GUI_Delay(100);
-                CreateSystemSetup();
+                screenState = 17;
             }
             break;
         }
@@ -140,7 +143,7 @@ WM_HWIN CreateThermostatControls(void)
     if (thermostatControls == 2) heatOn = 1;
     if (thermostatControls == 3) coolOn = heatOn = 1;
 
-    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    thermostatControlsWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
 

@@ -22,7 +22,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 };
 
 static int one_mode;
-static WM_HWIN oneButton, twoButton;
+static WM_HWIN oneButton, twoButton, heatingStagesWin;
 /*********************************************************************
 *
 *       _cbDialog
@@ -75,9 +75,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                WM_DeleteWindow(heatingStagesWin);
                 GUI_Delay(100);
-            CreateSystemSetup();
-                //state=17;
+                screenState = 17;
             }
             break;
         case ID_BUTTON_SAVE:
@@ -85,9 +85,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 heatingStages = (one_mode == 1) ? 1 : 2;
+                WM_DeleteWindow(heatingStagesWin);
                 GUI_Delay(100);
-            CreateSystemSetup();
-                //state=17;
+                screenState = 17;
             }
             break;
         case ID_BUTTON_1_STAGE:
@@ -125,11 +125,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 WM_HWIN CreateHeatingStages(void);
 WM_HWIN CreateHeatingStages(void)
 {
-    WM_HWIN hWin;
-
     one_mode = heatingStages == 1;
-    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
-    return hWin;
+    heatingStagesWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    return heatingStagesWin;
 }
 
 /*************************** End of file ****************************/

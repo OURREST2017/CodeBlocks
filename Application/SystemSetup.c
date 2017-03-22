@@ -205,7 +205,8 @@ WM_HWIN CreateSystemSetup(void)
 {
     WM_HWIN hWin;
 
-    systemSetupWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    WM_HideWindow(hWin);
     return hWin;
 }
 

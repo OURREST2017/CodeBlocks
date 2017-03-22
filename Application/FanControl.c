@@ -22,7 +22,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 };
 
 static int thermo_mode;
-static WM_HWIN thermoButton, heatingButton;
+static WM_HWIN thermoButton, heatingButton, fanControlWin;
 /*********************************************************************
 *
 *       _cbDialog
@@ -75,9 +75,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                WM_DeleteWindow(fanControlWin);
                 GUI_Delay(100);
-                CreateSystemSetup();
-                //state=17;
+                screenState = 17;
             }
             break;
         case ID_BUTTON_SAVE:
@@ -92,9 +92,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 {
                     strcpy(fanControl, "heating");
                 }
+                WM_DeleteWindow(fanControlWin);
                 GUI_Delay(100);
-                CreateSystemSetup();
-                //state=17;
+                screenState = 17;
             }
             break;
         case ID_BUTTON_THERMOSTAT:
@@ -134,8 +134,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 WM_HWIN CreateFanControl(void);
 WM_HWIN CreateFanControl(void)
 {
-    WM_HWIN hWin;
-
     if (strcmp(fanControl, "heating") == 0)
     {
         thermo_mode = 0;
@@ -145,8 +143,8 @@ WM_HWIN CreateFanControl(void)
         thermo_mode = 1;
     }
 
-    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
-    return hWin;
+    fanControlWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    return fanControlWin;
 }
 
 /*************************** End of file ****************************/

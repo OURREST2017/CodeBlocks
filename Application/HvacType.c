@@ -25,7 +25,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 
 static int forcedAir_mode, heatPump_mode, hotWater_mode;
 
-static WM_HWIN forcedAirButton, heatPumpButton, hotWaterButton;
+static WM_HWIN forcedAirButton, heatPumpButton, hotWaterButton, hvacTypeWin;
 
 /*********************************************************************
 *
@@ -107,14 +107,14 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
+                WM_DeleteWindow(hvacTypeWin);
                 if (firstTime)
                 {
                     CreateThermostatLocations();
                 }
                 else
                 {
-                    CreateSystemSetup();
-                    //state=17;
+                    screenState = 17;
                 }
             }
             break;
@@ -123,6 +123,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
+                WM_DeleteWindow(hvacTypeWin);
                 if (forcedAir_mode)
                 {
                     strcpy(hvacType,"air");
@@ -141,8 +142,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 }
                 else
                 {
-                    CreateSystemSetup();
-                    //state=17;
+                    screenState = 17;
                 }
             }
             break;
@@ -224,7 +224,7 @@ WM_HWIN CreateHvacType(void)
         heatPump_mode = 0;
     }
 
-    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    hvacTypeWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
 

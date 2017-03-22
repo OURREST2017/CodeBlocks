@@ -23,6 +23,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 
 static int prog_mode;
 
+static WM_HWIN schedulingOptions;
 /*********************************************************************
 *
 *       _cbDialog
@@ -76,9 +77,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                WM_DeleteWindow(schedulingOptions);
                 GUI_Delay(100);
-                CreatePreferences();
-                //state = 16;
+                screenState = 16;
                 break;
             }
             break;
@@ -94,9 +95,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 {
                     strcpy(schedulingOption, "non-programmable");
                 }
+                WM_DeleteWindow(schedulingOptions);
                 GUI_Delay(100);
-                CreatePreferences();
-                //state = 16;
+                screenState = 16;
                 break;
             }
             break;
@@ -145,7 +146,7 @@ WM_HWIN CreateSchedulingOptions(void)
         prog_mode = 0;
     }
 
-    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    schedulingOptions = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
 

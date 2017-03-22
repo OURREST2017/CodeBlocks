@@ -22,7 +22,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 };
 
 static int hour12_mode;
-static WM_HWIN hour12Button, hour24Button;
+static WM_HWIN hour12Button, hour24Button, clockFormatWin;
 
 /*********************************************************************
 *
@@ -99,9 +99,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             case WM_NOTIFICATION_CLICKED:
                 break;
             case WM_NOTIFICATION_RELEASED:
+                WM_DeleteWindow(clockFormatWin);
                 GUI_Delay(100);
-                CreatePreferences();
-                //state = 16;
+                screenState = 16;
                 break;
             }
             break;
@@ -112,9 +112,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 break;
             case WM_NOTIFICATION_RELEASED:
                 clockFormat = (hour12_mode == 1) ? 12 : 24;
+                WM_DeleteWindow(clockFormatWin);
                 GUI_Delay(100);
-                CreatePreferences();
-                //state = 16;
+                screenState = 16;
                 break;
             }
             break;
@@ -137,7 +137,7 @@ WM_HWIN CreateClockFormat(void)
 
     hour12_mode = (clockFormat == 12);
 
-    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    clockFormatWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
 

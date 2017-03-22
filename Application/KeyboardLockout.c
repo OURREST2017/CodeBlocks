@@ -22,7 +22,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 };
 
 static int unlocked_mode;
-static WM_HWIN lockedButton, unlockedButton;
+static WM_HWIN lockedButton, unlockedButton, keyboardLockWin;
 
 /*********************************************************************
 *
@@ -76,9 +76,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                WM_DeleteWindow(keyboardLockWin);
                 GUI_Delay(100);
-                CreatePreferences();
-                //state = 16;
+                screenState = 16;
                 break;
             }
             break;
@@ -94,9 +94,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 {
                     strcpy(keyboardLock, "locked");
                 }
+                WM_DeleteWindow(keyboardLockWin);
                 GUI_Delay(100);
-                CreatePreferences();
-                //state = 16;
+                screenState = 16;
                 break;
             }
             break;
@@ -146,7 +146,7 @@ WM_HWIN CreateKeyboardLockout(void)
         unlocked_mode = 1;
     }
 
-    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    keyboardLockWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
 

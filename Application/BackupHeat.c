@@ -21,7 +21,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "No", ID_BUTTON_NO, 120, 145, 240, 40, 0, 0x0, 0 },
 };
 static int backupHeat_mode;
-static WM_HWIN yesButton,noButton;
+static WM_HWIN yesButton,noButton, backupHeatWin;
 /*********************************************************************
 *
 *       _cbDialog
@@ -77,8 +77,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             case WM_NOTIFICATION_CLICKED:
                 break;
             case WM_NOTIFICATION_RELEASED:
-            CreateSystemSetup();
-                //state=17;
+                WM_DeleteWindow(backupHeatWin);
+                GUI_Delay(100);
+                screenState = 17;
             }
             break;
         case ID_BUTTON_SAVE:
@@ -88,8 +89,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 break;
             case WM_NOTIFICATION_RELEASED:
                 backupHeat = backupHeat_mode;
-            CreateSystemSetup();
-                //state=17;
+                WM_DeleteWindow(backupHeatWin);
+                GUI_Delay(100);
+                screenState = 17;
             }
             break;
         case ID_BUTTON_YES:
@@ -127,12 +129,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 WM_HWIN CreateBackupHeat(void);
 WM_HWIN CreateBackupHeat(void)
 {
-    WM_HWIN hWin;
-
     backupHeat_mode = (strcmp(backupHeatingType, "yes") == 0);
 
-    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
-    return hWin;
+    backupHeatWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    return backupHeatWin;
 }
 
 /*************************** End of file ****************************/

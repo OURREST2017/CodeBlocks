@@ -22,6 +22,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 };
 
 static int cool, room_number;
+static WM_HWIN editRoomWin;
 /*********************************************************************
 *
 *       _cbDialog
@@ -40,6 +41,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         GUI_DrawBitmap(&bmwatermark,45,52);
         break;
     case WM_INIT_DIALOG:
+        WM_HideWindow(systemSetupWin);
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetTextColor(hItem, 0x00FFFFFF);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
@@ -68,7 +70,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                CreateAlphaKeyboard(room_number, thermo_rooms[room_number],
+               WM_DeleteWindow(editRoomWin);
+               CreateAlphaKeyboard(room_number, thermo_rooms[room_number],
                                     thermo_rooms[room_number], "Edit Room");
                 break;
             }
@@ -77,7 +80,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                CreateDeleteThermo(room_number);
+                  WM_DeleteWindow(editRoomWin);
+              CreateDeleteThermo(room_number);
                 break;
             }
             break;
@@ -85,6 +89,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                WM_DeleteWindow(editRoomWin);
                 GUI_Delay(100);
                 CreateThermostatLocations();
                 break;
@@ -94,6 +99,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                WM_DeleteWindow(editRoomWin);
                 GUI_Delay(100);
                 CreateThermostatLocations();
                 break;
@@ -116,7 +122,7 @@ WM_HWIN CreateEditRoom(int room)
     WM_HWIN hWin;
 
     room_number = room;
-    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    editRoomWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
 

@@ -42,7 +42,6 @@ static void _cbBkWheel(WM_MESSAGE * pMsg)
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
         NCode = pMsg->Data.v;
-//GUI_ErrorOut2("F",Id, NCode);
         hParent    = WM_GetParent(pMsg->hWin);
         pMsg->hWin = hParent;
         WM_SendMessage(hParent, pMsg);
@@ -57,12 +56,13 @@ static void _cbBkWheel(WM_MESSAGE * pMsg)
     }
 }
 
-static char *wifi_networks[] = {
-"Pinnacle", "FFI-HDQ", "BHN Secure", "CableWifi", "Direct-7c-HP M452 LaserJet",
-"BSCWireless", "INTEGO GROUP", "Other Network", "BrightHouse Wireless"
+static char *wifi_networks[] =
+{
+    "Pinnacle", "FFI-HDQ", "BHN Secure", "CableWifi", "Direct-7c-HP M452 LaserJet",
+    "BSCWireless", "INTEGO GROUP", "Other Network", "BrightHouse Wireless"
 };
 
-static WM_HWIN listBox_h;
+static WM_HWIN listBox_h, wifiConnectWin;
 static WHEEL wifiWheel;
 int wifi;
 
@@ -76,7 +76,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     int     NCode;
     int     Id;
     int i;
-    wifi_count = 9;
+    wifi_count =  GUI_COUNTOF(wifi_networks);
 
     switch (pMsg->MsgId)
     {
@@ -91,24 +91,25 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         //
-        spinner = WM_CreateWindowAsChild(46, 65, 480, 140,
-                                           pMsg->hWin, WM_CF_SHOW, _cbBkWheel, 0);
+//        spinner = WM_CreateWindowAsChild(46, 65, 480, 140,
+//                                           pMsg->hWin, WM_CF_SHOW, _cbBkWheel, 0);
+//
+//        CreateListWheel(0, 0, 380, 140, GUI_ID_LISTWHEEL0, wifi_networks,
+//                        wifi_count, 30, GUI_TA_VCENTER | GUI_TA_HCENTER,
+//                        spinner, &wifiWheel, &GUI_Font24B_ASCII, 0);
 
-        CreateListWheel(0, 0, 380, 140, GUI_ID_LISTWHEEL0, wifi_networks,
-                        wifi_count, 30, GUI_TA_VCENTER | GUI_TA_HCENTER,
-                        spinner, &wifiWheel, &GUI_Font24B_ASCII, 0);
-
-//        listBox_h = WM_GetDialogItem(pMsg->hWin, ID_LISTBOX_0);
-//        LISTBOX_SetFont(listBox_h, &GUI_FontRounded22);
-//        LISTBOX_SetBkColor(listBox_h, LISTBOX_CI_SELFOCUS, 0x509e81);
-//        LISTBOX_SetTextColor(listBox_h, LISTBOX_CI_SEL,GUI_WHITE);
-//        LISTBOX_SetTextColor(listBox_h, LISTBOX_CI_UNSEL,GUI_BLACK);
-//        LISTBOX_SetAutoScrollV(listBox_h, 1);
-//        LISTBOX_SetScrollbarWidth(listBox_h, 20);
+        listBox_h = WM_GetDialogItem(pMsg->hWin, ID_LISTBOX_0);
+        LISTBOX_SetFont(listBox_h, &GUI_FontRounded22);
+        LISTBOX_SetBkColor(listBox_h, LISTBOX_CI_SELFOCUS, 0x509e81);
+        LISTBOX_SetTextColor(listBox_h, LISTBOX_CI_SEL,GUI_WHITE);
+        LISTBOX_SetTextColor(listBox_h, LISTBOX_CI_UNSEL,GUI_BLACK);
+        LISTBOX_SetAutoScrollV(listBox_h, 1);
+        LISTBOX_SetScrollbarWidth(listBox_h, 20);
         //LISTBOX_SetOwnerDraw(listBox_h, drawRoundedListBox);
 
-        for (i=0;i<wifi_count;i++) {
-          LISTBOX_AddString(listBox_h, wifi_networks[i]);
+        for (i=0; i<wifi_count; i++)
+        {
+            LISTBOX_AddString(listBox_h, wifi_networks[i]);
 
         }
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
@@ -163,6 +164,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
+                WM_DeleteWindow(wifiConnectWin);
                 if (firstTime)
                 {
                     CreateHvacType();
@@ -187,7 +189,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
                 firstTime = 0;
-                WM_HideWindow(wifiConnectWin);
+                WM_DeleteWindow(wifiConnectWin);
                 screenState = 1;
             }
             break;
@@ -195,10 +197,12 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                wifi = LISTWHEEL_GetPos(wifiWheel.hWin);
+                //wifi = LISTWHEEL_GetPos(wifiWheel.hWin);
+                wifi = LISTBOX_GetSel(listBox_h);
                 strcpy(myWifiNetwork, wifi_networks[wifi]);
-                CreateAlphaKeyboard(-2, "", "Wifi Password", "wifi");
+                WM_DeleteWindow(wifiConnectWin);
                 GUI_Delay(100);
+                CreateAlphaKeyboard(-2, "", "Wifi Password", "wifi");
             }
             break;
         }

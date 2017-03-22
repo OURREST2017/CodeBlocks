@@ -35,7 +35,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 };
 
 static WM_HWIN upUpperButton, dnUpperButton, upLowerButton, dnLowerButton;
-static int upperDegree, lowerDegree;
+static int upperDegree, lowerDegree, fromHome;
 
 extern GUI_CONST_STORAGE GUI_BITMAP bmup_s_lg;
 extern GUI_CONST_STORAGE GUI_BITMAP bmdn_s_lg;
@@ -268,9 +268,13 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                GUI_Delay(100);
-                WM_HideWindow(temperatureLimitsWin);
-                screenState = 1;
+                 WM_DeleteWindow(temperatureLimitsWin);
+               GUI_Delay(100);
+                if (fromHome) {
+                    screenState = 1;
+                } else {
+                    screenState = 16;
+                }
                 break;
             }
             break;
@@ -282,13 +286,18 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 lowerDegreeLimit = lowerDegree;
                 coolToDegrees = lowerDegree;
                 heatToDegrees = upperDegree;
+                WM_DeleteWindow(temperatureLimitsWin);
                 GUI_Delay(100);
-                WM_HideWindow(temperatureLimitsWin);
                 sprintf(buf, "%d°", coolToDegrees);
                 TEXT_SetText(coolToText, buf);
                 sprintf(buf, "%d°", heatToDegrees);
                 TEXT_SetText(heatToText, buf);
-                screenState = 1;
+                if (fromHome) {
+                    screenState = 1;
+                } else {
+                    screenState = 16;
+                }
+
                 break;
             }
             break;
@@ -304,11 +313,11 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 *
 *       CreateWindow
 */
-WM_HWIN CreateTempuratureLimits(void);
-WM_HWIN CreateTempuratureLimits(void)
+WM_HWIN CreateTemperatureLimits(int home);
+WM_HWIN CreateTemperatureLimits(int home)
 {
     WM_HWIN hWin;
-
+    fromHome = home;
     lowerDegree = lowerDegreeLimit;
     upperDegree = upperDegreeLimit;
     temperatureLimitsWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);

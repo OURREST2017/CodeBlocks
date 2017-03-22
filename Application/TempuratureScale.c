@@ -23,7 +23,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 
 static int celcius;
 
-static WM_HWIN farenheitButton, celciusButton;
+static WM_HWIN farenheitButton, celciusButton, temperatureScaleWin;
 
 /*********************************************************************
 *
@@ -78,9 +78,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                WM_DeleteWindow(temperatureScaleWin);
                 GUI_Delay(100);
-                CreatePreferences();
-                //state = 16;
+                screenState = 16;
                 break;
             }
             break;
@@ -89,9 +89,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 metric = celcius;
+                WM_DeleteWindow(temperatureScaleWin);
                 GUI_Delay(100);
-                CreatePreferences();
-                //state = 16;
+                screenState = 16;
                 break;
             }
             break;
@@ -127,13 +127,13 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 *
 *       CreateWindow
 */
-WM_HWIN CreateTempuratureScale(void);
-WM_HWIN CreateTempuratureScale(void)
+WM_HWIN CreateTemperatureScale(void);
+WM_HWIN CreateTemperatureScale(void)
 {
     WM_HWIN hWin;
 
     celcius = metric;
-    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    temperatureScaleWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
 

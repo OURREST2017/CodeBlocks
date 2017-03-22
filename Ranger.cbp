@@ -173,9 +173,6 @@
 		<Unit filename="Application/SaveConfig.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Application/Schedule.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="Application/ScheduleHelp.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -201,34 +198,7 @@
 		<Unit filename="Application/SystemsChangeOver.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Application/Tahoma129hAA4D.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/Tahoma19hAA4B.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/Tahoma23hAA2.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/Tahoma29hAA2.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/Tahoma33hAA2.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/Tahoma33hAA2_B.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/Tahoma35hAA2.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/Tahoma35hAA2Bold.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/Tahoma35hAA4.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/Tahoma87hAA2.c">
+		<Unit filename="Application/TahomaFonts.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/TempuratureLimits.c">
@@ -244,9 +214,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/TriacPanel.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/Verdana16hAA4B.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/WifiConnect.c">

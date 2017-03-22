@@ -22,7 +22,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 };
 
 static int twoPer_mode;
-static WM_HWIN twoPerButton, fourPerButton;
+static WM_HWIN twoPerButton, fourPerButton, schedulePeriodsWin;
 
 /*********************************************************************
 *
@@ -76,9 +76,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                WM_DeleteWindow(schedulePeriodsWin);
                 GUI_Delay(100);
-                CreatePreferences();
-                //state = 16;
+                screenState = 16;
                 break;
             }
             break;
@@ -94,9 +94,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 {
                     schedulePeriods = 4;
                 }
+                WM_DeleteWindow(schedulePeriodsWin);
                 GUI_Delay(100);
-                CreatePreferences();
-                //state = 16;
+                screenState = 16;
                 break;
             }
             break;
@@ -138,7 +138,7 @@ WM_HWIN CreateSchedulePeriods(void)
     WM_HWIN hWin;
 
     twoPer_mode = (schedulePeriods == 2);
-    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    schedulePeriodsWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
 

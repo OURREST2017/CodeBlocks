@@ -47,6 +47,8 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 378, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
 };
 
+WM_HWIN wifiSetupWin;
+
 /*********************************************************************
 *
 *       _cbDialog
@@ -162,8 +164,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                CreateSystemSetup();
-                //state=17;
+                WM_DeleteWindow(wifiSetupWin);
+                screenState = 17;
                 break;
             }
             break;
@@ -171,6 +173,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                WM_HideWindow(systemSetupWin);
+                WM_DeleteWindow(wifiSetupWin);
                 GUI_Delay(100);
                 CreateWifiConnect();
                 break;
@@ -185,14 +189,14 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 break;
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
+                WM_DeleteWindow(wifiSetupWin);
                 if (firstTime)
                 {
                     screenState = 1;
                 }
                 else
                 {
-                    CreateSystemSetup();
-                    //state=17;
+                    screenState = 17;
                 }
                 break;
             }
@@ -212,10 +216,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 WM_HWIN CreateWifiSetup(void);
 WM_HWIN CreateWifiSetup(void)
 {
-    WM_HWIN hWin;
-
-    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
-    return hWin;
+    wifiSetupWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    return wifiSetupWin;
 }
 
 /*************************** End of file ****************************/

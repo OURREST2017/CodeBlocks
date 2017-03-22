@@ -29,6 +29,8 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 375, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "BACK", ID_BUTTON_BACK, 20, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
 };
+
+static WM_HWIN thermostatLocationsWin;
 /*********************************************************************
 *
 *       _cbDialog
@@ -47,6 +49,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         break;
     case WM_INIT_DIALOG:
         //
+        WM_HideWindow(systemSetupWin);
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetFont(hItem, HEADER_FONT_BOLD);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
@@ -82,12 +85,14 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DONE);
         WM_SetCallback(hItem, buttonOn16_cb);
-        if (firstTime) {
+        if (firstTime)
+        {
             BUTTON_SetText(hItem, "NEXT");
-        } else {
+        }
+        else
+        {
             BUTTON_SetText(hItem, "DONE");
         }
-
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
@@ -99,6 +104,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                WM_DeleteWindow(thermostatLocationsWin);
                 CreateEditRoom(0);
                 break;
             }
@@ -107,6 +113,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                WM_DeleteWindow(thermostatLocationsWin);
                 CreateEditRoom(1);
                 break;
             }
@@ -115,6 +122,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                WM_DeleteWindow(thermostatLocationsWin);
                 CreateEditRoom(2);
                 break;
             }
@@ -123,6 +131,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                WM_DeleteWindow(thermostatLocationsWin);
                 CreateEditRoom(3);
                 break;
             }
@@ -131,6 +140,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                WM_DeleteWindow(thermostatLocationsWin);
                 CreateEditRoom(4);
                 break;
             }
@@ -139,6 +149,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                WM_DeleteWindow(thermostatLocationsWin);
                 CreateEditRoom(5);
                 break;
             }
@@ -147,6 +158,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                WM_DeleteWindow(thermostatLocationsWin);
                 GUI_Delay(100);
                 CreateLanguages();
             }
@@ -155,12 +167,15 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
+                WM_DeleteWindow(thermostatLocationsWin);
                 GUI_Delay(100);
-                if (firstTime) {
+                if (firstTime)
+                {
                     CreateHvacType();
-                } else {
-            CreateSystemSetup();
-                  //state=17;
+                }
+                else
+                {
+                    screenState = 17;
                 }
             }
             break;
@@ -181,8 +196,8 @@ WM_HWIN CreateThermostatLocations(void)
 {
     WM_HWIN hWin;
 
-    hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
-    return hWin;
+    thermostatLocationsWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+    return thermostatLocationsWin;
 }
 
 /*************************** End of file ****************************/

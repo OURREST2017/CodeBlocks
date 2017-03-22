@@ -30,19 +30,19 @@
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
-    { IMAGE_CreateIndirect, "Image", ID_IMAGE_TIME_DATE, 38, 70, 50, 50, 0, 0, 0 },
-    { IMAGE_CreateIndirect, "Image", ID_IMAGE_LOCK, 150, 66, 38, 50, 0, 0, 0 },
-    { IMAGE_CreateIndirect, "Image", ID_IMAGE_SCHEDULE, 264, 69, 45, 50, 0, 0, 0 },
-    { IMAGE_CreateIndirect, "Image", ID_IMAGE_LANGAGES, 384, 75, 50, 42, 0, 0, 0 },
-    { IMAGE_CreateIndirect, "Image", ID_IMAGE_PEAR, 38, 167, 50, 60, 0, 0, 0 },
-    { IMAGE_CreateIndirect, "Image", ID_IMAGE_PROFILE, 150, 180, 45, 39, 0, 0, 0 },
-    { IMAGE_CreateIndirect, "Image", ID_IMAGE_PREFERENCES, 264, 178, 45, 50, 0, 0, 0 },
-    { IMAGE_CreateIndirect, "Image", ID_IMAGE_SETUP, 384, 180, 44, 44, 0, 0, 0 },
+    { IMAGE_CreateIndirect, "Image", ID_IMAGE_TIME_DATE, 28, 64, 50, 50, 0, 0, 0 },
+    { IMAGE_CreateIndirect, "Image", ID_IMAGE_LOCK, 140, 64, 38, 50, 0, 0, 0 },
+    { IMAGE_CreateIndirect, "Image", ID_IMAGE_SCHEDULE, 254, 62, 45, 50, 0, 0, 0 },
+    { IMAGE_CreateIndirect, "Image", ID_IMAGE_LANGAGES, 375, 72, 50, 42, 0, 0, 0 },
+    { IMAGE_CreateIndirect, "Image", ID_IMAGE_PEAR, 48, 167, 50, 60, 0, 0, 0 },
+    { IMAGE_CreateIndirect, "Image", ID_IMAGE_PROFILE, 140, 174, 45, 39, 0, 0, 0 },
+    { IMAGE_CreateIndirect, "Image", ID_IMAGE_PREFERENCES, 264, 168, 45, 50, 0, 0, 0 },
+    { IMAGE_CreateIndirect, "Image", ID_IMAGE_SETUP, 374, 170, 44, 44, 0, 0, 0 },
     { TEXT_CreateIndirect, "Time/Date", ID_TEXT_0, 20, 128, 80, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Lock", ID_TEXT_1, 142, 128, 59, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Schedule", ID_TEXT_2, 246, 128, 80, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Languages", ID_TEXT_3, 370, 128, 80, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Mobile\nPair", ID_TEXT_4, 38, 230, 61, 40, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Mobile Pair", ID_TEXT_4, 20, 230, 100, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Profile", ID_TEXT_5, 132, 230, 80, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Preferences", ID_TEXT_6, 246, 230, 80, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Setup", ID_TEXT_7, 366, 230, 80, 20, 0, 0x64, 0 },
@@ -50,29 +50,18 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "", ID_BUTTON_RETURN, 15, 0, 150, 50, 0, 0x0, 0 },
 };
 
-extern const U8 pear_image[3358];
-static const void * _GetImageById(U32 Id, U32 * pSize)
-{
-    switch (Id)
-    {
-    case ID_IMAGE_0_IMAGE_0:
-        *pSize = sizeof(pear_image);
-        return (const void *)pear_image;
-    }
-    return NULL;
-}
 /*********************************************************************
 *
 *       _GetImageById
 */
-extern GUI_CONST_STORAGE GUI_BITMAP bmlock ;
-extern GUI_CONST_STORAGE GUI_BITMAP bmprofile ;
-extern GUI_CONST_STORAGE GUI_BITMAP bmtime_date;
-extern GUI_CONST_STORAGE GUI_BITMAP bmsetup;
-extern GUI_CONST_STORAGE GUI_BITMAP bmschedule;
-extern GUI_CONST_STORAGE GUI_BITMAP bmprofile;
-extern GUI_CONST_STORAGE GUI_BITMAP bmpreferences;
-extern GUI_CONST_STORAGE GUI_BITMAP bmlanguages;
+extern GUI_CONST_STORAGE GUI_BITMAP bmLockIcon ;
+extern GUI_CONST_STORAGE GUI_BITMAP bmProfileIcon ;
+extern GUI_CONST_STORAGE GUI_BITMAP bmTimeDateIcon;
+extern GUI_CONST_STORAGE GUI_BITMAP bmSetupIcon;
+extern GUI_CONST_STORAGE GUI_BITMAP bmScheduleIcon;
+extern GUI_CONST_STORAGE GUI_BITMAP bmPairingIcon;
+extern GUI_CONST_STORAGE GUI_BITMAP bmPreferenceIcon;
+extern GUI_CONST_STORAGE GUI_BITMAP bmLanguagesIcon;
 
 /*********************************************************************
 *
@@ -91,13 +80,15 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     case WM_PAINT:
         GUI_DrawGradientV(0, 0, 480, 50, color_map[0].stop, color_map[0].start);
         GUI_DrawBitmap(&bmwatermark, 45,52);
-        GUI_DrawBitmap(&bmtime_date, 38, 70);
-        GUI_DrawBitmap(&bmlock, 150, 66);
-        GUI_DrawBitmap(&bmschedule, 264, 69);
-        GUI_DrawBitmap(&bmlanguages, 384, 75);
-        GUI_DrawBitmap(&bmprofile, 150, 180);
-        GUI_DrawBitmap(&bmpreferences, 264, 178);
-        GUI_DrawBitmap(&bmsetup, 384, 180);
+
+        GUI_DrawBitmap(&bmTimeDateIcon, 28, 62);
+        GUI_DrawBitmap(&bmLockIcon, 144, 64);
+        GUI_DrawBitmap(&bmScheduleIcon, 256, 62);
+        GUI_DrawBitmap(&bmLanguagesIcon, 375, 72);
+        GUI_DrawBitmap(&bmPairingIcon, 48, 167);
+        GUI_DrawBitmap(&bmProfileIcon, 140, 174);
+        GUI_DrawBitmap(&bmPreferenceIcon, 264, 168);
+        GUI_DrawBitmap(&bmSetupIcon, 374, 170);
         break;
     case WM_INIT_DIALOG:
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_RETURN);
@@ -107,10 +98,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetFont(hItem, HEADER_FONT_BOLD);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_WHITE);
-
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_IMAGE_PEAR);
-        pData = _GetImageById(ID_IMAGE_0_IMAGE_0, &FileSize);
-        IMAGE_SetGIF(hItem, pData, FileSize);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_IMAGE_TIME_DATE);
         //

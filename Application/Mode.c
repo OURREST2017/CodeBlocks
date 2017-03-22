@@ -28,7 +28,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 };
 
 static int cool, heat, off, autob=1, eheat;
-
+extern void holdModeOptions();
 static void modeButton(WM_MESSAGE * pMsg, char *nm, int sel)
 {
     switch (pMsg->MsgId)
@@ -213,7 +213,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 TEXT_SetText(hvacModeText, toup(hvacMode));
                 GUI_Delay(100);
                 WM_HideWindow(modeWin);
-                CreateTempuratureLimits();
+                CreateTemperatureLimits(1);
                 break;
             }
             break;
@@ -253,7 +253,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 if (heat) strcpy(hvacMode, "heat");
                 if (eheat) strcpy(hvacMode, "eheat");
                 WM_HideWindow(modeWin);
-                TEXT_SetText(hvacModeText, toup(hvacMode));
+                WM_MESSAGE msg;
+                msg.MsgId = WM_INIT_DIALOG;
+                WM_SendMessage(homeWin, &msg);
+
                 screenState = 1;
                 break;
             }

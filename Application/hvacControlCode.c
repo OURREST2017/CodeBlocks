@@ -3,11 +3,11 @@
 #include "stm324x9i_REST_HWv2_hvac.h"
 #endif // CODEBLOCK
 
-static int fan_delay = 0;//60*60*5;
-static int compressor_delay = 0;//30*1*1000;
+static int fan_delay = 10000;//60*60*5;
+static int compressor_delay = 5000;//30*1*1000;
 static int compressor_state;
 static int heating_state;
-static int compressor_off_time;
+static int compressor_off_time, heating_off_time;
 
 static char buf[60];
 static float inside_temp;
@@ -21,8 +21,8 @@ void fanOff()
 {
     if (strcmp(fanMode, "on") == 0) return;
     fan_control = 0;
-    WM_HideWindow(hvacFan);
-    GUI_ErrorOut("FO");
+    //WM_HideWindow(hvacFan);
+//TEXT_SetText(textDebug, "FOFF");
 #ifndef CODEBLOCK
     BSP_HVAC_request_fan_G(HVAC_FUNCTION_RESET);
 #endif // CODEBLOCK
@@ -31,8 +31,8 @@ void fanOff()
 void fanOn()
 {
     fan_control = 1;
-    WM_ShowWindow(hvacFan);
-
+    //WM_ShowWindow(hvacFan);
+//TEXT_SetText(textDebug, "FON");
 #ifndef CODEBLOCK
     BSP_HVAC_request_fan_G(HVAC_FUNCTION_SET);
 #endif // CODEBLOCK
@@ -55,7 +55,7 @@ void compressorOn()
 #endif
             fanOn();
             cool_control = 1;
-        WM_ShowWindow(hvacCool);
+           //WM_ShowWindow(hvacCool);
        }
         compressor_state = 1;
         compressor_off_time = 0;
@@ -77,7 +77,7 @@ void compressorOff()
         BSP_HVAC_request_cool_Y(HVAC_FUNCTION_RESET);
 #endif
         cool_control = 0;
-        WM_HideWindow(hvacCool);
+        //WM_HideWindow(hvacCool);
     }
     compressor_state = 0;
 }
@@ -85,7 +85,7 @@ void compressorOff()
 void heatingOn()
 {
     int gui_time = GUI_GetTime();
-    if ((gui_time - compressor_off_time) > compressor_delay || compressor_off_time == 0)
+    if ((gui_time - heating_off_time) > compressor_delay || heating_off_time == 0)
     {
         if (!heating_state)
         {
@@ -95,9 +95,9 @@ void heatingOn()
             fanOn();
             heat_control = 1;
         }
-    WM_ShowWindow(hvacHeat);
+        //WM_ShowWindow(hvacHeat);
         heating_state = 1;
-        compressor_off_time = 0;
+        heating_off_time = 0;
     }
 }
 
@@ -111,7 +111,7 @@ void heatingOff()
             GUI_TIMER_SetPeriod(fan_timer, fan_delay);
             GUI_TIMER_Restart(fan_timer);
         }
-        compressor_off_time = GUI_GetTime();
+        heating_off_time = GUI_GetTime();
 #ifndef CODEBLOCK
         BSP_HVAC_request_heat_W(HVAC_FUNCTION_RESET);
 #endif // CODEBLOCK
