@@ -155,12 +155,13 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         NCode = pMsg->Data.v;
         switch(Id)
         {
-         case ID_BUTTON_LOWER_UP:
+        case ID_BUTTON_LOWER_UP:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-            	lowerDegree++;
+                lowerDegree++;
                 if (lowerDegree == 86) lowerDegree = 85;
+                if (lowerDegree > upperDegreeLimit) lowerDegree = upperDegreeLimit;
                 sprintf(buf, "%d", lowerDegree);
                 hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_LOWER_TXT);
                 TEXT_SetText(hItem, buf);
@@ -179,7 +180,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 break;
             }
             break;
-       case ID_BUTTON_CANCEL:
+        case ID_BUTTON_CANCEL:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
@@ -194,8 +195,12 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 lowerDegreeLimit = lowerDegree;
+                coolToDegrees = lowerDegree;
                 GUI_Delay(100);
                 WM_HideWindow(coolToWin);
+                WM_MESSAGE msg;
+                msg.MsgId = WM_INIT_DIALOG;
+                WM_SendMessage(homeWin, &msg);
                 screenState = 1;
                 break;
             }

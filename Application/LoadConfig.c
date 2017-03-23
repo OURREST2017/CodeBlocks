@@ -65,15 +65,13 @@ void setCurrentTime() {
 #endif
 }
 
-int  scheduleTempurature(char * tm, char *day)
+int  scheduleTempurature(int tod, char *day)
 {
     int i,k;
     int hh, mm, startMinutes, stopMinutes;
     struct days_s selectedDay;
 
-    sscanf(tm, "%d:%d", &hh, &mm);
-    if (strchr(tm, 'a') == NULL)  hh += 12;
-    int st = hh*60+mm;
+    int st = tod;
 
     for (k=0; k<selectedSchedule.day_count; k++)
     {
@@ -82,12 +80,9 @@ int  scheduleTempurature(char * tm, char *day)
 
         for (i=0; i<4; i++)
         {
-            sscanf(selectedDay.periods[i].startTime, "%d:%d", &hh, &mm);
-            if (strchr(selectedDay.periods[i].startTime, 'a') == NULL)  hh += 12;
-            startMinutes = hh*60+mm;
-            sscanf(selectedDay.periods[i].stopTime, "%d:%d", &hh, &mm);
-            if (strchr(selectedDay.periods[i].stopTime, 'a') == NULL) hh += 12;
-            stopMinutes = hh*60+mm;
+            startMinutes = selectedDay.periods[i].startMinutes;
+            stopMinutes = selectedDay.periods[i].stopMinutes;
+
             if (stopMinutes < startMinutes)
             {
                 if (st < stopMinutes || st >= startMinutes)
@@ -97,6 +92,10 @@ int  scheduleTempurature(char * tm, char *day)
             }
             else
             {
+            char buf[30];
+//            sprintf(buf, "%s, tod=%d, S=%d, E=%d, T=%d",
+//                    selectedDay.periods[i].label, tod, startMinutes,
+//                    stopMinutes, selectedDay.periods[i].temperature);
                 if (st >= startMinutes && st <= stopMinutes)
                 {
                     return selectedDay.periods[i].temperature;
@@ -227,18 +226,10 @@ void loadConfig()
                 for (j=0; j<4; j++)
                 {
                     cJSON *p = cJSON_GetArrayItem(periods_a, j);
-                    periods.temperature = cJSON_GetObjectItem(p,"temperature")->valueint;
                     periods.label = cJSON_GetObjectItem(p,"label")->valuestring;
-                    periods.startTime = cJSON_GetObjectItem(p,"startTime")->valuestring;
-                    periods.stopTime = cJSON_GetObjectItem(p,"stopTime")->valuestring;
-
-                    int hh, mm;
-                    sscanf(periods.startTime, "%d:%d", &hh, &mm);
-                    if (strchr(periods.startTime, 'a') == NULL)  hh += 12;
-                    periods.startMinutes = hh*60+mm;
-                    sscanf(periods.stopTime, "%d:%d", &hh, &mm);
-                    if (strchr(periods.stopTime, 'a') == NULL) hh += 12;
-                    periods.stopMinutes = hh*60+mm;
+                    periods.temperature = cJSON_GetObjectItem(p,"temperature")->valueint;
+                    periods.startMinutes = cJSON_GetObjectItem(p,"startMinutes")->valueint;
+                    periods.stopMinutes = cJSON_GetObjectItem(p,"stopMinutes")->valueint;
                     days.periods[j] = periods;
                 }
           schedules[i].days[k] = days;
@@ -323,30 +314,22 @@ void loadConfig()
             schedules[i].days[0].label = scheds[i];
 
             schedules[i].days[0].periods[0].label = "wake";
-            schedules[i].days[0].periods[0].startTime = "6:00am";
-            schedules[i].days[0].periods[0].stopTime = "8:00am";
-            schedules[i].days[0].periods[0].temperature = 72;
+            schedules[i].days[0].periods[0].temperature = 74;
             schedules[i].days[0].periods[0].startMinutes = 360;
             schedules[i].days[0].periods[0].stopMinutes = 480;
 
             schedules[i].days[0].periods[1].label = "leave";
-            schedules[i].days[0].periods[1].startTime = "8:00am";
-            schedules[i].days[0].periods[1].stopTime = "5:00pm";
             schedules[i].days[0].periods[1].temperature = 80;
             schedules[i].days[0].periods[1].startMinutes = 480;
             schedules[i].days[0].periods[1].stopMinutes = 1020;
 
             schedules[i].days[0].periods[2].label = "return";
-            schedules[i].days[0].periods[2].startTime = "5:00pm";
-            schedules[i].days[0].periods[2].stopTime = "10:00pm";
             schedules[i].days[0].periods[2].temperature = 72;
             schedules[i].days[0].periods[2].startMinutes = 1020;
             schedules[i].days[0].periods[2].stopMinutes = 1200;
 
             schedules[i].days[0].periods[3].label = "sleep";
-            schedules[i].days[0].periods[3].startTime = "10:00pm";
-            schedules[i].days[0].periods[3].stopTime = "6:00am";
-            schedules[i].days[0].periods[3].temperature = 78;
+            schedules[i].days[0].periods[3].temperature = 76;
             schedules[i].days[0].periods[3].startMinutes = 1200;
             schedules[i].days[0].periods[3].stopMinutes = 360;
 
@@ -366,30 +349,22 @@ void loadConfig()
             schedules[i].days[k].label = dow[k];
 
             schedules[i].days[k].periods[0].label = "wake";
-            schedules[i].days[k].periods[0].startTime = "6:00am";
-            schedules[i].days[k].periods[0].stopTime = "8:00am";
-            schedules[i].days[k].periods[0].temperature = 72;
+            schedules[i].days[k].periods[0].temperature = 74;
             schedules[i].days[k].periods[0].startMinutes = 360;
             schedules[i].days[k].periods[0].stopMinutes = 480;
 
             schedules[i].days[k].periods[1].label = "leave";
-            schedules[i].days[k].periods[1].startTime = "8:00am";
-            schedules[i].days[k].periods[1].stopTime = "5:00pm";
             schedules[i].days[k].periods[1].temperature = 80;
             schedules[i].days[k].periods[1].startMinutes = 480;
             schedules[i].days[k].periods[1].stopMinutes = 1020;
 
             schedules[i].days[k].periods[2].label = "return";
-            schedules[i].days[k].periods[2].startTime = "5:00pm";
-            schedules[i].days[k].periods[2].stopTime = "10:00pm";
             schedules[i].days[k].periods[2].temperature = 72;
             schedules[i].days[k].periods[2].startMinutes = 1020;
             schedules[i].days[k].periods[2].stopMinutes = 1200;
 
             schedules[i].days[k].periods[3].label = "sleep";
-            schedules[i].days[k].periods[3].startTime = "10:00pm";
-            schedules[i].days[k].periods[3].stopTime = "6:00am";
-            schedules[i].days[k].periods[3].temperature = 78;
+            schedules[i].days[k].periods[3].temperature = 76;
             schedules[i].days[k].periods[3].startMinutes = 1200;
             schedules[i].days[k].periods[3].stopMinutes = 360;
         }
@@ -400,6 +375,12 @@ void loadConfig()
 
     upperDegreeLimit = 74;
     lowerDegreeLimit = 70;
+
+    if (strcmp(hvacMode, "auto") == 0) {
+        heatToDegrees = upperDegreeLimit;
+        coolToDegrees = lowerDegreeLimit;
+    }
+
     idleTimeOut = 360000;
 
     heat_control = 0;

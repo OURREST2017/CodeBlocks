@@ -21,8 +21,6 @@
 #define ID_TEXT_HEADER (GUI_ID_USER + 0x16)
 #define ID_BUTTON_RETURN (GUI_ID_USER + 0x17)
 
-#define ID_IMAGE_0_IMAGE_0 0x00
-
 /*********************************************************************
 *
 *       _aDialogCreate
@@ -30,14 +28,14 @@
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
-    { IMAGE_CreateIndirect, "Image", ID_IMAGE_TIME_DATE, 28, 64, 50, 50, 0, 0, 0 },
-    { IMAGE_CreateIndirect, "Image", ID_IMAGE_LOCK, 140, 64, 38, 50, 0, 0, 0 },
-    { IMAGE_CreateIndirect, "Image", ID_IMAGE_SCHEDULE, 254, 62, 45, 50, 0, 0, 0 },
-    { IMAGE_CreateIndirect, "Image", ID_IMAGE_LANGAGES, 375, 72, 50, 42, 0, 0, 0 },
-    { IMAGE_CreateIndirect, "Image", ID_IMAGE_PEAR, 48, 167, 50, 60, 0, 0, 0 },
-    { IMAGE_CreateIndirect, "Image", ID_IMAGE_PROFILE, 140, 174, 45, 39, 0, 0, 0 },
-    { IMAGE_CreateIndirect, "Image", ID_IMAGE_PREFERENCES, 264, 168, 45, 50, 0, 0, 0 },
-    { IMAGE_CreateIndirect, "Image", ID_IMAGE_SETUP, 374, 170, 44, 44, 0, 0, 0 },
+    { IMAGE_CreateIndirect, "Image", ID_IMAGE_TIME_DATE, 28, 64, 70, 70, 0, 0, 0 },
+    { IMAGE_CreateIndirect, "Image", ID_IMAGE_LOCK, 140, 64, 70, 70, 0, 0, 0 },
+    { IMAGE_CreateIndirect, "Image", ID_IMAGE_SCHEDULE, 254, 62, 70, 70, 0, 0, 0 },
+    { IMAGE_CreateIndirect, "Image", ID_IMAGE_LANGAGES, 375, 72, 70, 70, 0, 0, 0 },
+    { IMAGE_CreateIndirect, "Image", ID_IMAGE_PEAR, 48, 167, 70, 70, 0, 0, 0 },
+    { IMAGE_CreateIndirect, "Image", ID_IMAGE_PROFILE, 140, 174, 70, 70, 0, 0, 0 },
+    { IMAGE_CreateIndirect, "Image", ID_IMAGE_PREFERENCES, 264, 168, 70, 70, 0, 0, 0 },
+    { IMAGE_CreateIndirect, "Image", ID_IMAGE_SETUP, 374, 170, 70, 70, 0, 0, 0 },
     { TEXT_CreateIndirect, "Time/Date", ID_TEXT_0, 20, 128, 80, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Lock", ID_TEXT_1, 142, 128, 59, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Schedule", ID_TEXT_2, 246, 128, 80, 20, 0, 0x64, 0 },
@@ -69,9 +67,7 @@ extern GUI_CONST_STORAGE GUI_BITMAP bmLanguagesIcon;
 */
 static void _cbDialog(WM_MESSAGE * pMsg)
 {
-    const void * pData;
     WM_HWIN      hItem;
-    U32          FileSize;
     int          NCode;
     int          Id;
 

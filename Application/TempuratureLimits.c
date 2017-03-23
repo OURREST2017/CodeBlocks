@@ -216,12 +216,13 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         NCode = pMsg->Data.v;
         switch(Id)
         {
-         case ID_BUTTON_LOWER_UP:
+        case ID_BUTTON_LOWER_UP:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-            	lowerDegree++;
+                lowerDegree++;
                 if (lowerDegree == 86) lowerDegree = 85;
+                if (lowerDegree > upperDegree) lowerDegree = upperDegree;
                 sprintf(buf, "%d", lowerDegree);
                 hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_LOWER_TXT);
                 TEXT_SetText(hItem, buf);
@@ -258,21 +259,25 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             case WM_NOTIFICATION_RELEASED:
                 upperDegree--;
                 if (upperDegree == 64) upperDegree = 65;
+                if (upperDegree < lowerDegree) upperDegree = lowerDegree;
                 sprintf(buf, "%d", upperDegree);
                 hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_UPPER_TXT);
                 TEXT_SetText(hItem, buf);
                 break;
             }
             break;
-       case ID_BUTTON_CANCEL:
+        case ID_BUTTON_CANCEL:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                 WM_DeleteWindow(temperatureLimitsWin);
-               GUI_Delay(100);
-                if (fromHome) {
+                WM_DeleteWindow(temperatureLimitsWin);
+                GUI_Delay(100);
+                if (fromHome)
+                {
                     screenState = 1;
-                } else {
+                }
+                else
+                {
                     screenState = 16;
                 }
                 break;
@@ -287,14 +292,21 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 coolToDegrees = lowerDegree;
                 heatToDegrees = upperDegree;
                 WM_DeleteWindow(temperatureLimitsWin);
-                GUI_Delay(100);
                 sprintf(buf, "%d°", coolToDegrees);
                 TEXT_SetText(coolToText, buf);
                 sprintf(buf, "%d°", heatToDegrees);
                 TEXT_SetText(heatToText, buf);
-                if (fromHome) {
+
+                WM_MESSAGE msg;
+                msg.MsgId = WM_INIT_DIALOG;
+                WM_SendMessage(homeWin, &msg);
+                GUI_Delay(100);
+                if (fromHome)
+                {
                     screenState = 1;
-                } else {
+                }
+                else
+                {
                     screenState = 16;
                 }
 

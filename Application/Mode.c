@@ -256,7 +256,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 WM_MESSAGE msg;
                 msg.MsgId = WM_INIT_DIALOG;
                 WM_SendMessage(homeWin, &msg);
-
                 screenState = 1;
                 break;
             }

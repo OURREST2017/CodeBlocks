@@ -3,8 +3,8 @@
 #include "stm324x9i_REST_HWv2_hvac.h"
 #endif // CODEBLOCK
 
-static int fan_delay = 10000;//60*60*5;
-static int compressor_delay = 5000;//30*1*1000;
+static int fan_delay = 0;//60*60*5;
+static int compressor_delay = 0;//30*1*1000;
 static int compressor_state;
 static int heating_state;
 static int compressor_off_time, heating_off_time;
@@ -14,17 +14,26 @@ static float inside_temp;
 static int schedule_temp;
 static GUI_TIMER_HANDLE fan_timer;
 extern WM_HWIN textDebug;
-extern int  scheduleTempurature(char * tm, char *day);
+extern int  scheduleTempurature(int tod, char *day);
 extern WM_HWIN hvacHeat, hvacCool, hvacFan;
 
-void fanOff()
+static void fanTimer(GUI_TIMER_MESSAGE * pTM)
 {
-    if (strcmp(fanMode, "on") == 0) return;
     fan_control = 0;
     WM_HideWindow(hvacFan);
 #ifndef CODEBLOCK
     BSP_HVAC_request_fan_G(HVAC_FUNCTION_RESET);
 #endif // CODEBLOCK
+}
+
+void fanOff()
+{
+    if (strcmp(fanMode, "on") == 0) return;
+    if (cool_control || heat_control) return;
+
+    fan_timer = GUI_TIMER_Create(fanTimer, fan_delay, 0, 0);
+    GUI_TIMER_SetPeriod(fan_timer, fan_delay);
+    GUI_TIMER_Restart(fan_timer);
 }
 
 void fanOn()
@@ -34,11 +43,6 @@ void fanOn()
 #ifndef CODEBLOCK
     BSP_HVAC_request_fan_G(HVAC_FUNCTION_SET);
 #endif // CODEBLOCK
-}
-
-static void fanTimer(GUI_TIMER_MESSAGE * pTM)
-{
-    fanOff();
 }
 
 void compressorOn()
@@ -53,8 +57,8 @@ void compressorOn()
 #endif
             fanOn();
             cool_control = 1;
-           WM_ShowWindow(hvacCool);
-       }
+            WM_ShowWindow(hvacCool);
+        }
         compressor_state = 1;
         compressor_off_time = 0;
     }
@@ -64,18 +68,13 @@ void compressorOff()
 {
     if (compressor_state)
     {
-        if (strcmp(fanMode, "auto") == 0)
-        {
-            fan_timer = GUI_TIMER_Create(fanTimer, fan_delay, 0, 0);
-            GUI_TIMER_SetPeriod(fan_timer, fan_delay);
-            GUI_TIMER_Restart(fan_timer);
-        }
         compressor_off_time = GUI_GetTime();
 #ifndef CODEBLOCK
         BSP_HVAC_request_cool_Y(HVAC_FUNCTION_RESET);
 #endif
         cool_control = 0;
         WM_HideWindow(hvacCool);
+        fanOff();
     }
     compressor_state = 0;
 }
@@ -83,7 +82,7 @@ void compressorOff()
 void heatingOn()
 {
     int gui_time = GUI_GetTime();
-    if ((gui_time - heating_off_time) > compressor_delay || heating_off_time == 0)
+    if ((gui_time - compressor_off_time) > compressor_delay || compressor_off_time == 0)
     {
         if (!heating_state)
         {
@@ -103,61 +102,55 @@ void heatingOff()
 {
     if (heating_state)
     {
-        if (strcmp(fanMode, "auto") == 0)
-        {
-            fan_timer = GUI_TIMER_Create(fanTimer, fan_delay, 0, 0);
-            GUI_TIMER_SetPeriod(fan_timer, fan_delay);
-            GUI_TIMER_Restart(fan_timer);
-        }
         heating_off_time = GUI_GetTime();
 #ifndef CODEBLOCK
         BSP_HVAC_request_heat_W(HVAC_FUNCTION_RESET);
 #endif // CODEBLOCK
         heat_control = 0;
         WM_HideWindow(hvacHeat);
+        fanOff();
     }
     heating_state = 0;
 }
 
-static char * getTime()
+static int getTime()
 {
-    static char time_buf[10];
 #ifdef CODEBLOCK
     time_t now = time(NULL);
-    if (clockFormat == 24)
-    {
-        strftime(time_buf, 20, "%H:%M", localtime(&now));
-    }
-    else
-    {
-        strftime(time_buf, 20, "%I:%M%p", localtime(&now));
-        strcpy(time_buf, tolow(time_buf));
-    }
+    struct tm *info;
+
+    time( &now );
+    info = localtime( &now );
+    int h = info->tm_hour * 60 + info->tm_min;
 #else
     RTC_TimeTypeDef tm;
     BSP_RTC_GetTime(&tm);
-
-    if (clockFormat == 24)
-    {
-        sprintf(time_buf, "%d:%02d", tm.Hours, tm.Minutes);
-    }
-    else
-    {
-        sprintf(time_buf, "%d:%02dpm", tm.Hours, tm.Minutes);
-    }
+    int h = tm.Hours * 60 + tm.Minutes;;
 #endif
-    return time_buf;
+    return h;
 }
 
-void hvacControlCode()
+void hvacControlCode(int itemp, int ihum)
 {
+#ifdef DEBUG_MODE
     inside_temp = (float)insideTemp;
+#else
+    inside_temp = (float)itemp;
+    insideTemp = itemp;
+#endif
+
+    if (!holdMode) {
+        insideHumidity = ihum;
+        sprintf(buf,"TM=%3d, H=%d, C=%d, F=%d", (GUI_GetTime()/1000),
+                 heat_control, cool_control, fan_control);
+        TEXT_SetText(textDebug, buf);
+    }
 
     if (holdMode)
     {
-    	schedule_temp = scheduleTempurature(getTime(), currentSchedule);
-        sprintf(buf,"%d, %s",schedule_temp, getTime());
-        //TEXT_SetText(textDebug, buf);
+        schedule_temp = scheduleTempurature(getTime(), currentSchedule);
+        sprintf(buf,"ST=%d, IT=%d, TM=%d", schedule_temp, insideTemp, getTime());
+        TEXT_SetText(textDebug, buf);
         if (inside_temp > (float)schedule_temp)
         {
             compressorOn();
@@ -173,6 +166,10 @@ void hvacControlCode()
         else
         {
             heatingOff();
+        }
+        if (strcmp(fanMode, "on") == 0)
+        {
+            fanOn();
         }
         return;
     }
@@ -195,6 +192,15 @@ void hvacControlCode()
         {
             heatingOff();
         }
+        if (strcmp(fanMode, "on") == 0)
+        {
+            fanOn();
+        }
+
+        if (strcmp(fanMode, "auto") == 0 && !heat_control && !cool_control && fan_control)
+        {
+            fanOff();
+        }
         return;
     }
 
@@ -203,7 +209,8 @@ void hvacControlCode()
         if (inside_temp > (float)coolToDegrees)
         {
             compressorOn();
-        }
+            heatingOff();
+       }
         else
         {
             compressorOff();
@@ -214,6 +221,7 @@ void hvacControlCode()
         if (inside_temp < (float)heatToDegrees)
         {
             heatingOn();
+            compressorOff();
         }
         else
         {
@@ -229,6 +237,7 @@ void hvacControlCode()
     {
         fanOn();
     }
+
     if (strcmp(fanMode, "auto") == 0 && !heat_control && !cool_control && fan_control)
     {
         fanOff();

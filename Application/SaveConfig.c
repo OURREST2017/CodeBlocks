@@ -80,12 +80,12 @@ void saveConfig()
         {
             fprintf(f,"          {\n            \"label\": \"%s\",\n",
                     schedules[i].days[0].periods[p].label);
-            fprintf(f,"            \"startTime\": \"%s\",\n",
-                    schedules[i].days[0].periods[p].startTime);
-            fprintf(f,"            \"stopTime\": \"%s\",\n",
-                    schedules[i].days[0].periods[p].stopTime);
-            fprintf(f,"            \"temperature\": %d\n",
+            fprintf(f,"            \"temperature\": %d,\n",
                     schedules[i].days[0].periods[p].temperature);
+            fprintf(f,"            \"startMinutes\": %d,\n",
+                    schedules[i].days[0].periods[p].startMinutes);
+            fprintf(f,"            \"stopMinutes\": %d\n",
+                    schedules[i].days[0].periods[p].stopMinutes);
             fprintf(f,"          }");
             if (p != 3)
             {
@@ -117,12 +117,12 @@ void saveConfig()
         {
             fprintf(f,"          {\n            \"label\": \"%s\",\n",
                     schedules[i].days[k].periods[p].label);
-            fprintf(f,"            \"startTime\": \"%s\",\n",
-                    schedules[i].days[k].periods[p].startTime);
-            fprintf(f,"            \"stopTime\": \"%s\",\n",
-                    schedules[i].days[k].periods[p].stopTime);
-            fprintf(f,"            \"temperature\": %d\n",
+            fprintf(f,"            \"temperature\": %d,\n",
                     schedules[i].days[k].periods[p].temperature);
+            fprintf(f,"            \"startMinutes\": %d,\n",
+                    schedules[i].days[k].periods[p].startMinutes);
+            fprintf(f,"            \"stopMinutes\": %d\n",
+                    schedules[i].days[k].periods[p].stopMinutes);
             fprintf(f,"          }");
             if (p != 3)
             {

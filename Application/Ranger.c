@@ -1,7 +1,7 @@
 #include "ranger.h"
 
 extern WHEEL dateTimeWheels[6], screenLockWheels[4];
-
+static GUI_TIMER_HANDLE hvac_timer;
 #ifndef CODEBLOCK
 #include "main.h"
 #include "cmsis_os.h"
@@ -17,6 +17,13 @@ osTimerId lcd_timer;
 
 uint32_t GUI_FreeMem = 0;
 
+static void hvacTimer(GUI_TIMER_MESSAGE * pTM)
+{
+    hvacControlCode(0,30);
+    GUI_TIMER_SetPeriod(pTM->hTimer, 4000);
+    GUI_TIMER_Restart(pTM->hTimer);
+}
+
 static void lockTimer(GUI_TIMER_MESSAGE * pTM)
 {
     WM_HideWindow(homeWin);
@@ -24,6 +31,14 @@ static void lockTimer(GUI_TIMER_MESSAGE * pTM)
 }
 static void GUIThread(void const * argument)
 #else
+
+static void hvacTimer(GUI_TIMER_MESSAGE * pTM)
+{
+    hvacControlCode(0,30);
+    GUI_TIMER_SetPeriod(pTM->hTimer, 4000);
+    GUI_TIMER_Restart(pTM->hTimer);
+}
+
 static void lockTimer(GUI_TIMER_MESSAGE * pTM)
 {
     WM_HideWindow(homeWin);
@@ -89,11 +104,16 @@ void MainTask(void)
     }
     else
     {
-        lockTimer_h = GUI_TIMER_Create(lockTimer, idleTimeOut, 0, 0);
+        //lockTimer_h = GUI_TIMER_Create(lockTimer, idleTimeOut, 0, 0);
         screenState = 1;
     }
     screenState = 1;
     int counter;
+
+#ifdef DEBUG_MODE
+    hvac_timer = GUI_TIMER_Create(hvacTimer, 4000, 0, 0);
+
+#endif
     while(1)
     {
         switch (screenState)
@@ -105,8 +125,8 @@ void MainTask(void)
             screenState = 0;
             break;
         case 1:
-            GUI_TIMER_SetPeriod(lockTimer_h, idleTimeOut);
-            GUI_TIMER_Restart(lockTimer_h);
+//            GUI_TIMER_SetPeriod(lockTimer_h, idleTimeOut);
+//            GUI_TIMER_Restart(lockTimer_h);
             WM_ShowWindow(homeWin);
             screenState = 0;
             break;
@@ -193,21 +213,12 @@ void MainTask(void)
         }
         GUI_Exec();
         GUI_Delay(40);
-//#ifdef CODEBLOCK
-//        if (counter > 3000)
-//        {
-//            hvacControlCode();
-//            counter = 0;
-//        }
-//        counter++;
-//#endif
     }
 }
 
 #ifndef CODEBLOCK
 void BSP_GUI_Init(void)
 {
-
     GUI_Thread_ThreadId = osThreadCreate(osThread(GUI_Thread), NULL);
     /* TODO: add error check */
 

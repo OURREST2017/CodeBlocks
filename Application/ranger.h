@@ -139,10 +139,8 @@ typedef struct
 
 typedef struct periods_s
 {
-    int temperature;
     char *label;
-    char *startTime;
-    char *stopTime;
+    int temperature;
     int startMinutes;
     int stopMinutes;
 } periods_s;

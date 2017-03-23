@@ -1,0 +1,397 @@
+{
+"changeOver": "automatic",
+"clockFormat": 12,
+"configVersion": "1.0.0",
+"coolToDegrees": 72,
+"currFwVersion": "1.0.0",
+"dst": true,
+"enableSchedule": false,
+"epochTime": 0,
+"fanControl": "thermostat",
+"firstNameText": "Frank",
+"fanMode": "auto",
+"filterChangeDate": 0,
+"filterLifeInDays": 0,
+"firstTime": false,
+"firmwareUrl": "0",
+"heatToDegrees": 74,
+"hvacConfig": {
+"backupHeatingType": "no",
+"hvacType": "air",
+"coolingStages": 2,
+"heatingStages": 1
+},
+"hvacMode": "auto",
+"keyboardLock": "unlocked",
+"language": "english",
+"localHumidity": 90,
+"localTemp": 72,
+"lockCode": "0000",
+"metric": false,
+"temperatureScale": 0,
+"nextFwVersion": "1.0.0",
+"ownersName": "Frank",
+"reset": 0,
+"testing": false,
+"schedules": [
+  {
+    "days": [
+      {
+        "label": "vacation",
+        "periods": [
+          {
+            "label": "wake",
+            "temperature": 72,
+            "startMinutes": 360,
+            "stopMinutes": 480
+          },
+          {
+            "label": "leave",
+            "temperature": 80,
+            "startMinutes": 480,
+            "stopMinutes": 1020
+          },
+          {
+            "label": "return",
+            "temperature": 72,
+            "startMinutes": 1020,
+            "stopMinutes": 1200
+          },
+          {
+            "label": "sleep",
+            "temperature": 76,
+            "startMinutes": 1200,
+            "stopMinutes": 360
+          }
+        ]
+      }
+   ],
+  "label": "vacation",
+  "systemDefined": true
+  },
+  {
+    "days": [
+      {
+        "label": "weekday",
+        "periods": [
+          {
+            "label": "wake",
+            "temperature": 74,
+            "startMinutes": 360,
+            "stopMinutes": 480
+          },
+          {
+            "label": "leave",
+            "temperature": 80,
+            "startMinutes": 480,
+            "stopMinutes": 1020
+          },
+          {
+            "label": "return",
+            "temperature": 72,
+            "startMinutes": 1020,
+            "stopMinutes": 1200
+          },
+          {
+            "label": "sleep",
+            "temperature": 76,
+            "startMinutes": 1200,
+            "stopMinutes": 360
+          }
+        ]
+      }
+   ],
+  "label": "weekday",
+  "systemDefined": true
+  },
+  {
+    "days": [
+      {
+        "label": "weekend",
+        "periods": [
+          {
+            "label": "wake",
+            "temperature": 74,
+            "startMinutes": 360,
+            "stopMinutes": 480
+          },
+          {
+            "label": "leave",
+            "temperature": 80,
+            "startMinutes": 480,
+            "stopMinutes": 1020
+          },
+          {
+            "label": "return",
+            "temperature": 72,
+            "startMinutes": 1020,
+            "stopMinutes": 1200
+          },
+          {
+            "label": "sleep",
+            "temperature": 76,
+            "startMinutes": 1200,
+            "stopMinutes": 360
+          }
+        ]
+      }
+   ],
+  "label": "weekend",
+  "systemDefined": true
+  },
+  {
+    "days": [
+      {
+        "label": "all days",
+        "periods": [
+          {
+            "label": "wake",
+            "temperature": 74,
+            "startMinutes": 360,
+            "stopMinutes": 480
+          },
+          {
+            "label": "leave",
+            "temperature": 80,
+            "startMinutes": 480,
+            "stopMinutes": 1020
+          },
+          {
+            "label": "return",
+            "temperature": 72,
+            "startMinutes": 1020,
+            "stopMinutes": 1200
+          },
+          {
+            "label": "sleep",
+            "temperature": 76,
+            "startMinutes": 1200,
+            "stopMinutes": 360
+          }
+        ]
+      }
+   ],
+  "label": "all days",
+  "systemDefined": true
+  },
+  {
+    "days": [
+     {
+        "label": "monday",
+        "periods": [
+          {
+            "label": "wake",
+            "temperature": 74,
+            "startMinutes": 360,
+            "stopMinutes": 480
+          },
+          {
+            "label": "leave",
+            "temperature": 80,
+            "startMinutes": 480,
+            "stopMinutes": 1020
+          },
+          {
+            "label": "return",
+            "temperature": 72,
+            "startMinutes": 1020,
+            "stopMinutes": 1200
+          },
+          {
+            "label": "sleep",
+            "temperature": 76,
+            "startMinutes": 1200,
+            "stopMinutes": 360
+          }
+        ]
+     },
+     {
+        "label": "tuesday",
+        "periods": [
+          {
+            "label": "wake",
+            "temperature": 74,
+            "startMinutes": 360,
+            "stopMinutes": 480
+          },
+          {
+            "label": "leave",
+            "temperature": 80,
+            "startMinutes": 480,
+            "stopMinutes": 1020
+          },
+          {
+            "label": "return",
+            "temperature": 72,
+            "startMinutes": 1020,
+            "stopMinutes": 1200
+          },
+          {
+            "label": "sleep",
+            "temperature": 76,
+            "startMinutes": 1200,
+            "stopMinutes": 360
+          }
+        ]
+     },
+     {
+        "label": "wednesday",
+        "periods": [
+          {
+            "label": "wake",
+            "temperature": 74,
+            "startMinutes": 360,
+            "stopMinutes": 480
+          },
+          {
+            "label": "leave",
+            "temperature": 80,
+            "startMinutes": 480,
+            "stopMinutes": 1020
+          },
+          {
+            "label": "return",
+            "temperature": 72,
+            "startMinutes": 1020,
+            "stopMinutes": 1200
+          },
+          {
+            "label": "sleep",
+            "temperature": 76,
+            "startMinutes": 1200,
+            "stopMinutes": 360
+          }
+        ]
+     },
+     {
+        "label": "thursday",
+        "periods": [
+          {
+            "label": "wake",
+            "temperature": 74,
+            "startMinutes": 360,
+            "stopMinutes": 480
+          },
+          {
+            "label": "leave",
+            "temperature": 80,
+            "startMinutes": 480,
+            "stopMinutes": 1020
+          },
+          {
+            "label": "return",
+            "temperature": 72,
+            "startMinutes": 1020,
+            "stopMinutes": 1200
+          },
+          {
+            "label": "sleep",
+            "temperature": 76,
+            "startMinutes": 1200,
+            "stopMinutes": 360
+          }
+        ]
+     },
+     {
+        "label": "friday",
+        "periods": [
+          {
+            "label": "wake",
+            "temperature": 74,
+            "startMinutes": 360,
+            "stopMinutes": 480
+          },
+          {
+            "label": "leave",
+            "temperature": 80,
+            "startMinutes": 480,
+            "stopMinutes": 1020
+          },
+          {
+            "label": "return",
+            "temperature": 72,
+            "startMinutes": 1020,
+            "stopMinutes": 1200
+          },
+          {
+            "label": "sleep",
+            "temperature": 76,
+            "startMinutes": 1200,
+            "stopMinutes": 360
+          }
+        ]
+     },
+     {
+        "label": "saturday",
+        "periods": [
+          {
+            "label": "wake",
+            "temperature": 74,
+            "startMinutes": 360,
+            "stopMinutes": 480
+          },
+          {
+            "label": "leave",
+            "temperature": 80,
+            "startMinutes": 480,
+            "stopMinutes": 1020
+          },
+          {
+            "label": "return",
+            "temperature": 72,
+            "startMinutes": 1020,
+            "stopMinutes": 1200
+          },
+          {
+            "label": "sleep",
+            "temperature": 76,
+            "startMinutes": 1200,
+            "stopMinutes": 360
+          }
+        ]
+     },
+     {
+        "label": "sunday",
+        "periods": [
+          {
+            "label": "wake",
+            "temperature": 74,
+            "startMinutes": 360,
+            "stopMinutes": 480
+          },
+          {
+            "label": "leave",
+            "temperature": 80,
+            "startMinutes": 480,
+            "stopMinutes": 1020
+          },
+          {
+            "label": "return",
+            "temperature": 72,
+            "startMinutes": 1020,
+            "stopMinutes": 1200
+          },
+          {
+            "label": "sleep",
+            "temperature": 76,
+            "startMinutes": 1200,
+            "stopMinutes": 360
+          }
+        ]
+      }
+   ],
+  "label": "each day",
+  "systemDefined": true
+  }
+],
+"currentSchedule": "all days",
+"schedulePeriods": 2,
+"securityMode": "high",
+"serial": "(null)",
+"tempHold": false,
+"thermoControls": 0,
+"tempSetPoint": 72,
+"timeZoneOffset": -5,
+"unitLocked": true,
+"zipCode": "12345"
+}

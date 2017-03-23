@@ -33,10 +33,10 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "STOP", ID_BUTTON_STOP, 245, 90, 90, BUTHEIGHT, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "TEMP", ID_BUTTON_TEMPURATURE, 355, 90, 90, BUTHEIGHT, 0, 0x0, 0 },
 
-    { TEXT_CreateIndirect, "WAKE", ID_TEXT_WAKE, 31, 60, 83, 23, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Text", ID_TEXT_START_TIME, 144, 60, 80, 23, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "WAKE", ID_TEXT_WAKE, 31, 60, 83, 22, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Text", ID_TEXT_START_TIME, 144, 60, 80, 22, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_STOP_TIME, 251, 62, 81, 22, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "TEMP", ID_TEXT_TEMP_VAR, 363, 63, 80, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "TEMP", ID_TEXT_TEMP_VAR, 363, 63, 80, 22, 0, 0x64, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_UP, 45, 124, 48, 48, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_DN, 45, 168, 48, 48, 0, 0x0, 0 },
 
@@ -132,8 +132,8 @@ static void invalidateButtons(int sel)
     WM_InvalidateWindow(stopButton);
     WM_InvalidateWindow(tempButton);
 
-    WM_MoveTo(upButton, 45+sel*110,124);
-    WM_MoveTo(dnButton, 45+sel*110,168);
+    WM_MoveTo(upButton, 45+sel*110, 126);
+    WM_MoveTo(dnButton, 45+sel*110, 172);
 
     period_idx = sel;
     period_on = (sel == 0);
@@ -368,7 +368,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                     TEXT_SetText(period_text, toup(selectedDay.periods[selected_period].label));
                     TEXT_SetText(start_text, getTime(selectedDay.periods[selected_period].startMinutes));
                     TEXT_SetText(stop_text, getTime(selectedDay.periods[selected_period].stopMinutes));
-                    itoa(selectedDay.periods[selected_period].temperature, buf, 10);
+                    sprintf(buf, "%d°", selectedDay.periods[selected_period].temperature);
                     TEXT_SetText(temp_text, buf);
                     break;
                 case 1:
@@ -379,7 +379,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                     {
                         selectedDay.periods[selected_period].startMinutes = 0;
                     }
-                    selectedDay.periods[selected_period].startTime = updateTime(buf,1);
+                    //selectedDay.periods[selected_period].startTime = updateTime(buf,1);
                     break;
                 case 2:
                     TEXT_GetText(stop_text, buf, 10);
@@ -389,11 +389,11 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                     {
                         selectedDay.periods[selected_period].stopMinutes = 0;
                     }
-                    selectedDay.periods[selected_period].stopTime = updateTime(buf,1);
+                    //selectedDay.periods[selected_period].stopTime = updateTime(buf,1);
                     break;
                 case 3:
                     temperature = selectedDay.periods[selected_period].temperature + 1;
-                    if (temperature == 111) temperature = 110;
+                    if (temperature == 86) temperature = 85;
                     sprintf(buf, "%d°", temperature);
                     TEXT_SetText(temp_text, buf);
                     selectedDay.periods[selected_period].temperature = temperature;
@@ -415,7 +415,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                     TEXT_SetText(period_text, toup(selectedDay.periods[selected_period].label));
                     TEXT_SetText(start_text, getTime(selectedDay.periods[selected_period].startMinutes));
                     TEXT_SetText(stop_text, getTime(selectedDay.periods[selected_period].stopMinutes));
-                    itoa(selectedDay.periods[selected_period].temperature, buf, 10);
+                    sprintf(buf, "%d°", selectedDay.periods[selected_period].temperature);
                     TEXT_SetText(temp_text, buf);
                     break;
                 case 1:
@@ -426,7 +426,12 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                     {
                         selectedDay.periods[selected_period].startMinutes = 1440;
                     }
-                    selectedDay.periods[selected_period].startTime = updateTime(buf, -1);
+                    int hh = selectedDay.periods[selected_period].startMinutes / 60;
+                    int mm = selectedDay.periods[selected_period].startMinutes - (hh * 60);
+                    //selectedDay.periods[selected_period].startTime = updateTime(buf, -1);
+                    //sprintf(buf,"%d:%02d%s\n", (, mm, (am == 1) ? "am" : "pm");
+
+                    //selectedDay.periods[selected_period].startTime = updateTime(buf, -1);
                     break;
                 case 2:
                     TEXT_GetText(stop_text, buf, 10);
@@ -436,7 +441,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                     {
                         selectedDay.periods[selected_period].stopMinutes = 1440;
                     }
-                    selectedDay.periods[selected_period].stopTime = updateTime(buf,1);
+                    //selectedDay.periods[selected_period].stopTime = updateTime(buf,1);
                     break;
                 case 3:
                     temperature = selectedDay.periods[selected_period].temperature - 1;
