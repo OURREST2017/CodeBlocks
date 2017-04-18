@@ -12,10 +12,6 @@
 #define ID_BUTTON_RETURN (GUI_ID_USER + 0x0E)
 #define ID_TEXT_TITLE (GUI_ID_USER + 0x10)
 
-/*********************************************************************
-*
-*       _aDialogCreate
-*/
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
@@ -26,9 +22,9 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "Each Day", ID_BUTTON_EACH_DAY, 255, 90, 200, 42, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Vacation", ID_BUTTON_VACATION, 255, 150, 200, 42, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_RETURN, 15, 0, 100, 50, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "HELP", ID_BUTTON_HELP, 200, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "SET SCHEDULE", ID_BUTTON_SET_SCHEDULE, 20, 230, 143, BUTHEIGHT, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "EDIT", ID_BUTTON_EDIT, 375, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "HELP", ID_BUTTON_HELP, 228, 230, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "SAVE SCHEDULE", ID_BUTTON_SET_SCHEDULE, 20, 230, 194, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "EDIT", ID_BUTTON_EDIT, 350, 230, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
 };
 
 static int vacation_border, allDays_border, weekend_border, eachDay_border;
@@ -54,22 +50,22 @@ static void schedButton(WM_MESSAGE * pMsg, char *nm, int bor)
 }
 static void vacation_cb(WM_MESSAGE * pMsg)
 {
-    schedButton(pMsg, "Vacation", vacation_border);
+    schedButton(pMsg, "Vacation", (vacation_border == 0) ? 2 : 1);
 }
 
 static void allDays_cb(WM_MESSAGE * pMsg)
 {
-    schedButton(pMsg, "All Days", allDays_border);
+    schedButton(pMsg, "All Days", (allDays_border == 0) ? 2 : 1);
 }
 
 static void eachDay_cb(WM_MESSAGE * pMsg)
 {
-    schedButton(pMsg, "Each Day", eachDay_border);
+    schedButton(pMsg, "Each Day", (eachDay_border == 0) ? 2 : 1);
 }
 
 static void weekend_cb(WM_MESSAGE * pMsg)
 {
-    schedButton(pMsg, "Weekday/Weekend", weekend_border);
+    schedButton(pMsg, "Weekday/Weekend", (weekend_border == 0) ? 2 : 1);
 }
 
 static void invalidateButtons(WM_HWIN hWin)
@@ -93,10 +89,6 @@ static void invalidateButtons(WM_HWIN hWin)
     WM_SetCallback(hItem, vacation_cb);
 }
 
-/*********************************************************************
-*
-*       _cbDialog
-*/
 static void _cbDialog(WM_MESSAGE * pMsg)
 {
     WM_HWIN hItem;
@@ -114,12 +106,13 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetFont(hItem, HEADER_FONT);
         TEXT_SetTextAlign(hItem, GUI_TA_RIGHT | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
+        TEXT_SetText(hItem, LANG("SETTINGS:"));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_TITLE);
         TEXT_SetTextAlign(hItem, GUI_TA_LEFT | GUI_TA_VCENTER);
         TEXT_SetFont(hItem, HEADER_FONT_BOLD);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
-        TEXT_SetText(hItem, "Schedule");
+        TEXT_SetText(hItem, LANG("Schedule"));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_RETURN);
         BUTTON_SetSkin(hItem, returnSkin);
@@ -137,13 +130,13 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         WM_SetCallback(hItem, vacation_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HELP);
-        WM_SetCallback(hItem, buttonOn16_cb);
+        WM_SetCallback(hItem, buttonOn_cb);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SET_SCHEDULE);
-        WM_SetCallback(hItem, buttonOn16_cb);
+        WM_SetCallback(hItem, buttonOn_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_EDIT);
-        WM_SetCallback(hItem, buttonOn16_cb);
+        WM_SetCallback(hItem, buttonOn_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
@@ -157,7 +150,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
                 WM_HideWindow(settingsScheduleWin);
-                screenState = 4;
+                screenState = SETTINGSWIN;
             }
             break;
         case ID_BUTTON_SET_SCHEDULE:
@@ -187,25 +180,22 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 {
                     strcpy(schedulePeriod,"vacation" );
                     strcpy(scheduleDay,"vacation" );
-                    screenState = 20;
                 }
                 else if (weekend_border)
                 {
                     strcpy(schedulePeriod,"weekend" );
                     strcpy(scheduleDay,"weekend" );
-                    screenState = 20;
                 }
                 else if (eachDay_border)
                 {
                     strcpy(scheduleDay,"monday" );
-                    screenState = 22;
                 }
                 else
                 {
                     strcpy(schedulePeriod,"all days" );
                     strcpy(scheduleDay,"all days" );
-                    screenState = 20;
                 }
+                screenState = EDITSCHEDULEWIN;
                 break;
             }
             break;
@@ -294,10 +284,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     }
 }
 
-/*********************************************************************
-*
-*       CreateWindow
-*/
 WM_HWIN CreateSettingsSchedule(void);
 WM_HWIN CreateSettingsSchedule(void)
 {
@@ -330,5 +316,3 @@ WM_HWIN CreateSettingsSchedule(void)
     WM_HideWindow(hWin);
     return hWin;
 }
-
-/*************************** End of file ****************************/

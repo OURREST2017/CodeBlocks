@@ -1574,10 +1574,10 @@
 1489612360 source:c:\users\rem\documents\codeblocks\application\tahoma19haa4b.c
 	"GUI.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\alphakeyboard.c
+1491776538 source:c:\users\rem\documents\rest\codeblocks\application\alphakeyboard.c
 	"ranger.h"
 
-1490231001 c:\users\rem\documents\rest\codeblocks\application\ranger.h
+1492480053 c:\users\rem\documents\rest\codeblocks\application\ranger.h
 	"stm32f4xx_hal.h"
 	<stdio.h>
 	<string.h>
@@ -1801,16 +1801,16 @@
 	"WIDGET.h"
 	"GUI_Debug.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\backupheat.c
+1491946334 source:c:\users\rem\documents\rest\codeblocks\application\backupheat.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\buttonresource.c
+1491701032 source:c:\users\rem\documents\rest\codeblocks\application\buttonresource.c
 	"DIALOG.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\buttonutils.c
+1492275256 source:c:\users\rem\documents\rest\codeblocks\application\buttonutils.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\cjson.c
+1490189856 source:c:\users\rem\documents\rest\codeblocks\application\cjson.c
 	<string.h>
 	<stdio.h>
 	<math.h>
@@ -1820,168 +1820,168 @@
 	<ctype.h>
 	"cJSON.h"
 
-1490189134 c:\users\rem\documents\rest\codeblocks\application\cjson.h
+1490189856 c:\users\rem\documents\rest\codeblocks\application\cjson.h
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\clockformat.c
+1491946336 source:c:\users\rem\documents\rest\codeblocks\application\clockformat.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\coolingstages.c
+1491946334 source:c:\users\rem\documents\rest\codeblocks\application\coolingstages.c
 	"ranger.h"
 
-1490242100 source:c:\users\rem\documents\rest\codeblocks\application\coolto.c
+1492108542 source:c:\users\rem\documents\rest\codeblocks\application\coolto.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\datetime.c
+1492321474 source:c:\users\rem\documents\rest\codeblocks\application\datetime.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\daylightsavingtime.c
+1491946336 source:c:\users\rem\documents\rest\codeblocks\application\daylightsavingtime.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\deletethermo.c
+1491097908 source:c:\users\rem\documents\rest\codeblocks\application\deletethermo.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\eachday.c
+1492099710 source:c:\users\rem\documents\rest\codeblocks\application\eachday.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\editroom.c
+1491951574 source:c:\users\rem\documents\rest\codeblocks\application\editroom.c
 	"ranger.h"
 
-1490231034 source:c:\users\rem\documents\rest\codeblocks\application\editschedule.c
+1492475843 source:c:\users\rem\documents\rest\codeblocks\application\editschedule.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\editschedulehelp.c
+1491947204 source:c:\users\rem\documents\rest\codeblocks\application\editschedulehelp.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\fancontrol.c
+1491946336 source:c:\users\rem\documents\rest\codeblocks\application\fancontrol.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\fanmode.c
+1492044124 source:c:\users\rem\documents\rest\codeblocks\application\fanmode.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\heatingstages.c
+1491946336 source:c:\users\rem\documents\rest\codeblocks\application\heatingstages.c
 	"ranger.h"
 
-1490242100 source:c:\users\rem\documents\rest\codeblocks\application\heatto.c
+1492108382 source:c:\users\rem\documents\rest\codeblocks\application\heatto.c
 	"ranger.h"
 
-1490242263 source:c:\users\rem\documents\rest\codeblocks\application\homewin.c
+1492478371 source:c:\users\rem\documents\rest\codeblocks\application\homewin.c
 	"ranger.h"
 
-1490243550 source:c:\users\rem\documents\rest\codeblocks\application\hvaccontrolcode.c
+1492478371 source:c:\users\rem\documents\rest\codeblocks\application\hvaccontrolcode.c
 	"ranger.h"
 	"stm324x9i_REST_HWv2_hvac.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\hvactype.c
+1492475434 source:c:\users\rem\documents\rest\codeblocks\application\hvactype.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\idlewin.c
+1492275226 source:c:\users\rem\documents\rest\codeblocks\application\idlewin.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\imageresources.c
+1491072114 source:c:\users\rem\documents\rest\codeblocks\application\imageresources.c
+	<stdlib.h>
+	"GUI.h"
+
+1491946336 source:c:\users\rem\documents\rest\codeblocks\application\keyboardlockout.c
+	"ranger.h"
+
+1492391294 source:c:\users\rem\documents\rest\codeblocks\application\languages.c
+	"ranger.h"
+
+1491074980 source:c:\users\rem\documents\rest\codeblocks\application\lightgreen.c
 	"GUI.h"
 	<stdlib.h>
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\keyboardlockout.c
-	"ranger.h"
-
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\languages.c
-	"ranger.h"
-
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\lightgreen.c
-	"GUI.h"
-	<stdlib.h>
-
-1490232525 source:c:\users\rem\documents\rest\codeblocks\application\loadconfig.c
+1492392636 source:c:\users\rem\documents\rest\codeblocks\application\loadconfig.c
 	"ranger.h"
 	<stdlib.h>
 	<time.h>
 	"cJSON.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\mobilepair.c
+1492276608 source:c:\users\rem\documents\rest\codeblocks\application\mobilepair.c
 	"ranger.h"
 
-1490214890 source:c:\users\rem\documents\rest\codeblocks\application\mode.c
+1491947694 source:c:\users\rem\documents\rest\codeblocks\application\mode.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\numerickeyboard.c
+1491764154 source:c:\users\rem\documents\rest\codeblocks\application\numerickeyboard.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\passfail.c
+1490189874 source:c:\users\rem\documents\rest\codeblocks\application\passfail.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\preferences.c
+1492151354 source:c:\users\rem\documents\rest\codeblocks\application\preferences.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\profile.c
+1491960504 source:c:\users\rem\documents\rest\codeblocks\application\profile.c
 	"ranger.h"
 
-1490241843 source:c:\users\rem\documents\rest\codeblocks\application\ranger.c
+1492475762 source:c:\users\rem\documents\rest\codeblocks\application\ranger.c
 	"ranger.h"
 	"main.h"
 	"cmsis_os.h"
 	"calibration.h"
 	"stm324x9i_REST_HWv2_ts.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\roundedfonts.c
+1490017834 source:c:\users\rem\documents\rest\codeblocks\application\roundedfonts.c
 	"GUI.h"
 
-1490230534 source:c:\users\rem\documents\rest\codeblocks\application\saveconfig.c
+1492275226 source:c:\users\rem\documents\rest\codeblocks\application\saveconfig.c
 	"ranger.h"
 	<stdlib.h>
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\schedulehelp.c
+1491952284 source:c:\users\rem\documents\rest\codeblocks\application\schedulehelp.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\scheduleperiods.c
+1491946336 source:c:\users\rem\documents\rest\codeblocks\application\scheduleperiods.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\schedulingoptions.c
+1491946336 source:c:\users\rem\documents\rest\codeblocks\application\schedulingoptions.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\screenlockout.c
+1492276192 source:c:\users\rem\documents\rest\codeblocks\application\screenlockout.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\settings.c
+1491878866 source:c:\users\rem\documents\rest\codeblocks\application\settings.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\settingsschedule.c
+1492246874 source:c:\users\rem\documents\rest\codeblocks\application\settingsschedule.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\systemschangeover.c
+1491946336 source:c:\users\rem\documents\rest\codeblocks\application\systemschangeover.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\systemsetup.c
+1491945382 source:c:\users\rem\documents\rest\codeblocks\application\systemsetup.c
 	"ranger.h"
 
-1490241843 source:c:\users\rem\documents\rest\codeblocks\application\tempuraturelimits.c
+1492108542 source:c:\users\rem\documents\rest\codeblocks\application\tempuraturelimits.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\tempuraturescale.c
+1491946336 source:c:\users\rem\documents\rest\codeblocks\application\tempuraturescale.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\thermostatcontrols.c
+1492392526 source:c:\users\rem\documents\rest\codeblocks\application\thermostatcontrols.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\thermostatlocations.c
+1492392526 source:c:\users\rem\documents\rest\codeblocks\application\thermostatlocations.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\triacpanel.c
+1491085858 source:c:\users\rem\documents\rest\codeblocks\application\triacpanel.c
 	"ranger.h"
 	"stm324x9i_REST_HWv2_hvac.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\wificonnect.c
+1492397068 source:c:\users\rem\documents\rest\codeblocks\application\wificonnect.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\wifidisconnect.c
+1491848936 source:c:\users\rem\documents\rest\codeblocks\application\wifidisconnect.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\wifipassword.c
+1491952170 source:c:\users\rem\documents\rest\codeblocks\application\wifipassword.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\wifisetup.c
+1492475116 source:c:\users\rem\documents\rest\codeblocks\application\wifisetup.c
 	"ranger.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\winmain.c
+1488411580 source:c:\users\rem\documents\rest\codeblocks\application\winmain.c
 	"ranger.h"
 	<windows.h>
 	"GUI_SIM_Win32.h"
@@ -2003,10 +2003,156 @@
 1490062603 source:c:\users\rem\documents\rest\codeblocks\config\simconf.c
 	"LCD_SIM.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\tahomafonts.c
+1492237009 source:c:\users\rem\documents\rest\codeblocks\application\tahomafonts.c
 	"GUI.h"
 
-1490189134 source:c:\users\rem\documents\rest\codeblocks\application\iconresources.c
+1491085574 source:c:\users\rem\documents\rest\codeblocks\application\iconresources.c
 	<stdlib.h>
+	"GUI.h"
+
+1490386068 source:c:\users\rem\documents\rest\codeblocks\application\splash.c
+	<stdlib.h>
+	"GUI.h"
+
+1490387630 source:c:\users\rem\documents\rest\codeblocks\application\watermark1.c
+	<stdlib.h>
+	"GUI.h"
+
+1491167844 source:c:\users\rem\documents\rest\codeblocks\application\splashwin.c
+	"ranger.h"
+	"stm324x9i_REST_HWv2_hvac.h"
+
+1490566962 source:c:\users\rem\documents\rest\codeblocks\application\logo.c
+	<stdlib.h>
+	"GUI.h"
+
+1490647912 source:c:\users\rem\documents\rest\codeblocks\application\checked36.c
+	<stdlib.h>
+	"GUI.h"
+
+1490647930 source:c:\users\rem\documents\rest\codeblocks\application\unchecked36.c
+	<stdlib.h>
+	"GUI.h"
+
+1490646790 source:c:\users\rem\documents\rest\codeblocks\application\windowdlg.c
+	"DIALOG.h"
+
+1490981312 source:c:\users\rem\documents\rest\codeblocks\application\unchecked36_grey.c
+	<stdlib.h>
+	"GUI.h"
+
+1491070906 source:c:\users\rem\documents\rest\codeblocks\config\winmain.c
+	<windows.h>
+	"GUI_SIM_Win32.h"
+	"LCD_SIM.h"
+	"GUI.h"
+
+1491072113 source:c:\users\rem\documents\rest\codeblocks\application\watermark.c
+	<stdlib.h>
+	"GUI.h"
+
+1491862602 source:c:\users\rem\documents\rest\codeblocks\application\tahoma18haa4b.c
+	"GUI.h"
+
+1492271380 source:c:\users\rem\documents\rest\codeblocks\application\tahoma42haa4b.c
+	"GUI.h"
+
+1492394400 source:c:\users\rem\documents\rest\codeblocks\application\keyboardwin.c
+	"ranger.h"
+
+1492154956 source:c:\users\rem\documents\rest\codeblocks\application\tahoma23haa4b.c
+	"GUI.h"
+
+1491953652 source:c:\users\rem\documents\rest\codeblocks\application\tahoma16haa4b.c
+	"GUI.h"
+
+1491789834 source:c:\users\rem\documents\rest\codeblocks\application\tahoma23haa4.c
+	"GUI.h"
+
+1491921182 source:c:\users\rem\documents\rest\codeblocks\application\tahoma29haa4.c
+	"GUI.h"
+
+1492155810 source:c:\users\rem\documents\rest\codeblocks\application\tahoma29haa4b.c
+	"GUI.h"
+
+1492245706 source:c:\users\rem\documents\rest\codeblocks\application\editschedule1.c
+	"ranger.h"
+
+1492109148 source:c:\users\rem\documents\rest\codeblocks\application\lucida_sans15haa4.c
+	"GUI.h"
+
+1492106678 source:c:\users\rem\documents\rest\codeblocks\application\tahoma81haa4b.c
+	"GUI.h"
+
+1492103444 source:c:\users\rem\documents\rest\codeblocks\application\tahoma88haa4b.c
+	"GUI.h"
+
+1492156260 source:c:\users\rem\documents\rest\codeblocks\application\tahoma58haa4.c
+	"GUI.h"
+
+1492271319 source:c:\users\rem\documents\rest\codeblocks\application\tahoma129haa4b.c
+	"GUI.h"
+
+1492270004 source:c:\users\rem\documents\rest\codeblocks\application\tahoma19haa4b.c
+	"GUI.h"
+
+1492270188 source:c:\users\rem\documents\rest\codeblocks\application\tahoma33haa4.c
+	"GUI.h"
+
+1492270305 source:c:\users\rem\documents\rest\codeblocks\application\tahoma33haa4b.c
+	"GUI.h"
+
+1492270418 source:c:\users\rem\documents\rest\codeblocks\application\tahoma35haa4.c
+	"GUI.h"
+
+1492270725 source:c:\users\rem\documents\rest\codeblocks\application\tahoma35haa4b.c
+	"GUI.h"
+
+1492109148 source:c:\users\rem\documents\rest\codeblocks\fonts\lucida_sans15haa4.c
+	"GUI.h"
+
+1492271319 source:c:\users\rem\documents\rest\codeblocks\fonts\tahoma129haa4b.c
+	"GUI.h"
+
+1491953652 source:c:\users\rem\documents\rest\codeblocks\fonts\tahoma16haa4b.c
+	"GUI.h"
+
+1491862602 source:c:\users\rem\documents\rest\codeblocks\fonts\tahoma18haa4b.c
+	"GUI.h"
+
+1492270004 source:c:\users\rem\documents\rest\codeblocks\fonts\tahoma19haa4b.c
+	"GUI.h"
+
+1492154956 source:c:\users\rem\documents\rest\codeblocks\fonts\tahoma23haa4b.c
+	"GUI.h"
+
+1491921182 source:c:\users\rem\documents\rest\codeblocks\fonts\tahoma29haa4.c
+	"GUI.h"
+
+1492155810 source:c:\users\rem\documents\rest\codeblocks\fonts\tahoma29haa4b.c
+	"GUI.h"
+
+1492270188 source:c:\users\rem\documents\rest\codeblocks\fonts\tahoma33haa4.c
+	"GUI.h"
+
+1492270305 source:c:\users\rem\documents\rest\codeblocks\fonts\tahoma33haa4b.c
+	"GUI.h"
+
+1492270418 source:c:\users\rem\documents\rest\codeblocks\fonts\tahoma35haa4.c
+	"GUI.h"
+
+1492270725 source:c:\users\rem\documents\rest\codeblocks\fonts\tahoma35haa4b.c
+	"GUI.h"
+
+1492271380 source:c:\users\rem\documents\rest\codeblocks\fonts\tahoma42haa4b.c
+	"GUI.h"
+
+1492156260 source:c:\users\rem\documents\rest\codeblocks\fonts\tahoma58haa4.c
+	"GUI.h"
+
+1492106678 source:c:\users\rem\documents\rest\codeblocks\fonts\tahoma81haa4b.c
+	"GUI.h"
+
+1492103444 source:c:\users\rem\documents\rest\codeblocks\fonts\tahoma88haa4b.c
 	"GUI.h"
 

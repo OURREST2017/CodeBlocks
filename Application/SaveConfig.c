@@ -22,6 +22,38 @@ void writeBool(char *s, int x, char *c, FILE *f)
     fputs(buf, f);
 }
 
+void saveStats() {
+   FILE *f;
+
+   if ((f = fopen("stats.json", "w")) == 0)
+    {
+        return;
+    }
+
+    fputs("{\n", f);
+    writeInt("compressorTotalRuntime", compressorTotalRuntime, ",", f);
+    writeInt("compressorLongestRuntime", compressorLongestRuntime, ",", f);
+    writeInt("compressorShortestRuntime", compressorShortestRuntime, ",", f);
+    writeInt("compressorRunCount", compressorRunCount, ",", f);
+
+    writeInt("blowerTotalRuntime", blowerTotalRuntime, ",", f);
+    writeInt("blowerLongestRuntime", blowerLongestRuntime, ",", f);
+    writeInt("blowerShortestRuntime", blowerShortestRuntime, ",", f);
+    writeInt("blowerRunCount", blowerRunCount, ",", f);
+
+    writeInt("tempHighOutside", tempHighOutside, ",", f);
+    writeInt("tempLowOutside", tempLowOutside, ",", f);
+    writeInt("tempLowSetPoint", tempLowSetPoint, ",", f);
+
+    writeInt("humidityHighOutside", humidityHighOutside, ",", f);
+    writeInt("humidityLowOutside", humidityLowOutside, ",", f);
+    writeInt("humidityHighInside", humidityHighInside, ",", f);
+    writeInt("humidityLowInside", humidityLowInside, "", f);
+
+    fputs("}\n", f);
+    fclose(f);
+}
+
 void saveConfig()
 {
     FILE *f;
@@ -33,7 +65,6 @@ void saveConfig()
 
     fputs("{\n", f);
     writeString("changeOver", changeOver, ",", f);
-    writeInt("clockFormat", clockFormat, ",", f);
     writeString("configVersion", configVersion, ",", f);
     writeInt("coolToDegrees", coolToDegrees, ",", f);
     writeString("currFwVersion", currFwVersion, ",", f);
@@ -59,10 +90,9 @@ void saveConfig()
     writeString("keyboardLock", keyboardLock, ",", f);
     writeString("language", language, ",", f);
     writeInt("localHumidity", localHumidity, ",", f);
-    writeInt("localTemp", localTemp, ",", f);
+    writeInt("localTemp", localTemperature, ",", f);
     writeString("lockCode", lockCode, ",", f);
     writeBool("metric", metric, ",", f);
-    writeInt("temperatureScale", metric, ",", f);
     writeString("nextFwVersion", nextFwVersion, ",", f);
     writeString("ownersName", ownersName, ",", f);
     writeInt("reset", reset, ",", f);
@@ -80,12 +110,14 @@ void saveConfig()
         {
             fprintf(f,"          {\n            \"label\": \"%s\",\n",
                     schedules[i].days[0].periods[p].label);
-            fprintf(f,"            \"temperature\": %d,\n",
-                    schedules[i].days[0].periods[p].temperature);
-            fprintf(f,"            \"startMinutes\": %d,\n",
-                    schedules[i].days[0].periods[p].startMinutes);
-            fprintf(f,"            \"stopMinutes\": %d\n",
-                    schedules[i].days[0].periods[p].stopMinutes);
+            fprintf(f,"            \"heat\": %d,\n",
+                    schedules[i].days[0].periods[p].heat);
+            fprintf(f,"            \"cool\": %d,\n",
+                    schedules[i].days[0].periods[p].cool);
+            fprintf(f,"            \"startTime\": %d,\n",
+                    schedules[i].days[0].periods[p].startTime);
+            fprintf(f,"            \"stopTime\": %d\n",
+                    schedules[i].days[0].periods[p].stopTime);
             fprintf(f,"          }");
             if (p != 3)
             {
@@ -117,12 +149,14 @@ void saveConfig()
         {
             fprintf(f,"          {\n            \"label\": \"%s\",\n",
                     schedules[i].days[k].periods[p].label);
-            fprintf(f,"            \"temperature\": %d,\n",
-                    schedules[i].days[k].periods[p].temperature);
-            fprintf(f,"            \"startMinutes\": %d,\n",
-                    schedules[i].days[k].periods[p].startMinutes);
-            fprintf(f,"            \"stopMinutes\": %d\n",
-                    schedules[i].days[k].periods[p].stopMinutes);
+            fprintf(f,"            \"heat\": %d,\n",
+                    schedules[i].days[k].periods[p].heat);
+            fprintf(f,"            \"cool\": %d,\n",
+                    schedules[i].days[k].periods[p].cool);
+            fprintf(f,"            \"startTime\": %d,\n",
+                    schedules[i].days[k].periods[p].startTime);
+            fprintf(f,"            \"stopTime\": %d\n",
+                    schedules[i].days[k].periods[p].stopTime);
             fprintf(f,"          }");
             if (p != 3)
             {
@@ -151,10 +185,10 @@ void saveConfig()
     writeString("currentSchedule", currentSchedule, ",", f);
     writeInt("schedulePeriods", schedulePeriods, ",", f);
     writeString("securityMode", securityMode, ",", f);
-    writeString("serial", serial, ",", f);
+    writeString("serial", serialNumber, ",", f);
     writeBool("tempHold", tempHold, ",", f);
     writeInt("thermoControls", thermoControls, ",", f);
-    writeInt("tempSetPoint", tempSetPoint, ",", f);
+    writeInt("temperatureSetPoint", temperatureSetPoint, ",", f);
     writeInt("timeZoneOffset", timeZoneOffset, ",", f);
     writeBool("unitLocked", unitLocked, ",", f);
     writeString("zipCode", zipCode, "", f);

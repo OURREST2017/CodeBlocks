@@ -13,11 +13,7 @@
 #define ID_BUTTON_CANCEL  (GUI_ID_USER + 0x0B)
 #define ID_BUTTON_SAVE  (GUI_ID_USER + 0x0C)
 
-/*********************************************************************
-*
-*       _aDialogCreate
-*/
-static char customer_text[30], mac_text[30], zip_text[12], crc_text[10], keyboard_text[50];
+static char customer_text[30], mac_text[30], zip_text[12], crc_text[10];
 
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
@@ -29,9 +25,25 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, customer_text, ID_BUTTON_CUSTOMER, 176, 90, 230, 30, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, zip_text, ID_BUTTON_ZIP, 176, 125, 230, 30, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, mac_text, ID_BUTTON_MAC, 176, 160, 230, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 375, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 350, 230,BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
 };
+
+static void drawProfileButton(char * but, int w, int h, int col)
+{
+    GUI_RECT rect;
+    rect.x0 = 4;
+    rect.y0 = 0;
+    rect.x1 = w;
+    rect.y1 = h;
+    GUI_DrawGradientRoundedV(0, 0, w, h, 4, color_map[col].stop, color_map[col].start);
+    GUI_SetFont(Tahoma23B);
+    GUI_SetColor(GUI_WHITE);
+    GUI_SetTextMode(GUI_TM_TRANS);
+    GUI_DispStringInRect(but, &rect, GUI_TA_LEFT | GUI_TA_VCENTER);
+    GUI_SetColor(GUI_LIGHTGRAY);
+    GUI_SetPenSize(2);
+}
 
 static void profile_cb(WM_MESSAGE * pMsg)
 {
@@ -54,10 +66,6 @@ static void profile_cb(WM_MESSAGE * pMsg)
 }
 static WM_HWIN customerButton;
 
-/*********************************************************************
-*
-*       _cbDialog
-*/
 static void _cbDialog(WM_MESSAGE * pMsg)
 {
     WM_HWIN hItem;
@@ -73,25 +81,26 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     case WM_INIT_DIALOG:
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        TEXT_SetFont(hItem, GUI_FONT_32B_ASCII);
+        TEXT_SetFont(hItem, HEADER_FONT_BOLD);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
+        TEXT_SetText(hItem, LANG("PROFILE"));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_1);
         TEXT_SetTextAlign(hItem, GUI_TA_RIGHT | GUI_TA_VCENTER);
         TEXT_SetFont(hItem, GUI_FONT_20_1);
-        TEXT_SetText(hItem, "Name:");
+        TEXT_SetText(hItem, LANG("Name:"));
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00008080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_2);
         TEXT_SetTextAlign(hItem, GUI_TA_RIGHT | GUI_TA_VCENTER);
         TEXT_SetFont(hItem, GUI_FONT_20_1);
-        TEXT_SetText(hItem, "Zip Code:");
+        TEXT_SetText(hItem, LANG("Zip Code:"));
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00008080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_3);
         TEXT_SetTextAlign(hItem, GUI_TA_RIGHT | GUI_TA_VCENTER);
         TEXT_SetFont(hItem, GUI_FONT_20_1);
-        TEXT_SetText(hItem, "MAC Address:");
+        TEXT_SetText(hItem, LANG("Thermostat MAC:"));
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00008080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_4);
@@ -115,10 +124,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 //        BUTTON_SetTextAlign(hItem, GUI_TA_LEFT | GUI_TA_VCENTER);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        WM_SetCallback(hItem, buttonOn16_cb);
+        WM_SetCallback(hItem, buttonOn_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
-        WM_SetCallback(hItem, buttonOn16_cb);
+        WM_SetCallback(hItem, buttonOn_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
@@ -130,7 +139,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 WM_HideWindow(profileWin);
-                CreateAlphaKeyboard(1, ownersName, "Name", "Profile");
+                CreateKeyboardWin(1, ownersName, "Name", "Profile");
                 break;
             }
             break;
@@ -139,7 +148,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 WM_HideWindow(profileWin);
-                CreateNumericKeyboard(2, zipCode, "Zip Code", "Profile");
+                CreateKeyboardWin(2, zipCode, "Zip Code", "Profile");
                 break;
             }
             break;
@@ -165,7 +174,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
                 WM_HideWindow(profileWin);
-                screenState = 4;
+                screenState = SETTINGSWIN;
                 break;
             }
             break;
@@ -175,7 +184,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
                 WM_HideWindow(profileWin);
-                screenState = 4;
+                screenState = SETTINGSWIN;
                 break;
             }
             break;
@@ -187,10 +196,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     }
 }
 
-/*********************************************************************
-*
-*       CreateWindow
-*/
 WM_HWIN CreateProfile(int profileIdx, char * profileTxt);
 WM_HWIN CreateProfile(int profileIdx, char * profileTxt)
 {
@@ -214,5 +219,3 @@ WM_HWIN CreateProfile(int profileIdx, char * profileTxt)
     profileWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
-
-/*************************** End of file ****************************/

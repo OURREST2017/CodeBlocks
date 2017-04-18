@@ -7,25 +7,19 @@
 #define ID_BUTTON_YES (GUI_ID_USER + 0x0E)
 #define ID_BUTTON_NO (GUI_ID_USER + 0x0F)
 
-/*********************************************************************
-*
-*       _aDialogCreate
-*/
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, 28, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 375, 230, 80, 28, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_0, 0, 0, 480, 50, 0, 0x64, 0 },
     { BUTTON_CreateIndirect, "Yes", ID_BUTTON_YES, 120, 90, 240, 40, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "No", ID_BUTTON_NO, 120, 145, 240, 40, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 350, 230,BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
 };
+
 static int backupHeat_mode;
 static WM_HWIN yesButton,noButton, backupHeatWin;
-/*********************************************************************
-*
-*       _cbDialog
-*/
+
 static void _cbDialog(WM_MESSAGE * pMsg)
 {
     WM_HWIN hItem;
@@ -41,7 +35,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     case WM_INIT_DIALOG:
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_0);
         TEXT_SetFont(hItem, HEADER_FONT_BOLD);
-        TEXT_SetText(hItem, "BACKUP HEAT");
+        TEXT_SetText(hItem, LANG("BACKUP HEAT"));
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
         //
@@ -61,10 +55,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         }
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        WM_SetCallback(hItem, buttonOn16_cb);
+        WM_SetCallback(hItem, buttonOn_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
-        WM_SetCallback(hItem, buttonOn16_cb);
+        WM_SetCallback(hItem, buttonOn_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
@@ -79,7 +73,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             case WM_NOTIFICATION_RELEASED:
                 WM_DeleteWindow(backupHeatWin);
                 GUI_Delay(100);
-                screenState = 17;
+                screenState = SYSTEMSETUPWIN;
             }
             break;
         case ID_BUTTON_SAVE:
@@ -91,7 +85,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 backupHeat = backupHeat_mode;
                 WM_DeleteWindow(backupHeatWin);
                 GUI_Delay(100);
-                screenState = 17;
+                screenState = SYSTEMSETUPWIN;
             }
             break;
         case ID_BUTTON_YES:
@@ -122,10 +116,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     }
 }
 
-/*********************************************************************
-*
-*       CreateWindow
-*/
 WM_HWIN CreateBackupHeat(void);
 WM_HWIN CreateBackupHeat(void)
 {
@@ -134,5 +124,3 @@ WM_HWIN CreateBackupHeat(void)
     backupHeatWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return backupHeatWin;
 }
-
-/*************************** End of file ****************************/

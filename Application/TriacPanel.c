@@ -209,7 +209,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
                 WM_DeleteWindow(triacWin);
-                screenState = 1;
+                screenState = HOMEWIN;
                 break;
             }
             break;

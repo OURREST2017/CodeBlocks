@@ -7,30 +7,27 @@
 #define ID_TEXT_HEADER (GUI_ID_USER + 0x1F)
 #define ID_BUTTON_CANCEL (GUI_ID_USER + 0x20)
 #define ID_BUTTON_SAVE (GUI_ID_USER + 0x21)
+#define ID_BUTTON_NEXT (GUI_ID_USER + 0x30)
+#define ID_BUTTON_BACK (GUI_ID_USER + 0x31)
 
-/*********************************************************************
-*
-*       _aDialogCreate
-*/
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
+    { TEXT_CreateIndirect, "SYSTEM TYPE", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
     { BUTTON_CreateIndirect, "FORCED AIR", ID_BUTTON_FORCED_AIR, 90, 75, 300, 36, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "HEAT PUMP", ID_BUTTON_HEAT_PUMP, 90, 125, 300, 36, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "HOT WATER OR STEAM", ID_BUTTON_HOT_WATER, 90, 175, 300, 36, 0, 0x0, 0 },
-    { TEXT_CreateIndirect, "SYSTEM TYPE", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 375, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 350, 230, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "BACK", ID_BUTTON_BACK, 20, 230, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "NEXT", ID_BUTTON_NEXT, 350, 230, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
 };
 
 static int forcedAir_mode, heatPump_mode, hotWater_mode;
 
 static WM_HWIN forcedAirButton, heatPumpButton, hotWaterButton, hvacTypeWin;
+static WM_HWIN back, next;
 
-/*********************************************************************
-*
-*       _cbDialog
-*/
 static void _cbDialog(WM_MESSAGE * pMsg)
 {
     WM_HWIN hItem;
@@ -48,6 +45,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetFont(hItem, HEADER_FONT_BOLD);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
+        TEXT_SetText(hItem, LANG("SYSTEM TYPE"));
         //
         forcedAirButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_FORCED_AIR);
         //
@@ -75,25 +73,38 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         }
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        WM_SetCallback(hItem, buttonOn16_cb);
+        WM_SetCallback(hItem, buttonOn_cb);
         if (firstTime)
         {
-            BUTTON_SetText(hItem, "BACK");
-        }
-        else
-        {
-            BUTTON_SetText(hItem, "CANCEL");
+            WM_HideWindow(hItem);
+        } else {
+            WM_ShowWindow(hItem);
         }
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
-        WM_SetCallback(hItem, buttonOn16_cb);
+        WM_SetCallback(hItem, buttonOn_cb);
         if (firstTime)
         {
-            BUTTON_SetText(hItem, "NEXT");
+            WM_HideWindow(hItem);
+        } else {
+            WM_ShowWindow(hItem);
+        }
+
+        next = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_NEXT);
+        WM_SetCallback(next, buttonOn_cb);
+
+        back = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_BACK);
+        WM_SetCallback(back, buttonOn_cb);
+
+        if (firstTime)
+        {
+            WM_ShowWindow(next);
+            WM_ShowWindow(back);
         }
         else
         {
-            BUTTON_SetText(hItem, "SAVE");
+            WM_HideWindow(next);
+            WM_HideWindow(back);
         }
 
         break;
@@ -103,6 +114,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         switch(Id)
         {
         case ID_BUTTON_CANCEL:
+        case ID_BUTTON_BACK:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
@@ -110,15 +122,16 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 WM_DeleteWindow(hvacTypeWin);
                 if (firstTime)
                 {
-                    CreateThermostatLocations();
+                    CreateThermostatControls();
                 }
                 else
                 {
-                    screenState = 17;
+                    screenState = SYSTEMSETUPWIN;
                 }
             }
             break;
         case ID_BUTTON_SAVE:
+        case ID_BUTTON_NEXT:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
@@ -142,7 +155,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 }
                 else
                 {
-                    screenState = 17;
+                    screenState = SYSTEMSETUPWIN;
                 }
             }
             break;
@@ -196,10 +209,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     }
 }
 
-/*********************************************************************
-*
-*       CreateWindow
-*/
 WM_HWIN CreateHvacType(void);
 WM_HWIN CreateHvacType(void)
 {
@@ -227,5 +236,3 @@ WM_HWIN CreateHvacType(void)
     hvacTypeWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
-
-/*************************** End of file ****************************/

@@ -2,6 +2,7 @@
 
 extern WHEEL dateTimeWheels[6], screenLockWheels[4];
 static GUI_TIMER_HANDLE hvac_timer;
+
 #ifndef CODEBLOCK
 #include "main.h"
 #include "cmsis_os.h"
@@ -19,7 +20,7 @@ uint32_t GUI_FreeMem = 0;
 
 static void hvacTimer(GUI_TIMER_MESSAGE * pTM)
 {
-    hvacControlCode(0,30);
+    hvacControlCode();
     GUI_TIMER_SetPeriod(pTM->hTimer, 4000);
     GUI_TIMER_Restart(pTM->hTimer);
 }
@@ -32,9 +33,13 @@ static void lockTimer(GUI_TIMER_MESSAGE * pTM)
 static void GUIThread(void const * argument)
 #else
 
+float sensor_temperature, sensor_humidity;
+
 static void hvacTimer(GUI_TIMER_MESSAGE * pTM)
 {
-    hvacControlCode(0,30);
+//    sensor_temperature = 22.5f;
+//    sensor_humidity = 39.0f;
+    hvacControlCode();
     GUI_TIMER_SetPeriod(pTM->hTimer, 4000);
     GUI_TIMER_Restart(pTM->hTimer);
 }
@@ -51,22 +56,22 @@ void MainTask(void)
 
 #ifndef CODEBLOCK
     WM_MULTIBUF_Enable(1);
-    RTC_TimeTypeDef tm;
-    RTC_DateTypeDef dt;
-
-    tm.Hours = 4;
-    tm.Minutes = 43;
-    tm.DayLightSaving = 1;
-    tm.TimeFormat = 64;
-
-    dt.Date = 9;
-    dt.Month = 2;
-    dt.Year = 17;
-    dt.WeekDay = 4;
-
-    BSP_RTC_SetTime(&tm);
-    BSP_RTC_SetDate(&dt);
-
+//    RTC_TimeTypeDef tm;
+//    RTC_DateTypeDef dt;
+//
+//    tm.Hours = 4;
+//    tm.Minutes = 43;
+//    tm.DayLightSaving = 1;
+//    tm.TimeFormat = 64;
+//
+//    dt.Date = 9;
+//    dt.Month = 2;
+//    dt.Year = 17;
+//    dt.WeekDay = 4;
+//
+//    BSP_RTC_SetTime(&tm);
+//    BSP_RTC_SetDate(&dt);
+//
     /* Check for calibration */
     if (CalibrationIsDone() == 0)
     {
@@ -81,135 +86,123 @@ void MainTask(void)
     initColors();
     loadConfig();
 
-    //idleTimeOut = 5000;
+    //saveConfig();
+    saveStats();
+
     homeWin = CreateHomeWin();
     idleWin = CreateIdleWin();
-    dateTimeWin = CreateDateTime();
     screenLockoutWin = CreateScreenLockout();
     settingsWin = CreateSettings();
     settingsScheduleWin = CreateSettingsSchedule();
     preferencesWin = CreatePreferences();
     systemSetupWin = CreateSystemSetup();
-
-    //saveConfig();
-
+    firstTime = 0;
     if (testing)
     {
         screenState = 99;
     }
     else if (firstTime)
     {
-        lockTimer_h = GUI_TIMER_Create(lockTimer, idleTimeOut, 0, 0);
-        screenState = 2;
+        //lockTimer_h = GUI_TIMER_Create(lockTimer, idleTimeOut, 0, 0);
+        screenState = LANGUAGESWIN;
     }
     else
     {
         //lockTimer_h = GUI_TIMER_Create(lockTimer, idleTimeOut, 0, 0);
-        screenState = 1;
+        screenState = HOMEWIN;
     }
-    screenState = 1;
+    //screenState = HOMEWIN;
     int counter;
 
 #ifdef DEBUG_MODE
     hvac_timer = GUI_TIMER_Create(hvacTimer, 4000, 0, 0);
-
+    //hvacControlCode();
 #endif
+
     while(1)
     {
         switch (screenState)
         {
         case 0:
             break;
-        case 99:
-            // CreateTriacPanelWin();
-            screenState = 0;
+        case SPLASHWIN:
+            CreateSplashWin();
+            screenState = NOWIN;
             break;
-        case 1:
+        case HOMEWIN:
 //            GUI_TIMER_SetPeriod(lockTimer_h, idleTimeOut);
 //            GUI_TIMER_Restart(lockTimer_h);
+            hvacControlCode();
             WM_ShowWindow(homeWin);
-            screenState = 0;
+            //keyboardWin = CreateKeyboardWin(0, "Text", "Title", "Screen");
+            screenState = NOWIN;
             break;
-        case 4:
+        case IDLEWIN:
+            WM_ShowWindow(idleWin);
+            screenState = NOWIN;
+            break;
+        case SETTINGSWIN:
             WM_ShowWindow(settingsWin);
-            screenState = 0;
+            screenState = NOWIN;
             break;
-        case 10:
+        case MOBILEPAREWIN:
             WM_HideWindow(settingsWin);
             CreateMobilePair();
-            screenState = 0;
+            screenState = NOWIN;
             break;
-        case 11:
+        case DATETIMEWIN:
             WM_HideWindow(settingsWin);
-            setCurrentTime();
-            LISTWHEEL_SetPos(dateTimeWheels[0].hWin, current_hour-1);
-            LISTWHEEL_SetPos(dateTimeWheels[1].hWin, current_minute);
-            LISTWHEEL_SetPos(dateTimeWheels[2].hWin, current_ampm);
-            LISTWHEEL_SetPos(dateTimeWheels[3].hWin, current_month);
-            LISTWHEEL_SetPos(dateTimeWheels[4].hWin, current_day-1);
-            LISTWHEEL_SetPos(dateTimeWheels[5].hWin, current_year-2010);
-            WM_ShowWindow(dateTimeWin);
-            screenState = 0;
+            getCurrentTime();
+            //WM_ShowWindow(dateTimeWin);
+            dateTimeWin = CreateDateTime();
+            screenState = NOWIN;
             break;
-        case 12:
-            LISTWHEEL_SetPos(screenLockWheels[0].hWin, lockCode[0] - 48);
-            LISTWHEEL_SetPos(screenLockWheels[1].hWin, lockCode[1] - 48);
-            LISTWHEEL_SetPos(screenLockWheels[2].hWin, lockCode[2] - 48);
-            LISTWHEEL_SetPos(screenLockWheels[3].hWin, lockCode[3] - 48);
+        case LOCKWIN:
             WM_HideWindow(settingsWin);
             WM_ShowWindow(screenLockoutWin);
-            screenState = 0;
+            screenState = NOWIN;
             break;
-        case 13:
+        case SETTINGSCHEDULEWIN:
             WM_HideWindow(settingsWin);
             WM_ShowWindow(settingsScheduleWin);
-            screenState = 0;
+            screenState = NOWIN;
             break;
-        case 14:
+        case LANGUAGESWIN:
             WM_HideWindow(settingsWin);
             CreateLanguages();
-            screenState = 0;
+            screenState = NOWIN;
             break;
-        case 15:
+        case PROFILEWIN:
             CreateProfile(0, "");
-            screenState = 0;
+            screenState = NOWIN;
             break;
-        case 16:
+        case PREFERENCESWIN:
             WM_HideWindow(settingsWin);
             WM_ShowWindow(preferencesWin);
-            //CreatePreferences();
-            screenState = 0;
+            screenState = NOWIN;
             break;
-        case 17:
+        case SYSTEMSETUPWIN:
             WM_HideWindow(settingsWin);
             WM_ShowWindow(systemSetupWin);
-            screenState = 0;
+            screenState = NOWIN;
             break;
-        case 20:
+        case EDITSCHEDULEWIN:
             WM_HideWindow(settingsScheduleWin);
             CreateEditSchedule();
-            screenState = 0;
-            break;
-        case 21:
-            WM_HideWindow(editScheduleWin);
-            WM_ShowWindow(settingsScheduleWin);
-            screenState = 0;
-            break;
-        case 22:
-            WM_HideWindow(settingsScheduleWin);
-            CreateEachDay();
-            screenState = 0;
+            screenState = NOWIN;
             break;
         case 23:
             WM_HideWindow(eachDayWin);
             WM_ShowWindow(settingsScheduleWin);
-            screenState = 0;
+            screenState = NOWIN;
             break;
         case 24:
             WM_HideWindow(eachDayWin);
             WM_ShowWindow(editScheduleWin);
-            screenState = 0;
+            screenState = NOWIN;
             break;
+		Default:
+			break;
         }
         GUI_Exec();
         GUI_Delay(40);

@@ -7,26 +7,18 @@
 #define ID_BUTTON_DONE  (GUI_ID_USER + 0x07)
 #define ID_TEXT_HEADER  (GUI_ID_USER + 0x09)
 
-/*********************************************************************
-*
-*       _aDialogCreate
-*/
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0,0, 0, 480, 272, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "EDIT ROOM", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "CHANGE\nNAME", ID_BUTTON_CHANGE, 60, 105, 145, 70, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "DELETE\nTHERMOSTAT", ID_BUTTON_DELETE, 250, 105, 145, 70, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 375, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "CHANGE NAME", ID_BUTTON_CHANGE, 110, 80, 250, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "DELETE THERMOSTAT", ID_BUTTON_DELETE, 110, 150, 250, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 350, 230, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
 };
 
-static int cool, room_number;
+static int room_number;
 static WM_HWIN editRoomWin;
-/*********************************************************************
-*
-*       _cbDialog
-*/
 
 static void _cbDialog(WM_MESSAGE * pMsg)
 {
@@ -49,16 +41,16 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetText(hItem, thermo_rooms[room_number]);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CHANGE);
-        WM_SetCallback(hItem, button20_cb);
+        WM_SetCallback(hItem, buttonOn_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DELETE);
-        WM_SetCallback(hItem, button20_cb);
+        WM_SetCallback(hItem, buttonOn_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        WM_SetCallback(hItem, buttonOn16_cb);
+        WM_SetCallback(hItem, buttonOn_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DONE);
-        WM_SetCallback(hItem, buttonOn16_cb);
+        WM_SetCallback(hItem, buttonOn_cb);
         //
         break;
     case WM_NOTIFY_PARENT:
@@ -71,8 +63,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                WM_DeleteWindow(editRoomWin);
-               CreateAlphaKeyboard(room_number, thermo_rooms[room_number],
-                                    thermo_rooms[room_number], "Edit Room");
+               CreateKeyboardWin(room_number, thermo_rooms[room_number],
+                                    thermo_rooms[room_number], LANG("Edit Room"));
                 break;
             }
             break;
@@ -112,10 +104,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         break;
     }
 }
-/*********************************************************************
-*
-*       CreateMode
-*/
+
 WM_HWIN CreateEditRoom(int room);
 WM_HWIN CreateEditRoom(int room)
 {
@@ -125,5 +114,3 @@ WM_HWIN CreateEditRoom(int room)
     editRoomWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
-
-/*************************** End of file ****************************/

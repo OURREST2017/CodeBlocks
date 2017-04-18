@@ -1,8 +1,7 @@
 {
 "changeOver": "automatic",
-"clockFormat": 12,
 "configVersion": "1.0.0",
-"coolToDegrees": 72,
+"coolToDegrees": 74.5,
 "currFwVersion": "1.0.0",
 "dst": true,
 "enableSchedule": false,
@@ -12,23 +11,23 @@
 "fanMode": "auto",
 "filterChangeDate": 0,
 "filterLifeInDays": 0,
-"firstTime": false,
+"firstTime": true,
 "firmwareUrl": "0",
-"heatToDegrees": 74,
+"heatToDegrees": 70.5,
 "hvacConfig": {
-"backupHeatingType": "no",
-"hvacType": "air",
-"coolingStages": 2,
-"heatingStages": 1
+  "backupHeatingType": "no",
+  "hvacType": "air",
+  "coolingStages": 2,
+  "heatingStages": 1
 },
-"hvacMode": "auto",
+"hvacMode": "cool",
 "keyboardLock": "unlocked",
 "language": "english",
-"localHumidity": 90,
-"localTemp": 72,
+"localHumidity": 99,
+"localTemp": 90,
 "lockCode": "0000",
 "metric": false,
-"temperatureScale": 0,
+"myWifiNetwork": "My WIFI Network",
 "nextFwVersion": "1.0.0",
 "ownersName": "Frank",
 "reset": 0,
@@ -41,27 +40,31 @@
         "periods": [
           {
             "label": "wake",
-            "temperature": 72,
-            "startMinutes": 360,
-            "stopMinutes": 480
+            "cool": 72,
+            "heat": 68,
+            "startTime": 600,
+            "stopTime": 800
           },
           {
             "label": "leave",
-            "temperature": 80,
-            "startMinutes": 480,
-            "stopMinutes": 1020
+            "cool": 78,
+            "heat": 69,
+            "startTime": 800,
+            "stopTime": 1700
           },
           {
             "label": "return",
-            "temperature": 72,
-            "startMinutes": 1020,
-            "stopMinutes": 1200
+            "cool": 74,
+            "heat": 71,
+            "startTime": 1700,
+            "stopTime": 2000
           },
           {
             "label": "sleep",
-            "temperature": 76,
-            "startMinutes": 1200,
-            "stopMinutes": 360
+            "cool": 78,
+            "heat": 71,
+            "startTime": 2000,
+            "stopTime": 600
           }
         ]
       }
@@ -76,27 +79,31 @@
         "periods": [
           {
             "label": "wake",
-            "temperature": 74,
-            "startMinutes": 360,
-            "stopMinutes": 480
+            "cool": 72,
+            "heat": 68,
+            "startTime": 600,
+            "stopTime": 800
           },
           {
             "label": "leave",
-            "temperature": 80,
-            "startMinutes": 480,
-            "stopMinutes": 1020
+            "cool": 78,
+            "heat": 68,
+            "startTime": 800,
+            "stopTime": 1700
           },
           {
             "label": "return",
-            "temperature": 72,
-            "startMinutes": 1020,
-            "stopMinutes": 1200
+            "cool": 74,
+            "heat": 68,
+            "startTime": 1700,
+            "stopTime": 2000
           },
           {
             "label": "sleep",
-            "temperature": 76,
-            "startMinutes": 1200,
-            "stopMinutes": 360
+            "cool": 78,
+            "heat": 68,
+            "startTime": 2000,
+            "stopTime": 600
           }
         ]
       }
@@ -111,27 +118,31 @@
         "periods": [
           {
             "label": "wake",
-            "temperature": 74,
-            "startMinutes": 360,
-            "stopMinutes": 480
+            "cool": 69,
+            "heat": 68,
+            "startTime": 600,
+            "stopTime": 800
           },
           {
             "label": "leave",
-            "temperature": 80,
-            "startMinutes": 480,
-            "stopMinutes": 1020
+            "cool": 70,
+            "heat": 68,
+            "startTime": 800,
+            "stopTime": 1700
           },
           {
             "label": "return",
-            "temperature": 72,
-            "startMinutes": 1020,
-            "stopMinutes": 1200
+            "cool": 72,
+            "heat": 68,
+            "startTime": 1700,
+            "stopTime": 2000
           },
           {
             "label": "sleep",
-            "temperature": 76,
-            "startMinutes": 1200,
-            "stopMinutes": 360
+            "cool": 73,
+            "heat": 68,
+            "startTime": 2000,
+            "stopTime": 600
           }
         ]
       }
@@ -146,27 +157,31 @@
         "periods": [
           {
             "label": "wake",
-            "temperature": 74,
-            "startMinutes": 360,
-            "stopMinutes": 480
+            "cool": 72,
+            "heat": 68,
+            "startTime": 600,
+            "stopTime": 800
           },
           {
             "label": "leave",
-            "temperature": 80,
-            "startMinutes": 480,
-            "stopMinutes": 1020
+            "cool": 78,
+            "heat": 68,
+            "startTime": 800,
+            "stopTime": 1700
           },
           {
             "label": "return",
-            "temperature": 72,
-            "startMinutes": 1020,
-            "stopMinutes": 1200
+            "cool": 74,
+            "heat": 68,
+            "startTime": 1700,
+            "stopTime": 2000
           },
           {
             "label": "sleep",
-            "temperature": 76,
-            "startMinutes": 1200,
-            "stopMinutes": 360
+            "cool": 72,
+            "heat": 68,
+            "startTime": 2000,
+            "stopTime": 600
           }
         ]
       }
@@ -181,27 +196,31 @@
         "periods": [
           {
             "label": "wake",
-            "temperature": 74,
-            "startMinutes": 360,
-            "stopMinutes": 480
+            "cool": 72,
+            "heat": 68,
+            "startTime": 600,
+            "stopTime": 800
           },
           {
             "label": "leave",
-            "temperature": 80,
-            "startMinutes": 480,
-            "stopMinutes": 1020
+            "cool": 78,
+            "heat": 68,
+            "startTime": 800,
+            "stopTime": 1700
           },
           {
             "label": "return",
-            "temperature": 72,
-            "startMinutes": 1020,
-            "stopMinutes": 1200
+            "cool": 74,
+            "heat": 68,
+            "startTime": 1700,
+            "stopTime": 2000
           },
           {
             "label": "sleep",
-            "temperature": 76,
-            "startMinutes": 1200,
-            "stopMinutes": 360
+            "cool": 78,
+            "heat": 68,
+            "startTime": 2000,
+            "stopTime": 600
           }
         ]
      },
@@ -210,27 +229,31 @@
         "periods": [
           {
             "label": "wake",
-            "temperature": 74,
-            "startMinutes": 360,
-            "stopMinutes": 480
+            "cool": 73,
+            "heat": 68,
+            "startTime": 600,
+            "stopTime": 800
           },
           {
             "label": "leave",
-            "temperature": 80,
-            "startMinutes": 480,
-            "stopMinutes": 1020
+            "cool": 74,
+            "heat": 69,
+            "startTime": 800,
+            "stopTime": 1700
           },
           {
             "label": "return",
-            "temperature": 72,
-            "startMinutes": 1020,
-            "stopMinutes": 1200
+            "cool": 75,
+            "heat": 70,
+            "startTime": 1700,
+            "stopTime": 2000
           },
           {
             "label": "sleep",
-            "temperature": 76,
-            "startMinutes": 1200,
-            "stopMinutes": 360
+            "cool": 76,
+            "heat": 72,
+            "startTime": 2000,
+            "stopTime": 600
           }
         ]
      },
@@ -239,27 +262,31 @@
         "periods": [
           {
             "label": "wake",
-            "temperature": 74,
-            "startMinutes": 360,
-            "stopMinutes": 480
+            "cool": 72,
+            "heat": 68,
+            "startTime": 600,
+            "stopTime": 800
           },
           {
             "label": "leave",
-            "temperature": 80,
-            "startMinutes": 480,
-            "stopMinutes": 1020
+            "cool": 78,
+            "heat": 68,
+            "startTime": 800,
+            "stopTime": 1700
           },
           {
             "label": "return",
-            "temperature": 72,
-            "startMinutes": 1020,
-            "stopMinutes": 1200
+            "cool": 74,
+            "heat": 68,
+            "startTime": 1700,
+            "stopTime": 2000
           },
           {
             "label": "sleep",
-            "temperature": 76,
-            "startMinutes": 1200,
-            "stopMinutes": 360
+            "cool": 78,
+            "heat": 68,
+            "startTime": 2000,
+            "stopTime": 600
           }
         ]
      },
@@ -268,27 +295,31 @@
         "periods": [
           {
             "label": "wake",
-            "temperature": 74,
-            "startMinutes": 360,
-            "stopMinutes": 480
+            "cool": 72,
+            "heat": 68,
+            "startTime": 600,
+            "stopTime": 800
           },
           {
             "label": "leave",
-            "temperature": 80,
-            "startMinutes": 480,
-            "stopMinutes": 1020
+            "cool": 78,
+            "heat": 68,
+            "startTime": 800,
+            "stopTime": 1700
           },
           {
             "label": "return",
-            "temperature": 72,
-            "startMinutes": 1020,
-            "stopMinutes": 1200
+            "cool": 74,
+            "heat": 68,
+            "startTime": 1700,
+            "stopTime": 2000
           },
           {
             "label": "sleep",
-            "temperature": 76,
-            "startMinutes": 1200,
-            "stopMinutes": 360
+            "cool": 78,
+            "heat": 68,
+            "startTime": 2000,
+            "stopTime": 600
           }
         ]
      },
@@ -297,27 +328,31 @@
         "periods": [
           {
             "label": "wake",
-            "temperature": 74,
-            "startMinutes": 360,
-            "stopMinutes": 480
+            "cool": 72,
+            "heat": 68,
+            "startTime": 600,
+            "stopTime": 800
           },
           {
             "label": "leave",
-            "temperature": 80,
-            "startMinutes": 480,
-            "stopMinutes": 1020
+            "cool": 78,
+            "heat": 68,
+            "startTime": 800,
+            "stopTime": 1700
           },
           {
             "label": "return",
-            "temperature": 72,
-            "startMinutes": 1020,
-            "stopMinutes": 1200
+            "cool": 74,
+            "heat": 68,
+            "startTime": 1700,
+            "stopTime": 2000
           },
           {
             "label": "sleep",
-            "temperature": 76,
-            "startMinutes": 1200,
-            "stopMinutes": 360
+            "cool": 78,
+            "heat": 68,
+            "startTime": 2000,
+            "stopTime": 600
           }
         ]
      },
@@ -326,27 +361,31 @@
         "periods": [
           {
             "label": "wake",
-            "temperature": 74,
-            "startMinutes": 360,
-            "stopMinutes": 480
+            "cool": 72,
+            "heat": 68,
+            "startTime": 600,
+            "stopTime": 800
           },
           {
             "label": "leave",
-            "temperature": 80,
-            "startMinutes": 480,
-            "stopMinutes": 1020
+            "cool": 78,
+            "heat": 68,
+            "startTime": 800,
+            "stopTime": 1700
           },
           {
             "label": "return",
-            "temperature": 72,
-            "startMinutes": 1020,
-            "stopMinutes": 1200
+            "cool": 74,
+            "heat": 68,
+            "startTime": 1700,
+            "stopTime": 2000
           },
           {
             "label": "sleep",
-            "temperature": 76,
-            "startMinutes": 1200,
-            "stopMinutes": 360
+            "cool": 78,
+            "heat": 68,
+            "startTime": 2000,
+            "stopTime": 600
           }
         ]
      },
@@ -355,27 +394,31 @@
         "periods": [
           {
             "label": "wake",
-            "temperature": 74,
-            "startMinutes": 360,
-            "stopMinutes": 480
+            "cool": 72,
+            "heat": 68,
+            "startTime": 600,
+            "stopTime": 800
           },
           {
             "label": "leave",
-            "temperature": 80,
-            "startMinutes": 480,
-            "stopMinutes": 1020
+            "cool": 78,
+            "heat": 68,
+            "startTime": 800,
+            "stopTime": 1700
           },
           {
             "label": "return",
-            "temperature": 72,
-            "startMinutes": 1020,
-            "stopMinutes": 1200
+            "cool": 74,
+            "heat": 68,
+            "startTime": 1700,
+            "stopTime": 2000
           },
           {
             "label": "sleep",
-            "temperature": 76,
-            "startMinutes": 1200,
-            "stopMinutes": 360
+            "cool": 78,
+            "heat": 68,
+            "startTime": 2000,
+            "stopTime": 600
           }
         ]
       }
@@ -387,10 +430,16 @@
 "currentSchedule": "all days",
 "schedulePeriods": 2,
 "securityMode": "high",
-"serial": "(null)",
+"serial": "1234567890",
 "tempHold": false,
-"thermoControls": 0,
-"tempSetPoint": 72,
+"thermo1": "Room 1",
+"thermo2": "Room 2",
+"thermo3": "Room 3",
+"thermo4": "Room 4",
+"thermo5": "Room 5",
+"thermo6": "Room 6",
+"temperatureSetPoint": 72,
+"thermostatControls": 3,
 "timeZoneOffset": -5,
 "unitLocked": true,
 "zipCode": "12345"

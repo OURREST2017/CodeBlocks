@@ -67,9 +67,6 @@
 			<Add library="GUI/Library/GUI.a" />
 			<Add library="Lib/GUISim.a" />
 		</Linker>
-		<Unit filename="Application/AlphaKeyboard.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="Application/BackupHeat.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -79,26 +76,13 @@
 		<Unit filename="Application/ButtonUtils.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Application/ClockFormat.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/CoolTo.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="Application/CoolingStages.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/DateTime.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Application/DateTime.c.lw" />
-		<Unit filename="Application/DaylightSavingTime.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="Application/DeleteThermo.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/EachDay.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/EditRoom.c">
@@ -116,9 +100,6 @@
 		<Unit filename="Application/FanMode.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Application/HeatTo.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="Application/HeatingStages.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -126,6 +107,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/HvacType.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/IconResources.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/IdleWin.c">
@@ -137,22 +121,22 @@
 		<Unit filename="Application/KeyboardLockout.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="Application/KeyboardWin.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="Application/Languages.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Application/LightGreen.c">
+		<Unit filename="Application/LoadConfig.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Application/LoadConfig.c">
+		<Unit filename="Application/Lucida_Sans15hAA4.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/MobilePair.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/Mode.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/NumericKeyboard.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/PassFail.c">
@@ -167,29 +151,22 @@
 		<Unit filename="Application/Ranger.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Application/RoundedFonts.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="Application/SaveConfig.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/ScheduleHelp.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Application/SchedulePeriods.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/SchedulingOptions.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="Application/ScreenLockout.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Application/ScreenLockout.c.lw" />
 		<Unit filename="Application/Settings.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/SettingsSchedule.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/SplashWin.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/SystemSetup.c">
@@ -198,7 +175,49 @@
 		<Unit filename="Application/SystemsChangeOver.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Application/TahomaFonts.c">
+		<Unit filename="Application/Tahoma129hAA4B.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/Tahoma16hAA4B.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/Tahoma18hAA4B.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/Tahoma19hAA4B.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/Tahoma23hAA4B.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/Tahoma29hAA4.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/Tahoma29hAA4B.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/Tahoma33hAA4.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/Tahoma33hAA4B.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/Tahoma35hAA4.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/Tahoma35hAA4B.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/Tahoma42hAA4B.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/Tahoma58hAA4.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/Tahoma81hAA4B.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Application/Tahoma88hAA4B.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/TempuratureLimits.c">
@@ -228,9 +247,6 @@
 		<Unit filename="Application/WifiSetup.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Application/WinMain.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="Application/cJSON.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -248,6 +264,9 @@
 		</Unit>
 		<Unit filename="Config/LCDConf.h" />
 		<Unit filename="Config/SIMConf.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Config/WinMain.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="GUI/Include/BUTTON.h" />

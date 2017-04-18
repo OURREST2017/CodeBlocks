@@ -5,28 +5,21 @@
 #define ID_BUTTON_SAVE (GUI_ID_USER + 0x06)
 #define ID_TEXT_HEADER (GUI_ID_USER + 0x08)
 #define ID_BUTTON_ENGLISH (GUI_ID_USER + 0x09)
-#define ID_BUTTON_ESPANOL (GUI_ID_USER + 0x0A)
+#define ID_BUTTON_SPANISH (GUI_ID_USER + 0x0A)
 
-/*********************************************************************
-*
-*       _aDialogCreate
-*/
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "LANGUAGES / IDIOMAS", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "English", ID_BUTTON_ENGLISH, 109, 97, 265, 34, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Espanol", ID_BUTTON_ESPANOL, 111, 156, 265, 34, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 375, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "English", ID_BUTTON_ENGLISH, 140, 97, 200, 34, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Español", ID_BUTTON_SPANISH, 140, 156, 200, 34, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 350, 230,BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
 };
 
 static int eng_mode;
 static WM_HWIN engButton, spaButton;
-/*********************************************************************
-*
-*       _cbDialog
-*/
+
 static void _cbDialog(WM_MESSAGE * pMsg)
 {
     WM_HWIN hItem;
@@ -48,7 +41,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         //
         engButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ENGLISH);
         //
-        spaButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ESPANOL);
+        spaButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SPANISH);
         if (eng_mode)
         {
             WM_SetCallback(engButton, buttonOn22_cb);
@@ -61,12 +54,12 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         }
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        WM_SetCallback(hItem, buttonOn16_cb);
+        WM_SetCallback(hItem, buttonOn_cb);
         if (firstTime) WM_HideWin(hItem);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
-        if (firstTime) BUTTON_SetText(hItem, "NEXT");
-        WM_SetCallback(hItem, buttonOn16_cb);
+        if (firstTime) BUTTON_SetText(hItem, LANG("NEXT"));
+        WM_SetCallback(hItem, buttonOn_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
@@ -79,7 +72,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
                 WM_HideWindow(languagesWin);
-                screenState = 4;
+                screenState = SETTINGSWIN;
                 break;
             }
             break;
@@ -94,17 +87,41 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 }
                 else
                 {
-                    strcpy(language, "espanol");
+                    strcpy(language, "spanish");
                 }
 
                 if (firstTime)
                 {
+                    WM_DeleteWindow(languagesWin);
                     CreateThermostatLocations();
                 }
                 else
                 {
                     WM_HideWindow(languagesWin);
-                    screenState = 4;
+
+                    WM_MESSAGE msg;
+                    msg.MsgId = WM_INIT_DIALOG;
+                    WM_SendMessage(homeWin, &msg);
+                    WM_MESSAGE msg1;
+                    msg1.MsgId = WM_INIT_DIALOG;
+                    WM_SendMessage(settingsWin, &msg1);
+                    WM_MESSAGE msg2;
+                    msg2.MsgId = WM_INIT_DIALOG;
+                    WM_SendMessage(idleWin, &msg2);
+                    WM_MESSAGE msg3;
+                    msg3.MsgId = WM_INIT_DIALOG;
+                    WM_SendMessage(settingsScheduleWin, &msg3);
+                    WM_MESSAGE msg4;
+                    msg4.MsgId = WM_INIT_DIALOG;
+                    WM_SendMessage(screenLockoutWin, &msg4);
+                    WM_MESSAGE msg5;
+                    msg5.MsgId = WM_INIT_DIALOG;
+                    WM_SendMessage(preferencesWin, &msg5);
+                    WM_MESSAGE msg6;
+                    msg6.MsgId = WM_INIT_DIALOG;
+                    WM_SendMessage(systemSetupWin, &msg6);
+
+                    screenState = SETTINGSWIN;
                 }
                 break;
             }
@@ -117,10 +134,15 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 
                 WM_SetCallback(engButton, buttonOn22_cb);
                 WM_SetCallback(spaButton, buttonOff22_cb);
+                strcpy(language, "english");
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
+                WM_SetCallback(hItem, buttonOn_cb);
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
+                WM_SetCallback(hItem, buttonOn_cb);
                 break;
             }
             break;
-        case ID_BUTTON_ESPANOL:
+        case ID_BUTTON_SPANISH:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
@@ -128,7 +150,11 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 
                 WM_SetCallback(spaButton, buttonOn22_cb);
                 WM_SetCallback(engButton, buttonOff22_cb);
-                break;
+                strcpy(language, "spanish");
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
+                WM_SetCallback(hItem, buttonOn_cb);
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
+                WM_SetCallback(hItem, buttonOn_cb);
                 break;
             }
             break;
@@ -140,10 +166,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     }
 }
 
-/*********************************************************************
-*
-*       CreateWindow
-*/
 WM_HWIN CreateLanguages(void);
 WM_HWIN CreateLanguages(void)
 {
@@ -160,5 +182,3 @@ WM_HWIN CreateLanguages(void)
     languagesWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
-
-/*************************** End of file ****************************/

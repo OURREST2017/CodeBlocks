@@ -7,26 +7,19 @@
 #define ID_BUTTON_CANCEL     (GUI_ID_USER + 0x0F)
 #define ID_BUTTON_DONE     (GUI_ID_USER + 0x10)
 
-/*********************************************************************
-*
-*       _aDialogCreate
-*/
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "FAN", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
-    { TEXT_CreateIndirect, "FAN MODE", ID_TEXT_HEADER, 146, 9, 480, 50, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "AUTO", ID_BUTTON_AUTO, 129, 130, 80, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "ON", ID_BUTTON_ON, 260, 130, 80, 30, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 21, 225, 80, BUTHEIGHT, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 375, 225, 80, BUTHEIGHT, 0, 0x0, 0 },
+    { TEXT_CreateIndirect, "FAN MODE", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
+    { BUTTON_CreateIndirect, "AUTO", ID_BUTTON_AUTO, 129, 130, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "ON", ID_BUTTON_ON, 260, 130, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 225, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 350, 225, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
 };
 
 static int auto_mode;
 static WM_HWIN autoButton, onButton;
-/*********************************************************************
-*
-*       _cbDialog
-*/
+
 static void _cbDialog(WM_MESSAGE * pMsg)
 {
     WM_HWIN hItem;
@@ -42,7 +35,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     case WM_INIT_DIALOG:
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetFont(hItem, HEADER_FONT_BOLD);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, 0x00FFFFFF);
+        TEXT_SetText(hItem, LANG("FAN MODE"));
         //
         autoButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_AUTO);
         //
@@ -60,10 +55,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         }
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        WM_SetCallback(hItem, buttonOn16_cb);
+        WM_SetCallback(hItem, buttonOn_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DONE);
-        WM_SetCallback(hItem, buttonOn16_cb);
+        WM_SetCallback(hItem, buttonOn_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
@@ -87,7 +82,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 auto_mode = 0;
                 WM_SetCallback(autoButton, buttonOff22_cb);
                 WM_SetCallback(onButton, buttonOn22_cb);
-                //fanOn(); TODO: fix this
                 break;
             }
             break;
@@ -96,7 +90,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 WM_HideWindow(fanModeWin);
-                screenState = 1;
+                screenState = HOMEWIN;
                 break;
             }
             break;
@@ -114,7 +108,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 }
                 WM_HideWindow(fanModeWin);
                 TEXT_SetText(fanModeText, toup(fanMode));
-                screenState = 1;
+                screenState = HOMEWIN;
                 break;
             }
             break;
@@ -126,10 +120,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     }
 }
 
-/*********************************************************************
-*
-*       CreateFAN
-*/
 WM_HWIN CreateFanMode(void);
 WM_HWIN CreateFanMode(void)
 {
@@ -141,6 +131,3 @@ WM_HWIN CreateFanMode(void)
     fanModeWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
-
-
-/*************************** End of file ****************************/

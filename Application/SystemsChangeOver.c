@@ -7,27 +7,19 @@
 #define ID_BUTTON_MANUAL (GUI_ID_USER + 0x0E)
 #define ID_BUTTON_AUTOMATIC (GUI_ID_USER + 0x0F)
 
-/*********************************************************************
-*
-*       _aDialogCreate
-*/
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "SYSTEMS CHANGE OVER", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
     { BUTTON_CreateIndirect, "Manual", ID_BUTTON_MANUAL, 120, 90, 240, 40, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Automatic", ID_BUTTON_AUTOMATIC, 120, 145, 240, 40, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 375, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 350, 230,BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
 };
 
 static int manual_mode;
 static WM_HWIN manualButton, autoButton, systemChangeOverWin;
 
-/*********************************************************************
-*
-*       _cbDialog
-*/
 static void _cbDialog(WM_MESSAGE * pMsg)
 {
     WM_HWIN hItem;
@@ -46,10 +38,12 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetFont(hItem, HEADER_FONT_BOLD);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
+        TEXT_SetText(hItem, LANG("SYSTEMS CHANGE OVER"));
         //
         manualButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_MANUAL);
         //
         autoButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_AUTOMATIC);
+
         if (manual_mode)
         {
             WM_SetCallback(manualButton, buttonOn22_cb);
@@ -62,10 +56,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         }
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        WM_SetCallback(hItem, buttonOn16_cb);
+        WM_SetCallback(hItem, buttonOn_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
-        WM_SetCallback(hItem, buttonOn16_cb);
+        WM_SetCallback(hItem, buttonOn_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
@@ -78,7 +72,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             case WM_NOTIFICATION_RELEASED:
                 WM_DeleteWindow(systemChangeOverWin);
                 GUI_Delay(100);
-                screenState = 16;
+                screenState = PREFERENCESWIN;
                 break;
             }
             break;
@@ -96,7 +90,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 }
                 WM_DeleteWindow(systemChangeOverWin);
                 GUI_Delay(100);
-                screenState = 16;
+                screenState = PREFERENCESWIN;
                 break;
             }
             break;
@@ -128,10 +122,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     }
 }
 
-/*********************************************************************
-*
-*       CreateWindow
-*/
 WM_HWIN CreateSystemsChangeOver(void);
 WM_HWIN CreateSystemsChangeOver(void)
 {
@@ -149,5 +139,3 @@ WM_HWIN CreateSystemsChangeOver(void)
     systemChangeOverWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
-
-/*************************** End of file ****************************/

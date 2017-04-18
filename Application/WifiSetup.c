@@ -19,11 +19,8 @@
 #define ID_TEXT_12 (GUI_ID_USER + 0x22)
 #define ID_TEXT_13 (GUI_ID_USER + 0x23)
 #define ID_TEXT_14 (GUI_ID_USER + 0x24)
+#define ID_BUTTON_BACK (GUI_ID_USER + 0x25)
 
-/*********************************************************************
-*
-*       _aDialogCreate
-*/
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
@@ -38,21 +35,18 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { TEXT_CreateIndirect, "Text", ID_TEXT_8, 186, 126, 260, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_9, 0, 148, 180, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Text", ID_TEXT_10, 186, 148, 260, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Text", ID_TEXT_11, 68, 172, 74, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Text", ID_TEXT_12, 145, 172, 175, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Text", ID_TEXT_13, 321, 172, 87, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Text", ID_TEXT_14, 106, 188, 232, 20, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Select WIFI Network", ID_BUTTON_DISCONNECT, 128, 230, 222, BUTHEIGHT, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 378, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
+    { TEXT_CreateIndirect, "Text", ID_TEXT_11, 0, 172, 137, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Text", ID_TEXT_12, 140, 172, 194, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Text", ID_TEXT_13, 330, 172, 120, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Text", ID_TEXT_14, 0, 188, 480, 20, 0, 0x64, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "BACK", ID_BUTTON_BACK, 20, 230, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Select WIFI Network", ID_BUTTON_DISCONNECT, 143, 230, 194, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 350, 230, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
 };
 
 WM_HWIN wifiSetupWin;
 
-/*********************************************************************
-*
-*       _cbDialog
-*/
 static void _cbDialog(WM_MESSAGE * pMsg)
 {
     WM_HWIN hItem;
@@ -70,27 +64,28 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetFont(hItem, HEADER_FONT_BOLD);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
-        //
+        TEXT_SetText(hItem, LANG("WIFI SETUP"));
+       //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_1);
         TEXT_SetFont(hItem, GUI_FONT_20_ASCII);
-        TEXT_SetText(hItem, "Wifi Network:");
+        TEXT_SetText(hItem, LANG("WIFI Network:"));
         TEXT_SetTextAlign(hItem, GUI_TA_RIGHT | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_2);
         TEXT_SetText(hItem, myWifiNetwork);
-        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetFont(hItem, Tahoma19B);
         TEXT_SetTextAlign(hItem, GUI_TA_LEFT | GUI_TA_VCENTER);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_3);
-        TEXT_SetText(hItem, "Status:");
+        TEXT_SetText(hItem, LANG("Status:"));
         TEXT_SetTextAlign(hItem, GUI_TA_RIGHT | GUI_TA_VCENTER);
         TEXT_SetFont(hItem, GUI_FONT_20_ASCII);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_4);
-        TEXT_SetFont(hItem, &FontBig20B);
-        TEXT_SetText(hItem, "Working");
+        TEXT_SetFont(hItem, Tahoma19B);
+        TEXT_SetText(hItem, LANG("Working"));
         TEXT_SetTextAlign(hItem, GUI_TA_LEFT | GUI_TA_VCENTER);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_5);
@@ -102,16 +97,16 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_6);
         TEXT_SetTextAlign(hItem, GUI_TA_LEFT | GUI_TA_VCENTER);
         TEXT_SetText(hItem, "192.168.1.30");
-        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetFont(hItem, Tahoma19B);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_7);
         TEXT_SetFont(hItem, GUI_FONT_20_ASCII);
         TEXT_SetTextAlign(hItem, GUI_TA_RIGHT | GUI_TA_VCENTER);
-        TEXT_SetText(hItem, "Thermostat MAC:");
+        TEXT_SetText(hItem, LANG("Thermostat MAC:"));
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x808080));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_8);
-        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetFont(hItem, Tahoma19B);
         TEXT_SetText(hItem, "00:50:56:8A:E3:C5");
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_9);
@@ -123,36 +118,49 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_10);
         TEXT_SetTextAlign(hItem, GUI_TA_LEFT | GUI_TA_VCENTER);
         TEXT_SetText(hItem, "3453");
-        TEXT_SetFont(hItem, &FontBig20B);
+        TEXT_SetFont(hItem, Tahoma19B);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_11);
-        TEXT_SetText(hItem, "Please visit");
+        TEXT_SetText(hItem, LANG("Please visit"));
         TEXT_SetTextAlign(hItem, GUI_TA_RIGHT | GUI_TA_VCENTER);
         TEXT_SetFont(hItem, GUI_FONT_16_1);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_12);
         TEXT_SetTextAlign(hItem, GUI_TA_LEFT | GUI_TA_VCENTER);
         TEXT_SetText(hItem, "http://www.restranger.com");
-        TEXT_SetFont(hItem, &GUI_FontRounded16);
+        TEXT_SetFont(hItem, &GUI_FontTahoma16hAA4B);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_13);
         TEXT_SetTextAlign(hItem, GUI_TA_LEFT | GUI_TA_VCENTER);
-        TEXT_SetText(hItem, "to setup your");
+        TEXT_SetText(hItem, LANG("to setup your"));
         TEXT_SetFont(hItem, GUI_FONT_16_1);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_14);
-        TEXT_SetText(hItem, "thermostat for remote access");
+        TEXT_SetText(hItem, LANG("thermostat for remote access"));
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetFont(hItem, GUI_FONT_16_1);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        WM_SetCallback(hItem, buttonOn16_cb);
+        WM_SetCallback(hItem, buttonOn_cb);
+        if (!firstTime) {
+            WM_ShowWindow(hItem);
+        } else {
+            WM_HideWindow(hItem);
+        }
+        //
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_BACK);
+        WM_SetCallback(hItem, buttonOn_cb);
+        if (firstTime) {
+            WM_ShowWindow(hItem);
+        } else {
+            WM_HideWindow(hItem);
+        }
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DISCONNECT);
-        WM_SetCallback(hItem, buttonOn16_cb);
+        WM_SetCallback(hItem, buttonOn_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DONE);
-        WM_SetCallback(hItem, buttonOn16_cb);
+        WM_SetCallback(hItem, buttonOn_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
@@ -160,12 +168,17 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         switch(Id)
         {
         case ID_BUTTON_CANCEL:
+        case ID_BUTTON_BACK:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
                 WM_DeleteWindow(wifiSetupWin);
-                screenState = 17;
+                if (firstTime) {
+                    CreateWifiConnect();
+                } else {
+                    screenState = SYSTEMSETUPWIN;
+                }
                 break;
             }
             break;
@@ -185,18 +198,19 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DONE);
-                WM_SetCallback(hItem, buttonPush16_cb);
+                WM_SetCallback(hItem, buttonPush_cb);
                 break;
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
                 WM_DeleteWindow(wifiSetupWin);
                 if (firstTime)
                 {
-                    screenState = 1;
+                    firstTime = 0;
+                    screenState = HOMEWIN;
                 }
                 else
                 {
-                    screenState = 17;
+                    screenState = SYSTEMSETUPWIN;
                 }
                 break;
             }
@@ -209,15 +223,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     }
 }
 
-/*********************************************************************
-*
-*       CreateWindow
-*/
 WM_HWIN CreateWifiSetup(void);
 WM_HWIN CreateWifiSetup(void)
 {
     wifiSetupWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return wifiSetupWin;
 }
-
-/*************************** End of file ****************************/

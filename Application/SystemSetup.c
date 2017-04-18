@@ -11,30 +11,67 @@
 #define ID_BUTTON_COOLING_STAGES (GUI_ID_USER + 0x14)
 #define ID_BUTTON_HEATING_STAGES (GUI_ID_USER + 0x15)
 #define ID_BUTTON_RETURN (GUI_ID_USER + 0x16)
+#define ID_BUTTON_NEXT (GUI_ID_USER + 0x17)
+#define ID_BUTTON_BACK (GUI_ID_USER + 0x18)
 
-/*********************************************************************
-*
-*       _aDialogCreate
-*/
+#define BUT_X 66
+#define BUT_HEIGHT 34
+#define BUT_WIDTH 350
+#define BUT_SPACING 40
+#define BUTTON_Y_OFFSET 65
+
+#define BUTTON_Y_POS(x)  BUTTON_Y_OFFSET + (x * BUT_SPACING)
+
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
-    { TEXT_CreateIndirect, "SYSTEM SETUP", ID_TEXT_HEADER, 140, 0, 300, 50, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "Thermostat Location", ID_BUTTON_THERMO_LOCATION, 10, 70, 220, 36, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "System Type", ID_BUTTON_SYSTEM_TYPE, 10, 115, 220, 36, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Thermostat Controls", ID_BUTTON_THERMO_CONTROLS, 10, 160, 220, 36, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Fan Control", ID_BUTTON_FAN_CONTROLS, 10, 205, 220, 36, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "WIFI Setup", ID_BUTTON_WIFI_SETUP, 242, 70, 220, 36, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Backup Heat", ID_BUTTON_BACKUP_HEAT, 242, 115, 220, 36, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Cooling Stages", ID_BUTTON_COOLING_STAGES, 242, 160, 220, 36, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Heating Stages", ID_BUTTON_HEATING_STAGES, 242, 205, 220, 36, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "", ID_BUTTON_RETURN, 15, 0, 100, 50, 0, 0x0, 0 },
+    { TEXT_CreateIndirect,   "SYSTEM SETUP", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
+    { BUTTON_CreateIndirect, "Thermostat Location", ID_BUTTON_THERMO_LOCATION, BUT_X, BUTTON_Y_POS(0), BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "System Type", ID_BUTTON_SYSTEM_TYPE, BUT_X,  BUTTON_Y_POS(1), BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Thermostat Controls", ID_BUTTON_THERMO_CONTROLS, BUT_X,  BUTTON_Y_POS(2), BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Fan Control", ID_BUTTON_FAN_CONTROLS, BUT_X,  BUTTON_Y_POS(3), BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "WIFI Setup", ID_BUTTON_WIFI_SETUP, BUT_X,  BUTTON_Y_POS(0), BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Backup Heat", ID_BUTTON_BACKUP_HEAT, BUT_X,  BUTTON_Y_POS(1), BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Cooling Stages", ID_BUTTON_COOLING_STAGES, BUT_X,  BUTTON_Y_POS(2), BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Heating Stages", ID_BUTTON_HEATING_STAGES, BUT_X,  BUTTON_Y_POS(3), BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "", ID_BUTTON_RETURN, 15, 0, 150, 50, 0, 0x0, 0 },
+
+    { BUTTON_CreateIndirect, "BACK", ID_BUTTON_BACK, 200, 230, 110, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "NEXT", ID_BUTTON_NEXT, 200, 230, 110, BUT_HEIGHT, 0, 0x0, 0 },
 };
 
-/*********************************************************************
-*
-*       _cbDialog
-*/
+static int page_number;
+static WM_HWIN win1,win2,win3, win4, win5, win6, win7, win8, next, back;
+
+static void showWindows()
+{
+    if (page_number == 1)
+    {
+        WM_HideWindow(win5);
+        WM_HideWindow(win6);
+        WM_HideWindow(win7);
+        WM_HideWindow(win8);
+        WM_ShowWindow(win1);
+        WM_ShowWindow(win2);
+        WM_ShowWindow(win3);
+        WM_ShowWindow(win4);
+        WM_HideWindow(back);
+        WM_ShowWindow(next);
+    }
+    else
+    {
+        WM_HideWindow(win1);
+        WM_HideWindow(win2);
+        WM_HideWindow(win3);
+        WM_HideWindow(win4);
+        WM_ShowWindow(win5);
+        WM_ShowWindow(win6);
+        WM_ShowWindow(win7);
+        WM_ShowWindow(win8);
+        WM_HideWindow(next);
+        WM_ShowWindow(back);
+    }
+}
 static void _cbDialog(WM_MESSAGE * pMsg)
 {
     const void * pData;
@@ -55,45 +92,70 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
         TEXT_SetFont(hItem, HEADER_FONT_BOLD);
-        TEXT_SetTextAlign(hItem, GUI_TA_LEFT | GUI_TA_VCENTER);
+        TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
+        TEXT_SetText(hItem, LANG("SYSTEM SETUP"));
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_THERMO_LOCATION);
-        WM_SetCallback(hItem, button22_cb);
+        win1 = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_THERMO_LOCATION);
+        WM_SetCallback(win1, button22_cb);
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SYSTEM_TYPE);
-        WM_SetCallback(hItem, button22_cb);
+        win2 = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SYSTEM_TYPE);
+        WM_SetCallback(win2, button22_cb);
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_THERMO_CONTROLS);
-        WM_SetCallback(hItem, button22_cb);
+        win3 = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_THERMO_CONTROLS);
+        WM_SetCallback(win3, button22_cb);
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_FAN_CONTROLS);
-        WM_SetCallback(hItem, button22_cb);
+        win4 = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_FAN_CONTROLS);
+        WM_SetCallback(win4, button22_cb);
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_WIFI_SETUP);
-        WM_SetCallback(hItem, button22_cb);
+        win5 = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_WIFI_SETUP);
+        WM_SetCallback(win5, button22_cb);
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_BACKUP_HEAT);
-        WM_SetCallback(hItem, button22_cb);
+        win6 = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_BACKUP_HEAT);
+        WM_SetCallback(win6, button22_cb);
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_COOLING_STAGES);
-        WM_SetCallback(hItem, button22_cb);
+        win7 = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_COOLING_STAGES);
+        WM_SetCallback(win7, button22_cb);
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HEATING_STAGES);
-        WM_SetCallback(hItem, button22_cb);
-        break;
+        win8 = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HEATING_STAGES);
+        WM_SetCallback(win8, button22_cb);
+
+        next = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_NEXT);
+        WM_SetCallback(next, buttonOn_cb);
+
+        back = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_BACK);
+        WM_SetCallback(back, buttonOn_cb);
+
+        showWindows();
+       break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
         NCode = pMsg->Data.v;
         switch(Id)
         {
+        case ID_BUTTON_NEXT:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_RELEASED:
+                page_number = 2;
+                showWindows();
+            }
+            break;
+        case ID_BUTTON_BACK:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_RELEASED:
+                page_number = 1;
+                showWindows();
+            }
+            break;
         case ID_BUTTON_RETURN:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
                 WM_HideWindow(systemSetupWin);
-                screenState = 4;
+                screenState = SETTINGSWIN;
             }
             break;
         case ID_BUTTON_THERMO_LOCATION:
@@ -196,18 +258,14 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     }
 }
 
-/*********************************************************************
-*
-*       CreateWindow
-*/
 WM_HWIN CreateSystemSetup(void);
 WM_HWIN CreateSystemSetup(void)
 {
     WM_HWIN hWin;
 
+    page_number = 1;
+
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     WM_HideWindow(hWin);
     return hWin;
 }
-
-/*************************** End of file ****************************/

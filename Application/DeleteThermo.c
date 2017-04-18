@@ -5,10 +5,6 @@
 #define ID_BUTTON_YES (GUI_ID_USER + 0x0E)
 #define ID_BUTTON_NO (GUI_ID_USER + 0x0F)
 
-/*********************************************************************
-*
-*       _aDialogCreate
-*/
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
@@ -20,10 +16,6 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 static int room_number;
 static WM_HWIN deleteThermoWin;
 
-/*********************************************************************
-*
-*       _cbDialog
-*/
 static void _cbDialog(WM_MESSAGE * pMsg)
 {
     WM_HWIN hItem;
@@ -84,10 +76,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     }
 }
 
-/*********************************************************************
-*
-*       CreateWindow
-*/
 WM_HWIN CreateDeleteThermo(int room);
 WM_HWIN CreateDeleteThermo(int room)
 {
@@ -98,5 +86,3 @@ WM_HWIN CreateDeleteThermo(int room)
     deleteThermoWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
-
-/*************************** End of file ****************************/

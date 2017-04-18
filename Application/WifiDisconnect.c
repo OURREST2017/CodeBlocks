@@ -5,10 +5,6 @@
 #define ID_BUTTON_YES (GUI_ID_USER + 0x0E)
 #define ID_BUTTON_NO (GUI_ID_USER + 0x0F)
 
-/*********************************************************************
-*
-*       _aDialogCreate
-*/
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
@@ -16,11 +12,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "Yes", ID_BUTTON_YES, 100, 125, 125,50, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "No", ID_BUTTON_NO, 270, 125, 125, 50, 0, 0x0, 0 },
 };
-static int room_number;
-/*********************************************************************
-*
-*       _cbDialog
-*/
+
 static void _cbDialog(WM_MESSAGE * pMsg)
 {
     WM_HWIN hItem;
@@ -39,7 +31,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetFont(hItem, HEADER_FONT_BOLD);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetTextColor(hItem, GUI_MAKE_COLOR(0x00FFFFFF));
-        sprintf(buf, "DISCONNECT: %s", myWifiNetwork);
+        sprintf(buf, "%s %s", LANG("DISCONNECT:"), myWifiNetwork);
         TEXT_SetText(hItem, buf);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_YES);
@@ -78,10 +70,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     }
 }
 
-/*********************************************************************
-*
-*       CreateWindow
-*/
 WM_HWIN CreateWifiDisconnect();
 WM_HWIN CreateWifiDisconnect()
 {
@@ -90,5 +78,3 @@ WM_HWIN CreateWifiDisconnect()
     hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
-
-/*************************** End of file ****************************/

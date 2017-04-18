@@ -10,25 +10,45 @@
 #define ID_BUTTON_DONE  (GUI_ID_USER + 0x07)
 #define ID_TEXT_HEADER  (GUI_ID_USER + 0x09)
 
-/*********************************************************************
-*
-*       _aDialogCreate
-*/
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Mode", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "SELECT MODE", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "OFF", ID_BUTTON_OFF, 18, 130, 80, BUTHEIGHT, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "HEAT", ID_BUTTON_HEAT, 108, 130, 80, BUTHEIGHT, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "COOL", ID_BUTTON_COOL, 198, 130, 80, BUTHEIGHT, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "AUTO", ID_BUTTON_AUTO, 289, 130, 80, BUTHEIGHT, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "E-HEAT", ID_BUTTON_EHEAT, 380, 130, 80, BUTHEIGHT, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 375, 230, 80, BUTHEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "OFF", ID_BUTTON_OFF, 18, 130, 90, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "HEAT", ID_BUTTON_HEAT, 108, 130, 90, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "COOL", ID_BUTTON_COOL, 198, 130, 90, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "AUTO", ID_BUTTON_AUTO, 289, 130, 90, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "E-HEAT", ID_BUTTON_EHEAT, 380, 130, 90, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 350, 230, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
 };
 
 static int cool, heat, off, autob=1, eheat;
-extern void holdModeOptions();
+
+static void drawModeButton(char * but, int w, int h, int col, int bor)
+{
+    GUI_RECT rect;
+    rect.x0 = 0;
+    rect.y0 = 0;
+    rect.x1 = w-1;
+    rect.y1 = h-1;
+
+    if (col)
+    {
+        GUI_DrawGradientRoundedV(0,0, rect.x1, rect.y1, 4, color_map[color_scheme].stop, color_map[color_scheme].start);
+    }
+    else
+    {
+        GUI_DrawGradientRoundedV(0, 0, rect.x1, rect.y1, 4, color_map[2].stop, color_map[2].start);
+    }
+    GUI_SetFont(Tahoma18B);
+    if (col == 0) GUI_SetColor(0x666666);
+//    if (col == 1) GUI_SetColor(buttonTextColor);
+    if (col == 2) GUI_SetColor(GUI_BLACK);
+    GUI_SetTextMode(GUI_TM_TRANS);
+    GUI_DispStringInRect(but, &rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
+}
+
 static void modeButton(WM_MESSAGE * pMsg, char *nm, int sel)
 {
     switch (pMsg->MsgId)
@@ -36,11 +56,11 @@ static void modeButton(WM_MESSAGE * pMsg, char *nm, int sel)
     case WM_PAINT:
         if (BUTTON_IsPressed(pMsg->hWin))
         {
-            drawButton16(nm, 80, 30, sel, 1);
+            drawModeButton(nm, 80, 30, sel, 1);
         }
         else
         {
-            drawButton16(nm, 80, 30, sel, 0);
+            drawModeButton(nm, 80, 30, sel, 0);
         }
         break;
     default:
@@ -50,27 +70,27 @@ static void modeButton(WM_MESSAGE * pMsg, char *nm, int sel)
 }
 static void eheat_cb(WM_MESSAGE * pMsg)
 {
-    modeButton(pMsg, "E-HEAT", eheat);
+    modeButton(pMsg, LANG("E-HEAT"), eheat);
 }
 
 static void auto_cb(WM_MESSAGE * pMsg)
 {
-    modeButton(pMsg, "AUTO", autob);
+    modeButton(pMsg, LANG("AUTO"), autob);
 }
 
 static void cool_cb(WM_MESSAGE * pMsg)
 {
-    modeButton(pMsg, "COOL", cool);
+    modeButton(pMsg, LANG("COOL"), cool);
 }
 
 static void heat_cb(WM_MESSAGE * pMsg)
 {
-    modeButton(pMsg, "HEAT", heat);
+    modeButton(pMsg, LANG("HEAT"), heat);
 }
 
 static void off_cb(WM_MESSAGE * pMsg)
 {
-    modeButton(pMsg, "OFF", off);
+    modeButton(pMsg, LANG("OFF"), off);
 }
 
 static void invalidateButtons(WM_HWIN hWin)
@@ -79,22 +99,27 @@ static void invalidateButtons(WM_HWIN hWin)
 
     hItem = WM_GetDialogItem(hWin, ID_BUTTON_OFF);
     WM_InvalidateWindow(hItem);
+    BUTTON_SetText(hItem, "OFF");
     WM_SetCallback(hItem, off_cb);
 
     hItem = WM_GetDialogItem(hWin, ID_BUTTON_HEAT);
     WM_InvalidateWindow(hItem);
+    BUTTON_SetText(hItem, LANG("HEAT"));
     WM_SetCallback(hItem, heat_cb);
 
     hItem = WM_GetDialogItem(hWin, ID_BUTTON_COOL);
     WM_InvalidateWindow(hItem);
+    BUTTON_SetText(hItem, LANG("COOL"));
     WM_SetCallback(hItem, cool_cb);
 
     hItem = WM_GetDialogItem(hWin, ID_BUTTON_AUTO);
     WM_InvalidateWindow(hItem);
+    BUTTON_SetText(hItem, LANG("AUTO"));
     WM_SetCallback(hItem, auto_cb);
 
     hItem = WM_GetDialogItem(hWin, ID_BUTTON_EHEAT);
     WM_InvalidateWindow(hItem);
+    BUTTON_SetText(hItem, LANG("E-HEAT"));
     WM_SetCallback(hItem, eheat_cb);
 }
 
@@ -115,6 +140,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetTextColor(hItem, 0x00FFFFFF);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
         TEXT_SetFont(hItem, HEADER_FONT_BOLD);
+        TEXT_SetText(hItem, "SELECT MODE");
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_OFF);
         WM_SetCallback(hItem, off_cb);
@@ -132,10 +158,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         WM_SetCallback(hItem, eheat_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_CANCEL);
-        WM_SetCallback(hItem, buttonOn16_cb);
+        WM_SetCallback(hItem, buttonOn_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DONE);
-        WM_SetCallback(hItem, buttonOn16_cb);
+        WM_SetCallback(hItem, buttonOn_cb);
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
@@ -147,7 +173,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_OFF);
-                WM_SetCallback(hItem, buttonPush16_cb);
+                WM_SetCallback(hItem, buttonPush_cb);
                 break;
             case WM_NOTIFICATION_RELEASED:
                 off = 1;
@@ -164,7 +190,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HEAT);
-                WM_SetCallback(hItem, buttonPush16_cb);
+                WM_SetCallback(hItem, buttonPush_cb);
                 break;
             case WM_NOTIFICATION_RELEASED:
                 off = 0;
@@ -172,7 +198,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 cool = 0;
                 heat = 1;
                 eheat = 0;
-                tempSetPoint = heatToDegrees;
+                temperatureSetPoint = heatToDegrees;
                 invalidateButtons( pMsg->hWin);
                 break;
             }
@@ -182,7 +208,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_COOL);
-                WM_SetCallback(hItem, buttonPush16_cb);
+                WM_SetCallback(hItem, buttonPush_cb);
                 break;
             case WM_NOTIFICATION_RELEASED:
                 off = 0;
@@ -190,7 +216,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 cool = 1;
                 heat = 0;
                 eheat = 0;
-                tempSetPoint = coolToDegrees;
+                temperatureSetPoint = coolToDegrees;
                 invalidateButtons( pMsg->hWin);
                 break;
             }
@@ -200,7 +226,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_AUTO);
-                WM_SetCallback(hItem, buttonPush16_cb);
+                WM_SetCallback(hItem, buttonPush_cb);
                 break;
             case WM_NOTIFICATION_RELEASED:
                 off = 0;
@@ -222,7 +248,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_CLICKED:
                 hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_EHEAT);
-                WM_SetCallback(hItem, buttonPush16_cb);
+                WM_SetCallback(hItem, buttonPush_cb);
                 break;
             case WM_NOTIFICATION_RELEASED:
                 off = 0;
@@ -239,7 +265,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 WM_HideWindow(modeWin);
-                screenState = 1;
+                screenState = HOMEWIN;
                 break;
             }
             break;
@@ -252,11 +278,14 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 if (cool) strcpy(hvacMode, "cool");
                 if (heat) strcpy(hvacMode, "heat");
                 if (eheat) strcpy(hvacMode, "eheat");
+                heat_control = 0;
+                cool_control = 0;
+                fan_control = 0;
                 WM_HideWindow(modeWin);
                 WM_MESSAGE msg;
                 msg.MsgId = WM_INIT_DIALOG;
                 WM_SendMessage(homeWin, &msg);
-                screenState = 1;
+                screenState = HOMEWIN;
                 break;
             }
             break;
@@ -267,10 +296,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         break;
     }
 }
-/*********************************************************************
-*
-*       CreateMode
-*/
+
 WM_HWIN CreateMode(void);
 WM_HWIN CreateMode(void)
 {
@@ -290,5 +316,3 @@ WM_HWIN CreateMode(void)
     modeWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
     return hWin;
 }
-
-/*************************** End of file ****************************/

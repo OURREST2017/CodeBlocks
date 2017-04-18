@@ -1,0 +1,17 @@
+{
+"compressorTotalRuntime": 0,
+"compressorLongestRuntime": 0,
+"compressorShortestRuntime": 999999,
+"compressorRunCount": 0,
+"blowerTotalRuntime": 0,
+"blowerLongestRuntime": 0,
+"blowerShortestRuntime": 999999,
+"blowerRunCount": 0,
+"tempHighOutside": 0,
+"tempLowOutside": 999999,
+"tempLowSetPoint": 999999,
+"humidityHighOutside": 0,
+"humidityLowOutside": 999999,
+"humidityHighInside": 0,
+"humidityLowInside": 999999
+}
