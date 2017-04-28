@@ -23,9 +23,9 @@ WM_HWIN textDebug;
 
 GUI_TIMER_HANDLE lockTimer_h;
 WM_HWIN homeWin, idleWin, screenLockoutWin, dateTimeWin, settingsWin, languagesWin;
-WM_HWIN settingsScheduleWin, editScheduleWin, eachDayWin, preferencesWin, systemSetupWin;
+WM_HWIN settingsScheduleWin, editScheduleWin, preferencesWin, systemSetupWin;
 WM_HWIN mobilePairWin, profileWin, modeWin, fanModeWin, coolToWin, heatToWin, temperatureLimitsWin;
-WM_HWIN alphaKeyboardWin, numericKeyboardWin, settingsHelpWin, wifiPasswordWin;
+WM_HWIN settingsHelpWin;
 WM_HWIN hvacModeText, fanModeText, heatToText, coolToText, triacWin, keyboardWin;
 
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontLucidaSans15hAA4;
@@ -48,7 +48,7 @@ extern GUI_CONST_STORAGE GUI_FONT GUI_FontTahoma129hAA4B;
 #define Tahoma18B &GUI_FontTahoma18hAA4B
 #define Tahoma19B &GUI_FontTahoma19hAA4B
 #define Tahoma23B &GUI_FontTahoma23hAA4B
-#define Tahoma29B &GUI_FontTahoma29hAA4
+#define Tahoma29 &GUI_FontTahoma29hAA4
 #define Tahoma29B &GUI_FontTahoma29hAA4B
 #define Tahoma33 &GUI_FontTahoma33hAA4
 #define Tahoma33B &GUI_FontTahoma33hAA4B
@@ -69,27 +69,15 @@ extern void drawButtonOn22(char *, int,int,int);
 extern void drawButtonOff22(char *, int,int,int);
 extern void drawCoolButton(char *, int,int,int,int);
 
-extern GUI_CONST_STORAGE GUI_BITMAP bmup_b;
-extern GUI_CONST_STORAGE GUI_BITMAP bmup_nb;
-extern GUI_CONST_STORAGE GUI_BITMAP bmdn_b;
-extern GUI_CONST_STORAGE GUI_BITMAP bmdn_nb;
-extern GUI_CONST_STORAGE GUI_BITMAP bmdn_r;
-extern GUI_CONST_STORAGE GUI_BITMAP bmup_r;
-
 extern void return_cb(WM_MESSAGE *);
-extern void buttonOn16_cb(WM_MESSAGE *);
-extern void buttonOff16_cb(WM_MESSAGE *);
 extern void buttonOn_cb(WM_MESSAGE *);
 extern void buttonOff_cb(WM_MESSAGE *);
 extern void buttonOn22_cb(WM_MESSAGE *);
 extern void buttonOff22_cb(WM_MESSAGE *);
 extern void edit_text_cb(WM_MESSAGE *);
-extern void buttonOn20_cb(WM_MESSAGE *);
-extern void buttonPush16_cb(WM_MESSAGE *);
 extern void buttonPush_cb(WM_MESSAGE *);
 extern void buttonPush22_cb(WM_MESSAGE *);
 extern void button22_cb(WM_MESSAGE *);
-extern void button20_cb(WM_MESSAGE *);
 extern int returnSkin(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo);
 
 extern int color_scheme;
@@ -118,12 +106,8 @@ extern  WM_HWIN CreateBackupHeat(void);
 extern  WM_HWIN CreateCoolingStages(void);
 extern  WM_HWIN CreateHeatingStages(void);
 extern  WM_HWIN CreateTemperatureScale(void);
-extern  WM_HWIN CreateClockFormat(void);
 extern  WM_HWIN CreateSystemsChangeOver(void);
 extern  WM_HWIN CreateKeyboardLockout(void);
-extern  WM_HWIN CreateNumericKeyboard(int, char *,char *, char *);
-extern  WM_HWIN CreateAlphaKeyboard(int, char *, char *,char *);
-extern  WM_HWIN CreateEditRoom(int);
 extern  WM_HWIN CreateWifiDisconnect(void);
 extern  WM_HWIN CreatePassFail(char *);
 extern  WM_HWIN CreateTriacPanel(void);
@@ -136,7 +120,6 @@ extern  WM_HWIN CreateMobilePair(void);
 extern  WM_HWIN CreateEditScheduleHelp(char *,char *);
 extern  WM_HWIN CreateSplashWin(void);
 extern void loadConfig();
-char * updateTime(char *tm, int dr, int *);
 
 typedef struct
 {
@@ -194,7 +177,7 @@ struct colors color_map[3];
 enum Screen_Selector {
     NOWIN, SPLASHWIN, HOMEWIN, IDLEWIN, MODEWIN, COOLTOWIN, HEATTOWIN, SETTINGSWIN,
     DATETIMEWIN, MOBILEPAREWIN, LOCKWIN, SETTINGSCHEDULEWIN, LANGUAGESWIN, PROFILEWIN,
-    PREFERENCESWIN, SYSTEMSETUPWIN, EDITSCHEDULEWIN, EACHDAYWIN
+    PREFERENCESWIN, SYSTEMSETUPWIN, EDITSCHEDULEWIN
 };
 
 int screenLockDig[4];
@@ -206,9 +189,6 @@ int cool_control;
 int idleTimeOut;
 
 int tempTimerSet;
-int upperDegreeLimit;
-int lowerDegreeLimit;
-
 int screenState;
 int temperature;
 struct schedules_s schedules[5];
@@ -231,7 +211,6 @@ int statControl;
 int holdMode;
 char hvacMode[10];
 char language[12];
-int temperatureScale;
 char lockCode[5];
 char firstNameText[30];
 char ownersName[30];
@@ -239,7 +218,6 @@ int dst;
 char keyboardLock[20];
 char currentSchedule[10];
 char *currFwVersion;
-int enableSchedule;
 int filterChangeDate;
 int filterLifeInDays;
 int firstTime;
@@ -257,7 +235,6 @@ float heatToDegrees;
 float coolToDegrees;
 char schedulingOption[30];
 char systemsChangeOver[20];
-int schedulePeriods;
 int thermostatControls;
 char zipCode[12];
 int metric;
@@ -285,9 +262,6 @@ int current_ampm;
 
 char  propertyId[50];
 char  propertyName[50];
-
-// 12am - 6am, 6am - 12pm, 12pm-6pm, etc.
-// 1, 4, 6, or 8 periods per day, lets start with 4.
 
 char  periodStartTime[50];
 char  periodEndTime[50];

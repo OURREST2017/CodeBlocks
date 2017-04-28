@@ -42,6 +42,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         engButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_ENGLISH);
         //
         spaButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SPANISH);
+
         if (eng_mode)
         {
             WM_SetCallback(engButton, buttonOn22_cb);

@@ -1,24 +1,21 @@
 {
 "changeOver": "automatic",
 "configVersion": "1.0.0",
-"coolToDegrees": 74.5,
 "currFwVersion": "1.0.0",
 "dst": true,
-"enableSchedule": false,
 "epochTime": 0,
 "fanControl": "thermostat",
 "firstNameText": "Frank",
 "fanMode": "auto",
 "filterChangeDate": 0,
 "filterLifeInDays": 0,
-"firstTime": true,
+"firstTime": false,
 "firmwareUrl": "0",
-"heatToDegrees": 70.5,
 "hvacConfig": {
-  "backupHeatingType": "no",
-  "hvacType": "air",
-  "coolingStages": 2,
-  "heatingStages": 1
+    "backupHeatingType": "no",
+    "hvacType": "heat",
+    "coolingStages": 2,
+    "heatingStages": 1
 },
 "hvacMode": "cool",
 "keyboardLock": "unlocked",
@@ -57,13 +54,13 @@
             "cool": 74,
             "heat": 71,
             "startTime": 1700,
-            "stopTime": 2000
+            "stopTime": 2200
           },
           {
             "label": "sleep",
             "cool": 78,
             "heat": 71,
-            "startTime": 2000,
+            "startTime": 2200,
             "stopTime": 600
           }
         ]
@@ -96,13 +93,13 @@
             "cool": 74,
             "heat": 68,
             "startTime": 1700,
-            "stopTime": 2000
+            "stopTime": 2200
           },
           {
             "label": "sleep",
             "cool": 78,
             "heat": 68,
-            "startTime": 2000,
+            "startTime": 2200,
             "stopTime": 600
           }
         ]
@@ -135,13 +132,13 @@
             "cool": 72,
             "heat": 68,
             "startTime": 1700,
-            "stopTime": 2000
+            "stopTime": 2200
           },
           {
             "label": "sleep",
             "cool": 73,
             "heat": 68,
-            "startTime": 2000,
+            "startTime": 2200,
             "stopTime": 600
           }
         ]
@@ -160,27 +157,27 @@
             "cool": 72,
             "heat": 68,
             "startTime": 600,
-            "stopTime": 800
+            "stopTime": 830
           },
           {
             "label": "leave",
-            "cool": 78,
+            "cool": 72,
             "heat": 68,
-            "startTime": 800,
+            "startTime": 830,
             "stopTime": 1700
           },
           {
             "label": "return",
             "cool": 74,
-            "heat": 68,
+            "heat": 70,
             "startTime": 1700,
-            "stopTime": 2000
+            "stopTime": 2200
           },
           {
             "label": "sleep",
             "cool": 72,
             "heat": 68,
-            "startTime": 2000,
+            "startTime": 2200,
             "stopTime": 600
           }
         ]
@@ -213,13 +210,13 @@
             "cool": 74,
             "heat": 68,
             "startTime": 1700,
-            "stopTime": 2000
+            "stopTime": 2200
           },
           {
             "label": "sleep",
             "cool": 78,
             "heat": 68,
-            "startTime": 2000,
+            "startTime": 2200,
             "stopTime": 600
           }
         ]
@@ -246,13 +243,13 @@
             "cool": 75,
             "heat": 70,
             "startTime": 1700,
-            "stopTime": 2000
+            "stopTime": 2200
           },
           {
             "label": "sleep",
             "cool": 76,
             "heat": 72,
-            "startTime": 2000,
+            "startTime": 2200,
             "stopTime": 600
           }
         ]
@@ -279,13 +276,13 @@
             "cool": 74,
             "heat": 68,
             "startTime": 1700,
-            "stopTime": 2000
+            "stopTime": 2200
           },
           {
             "label": "sleep",
             "cool": 78,
             "heat": 68,
-            "startTime": 2000,
+            "startTime": 2200,
             "stopTime": 600
           }
         ]
@@ -312,13 +309,13 @@
             "cool": 74,
             "heat": 68,
             "startTime": 1700,
-            "stopTime": 2000
+            "stopTime": 2200
           },
           {
             "label": "sleep",
             "cool": 78,
             "heat": 68,
-            "startTime": 2000,
+            "startTime": 2200,
             "stopTime": 600
           }
         ]
@@ -345,13 +342,13 @@
             "cool": 74,
             "heat": 68,
             "startTime": 1700,
-            "stopTime": 2000
+            "stopTime": 2200
           },
           {
             "label": "sleep",
             "cool": 78,
             "heat": 68,
-            "startTime": 2000,
+            "startTime": 2200,
             "stopTime": 600
           }
         ]
@@ -378,13 +375,13 @@
             "cool": 74,
             "heat": 68,
             "startTime": 1700,
-            "stopTime": 2000
+            "stopTime": 2200
           },
           {
             "label": "sleep",
             "cool": 78,
             "heat": 68,
-            "startTime": 2000,
+            "startTime": 2200,
             "stopTime": 600
           }
         ]
@@ -411,13 +408,13 @@
             "cool": 74,
             "heat": 68,
             "startTime": 1700,
-            "stopTime": 2000
+            "stopTime": 2200
           },
           {
             "label": "sleep",
             "cool": 78,
             "heat": 68,
-            "startTime": 2000,
+            "startTime": 2200,
             "stopTime": 600
           }
         ]
@@ -428,16 +425,10 @@
   }
 ],
 "currentSchedule": "all days",
-"schedulePeriods": 2,
 "securityMode": "high",
 "serial": "1234567890",
 "tempHold": false,
 "thermo1": "Room 1",
-"thermo2": "Room 2",
-"thermo3": "Room 3",
-"thermo4": "Room 4",
-"thermo5": "Room 5",
-"thermo6": "Room 6",
 "temperatureSetPoint": 72,
 "thermostatControls": 3,
 "timeZoneOffset": -5,

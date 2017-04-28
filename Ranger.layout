@@ -2,19 +2,9 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Release" />
-	<File name="Application\EditSchedule1.c" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="GUI\Include\WIDGET.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="11681" topLine="354" />
-		</Cursor>
-	</File>
-	<File name="GUI\Include\RADIO.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="6698" topLine="95" />
-		</Cursor>
-	</File>
-	<File name="Application\hvacControlCode.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="0" topLine="188" />
+			<Cursor1 position="6076" topLine="125" />
 		</Cursor>
 	</File>
 	<File name="Config\GUIConf.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -22,29 +12,9 @@
 			<Cursor1 position="2170" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="GUI\Include\WIDGET.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="GUI\Include\LISTBOX.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="6076" topLine="125" />
-		</Cursor>
-	</File>
-	<File name="Application\KeyboardLockout.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1457" topLine="12" />
-		</Cursor>
-	</File>
-	<File name="GUI\Include\GUI.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="87336" topLine="2007" />
-		</Cursor>
-	</File>
-	<File name="Application\Mode.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="9105" topLine="252" />
-		</Cursor>
-	</File>
-	<File name="Application\EditSchedule.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="9352" topLine="261" />
+			<Cursor1 position="1997" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="Config\WinMain.c" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -52,78 +22,19 @@
 			<Cursor1 position="0" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="Application\HeatTo.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="GUI\Include\RADIO.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="0" topLine="174" />
+			<Cursor1 position="6698" topLine="95" />
 		</Cursor>
 	</File>
-	<File name="Application\HomeWin.c" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Application\ranger.h" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="13290" topLine="414" />
+			<Cursor1 position="2718" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="Application\EachDay.c" open="1" top="1" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="GUI\Include\GUI.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="8228" topLine="101" />
-		</Cursor>
-		<Folding>
-			<Collapse line="76" />
-			<Collapse line="82" />
-			<Collapse line="95" />
-			<Collapse line="110" />
-			<Collapse line="125" />
-			<Collapse line="145" />
-			<Collapse line="171" />
-		</Folding>
-	</File>
-	<File name="Application\HvacType.c" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1360" topLine="18" />
-		</Cursor>
-	</File>
-	<File name="Application\ButtonUtils.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="7595" topLine="306" />
-		</Cursor>
-	</File>
-	<File name="Application\SettingsSchedule.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2602" topLine="56" />
-		</Cursor>
-	</File>
-	<File name="Application\Tahoma81hAA4B.c" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1167" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="GUI\Include\LISTBOX.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1997" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="Application\ranger.h" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="132" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="Application\WifiConnect.c" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3705" topLine="66" />
-		</Cursor>
-	</File>
-	<File name="Application\Preferences.c" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3625" topLine="5" />
-		</Cursor>
-	</File>
-	<File name="Application\Tahoma58hAA4.c" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1166" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="Application\Ranger.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1860" topLine="36" />
+			<Cursor1 position="87336" topLine="2007" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

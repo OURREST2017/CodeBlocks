@@ -29,6 +29,8 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 350, 230,BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
 };
 
+static WM_HWIN customerButton;
+
 static void drawProfileButton(char * but, int w, int h, int col)
 {
     GUI_RECT rect;
@@ -64,8 +66,6 @@ static void profile_cb(WM_MESSAGE * pMsg)
         break;
     }
 }
-static WM_HWIN customerButton;
-
 static void _cbDialog(WM_MESSAGE * pMsg)
 {
     WM_HWIN hItem;

@@ -76,16 +76,13 @@
 		<Unit filename="Application/ButtonUtils.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="Application/CoolTo.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="Application/CoolingStages.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/DateTime.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/DeleteThermo.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/EditRoom.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/EditSchedule.c">
@@ -94,10 +91,10 @@
 		<Unit filename="Application/EditScheduleHelp.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Application/FanControl.c">
+		<Unit filename="Application/FanMode.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Application/FanMode.c">
+		<Unit filename="Application/HeatTo.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/HeatingStages.c">
@@ -130,16 +127,10 @@
 		<Unit filename="Application/LoadConfig.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Application/Lucida_Sans15hAA4.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="Application/MobilePair.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/Mode.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/PassFail.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/Preferences.c">
@@ -175,51 +166,6 @@
 		<Unit filename="Application/SystemsChangeOver.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Application/Tahoma129hAA4B.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/Tahoma16hAA4B.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/Tahoma18hAA4B.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/Tahoma19hAA4B.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/Tahoma23hAA4B.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/Tahoma29hAA4.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/Tahoma29hAA4B.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/Tahoma33hAA4.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/Tahoma33hAA4B.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/Tahoma35hAA4.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/Tahoma35hAA4B.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/Tahoma42hAA4B.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/Tahoma58hAA4.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/Tahoma81hAA4B.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/Tahoma88hAA4B.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="Application/TempuratureLimits.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -239,9 +185,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/WifiDisconnect.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Application/WifiPassword.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Application/WifiSetup.c">
@@ -267,6 +210,54 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Config/WinMain.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Fonts/Lucida_Sans15hAA4.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Fonts/Tahoma129hAA4B.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Fonts/Tahoma16hAA4B.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Fonts/Tahoma18hAA4B.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Fonts/Tahoma19hAA4B.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Fonts/Tahoma23hAA4B.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Fonts/Tahoma29hAA4.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Fonts/Tahoma29hAA4B.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Fonts/Tahoma33hAA4.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Fonts/Tahoma33hAA4B.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Fonts/Tahoma35hAA4.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Fonts/Tahoma35hAA4B.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Fonts/Tahoma42hAA4B.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Fonts/Tahoma58hAA4.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Fonts/Tahoma81hAA4B.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Fonts/Tahoma88hAA4B.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="GUI/Include/BUTTON.h" />

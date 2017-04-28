@@ -23,7 +23,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "NEXT", ID_BUTTON_NEXT, 350, 230, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
 };
 
-static int forcedAir_mode, heatPump_mode, hotWater_mode;
+static int mode;
 
 static WM_HWIN forcedAirButton, heatPumpButton, hotWaterButton, hvacTypeWin;
 static WM_HWIN back, next;
@@ -53,13 +53,13 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         //
         hotWaterButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HOT_WATER);
         //
-        if (forcedAir_mode)
+        if (mode == 0)
         {
             WM_SetCallback(forcedAirButton, buttonOn22_cb);
             WM_SetCallback(heatPumpButton, buttonOff22_cb);
             WM_SetCallback(hotWaterButton, buttonOff22_cb);
         }
-        else if (heatPump_mode)
+        else if (mode == 1)
         {
             WM_SetCallback(forcedAirButton, buttonOff22_cb);
             WM_SetCallback(heatPumpButton, buttonOn22_cb);
@@ -137,11 +137,11 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
                 WM_DeleteWindow(hvacTypeWin);
-                if (forcedAir_mode)
+                if (mode == 0)
                 {
                     strcpy(hvacType,"air");
                 }
-                else if (heatPump_mode)
+                else if (mode == 1)
                 {
                     strcpy(hvacType,"heat");
                 }
@@ -149,6 +149,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 {
                     strcpy(hvacType,"water");
                 }
+
                 if (firstTime)
                 {
                     CreateWifiConnect();
@@ -159,28 +160,11 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 }
             }
             break;
-        case ID_BUTTON_HOT_WATER:
-            switch(NCode)
-            {
-            case WM_NOTIFICATION_RELEASED:
-                forcedAir_mode = 0;
-                heatPump_mode = 0;
-                hotWater_mode = 1;
-
-                WM_SetCallback(forcedAirButton, buttonOff22_cb);
-                WM_SetCallback(heatPumpButton, buttonOff22_cb);
-                WM_SetCallback(hotWaterButton, buttonOn22_cb);
-                break;
-            }
-            break;
         case ID_BUTTON_FORCED_AIR:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                forcedAir_mode = 1;
-                heatPump_mode = 0;
-                hotWater_mode = 0;
-
+                mode = 0;
                 WM_SetCallback(forcedAirButton, buttonOn22_cb);
                 WM_SetCallback(heatPumpButton, buttonOff22_cb);
                 WM_SetCallback(hotWaterButton, buttonOff22_cb);
@@ -191,13 +175,21 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                forcedAir_mode = 0;
-                heatPump_mode = 1;
-                hotWater_mode = 0;
-
+                mode = 1;
                 WM_SetCallback(forcedAirButton, buttonOff22_cb);
                 WM_SetCallback(heatPumpButton, buttonOn22_cb);
                 WM_SetCallback(hotWaterButton, buttonOff22_cb);
+                break;
+            }
+            break;
+        case ID_BUTTON_HOT_WATER:
+            switch(NCode)
+            {
+            case WM_NOTIFICATION_RELEASED:
+                mode = 2;
+                WM_SetCallback(forcedAirButton, buttonOff22_cb);
+                WM_SetCallback(heatPumpButton, buttonOff22_cb);
+                WM_SetCallback(hotWaterButton, buttonOn22_cb);
                 break;
             }
             break;
@@ -214,23 +206,17 @@ WM_HWIN CreateHvacType(void)
 {
     WM_HWIN hWin;
 
-    if (strcmp(hvacType, "heat") == 0)
+    if (strcmp(hvacType, "air") == 0)
     {
-        forcedAir_mode = 0;
-        hotWater_mode = 0;
-        heatPump_mode = 1;
+        mode = 0;
     }
-    else if (strcmp(hvacType, "air") == 0)
+    else if (strcmp(hvacType, "heat") == 0)
     {
-        forcedAir_mode = 1;
-        hotWater_mode = 0;
-        heatPump_mode = 0;
+        mode = 1;
     }
     else
     {
-        forcedAir_mode = 0;
-        hotWater_mode = 1;
-        heatPump_mode = 0;
+        mode = 2;
     }
 
     hvacTypeWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);

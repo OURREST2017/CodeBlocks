@@ -10,11 +10,9 @@ static int heating_state;
 static int compressor_off_time, heating_off_time;
 
 static char buf[60];
-static float inside_temp;
-static float schedule_temp;
 static GUI_TIMER_HANDLE fan_timer;
 extern WM_HWIN textDebug;
-extern int scheduleTemperature(int tod, char *day, char *mode);
+extern int scheduleTemperature(int tod, char *day, char *mode), hide_debug;
 extern WM_HWIN hvacHeat, hvacCool, hvacFan;
 
 int comp_run_start = 0, blower_run_start = 0;
@@ -45,7 +43,7 @@ void fanOff()
 void fanOn()
 {
     fan_control = 1;
-    WM_ShowWindow(hvacFan);
+    if (!hide_debug) WM_ShowWindow(hvacFan);
 #ifndef CODEBLOCK
     BSP_HVAC_request_fan_G(HVAC_FUNCTION_SET);
 #endif
@@ -65,7 +63,7 @@ void compressorOn()
 #endif
             fanOn();
             cool_control = 1;
-            WM_ShowWindow(hvacCool);
+            if (!hide_debug) WM_ShowWindow(hvacCool);
             comp_run_start = gui_time;
         }
         compressor_state = 1;
@@ -109,7 +107,7 @@ void heatingOn()
             fanOn();
             heat_control = 1;
         }
-        WM_ShowWindow(hvacHeat);
+        if (!hide_debug) WM_ShowWindow(hvacHeat);
         heating_state = 1;
         heating_off_time = 0;
         comp_run_start = gui_time;
@@ -138,7 +136,7 @@ void heatingOff()
     heating_state = 0;
 }
 
-static int getTime()
+static int getScheduleTime()
 {
 #ifdef CODEBLOCK
     time_t now = time(NULL);
@@ -157,7 +155,7 @@ static int getTime()
 
 updateStats()
 {
-    if (getTime() >= 2358 && getTime() <= 2)
+    if (getScheduleTime() >= 2358 && getScheduleTime() <= 2)
     {
         saveStats();
 
@@ -203,30 +201,40 @@ updateStats()
     humidityLowInside = GUI_MIN(humidityLowInside, insideHumidity);
 }
 
-extern float sensor_temperature, sensor_humidity, inside_temperature;
+extern float sensor_temperature, sensor_humidity;
 
 void hvacControlCode()
 {
+    float inside_temp, schedule_temp;
 
-#ifdef DEBUG_MODE
-    inside_temp = inside_temperature;
-    insideHumidity = 35;
-#else
-    inside_temp = sensor_temperature;
+    inside_temp = 1.8 * sensor_temperature + 32.;
     insideTemperature = inside_temp;
     insideHumidity = sensor_humidity;
-#endif
+    schedule_temp = (float)scheduleTemperature(getScheduleTime(), currentSchedule, hvacMode);
 
     updateStats();
 
     if (holdMode)
     {
         float sp = (float)temperatureSetPoint;
+
 #ifdef DEBUG_MODE
-        sprintf(buf,"SP=%d\nIT=%2d.%02d", temperatureSetPoint, (int)inside_temp,
-                (int)((inside_temp - (int)inside_temp) * 100));
+        float inside = inside_temp;
+        float spi = sp;
+        float sinside = schedule_temp;
+
+        if (metric)
+        {
+            inside = (inside_temp - 32.) * 5./9.;
+            spi = (sp - 32.) * 5./9.;
+            sinside = (schedule_temp - 32.) * 5./9.;
+        }
+        sprintf(buf,"ST=%2d.%02d\nIT=%2d.%02d",
+                (int)sinside, (int)((sinside - (int)sinside) * 100),
+                (int)inside,(int)((inside - (int)inside) * 100));
         TEXT_SetText(textDebug, buf);
 #endif
+
         if (strcmp(hvacMode, "cool") == 0)
         {
             if (inside_temp > sp)
@@ -264,50 +272,68 @@ void hvacControlCode()
         float heat_to = heatToDegrees;
         float cool_to = coolToDegrees;
 
-        schedule_temp = scheduleTemperature(getTime(), currentSchedule, hvacMode);
+
 #ifdef DEBUG_MODE
-        sprintf(buf,"SC=%s\nST=%d\nIT=%2d.%02d",
-                currentSchedule, (int)schedule_temp, (int)inside_temp,
-                (int)((inside_temp - (int)inside_temp) * 100));
+        float inside = inside_temp;
+        float sinside = schedule_temp;
+        if (metric)
+        {
+            inside = (inside_temp - 32.) * 5./9.;
+            sinside = (schedule_temp - 32.) * 5./9.;
+        }
+        sprintf(buf,"SC=%s\nST=%2d.%02d\nIT=%2d.%02d",
+                currentSchedule,
+                (int)sinside, (int)((sinside - (int)sinside) * 100),
+                (int)inside, (int)((inside - (int)inside) * 100));
         TEXT_SetText(textDebug, buf);
 #endif
+
         if (strcmp(hvacMode, "cool") == 0)
         {
-            if (inside_temp - schedule_temp  >= 1.5) {
-               compressorOn();
-               heatingOff();
-            } else if (inside_temp - schedule_temp <= 0) {
-               compressorOff();
+            if (inside_temp - schedule_temp  >= 1.5)
+            {
+                compressorOn();
+                heatingOff();
+            }
+            else if (inside_temp - schedule_temp <= 0)
+            {
+                compressorOff();
             }
 
-            if (inside_temp - schedule_temp > 1.5 && cool_control) {
-               insideTemperature = inside_temp;
-            }
-            else                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        if (inside_temp - schedule_temp <= 0) {
-                insideTemperature = inside_temp;
-            }
-            else if (inside_temp - schedule_temp <= 1.5 ) {
-                insideTemperature = schedule_temp;
-            }
+//            if (inside_temp - schedule_temp > 1.5 && cool_control)
+//            {
+//                insideTemperature = inside_temp;
+//            }
+//            else if (inside_temp - schedule_temp <= 1.5 )
+//            {
+//                insideTemperature = schedule_temp;
+//            }
         }
         else if (strcmp(hvacMode, "heat") == 0)
         {
-            if (schedule_temp - inside_temp >= 1.5) {
-               compressorOff();
-               heatingOn();
-            } else if (schedule_temp - inside_temp <= 0) {
-               heatingOff();
+            if (schedule_temp - inside_temp >= 1.5)
+            {
+                compressorOff();
+                heatingOn();
             }
-            if (schedule_temp - inside_temp > 1.5 && heat_control) {
-               insideTemperature = inside_temp;
+            else if (schedule_temp - inside_temp <= 0)
+            {
+                heatingOff();
             }
 
-            if (schedule_temp - inside_temp <= 0) {
-                insideTemperature = inside_temp;
-            }
-            else if (schedule_temp - inside_temp <= 1.5 ) {
-                insideTemperature = schedule_temp;
-            }
+//            if (schedule_temp - inside_temp > 1.5 && heat_control)
+//            {
+//                insideTemperature = inside_temp;
+//            }
+//
+//            if (schedule_temp - inside_temp <= 0)
+//            {
+//                insideTemperature = inside_temp;
+//            }
+//            else if (schedule_temp - inside_temp <= 1.5 )
+//            {
+//                insideTemperature = schedule_temp;
+//            }
         }
         else if (strcmp(hvacMode, "auto") == 0)
         {

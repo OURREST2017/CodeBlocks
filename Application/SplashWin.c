@@ -12,7 +12,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] = { {
 
 static WM_HWIN splashWin;
 extern GUI_CONST_STORAGE GUI_BITMAP bmsplash;
-static GUI_TIMER_HANDLE light_timer;
+static GUI_TIMER_HANDLE light_timer, splash_timer;
 
 /*********************************************************************
  *
@@ -332,6 +332,11 @@ static void lightTimer(GUI_TIMER_MESSAGE * pTM) {
 	GUI_TIMER_Restart(pTM->hTimer);
 }
 #endif
+static void splashTimer(GUI_TIMER_MESSAGE * pTM) {
+    GUI_TIMER_Delete(splash_timer);
+    WM_DeleteWindow(splashWin);
+    screenState = HOMEWIN;
+}
 /*********************************************************************
  *
  *       CreateHomeWin
@@ -342,6 +347,9 @@ WM_HWIN CreateSplashWin(void) {
 
 #ifndef CODEBLOCK
 	light_timer = GUI_TIMER_Create(lightTimer, 300, 0, 0);
+#endif
+#ifndef DEBUG_MODE
+    splash_timer = GUI_TIMER_Create(splashTimer, 5000, 0, 0);
 #endif
 	splashWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate),
 			_cbDialog, WM_HBKWIN, 0, 0);

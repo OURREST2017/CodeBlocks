@@ -123,7 +123,7 @@ static void  setDays(WM_HWIN *, int),  setDays1(WM_HWIN *, int);
 
 static struct days_s days[7];
 static struct periods_s getPeriod(char * p);
-static int getPeriodInt(char * p);
+static int getPeriodIndex(char * p);
 static struct days_s selectedDay;
 static void setSchedule(char *sched, char *day, char *per, struct periods_s period);
 
@@ -149,6 +149,60 @@ extern GUI_CONST_STORAGE GUI_BITMAP bmup_lg;
 extern GUI_CONST_STORAGE GUI_BITMAP bmdn_lg;
 
 extern char *convertTemp(float temp_set);
+
+static char * updateTime(char *tm, int dr, int *tout)
+{
+    static  char buf[10];
+    int hh, mm,am;
+    sscanf(tm, "%d:%d", &hh, &mm);
+
+    if (strchr(tm, 'a'))
+    {
+        am = 1;
+    }
+    else
+    {
+        am = 0;
+    }
+
+    if (dr == -1)
+    {
+        mm -= 15;
+        if (mm < 0)
+        {
+            mm = 45;
+            hh--;
+            if (hh == 11) am = !am;
+        }
+        if (hh == 0)
+        {
+            hh = 12;
+        }
+    }
+    else
+    {
+        mm += 15;
+        if (mm == 60)
+        {
+            mm = 0;
+            hh++;
+            if (hh == 12) am = !am;
+        }
+        if (hh == 13)
+        {
+            hh = 1;
+        }
+    }
+
+    if (am == 0) {
+        *tout = hh * 100 + mm;
+    } else {
+        *tout = (hh + 12) * 100 + mm;
+    }
+    sprintf(buf,"%d:%02d%s", hh, mm, (am == 1) ? "am" : "pm");
+
+    return buf;
+}
 
 static void periodSlot(WM_MESSAGE * pMsg, int sel)
 {
@@ -294,7 +348,7 @@ static void invalidateButtons(int sel)
         period -= 8;
     }
 
-    selected_period = getPeriodInt(periods_text[period]);
+    selected_period = getPeriodIndex(periods_text[period]);
 
     selected_slot = sel;
     wake_time_on = (sel == 0);
@@ -477,7 +531,7 @@ static void selectWeekType()
 
     period = 0;
     wake_time_on = 1;
-    selected_period = getPeriodInt(periods_text[period]);
+    selected_period = getPeriodIndex(periods_text[period]);
     TEXT_SetText(textTitle, LANG(toup(edit_title)));
 }
 
@@ -596,6 +650,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         GUI_DrawGradientV(0, 0, 480, 50, color_map[0].stop, color_map[0].start);
         GUI_DrawBitmap(&bmwatermark,45,52);
 
+        GUI_SetColor(0xf0f0f0);
+        GUI_AA_FillRoundedRect(26, 80, 384, 218, 3);
         GUI_SetColor(0xcecece);
         GUI_SetPenSize(2);
         GUI_AA_DrawRoundedRect(26, 80, 384, 218, 3);
@@ -786,7 +842,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         }
         else
         {
-            WM_MoveTo(hItem, 200, 230);
+            WM_MoveTo(hItem, 185, 230);
             WM_SetSize(hItem, BUT_WIDTH, BUT_HEIGHT);
             WM_HideWindow(weekendButton);
             WM_HideWindow(weekdayButton);
@@ -1184,13 +1240,27 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                GUI_Delay(100);
+               GUI_Delay(100);
                 int i;
+                char buf[100];
                 for (i=0; i<4; i++)
                 {
                     setSchedule(selectedSchedule.label, selectedDay.label, periods_text[i],
-                                selectedDay.periods[getPeriodInt(periods_text[i])]);
+                                selectedDay.periods[getPeriodIndex(periods_text[i])]);
                 }
+
+                for (i=0; i<5; i++)
+                {
+                    if (strcmp(schedules[i].label, tolow(schedulePeriod)) == 0)
+                    {
+                        selectedSchedule = schedules[i];
+                        break;
+                    }
+                }
+
+                WM_MESSAGE msg;
+                msg.MsgId = WM_INIT_DIALOG;
+                WM_SendMessage(homeWin, &msg);
                 WM_HideWindow(editScheduleWin);
                 screenState = SETTINGSCHEDULEWIN;
                 break;
@@ -1246,7 +1316,7 @@ static void setDays(WM_HWIN *hWin, int d)
     setPeriods();
 }
 
-static int getPeriodInt(char * s)
+static int getPeriodIndex(char * s)
 {
     int i;
     for (i=0; i<4; i++)
@@ -1336,7 +1406,7 @@ WM_HWIN CreateEditSchedule()
         }
     }
 
-    selected_period = getPeriodInt(periods_text[period]);
+    selected_period = getPeriodIndex(periods_text[period]);
 
     editScheduleWin = GUI_CreateDialogBox(_aDialogCreate,
                                           GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);

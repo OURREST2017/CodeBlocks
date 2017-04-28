@@ -14,18 +14,18 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Mode", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "SELECT MODE", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "OFF", ID_BUTTON_OFF, 18, 130, 90, BUT_HEIGHT, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "HEAT", ID_BUTTON_HEAT, 108, 130, 90, BUT_HEIGHT, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "COOL", ID_BUTTON_COOL, 198, 130, 90, BUT_HEIGHT, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "AUTO", ID_BUTTON_AUTO, 289, 130, 90, BUT_HEIGHT, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "E-HEAT", ID_BUTTON_EHEAT, 380, 130, 90, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "OFF", ID_BUTTON_OFF, 18, 130, 80, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "HEAT", ID_BUTTON_HEAT, 108, 130, 80, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "COOL", ID_BUTTON_COOL, 198, 130, 80, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "AUTO", ID_BUTTON_AUTO, 289, 130, 80, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "E-HEAT", ID_BUTTON_EHEAT, 380, 130, 80, BUT_HEIGHT, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 350, 230, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
 };
 
 static int cool, heat, off, autob=1, eheat;
 
-static void drawModeButton(char * but, int w, int h, int col, int bor)
+static void drawModeButton(char * but, int w, int h, int col)
 {
     GUI_RECT rect;
     rect.x0 = 0;
@@ -36,16 +36,16 @@ static void drawModeButton(char * but, int w, int h, int col, int bor)
     if (col)
     {
         GUI_DrawGradientRoundedV(0,0, rect.x1, rect.y1, 4, color_map[color_scheme].stop, color_map[color_scheme].start);
+        GUI_SetColor(GUI_WHITE);
     }
     else
     {
         GUI_DrawGradientRoundedV(0, 0, rect.x1, rect.y1, 4, color_map[2].stop, color_map[2].start);
+        GUI_SetColor(0x666666);
     }
     GUI_SetFont(Tahoma18B);
-    if (col == 0) GUI_SetColor(0x666666);
-//    if (col == 1) GUI_SetColor(buttonTextColor);
-    if (col == 2) GUI_SetColor(GUI_BLACK);
     GUI_SetTextMode(GUI_TM_TRANS);
+    rect.y0 -= 2;
     GUI_DispStringInRect(but, &rect, GUI_TA_HCENTER | GUI_TA_VCENTER);
 }
 
@@ -54,20 +54,14 @@ static void modeButton(WM_MESSAGE * pMsg, char *nm, int sel)
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        if (BUTTON_IsPressed(pMsg->hWin))
-        {
-            drawModeButton(nm, 80, 30, sel, 1);
-        }
-        else
-        {
-            drawModeButton(nm, 80, 30, sel, 0);
-        }
+        drawModeButton(nm, 80, BUT_HEIGHT, sel);
         break;
     default:
         BUTTON_Callback(pMsg);
         break;
     }
 }
+
 static void eheat_cb(WM_MESSAGE * pMsg)
 {
     modeButton(pMsg, LANG("E-HEAT"), eheat);
@@ -98,28 +92,18 @@ static void invalidateButtons(WM_HWIN hWin)
     WM_HWIN hItem;
 
     hItem = WM_GetDialogItem(hWin, ID_BUTTON_OFF);
-    WM_InvalidateWindow(hItem);
-    BUTTON_SetText(hItem, "OFF");
     WM_SetCallback(hItem, off_cb);
 
     hItem = WM_GetDialogItem(hWin, ID_BUTTON_HEAT);
-    WM_InvalidateWindow(hItem);
-    BUTTON_SetText(hItem, LANG("HEAT"));
     WM_SetCallback(hItem, heat_cb);
 
     hItem = WM_GetDialogItem(hWin, ID_BUTTON_COOL);
-    WM_InvalidateWindow(hItem);
-    BUTTON_SetText(hItem, LANG("COOL"));
     WM_SetCallback(hItem, cool_cb);
 
     hItem = WM_GetDialogItem(hWin, ID_BUTTON_AUTO);
-    WM_InvalidateWindow(hItem);
-    BUTTON_SetText(hItem, LANG("AUTO"));
     WM_SetCallback(hItem, auto_cb);
 
     hItem = WM_GetDialogItem(hWin, ID_BUTTON_EHEAT);
-    WM_InvalidateWindow(hItem);
-    BUTTON_SetText(hItem, LANG("E-HEAT"));
     WM_SetCallback(hItem, eheat_cb);
 }
 
@@ -137,10 +121,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         break;
     case WM_INIT_DIALOG:
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEADER);
+        TEXT_SetFont(hItem, HEADER_FONT_BOLD);
         TEXT_SetTextColor(hItem, 0x00FFFFFF);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        TEXT_SetFont(hItem, HEADER_FONT_BOLD);
-        TEXT_SetText(hItem, "SELECT MODE");
+        TEXT_SetText(hItem, LANG("SELECT MODE"));
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_OFF);
         WM_SetCallback(hItem, off_cb);
@@ -229,16 +213,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 WM_SetCallback(hItem, buttonPush_cb);
                 break;
             case WM_NOTIFICATION_RELEASED:
-                off = 0;
-                autob = 1;
-                cool = 0;
-                heat = 0;
-                eheat = 0;
-                invalidateButtons( pMsg->hWin);
-                strcpy(hvacMode, "auto");
-                TEXT_SetText(hvacModeText, toup(hvacMode));
                 GUI_Delay(100);
-                WM_HideWindow(modeWin);
+                WM_DeleteWindow(modeWin);
                 CreateTemperatureLimits(1);
                 break;
             }
@@ -264,7 +240,11 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                WM_HideWindow(modeWin);
+                WM_DeleteWindow(modeWin);
+                holdMode = 0;
+                WM_MESSAGE msg;
+                msg.MsgId = WM_INIT_DIALOG;
+                WM_SendMessage(homeWin, &msg);
                 screenState = HOMEWIN;
                 break;
             }
@@ -281,7 +261,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 heat_control = 0;
                 cool_control = 0;
                 fan_control = 0;
-                WM_HideWindow(modeWin);
+                holdMode = 0;
+                WM_DeleteWindow(modeWin);
                 WM_MESSAGE msg;
                 msg.MsgId = WM_INIT_DIALOG;
                 WM_SendMessage(homeWin, &msg);

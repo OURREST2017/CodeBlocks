@@ -98,7 +98,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:
-                one_mode =0;
+                one_mode = 0;
                 WM_SetCallback(twoButton, buttonOn22_cb);
                 WM_SetCallback(oneButton, buttonOff22_cb);
                 break;

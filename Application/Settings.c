@@ -1,7 +1,7 @@
 #include "ranger.h"
 
 #define ID_WINDOW_0 (GUI_ID_USER + 0x03)
-#define ID_IMAGE_PEAR (GUI_ID_USER + 0x04)
+#define ID_IMAGE_PAIR (GUI_ID_USER + 0x04)
 #define ID_IMAGE_TIME_DATE (GUI_ID_USER + 0x05)
 #define ID_IMAGE_LOCK (GUI_ID_USER + 0x06)
 #define ID_IMAGE_SCHEDULE (GUI_ID_USER + 0x07)
@@ -31,13 +31,13 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { IMAGE_CreateIndirect, "Image", ID_IMAGE_LOCK, 140, 64, 70, 70, 0, 0, 0 },
     { IMAGE_CreateIndirect, "Image", ID_IMAGE_SCHEDULE, 254, 62, 70, 70, 0, 0, 0 },
     { IMAGE_CreateIndirect, "Image", ID_IMAGE_LANGAGES, 375, 72, 70, 70, 0, 0, 0 },
-    { IMAGE_CreateIndirect, "Image", ID_IMAGE_PEAR, 25, 167, 70, 70, 0, 0, 0 },
+    { IMAGE_CreateIndirect, "Image", ID_IMAGE_PAIR, 25, 167, 70, 70, 0, 0, 0 },
     { IMAGE_CreateIndirect, "Image", ID_IMAGE_PROFILE, 140, 174, 70, 70, 0, 0, 0 },
     { IMAGE_CreateIndirect, "Image", ID_IMAGE_PREFERENCES, 264, 168, 70, 70, 0, 0, 0 },
     { IMAGE_CreateIndirect, "Image", ID_IMAGE_SETUP, 374, 170, 70, 70, 0, 0, 0 },
 
     { TEXT_CreateIndirect, "Time/Date", ID_TEXT_TIME_DATE, 0, 128, 110, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Lock", ID_TEXT_LOCK, 116, 128, 110, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Lock Code", ID_TEXT_LOCK, 104, 128, 130, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Schedule", ID_TEXT_SCHEDULE, 230, 128, 110, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Languages", ID_TEXT_LANGUAGES, 355, 128, 110, 20, 0, 0x64, 0 },
 
@@ -97,7 +97,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetFont(hItem, Tahoma18B);
         TEXT_SetTextColor(hItem, 0x808080);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER | GUI_TA_VCENTER);
-        TEXT_SetText(hItem, LANG("Lock"));
+        TEXT_SetText(hItem, LANG("Lock Code"));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SCHEDULE);
         TEXT_SetFont(hItem, Tahoma18B);
@@ -150,7 +150,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 screenState = HOMEWIN;
             }
             break;
-        case ID_IMAGE_PEAR:
+        case ID_IMAGE_PAIR:
             switch(NCode)
             {
             case WM_NOTIFICATION_CLICKED:

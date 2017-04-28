@@ -154,7 +154,7 @@ static char sp_keys[][26] =
 
 static void shift_cb(WM_MESSAGE * pMsg)
 {
-    char buf[50], nm[50];
+    char buf[10];
     GUI_RECT rt;
     WM_GetClientRect(&rt);
     switch (pMsg->MsgId)
@@ -193,7 +193,7 @@ static void shift_cb(WM_MESSAGE * pMsg)
 
 static void keys_cb(WM_MESSAGE * pMsg)
 {
-    char buf[50], nm[50];
+    char buf[10];
     GUI_RECT rt;
     int idx;
     WM_GetClientRect(&rt);
@@ -252,7 +252,7 @@ static void keys_cb(WM_MESSAGE * pMsg)
 
 static void keys_disable_cb(WM_MESSAGE * pMsg)
 {
-    char buf[50], nm[50];
+    char buf[10];
     GUI_RECT rt;
     int idx;
     WM_GetClientRect(&rt);
@@ -472,7 +472,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 }
                 else if (strcmp(from_screen, "wifi") == 0)
                 {
-                    CreateWifiConnect();
+                    CreateWifiSetup();
                 }
                 else
                 {

@@ -69,7 +69,6 @@ void saveConfig()
     writeInt("coolToDegrees", coolToDegrees, ",", f);
     writeString("currFwVersion", currFwVersion, ",", f);
     writeBool("dst", dst, ",", f);
-    writeBool("enableSchedule", enableSchedule, ",", f);
     writeInt("epochTime", epochTime, ",", f);
     writeString("fanControl", fanControl, ",", f);
     writeString("firstNameText", firstNameText, ",", f);
@@ -183,7 +182,6 @@ void saveConfig()
     fprintf(f,"  }\n],\n");
 
     writeString("currentSchedule", currentSchedule, ",", f);
-    writeInt("schedulePeriods", schedulePeriods, ",", f);
     writeString("securityMode", securityMode, ",", f);
     writeString("serial", serialNumber, ",", f);
     writeBool("tempHold", tempHold, ",", f);

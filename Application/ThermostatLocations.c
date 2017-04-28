@@ -2,7 +2,7 @@
 
 #define ID_WINDOW_0 (GUI_ID_USER + 0x02)
 #define ID_BUTTON_BACK (GUI_ID_USER + 0x05)
-#define ID_BUTTON_DONE (GUI_ID_USER + 0x06)
+#define ID_BUTTON_EDIT (GUI_ID_USER + 0x06)
 #define ID_TEXT_HEADER (GUI_ID_USER + 0x08)
 #define ID_BUTTON_LOCATION (GUI_ID_USER + 0x09)
 #define ID_BUTTON_ROOM2 (GUI_ID_USER + 0x0A)
@@ -17,7 +17,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "THERMOSTAT LOCATION", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_LOCATION, 140, 120, 220, 34, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "DONE", ID_BUTTON_DONE, 350, 230, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "EDIT", ID_BUTTON_EDIT, 350, 230, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "BACK", ID_BUTTON_BACK, 20, 230, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "NEXT", ID_BUTTON_NEXT, 350, 230, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
 };
@@ -47,19 +47,27 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_LOCATION);
         BUTTON_SetText(hItem, thermo_rooms[0]);
-        WM_SetCallback(hItem, button20_cb);
+        WM_SetCallback(hItem, button22_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_BACK);
         WM_SetCallback(hItem, buttonOn_cb);
-        if (!firstTime) WM_HideWin(hItem);
+        if (firstTime) {
+            BUTTON_SetText(hItem, "BACK");
+        } else {
+            BUTTON_SetText(hItem, "CANCEL");
+        }
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_NEXT);
         WM_SetCallback(hItem, buttonOn_cb);
         if (!firstTime) WM_HideWin(hItem);
         //
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DONE);
+        hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_EDIT);
         WM_SetCallback(hItem, buttonOn_cb);
-        if (firstTime) WM_HideWin(hItem);
+        if (firstTime) {
+            WM_MoveTo(hItem, 185, 230);
+        } else {
+            WM_MoveTo(hItem, 350, 230);
+        }
         break;
     case WM_NOTIFY_PARENT:
         Id    = WM_GetId(pMsg->hWinSrc);
@@ -67,6 +75,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         char room[30];
         switch(Id)
         {
+        case ID_BUTTON_EDIT:
         case ID_BUTTON_LOCATION:
             switch(NCode)
             {
@@ -83,10 +92,13 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             case WM_NOTIFICATION_RELEASED:
                 WM_DeleteWindow(thermostatLocationsWin);
                 GUI_Delay(100);
-                CreateLanguages();
+                if (firstTime) {
+                    CreateLanguages();
+                } else {
+                    screenState = SYSTEMSETUPWIN;
+                }
             }
             break;
-        case ID_BUTTON_DONE:
         case ID_BUTTON_NEXT:
             switch(NCode)
             {
@@ -117,5 +129,5 @@ WM_HWIN CreateThermostatLocations(void)
     WM_HWIN hWin;
 
     thermostatLocationsWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
-    return thermostatLocationsWin;
+    return hWin;
 }

@@ -55,10 +55,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         listBox_h = WM_GetDialogItem(pMsg->hWin, ID_LISTBOX_0);
         LISTBOX_SetFont(listBox_h, Tahoma23B);
         LISTBOX_SetBkColor(listBox_h, LISTBOX_CI_SELFOCUS, 0x009e5a);
-        LISTBOX_SetDefaultBkColor(LISTBOX_CI_SELFOCUS, 0x009e5a);
-        //LISTBOX_SetBkColor(listBox_h, LISTBOX_CI_UNSEL, 0x009e5a);
-        //LISTBOX_SetTextColor(listBox_h, LISTBOX_CI_SEL,0x808080);
-        //LISTBOX_SetTextColor(listBox_h, LISTBOX_CI_UNSEL,0x707070);
+        LISTBOX_SetTextColor(listBox_h, LISTBOX_CI_SEL,0x808080);
+        LISTBOX_SetTextColor(listBox_h, LISTBOX_CI_UNSEL,0x707070);
         LISTBOX_SetAutoScrollV(listBox_h, 1);
         LISTBOX_SetScrollbarWidth(listBox_h, 20);
 

@@ -312,9 +312,9 @@ static void dateChanger()
     GUI_TIMER_Restart(but_timer);
 }
 
-void text_box_cb(WM_MESSAGE * pMsg)
+static void date_box_cb(WM_MESSAGE * pMsg)
 {
-    char buf[50], nm[50];
+    char buf[50];
     GUI_RECT rt;
     WM_GetClientRect(&rt);
     switch (pMsg->MsgId)
@@ -406,16 +406,16 @@ static void timeWin_cb(WM_MESSAGE * pMsg)
         sprintf(buf, "%d", ctime);
         hour_text = WM_GetDialogItem(pMsg->hWin, ID_EDIT_HOUR);
         TEXT_SetText(hour_text, buf);
-        WM_SetCallback(hour_text, text_box_cb);
+        WM_SetCallback(hour_text, date_box_cb);
         //
         sprintf(buf, "%02d", current_minute);
         minute_text = WM_GetDialogItem(pMsg->hWin, ID_EDIT_MINUTE);
         TEXT_SetText(minute_text, buf);
-        WM_SetCallback(minute_text, text_box_cb);
+        WM_SetCallback(minute_text, date_box_cb);
         //
         ampm_text = WM_GetDialogItem(pMsg->hWin, ID_EDIT_AMPM);
         TEXT_SetText(ampm_text, current_ampm ? "PM" : "AM");
-        WM_SetCallback(ampm_text, text_box_cb);
+        WM_SetCallback(ampm_text, date_box_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HOUR);
         TEXT_SetTextAlign(hItem, GUI_TA_HCENTER);
@@ -440,7 +440,6 @@ static void timeWin_cb(WM_MESSAGE * pMsg)
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_DATE);
         WM_SetCallback(hItem, buttonOn_cb);
-        //BUTTON_SetText(hItem, LANG("SET DATE"));
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_SAVE);
         WM_SetCallback(hItem, buttonOn_cb);
@@ -590,17 +589,17 @@ static void dateWin_cb(WM_MESSAGE * pMsg)
         //
         month_text = WM_GetDialogItem(pMsg->hWin, ID_EDIT_MONTH);
         TEXT_SetText(month_text, Months[current_month]);
-        WM_SetCallback(month_text, text_box_cb);
+        WM_SetCallback(month_text, date_box_cb);
         //
         sprintf(buf, "%d", current_day);
         day_text = WM_GetDialogItem(pMsg->hWin, ID_EDIT_DAY);
         TEXT_SetText(day_text, buf);
-        WM_SetCallback(day_text, text_box_cb);
+        WM_SetCallback(day_text, date_box_cb);
         //
         sprintf(buf, "%d", current_year);
         year_text = WM_GetDialogItem(pMsg->hWin, ID_EDIT_YEAR);
         TEXT_SetText(year_text, buf);
-        WM_SetCallback(year_text, text_box_cb);
+        WM_SetCallback(year_text, date_box_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_MONTH);
         TEXT_SetFont(hItem, GUI_FONT_20_1);

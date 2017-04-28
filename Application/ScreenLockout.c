@@ -38,29 +38,24 @@
 #define ID_EDIT_2  (GUI_ID_USER + 0x1A)
 #define ID_EDIT_3  (GUI_ID_USER + 0x1C)
 
-
-/*********************************************************************
-*
-*       _aDialogCreate
-*/
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "SCREEN LOCK", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_0, 99, 64, 50, 50, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_1, 99, 182, 50, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_0, 105, 64, 50, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_1, 105, 182, 50, 50, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Button", ID_BUTTON_2, 184, 64, 50, 50, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "Button", ID_BUTTON_3, 184, 182, 50, 50, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_4, 263, 64, 50, 50, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_5, 263, 182, 50, 50, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_6, 341, 64, 50, 50, 0, 0x0, 0 },
-    { BUTTON_CreateIndirect, "Button", ID_BUTTON_7, 341, 182, 50, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_4, 264, 64, 50, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_5, 264, 182, 50, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_6, 344, 64, 50, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "Button", ID_BUTTON_7, 344, 182, 50, 50, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "SAVE", ID_BUTTON_SAVE, 350, 230, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
-    { TEXT_CreateIndirect, "Edit", ID_EDIT_0, 88, 110, 70, 70, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Edit", ID_EDIT_0, 94, 110, 70, 70, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Edit", ID_EDIT_1, 174, 110, 70, 70, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "Edit", ID_EDIT_2, 254, 110, 70, 70, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Edit", ID_EDIT_3, 332, 110, 70, 70, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Edit", ID_EDIT_3, 334, 110, 70, 70, 0, 0x64, 0 },
 };
 
 static int dig1, dig2, dig3, dig4;
@@ -116,7 +111,6 @@ static void text_box_cb(WM_MESSAGE * pMsg)
     {
     case WM_PAINT:
         TEXT_GetText(pMsg->hWin, buf, 10);
-
         GUI_DrawGradientRoundedV(0, 0, rt.x1, rt.y1, 4, color_map[2].stop, color_map[2].start);
         GUI_SetColor(0x808080);
         GUI_SetTextMode(GUI_TEXTMODE_TRANS);
@@ -202,8 +196,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         sprintf(buf, "%d", dig3);
         hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_2);
         TEXT_SetText(hItem, buf);
-         WM_SetCallback(hItem, text_box_cb);
-       //
+        WM_SetCallback(hItem, text_box_cb);
+        //
         sprintf(buf, "%d", dig4);
         hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_3);
         TEXT_SetText(hItem, buf);
@@ -236,31 +230,31 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_0);
                 TEXT_SetText(hItem, buf);
                 break;
-             }
+            }
             break;
         case ID_BUTTON_2:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                 dig2++;
+                dig2++;
                 if (dig2 == 10) dig2 = 0;
                 sprintf(buf,"%d", dig2);
                 hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_1);
                 TEXT_SetText(hItem, buf);
-               break;
+                break;
             }
             break;
         case ID_BUTTON_3:
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                 dig2--;
+                dig2--;
                 if (dig2 == -1) dig2 = 9;
                 sprintf(buf,"%d", dig2);
                 hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_1);
                 TEXT_SetText(hItem, buf);
-               break;
-             }
+                break;
+            }
             break;
         case ID_BUTTON_4:
             switch(NCode)
@@ -278,12 +272,12 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                 dig3--;
+                dig3--;
                 if (dig3 == -1) dig3 = 9;
                 sprintf(buf,"%d", dig3);
                 hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_2);
                 TEXT_SetText(hItem, buf);
-               break;
+                break;
             }
             break;
         case ID_BUTTON_6:
@@ -302,12 +296,12 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-                 dig4--;
+                dig4--;
                 if (dig4 == -1) dig4 = 9;
                 sprintf(buf,"%d", dig4);
                 hItem = WM_GetDialogItem(pMsg->hWin, ID_EDIT_3);
                 TEXT_SetText(hItem, buf);
-               break;
+                break;
             }
             break;
         case ID_BUTTON_CANCEL:

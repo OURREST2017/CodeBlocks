@@ -20,13 +20,13 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { WINDOW_CreateIndirect, "HomeWin", ID_HOME_WINDOW, 0, 0, 480, 272, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "", ID_TEXT_IDLE, 0, 0, 480, 270, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "In_T_Panel", ID_TEXT_INSIDE_INT_TEMP, 162, 88, 135, 120, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "FRAC Temp", ID_TEXT_INSIDE_FRAC_TEMP, 306, 122, 50, 90, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "FRAC Temp", ID_TEXT_INSIDE_FRAC_TEMP, 306, 146, 50, 90, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "", ID_TEXT_DATE, 10, 0, 140, 50, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "", ID_TEXT_TIME, 160, 0, 150, 50, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "Out_T_Temp", ID_TEXT_OUT_TEMP, 386, 7, 72, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "OUSIDE", ID_TEXT_OUTSIDE, 389, 26, 61, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "Out_T_Temp", ID_TEXT_OUT_TEMP, 370, 7, 100, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "OUTSIDE", ID_TEXT_OUTSIDE, 380, 26, 70, 20, 0, 0x64, 0 },
     { TEXT_CreateIndirect, "INDOOR", ID_TEXT_INDOOR, 165, 92, 89, 20, 0, 0x64, 0 },
-    { TEXT_CreateIndirect, "HUMIDITY", ID_TEXT_HUMIDITY, 165, 206, 160, 20, 0, 0x64, 0 },
+    { TEXT_CreateIndirect, "HUMIDITY", ID_TEXT_HUMIDITY, 165, 202, 160, 20, 0, 0x64, 0 },
     { BUTTON_CreateIndirect, "", ID_BUTTON_WIFI, 320, 0, 50, 50, 0, 0x0, 0 },
 };
 
@@ -44,7 +44,7 @@ static void convertIntTemp(float temp_set)
     char buf[10];
     float inside_temp;
 
-    if (temperatureScale)
+    if (metric)
     {
         inside_temp = (temp_set - 32.) * 5./9.;
     }
@@ -98,9 +98,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     case WM_PAINT:
         GUI_DrawGradientV(0, 0, 480, 50, color_map[0].stop, color_map[0].start);
         GUI_DrawBitmap(&bmwatermark, 45,52);
-        GUI_DrawBitmap(&bmbig_degree, 296,108);
+        GUI_DrawBitmap(&bmbig_degree, 296,112);
 
-        if (temperatureScale)
+        if (metric)
         {
             GUI_SetColor(0x808080);
             GUI_FillCircle(302, 190, 4);
@@ -124,14 +124,14 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetFont(timeText, Tahoma23B);
         TEXT_SetTextColor(timeText, textColor);
         //
-        sprintf(buffer, "%d °  |  %d%%", localTemperature, localHumidity);
+        sprintf(buffer, "%d°  |  %d%%", localTemperature, localHumidity);
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_OUT_TEMP);
         TEXT_SetText(hItem, buffer);
-        TEXT_SetFont(hItem, &GUI_FontTahoma16hAA4B);
+        TEXT_SetFont(hItem, Tahoma18B);
         TEXT_SetTextColor(hItem, textColor);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_OUTSIDE);
-        TEXT_SetFont(hItem, &GUI_FontTahoma16hAA4B);
+        TEXT_SetFont(hItem, Tahoma18B);
         TEXT_SetText(hItem, LANG("OUTSIDE"));
         TEXT_SetTextColor(hItem, textColor);
         //
@@ -142,6 +142,10 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         insideTempFracText = WM_GetDialogItem(pMsg->hWin, ID_TEXT_INSIDE_FRAC_TEMP);
         TEXT_SetFont(insideTempFracText, Tahoma58);
         TEXT_SetTextColor(insideTempFracText, 0x00808080);
+        if (!metric)
+        {
+            WM_HideWindow(insideTempFracText);
+        }
 
         convertIntTemp(insideTemperature);
 
@@ -196,7 +200,7 @@ static void setDateTime() {
     BSP_RTC_GetDate(&dt);
 
     int h = (tm.Hours > 12) ? tm.Hours - 12 : tm.Hours;
-    sprintf(time_buf, "%d:%02d", tm.Hours, tm.Minutes, (tm.Hours > 12) ? "pm" : "am");
+    sprintf(time_buf, "%d:%02d %s", h, tm.Minutes, (tm.Hours > 12) ? "PM" : "AM");
 
     sprintf(date_buf, "%s %02d/%02d/%d", LANG(weekDays[dt.WeekDay]), dt.Month, dt.Date, dt.Year);
 #endif
@@ -210,7 +214,7 @@ static void dateTimer(GUI_TIMER_MESSAGE * pTM)
     float inside_temp;
 
     //if (but_pressed || temp_timer) return;
-    if (temperatureScale)
+    if (metric)
     {
         inside_temp = (insideTemperature - 32.) * 5./9.;
     }

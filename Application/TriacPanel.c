@@ -35,10 +35,43 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "Home", ID_BUTTON_HOME, 180, 230, 140, 30, 0, 0x0, 0 },
 };
 
-/*********************************************************************
-*
-*       _cbDialog
-*/
+int acy, acy2,fan,b,heatw,heatw2,o,x;
+
+void buttonOn20_cb(WM_MESSAGE * pMsg)
+{
+    char nm[50];
+    GUI_RECT r;
+    WM_GetClientRect(&r);
+    BUTTON_GetText(pMsg->hWin, nm, 50);
+
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawButton20(nm, r.x1-r.x0, r.y1-r.y0, 1,0);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+
+void buttonOff20_cb(WM_MESSAGE * pMsg)
+{
+    char nm[50];
+    GUI_RECT r;
+    WM_GetClientRect(&r);
+    BUTTON_GetText(pMsg->hWin, nm, 50);
+
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        drawButton20(nm, r.x1-r.x0, r.y1-r.y0, 0,0);
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
 
 static void _cbDialog(WM_MESSAGE * pMsg)
 {
@@ -53,7 +86,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         break;
     case WM_INIT_DIALOG:
         hItem = pMsg->hWin;
-        WINDOW_SetBkColor(hItem, 0x0FFee0c6);
+        WINDOW_SetBkColor(hItem, 0xfef0d6);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_0);
         TEXT_SetFont(hItem, HEADER_FONT_BOLD);
@@ -62,28 +95,28 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetText(hItem, "TRIAC TEST PANEL");
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_AC_Y);
-        WM_SetCallback(hItem, buttonOn20_cb);
+        WM_SetCallback(hItem, buttonOff20_cb);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_AC_Y2);
-        WM_SetCallback(hItem, buttonOn20_cb);
+        WM_SetCallback(hItem, buttonOff20_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_FAN);
-        WM_SetCallback(hItem, buttonOn20_cb);
+        WM_SetCallback(hItem, buttonOff20_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_B);
-        WM_SetCallback(hItem, buttonOn20_cb);
+        WM_SetCallback(hItem, buttonOff20_cb);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HEAT_W);
-        WM_SetCallback(hItem, buttonOn20_cb);
+        WM_SetCallback(hItem, buttonOff20_cb);
 
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HEAT_W2);
-        WM_SetCallback(hItem, buttonOn20_cb);
+        WM_SetCallback(hItem, buttonOff20_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_O);
-        WM_SetCallback(hItem, buttonOn20_cb);
+        WM_SetCallback(hItem, buttonOff20_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_X);
-        WM_SetCallback(hItem, buttonOn20_cb);
+        WM_SetCallback(hItem, buttonOff20_cb);
         //
         hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HOME);
         WM_SetCallback(hItem, buttonOn20_cb);
@@ -100,10 +133,13 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 #ifndef CODEBLOCK
                 BSP_HVAC_request_cool_Y(HVAC_FUNCTION_SET);
 #endif
-                WM_HideWindow(homeWin);
-                GUI_Delay(100);
-                WM_DeleteWindow(triacWin);
-                CreatePassFail("AC (Y)");
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_AC_Y);
+                acy = !acy;
+                if (acy) {
+                    WM_SetCallback(hItem, buttonOn20_cb);
+                } else {
+                    WM_SetCallback(hItem, buttonOff20_cb);
+                }
                 break;
             }
             break;
@@ -114,10 +150,13 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 #ifndef CODEBLOCK
                 BSP_HVAC_request_cool_Y2(HVAC_FUNCTION_SET);
 #endif
-                WM_HideWindow(homeWin);
-                GUI_Delay(100);
-                WM_DeleteWindow(triacWin);
-                CreatePassFail("AC (Y2)");
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_AC_Y2);
+                acy2 = !acy2;
+                if (acy2) {
+                    WM_SetCallback(hItem, buttonOn20_cb);
+                } else {
+                    WM_SetCallback(hItem, buttonOff20_cb);
+                }
                 break;
             }
             break;
@@ -128,10 +167,13 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 #ifndef CODEBLOCK
                 BSP_HVAC_request_fan_G(HVAC_FUNCTION_SET);
 #endif
-                WM_HideWindow(homeWin);
-                GUI_Delay(100);
-                WM_DeleteWindow(triacWin);
-                CreatePassFail("FAN (G)");
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_FAN);
+                fan = !fan;
+                if (fan) {
+                    WM_SetCallback(hItem, buttonOn20_cb);
+                } else {
+                    WM_SetCallback(hItem, buttonOff20_cb);
+                }
                 break;
             }
             break;
@@ -142,10 +184,13 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 #ifndef CODEBLOCK
                 BSP_HVAC_request_heat_W(HVAC_FUNCTION_SET);
 #endif
-                WM_HideWindow(homeWin);
-                GUI_Delay(100);
-                WM_DeleteWindow(triacWin);
-                CreatePassFail("HEAT (W)");
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HEAT_W);
+                heatw = !heatw;
+                if (heatw) {
+                    WM_SetCallback(hItem, buttonOn20_cb);
+                } else {
+                    WM_SetCallback(hItem, buttonOff20_cb);
+                }
             }
             break;
         case ID_BUTTON_HEAT_W2:
@@ -155,10 +200,13 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 #ifndef CODEBLOCK
                 BSP_HVAC_request_heat_W2(HVAC_FUNCTION_SET);
 #endif
-                WM_HideWindow(homeWin);
-                GUI_Delay(100);
-                WM_DeleteWindow(triacWin);
-                CreatePassFail("HEAT (W2)");
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_HEAT_W2);
+                heatw2 = !heatw2;
+                if (heatw2) {
+                    WM_SetCallback(hItem, buttonOn20_cb);
+                } else {
+                    WM_SetCallback(hItem, buttonOff20_cb);
+                }
             }
             break;
         case ID_BUTTON_B:
@@ -168,10 +216,13 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 #ifndef CODEBLOCK
                 BSP_HVAC_request_xxx_B(HVAC_FUNCTION_SET);
 #endif
-                WM_HideWindow(homeWin);
-                GUI_Delay(100);
-                WM_DeleteWindow(triacWin);
-                CreatePassFail("B");
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_B);
+                b = !b;
+                if (b) {
+                    WM_SetCallback(hItem, buttonOn20_cb);
+                } else {
+                    WM_SetCallback(hItem, buttonOff20_cb);
+                }
                 break;
             }
             break;
@@ -182,10 +233,13 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 #ifndef CODEBLOCK
                 BSP_HVAC_request_xxx_X(HVAC_FUNCTION_SET);
 #endif
-                WM_HideWindow(homeWin);
-                GUI_Delay(100);
-                WM_DeleteWindow(triacWin);
-                CreatePassFail("X");
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_X);
+                x = !x;
+                if (x) {
+                    WM_SetCallback(hItem, buttonOn20_cb);
+                } else {
+                    WM_SetCallback(hItem, buttonOff20_cb);
+                }
                 break;
             }
             break;
@@ -196,10 +250,13 @@ static void _cbDialog(WM_MESSAGE * pMsg)
 #ifndef CODEBLOCK
                 BSP_HVAC_request_xxx_O(HVAC_FUNCTION_SET);
 #endif
-                WM_HideWindow(homeWin);
-                GUI_Delay(100);
-                WM_DeleteWindow(triacWin);
-                CreatePassFail("O");
+                hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_O);
+                o = !o;
+                if (o) {
+                    WM_SetCallback(hItem, buttonOn20_cb);
+                } else {
+                    WM_SetCallback(hItem, buttonOff20_cb);
+                }
                 break;
             }
             break;
@@ -236,8 +293,6 @@ WM_HWIN CreateTriacPanel(void)
     BSP_HVAC_request_cool_Y(HVAC_FUNCTION_RESET);
     BSP_HVAC_request_cool_Y2(HVAC_FUNCTION_RESET);
     BSP_HVAC_request_fan_G(HVAC_FUNCTION_RESET);
-    BSP_HVAC_request_heat_W(HVAC_FUNCTION_RESET);
-    BSP_HVAC_request_heat_W2(HVAC_FUNCTION_RESET);
     BSP_HVAC_request_xxx_B(HVAC_FUNCTION_RESET);
     BSP_HVAC_request_xxx_O(HVAC_FUNCTION_RESET);
     BSP_HVAC_request_xxx_X(HVAC_FUNCTION_RESET);

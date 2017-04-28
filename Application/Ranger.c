@@ -37,8 +37,6 @@ float sensor_temperature, sensor_humidity;
 
 static void hvacTimer(GUI_TIMER_MESSAGE * pTM)
 {
-//    sensor_temperature = 22.5f;
-//    sensor_humidity = 39.0f;
     hvacControlCode();
     GUI_TIMER_SetPeriod(pTM->hTimer, 4000);
     GUI_TIMER_Restart(pTM->hTimer);
@@ -96,7 +94,7 @@ void MainTask(void)
     settingsScheduleWin = CreateSettingsSchedule();
     preferencesWin = CreatePreferences();
     systemSetupWin = CreateSystemSetup();
-    firstTime = 0;
+    //firstTime = 0;
     if (testing)
     {
         screenState = 99;
@@ -115,6 +113,8 @@ void MainTask(void)
     int counter;
 
 #ifdef DEBUG_MODE
+    sensor_temperature = 22.8f;
+    sensor_humidity = 39.0f;
     hvac_timer = GUI_TIMER_Create(hvacTimer, 4000, 0, 0);
     //hvacControlCode();
 #endif
@@ -134,7 +134,6 @@ void MainTask(void)
 //            GUI_TIMER_Restart(lockTimer_h);
             hvacControlCode();
             WM_ShowWindow(homeWin);
-            //keyboardWin = CreateKeyboardWin(0, "Text", "Title", "Screen");
             screenState = NOWIN;
             break;
         case IDLEWIN:
@@ -153,7 +152,6 @@ void MainTask(void)
         case DATETIMEWIN:
             WM_HideWindow(settingsWin);
             getCurrentTime();
-            //WM_ShowWindow(dateTimeWin);
             dateTimeWin = CreateDateTime();
             screenState = NOWIN;
             break;
@@ -189,16 +187,6 @@ void MainTask(void)
         case EDITSCHEDULEWIN:
             WM_HideWindow(settingsScheduleWin);
             CreateEditSchedule();
-            screenState = NOWIN;
-            break;
-        case 23:
-            WM_HideWindow(eachDayWin);
-            WM_ShowWindow(settingsScheduleWin);
-            screenState = NOWIN;
-            break;
-        case 24:
-            WM_HideWindow(eachDayWin);
-            WM_ShowWindow(editScheduleWin);
             screenState = NOWIN;
             break;
 		Default:

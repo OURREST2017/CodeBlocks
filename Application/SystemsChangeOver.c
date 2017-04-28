@@ -133,7 +133,7 @@ WM_HWIN CreateSystemsChangeOver(void)
     }
     else
     {
-        manual_mode =0;
+        manual_mode = 0;
     }
 
     systemChangeOverWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);

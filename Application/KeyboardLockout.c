@@ -43,6 +43,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         unlockedButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_UNLOCOKED);
         //
         lockedButton = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_LOCKED);
+
         if (unlocked_mode)
         {
             WM_SetCallback(unlockedButton, buttonOn22_cb);
@@ -103,6 +104,7 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 break;
             }
             break;
+
         case ID_BUTTON_LOCKED:
             switch(NCode)
             {

@@ -81,7 +81,6 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 metric = celcius;
-                temperatureScale = metric;
                 WM_MESSAGE msg;
                 msg.MsgId = WM_INIT_DIALOG;
                 WM_SendMessage(homeWin, &msg);

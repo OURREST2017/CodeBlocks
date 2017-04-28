@@ -148,7 +148,7 @@ char *LANG(char *s)
         else if (strcmp(s, "Hour") == 0) strcpy(o, "Hora");
         else if (strcmp(s, "Keyboard Lockout") == 0) strcpy(o, "Bloqueo del teclado");
         else if (strcmp(s, "Languages") == 0) strcpy(o, "Idiomas");
-        else if (strcmp(s, "Lock") == 0) strcpy(o, "Bloquear");
+        else if (strcmp(s, "Lock Code") == 0) strcpy(o, "Codigo bloqueado");
         else if (strcmp(s, "Locked") == 0) strcpy(o, "Bloqueado");
         else if (strcmp(s, "MAC Address:") == 0) strcpy(o, "Dirección MAC:");
         else if (strcmp(s, "Manual") == 0) strcpy(o, "Manual");
@@ -264,11 +264,10 @@ void getCurrentTime()
     current_day =  dt.Date;
     current_month = dt.Month;
     current_wday = dt.WeekDay;
-    //current_dst = dt.daylight;
 
     current_hour = tm.Hours;
     current_minute = tm.Minutes;
-    //current_ampm = (tm.Hour <= 12) ? 0 : 1;
+    current_ampm = (tm.Hours <= 12) ? 0 : 1;
 #endif
 }
 
@@ -294,7 +293,6 @@ int  scheduleTemperature(int tod, char *day, char *mode)
             sprintf(buf, "%s, tod=%d, S=%d, E=%d, T=%d",
                     selectedDay.periods[i].label, tod, startTime,
                     stopTime, selectedDay.periods[i].cool);
-//GUI_ErrorOut(buf);
             if (stopTime < startTime)
             {
                 if (st < stopTime || st >= startTime)
@@ -368,11 +366,9 @@ void loadConfig()
 
         strcpy(changeOver, getStringObject(config_root,"changeOver"));
         strcpy(configVersion, getStringObject(config_root,"configVersion"));
-        coolToDegrees = (float)getDoubleObject(config_root,"coolToDegrees");
         currFwVersion = getStringObject(config_root,"currFwVersion");
         strcpy(currentSchedule, getStringObject(config_root,"currentSchedule"));
         dst = getBoolObject(config_root,"dst");
-        enableSchedule = getBoolObject(config_root,"enableSchedule");
         epochTime = getIntObject(config_root,"epochTime");
         strcpy(fanControl, getStringObject(config_root,"fanControl"));
         strcpy(firstNameText, getStringObject(config_root,"firstNameText"));
@@ -382,7 +378,6 @@ void loadConfig()
         firstTime = getBoolObject(config_root,"firstTime");
 
         strcpy(firmwareUrl, getStringObject(config_root,"firmwareUrl"));
-        heatToDegrees = (float)getDoubleObject(config_root,"heatToDegrees");
         strcpy(hvacMode, getStringObject(config_root,"hvacMode"));
         strcpy(keyboardLock, getStringObject(config_root,"keyboardLock"));
         strcpy(language,  getStringObject(config_root,"language"));
@@ -391,7 +386,6 @@ void loadConfig()
         nextFwVersion = getStringObject(config_root,"nextFwVersion");
         strcpy(ownersName,  getStringObject(config_root,"ownersName"));
         resetUnit = getIntObject(config_root,"reset");
-        schedulePeriods = getIntObject(config_root,"schedulePeriods");
         strcpy(schedulingOption, getStringObject(config_root,"schedulingOption"));
         securityMode = getStringObject(config_root,"securityMode");
 
@@ -408,11 +402,6 @@ void loadConfig()
         strcpy(myWifiNetwork, getStringObject(config_root,"myWifiNetwork"));
 
         strcpy(thermo_rooms[0], getStringObject(config_root,"thermo1"));
-        strcpy(thermo_rooms[1], getStringObject(config_root,"thermo2"));
-        strcpy(thermo_rooms[2], getStringObject(config_root,"thermo3"));
-        strcpy(thermo_rooms[3], getStringObject(config_root,"thermo4"));
-        strcpy(thermo_rooms[4], getStringObject(config_root,"thermo5"));
-        strcpy(thermo_rooms[5], getStringObject(config_root,"thermo6"));
 
         cJSON *hvac = cJSON_GetObjectItem(config_root,"hvacConfig");
 
@@ -462,7 +451,6 @@ void loadConfig()
         coolToDegrees = 78;
         currFwVersion = "1.0.0";
         dst = 1;;
-        enableSchedule = 0;
         epochTime = 0;
 
         strcpy(fanControl, "thermostat");
@@ -479,13 +467,11 @@ void loadConfig()
         strcpy(language,  "english");
 
         strcpy(lockCode, "0000");
-        temperatureScale = 0;
         metric = 0;
         nextFwVersion = "1.0.0";
         strcpy(ownersName, "Frank");
         resetUnit = 0;
         strcpy(currentSchedule, "all days");
-        schedulePeriods = 2;
         strcpy(schedulingOption, "programmable");
         securityMode = "high";
 
@@ -510,12 +496,7 @@ void loadConfig()
 
         strcpy(myWifiNetwork, "My Wifi Network");
 
-        strcpy(thermo_rooms[0], "Living Room");
-        strcpy(thermo_rooms[1], "Master Bedroom");
-        strcpy(thermo_rooms[2], "Office");
-        strcpy(thermo_rooms[3], "Room 4");
-        strcpy(thermo_rooms[4], "Room 5");
-        strcpy(thermo_rooms[5], "Room 6");
+        strcpy(thermo_rooms[0], "Room 1");
 
         char *scheds[] = {"vacation", "weekday", "weekend", "all days", "each day"};
 
@@ -598,17 +579,7 @@ void loadConfig()
     insideHumidity = 30;
     insideTemperature = 72.5f;
 
-//    if (strcmp(hvacMode, "auto") == 0) {
-//        heatToDegrees = lowerDegreeLimit;
-//        coolToDegrees = upperDegreeLimit;
-//    }
-
-    upperDegreeLimit = coolToDegrees;
-    lowerDegreeLimit = heatToDegrees;
-    temperatureScale = metric;
-
     idleTimeOut = 360000;
-
     heat_control = 0;
     fan_control = 0;
     cool_control = 0;

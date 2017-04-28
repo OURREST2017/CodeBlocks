@@ -36,8 +36,6 @@ static WM_HWIN coolBox, heatBox;
 extern GUI_CONST_STORAGE GUI_BITMAP bmchecked36;
 extern GUI_CONST_STORAGE GUI_BITMAP bmunchecked36;
 
-static int cool_on, heat_on;
-
 static void cool_on_cb(WM_MESSAGE * pMsg)
 {
     switch (pMsg->MsgId)
