@@ -119,18 +119,16 @@ static WM_HWIN weekdayButton, weekendButton, textTitle, scheduleHeaderWin;
 static WM_HWIN mondayWin, tuesdayWin, wednesdayWin, thursdayWin, fridayWin, saturdayWin, sundayWin;
 
 static int period, selected_period, selected_slot, each_day, selected_day;
-static void  setDays(WM_HWIN *, int),  setDays1(WM_HWIN *, int);
+static void  setDays(WM_HWIN *, int);
 
 static struct days_s days[7];
-static struct periods_s getPeriod(char * p);
-static int getPeriodIndex(char * p);
 static struct days_s selectedDay;
-static void setSchedule(char *sched, char *day, char *per, struct periods_s period);
 
 static char *days_text[] =
 {
     "monday","tuesday","wednesday","thursday","friday","saturday","sunday"
 };
+
 static char *periods_text[] = {"wake","leave","return","sleep"};
 static char edit_title[20], edit_sched[20];
 static void setPeriods();
@@ -149,6 +147,40 @@ extern GUI_CONST_STORAGE GUI_BITMAP bmup_lg;
 extern GUI_CONST_STORAGE GUI_BITMAP bmdn_lg;
 
 extern char *convertTemp(float temp_set);
+extern char * getFormattedTime(int st);
+extern struct schedules_s getSchedule(char *s);
+extern struct days_s getDay(schedules_s *schedule, char * day);
+extern struct periods_s getMyPeriod(char *sched, char *d, char *p);
+extern int getIndex(struct days_s *day, char * s);
+
+static void setSchedule(char *sched, char *day, char *per, struct periods_s period)
+{
+    int i,j,k;
+    char buf[50];
+
+    for (i=0; i<5; i++)
+    {
+        if (strcmp(schedules[i].label, sched) == 0)
+        {
+            for (j=0; j<schedules[i].day_count; j++)
+            {
+                if (strcmp(schedules[i].days[j].label, day) == 0)
+                {
+                    for (k=0; k<4; k++)
+                    {
+                        if (strcmp(schedules[i].days[j].periods[k].label, per) == 0)
+                        {
+                            schedules[i].days[j].periods[k] = period;
+//                            sprintf(buf,"%s,%d", period.label, period.heat);
+//                            GUI_ErrorOut(buf);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
 static char * updateTime(char *tm, int dr, int *tout)
 {
@@ -194,9 +226,12 @@ static char * updateTime(char *tm, int dr, int *tout)
         }
     }
 
-    if (am == 0) {
+    if (am == 0)
+    {
         *tout = hh * 100 + mm;
-    } else {
+    }
+    else
+    {
         *tout = (hh + 12) * 100 + mm;
     }
     sprintf(buf,"%d:%02d%s", hh, mm, (am == 1) ? "am" : "pm");
@@ -321,6 +356,112 @@ static void slot_cb(WM_MESSAGE * pMsg)
     }
 }
 
+static void upButton_cb(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        if (BUTTON_IsPressed(pMsg->hWin))
+        {
+            GUI_DrawBitmap(&bmup_lg, 0, 0);
+        }
+        else
+        {
+            GUI_DrawBitmap(&bmup_lg, 0, 0);
+        }
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+
+static void dnButton_cb(WM_MESSAGE * pMsg)
+{
+    switch (pMsg->MsgId)
+    {
+    case WM_PAINT:
+        if (BUTTON_IsPressed(pMsg->hWin))
+        {
+            GUI_DrawBitmap(&bmdn_lg, 0, 0);
+        }
+        else
+        {
+            GUI_DrawBitmap(&bmdn_lg, 0, 0);
+        }
+        break;
+    default:
+        BUTTON_Callback(pMsg);
+        break;
+    }
+}
+
+static void resetFonts(WM_HWIN win, int id)
+{
+    WM_HWIN txt;
+    int i;
+    for (i=0; i<7; i++)
+    {
+        txt = WM_GetDialogItem(win, week_days[i]);
+        TEXT_SetFont(txt, &GUI_FontTahoma33hAA4);
+    }
+    txt = WM_GetDialogItem(win, id);
+    TEXT_SetFont(txt, &GUI_FontTahoma33hAA4B);
+}
+
+static struct days_s getEachDay(char * d)
+{
+    int sz1 = sizeof(days) / sizeof(days[0]);
+    int i;
+    for (i=0; i<sz1; i++)
+    {
+        if (strcmp(days[i].label, d) == 0)
+        {
+            selected_day = i;
+            return days[i];
+            break;
+        }
+    }
+}
+
+static void getDayPeriods()
+{
+    int i,k,j;
+
+    int sz1 = sizeof(schedules) / sizeof(schedules[0]);
+    int sz2 = sizeof(days) / sizeof(days[0]);
+
+    for (i=0; i<sz1; i++)
+    {
+        if (strcmp(schedules[i].label, "each day") == 0)
+        {
+            for (k=0; k<sz2; k++)
+            {
+                days[k] = schedules[i].days[k];
+            }
+            break;
+        }
+    }
+}
+
+static void setDays(WM_HWIN *hWin, int d)
+{
+    WM_HWIN  hItem;
+
+    selectedDay = getEachDay(days_text[d]);
+    setPeriods();
+}
+
+static int getPeriodIndex(char * s)
+{
+    return getIndex(&selectedDay, s);
+}
+
+static struct periods_s getPeriod(char * s)
+{
+    return getMyPeriod(selectedSchedule.label, selectedDay.label, s);
+}
+
 static void invalidateButtons(int sel)
 {
     WM_InvalidateWindow(wake_time_win);
@@ -367,105 +508,38 @@ static void invalidateButtons(int sel)
     sleep_cool_on   = (sel == 11);
 }
 
-static void upButton_cb(WM_MESSAGE * pMsg)
+static void setPeriods()
 {
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        if (BUTTON_IsPressed(pMsg->hWin))
-        {
-            GUI_DrawBitmap(&bmup_lg, 0, 0);
-        }
-        else
-        {
-            GUI_DrawBitmap(&bmup_lg, 0, 0);
-        }
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
+    char buf[10];
 
-static void dnButton_cb(WM_MESSAGE * pMsg)
-{
-    switch (pMsg->MsgId)
-    {
-    case WM_PAINT:
-        if (BUTTON_IsPressed(pMsg->hWin))
-        {
-            GUI_DrawBitmap(&bmdn_lg, 0, 0);
-        }
-        else
-        {
-            GUI_DrawBitmap(&bmdn_lg, 0, 0);
-        }
-        break;
-    default:
-        BUTTON_Callback(pMsg);
-        break;
-    }
-}
+    TEXT_SetText(wake_time_win, getFormattedTime(getPeriod(periods_text[0]).startTime));
+    TEXT_SetText(leave_time_win,getFormattedTime(getPeriod(periods_text[1]).startTime));
+    TEXT_SetText(return_time_win,getFormattedTime(getPeriod(periods_text[2]).startTime));
+    TEXT_SetText(sleep_time_win,getFormattedTime(getPeriod(periods_text[3]).startTime));
 
-static char * getTime(int st)
-{
-    static char buf[30];
+    sprintf(buf,"%s°", convertTemp((float)getPeriod(periods_text[0]).heat));
+    TEXT_SetText(wake_heat_win, buf);
 
-    int h = st/100;
-    int m = st - (st/100)*100;
+    sprintf(buf,"%s°", convertTemp((float)getPeriod(periods_text[1]).heat));
+    TEXT_SetText(leave_heat_win, buf);
 
-    if (h > 12) h -= 12;
-    sprintf(buf, "%d:%02d%s",
-            h, m, ((st >= 0 && st <= 1201) ? "am" : "pm"));
-    return buf;
-}
+    sprintf(buf,"%s°", convertTemp((float)getPeriod(periods_text[2]).heat));
+    TEXT_SetText(return_heat_win, buf);
 
-static void resetFonts(WM_HWIN win, int id)
-{
-    WM_HWIN txt;
-    int i;
-    for (i=0; i<7; i++)
-    {
-        txt = WM_GetDialogItem(win, week_days[i]);
-        TEXT_SetFont(txt, &GUI_FontTahoma33hAA4);
-    }
-    txt = WM_GetDialogItem(win, id);
-    TEXT_SetFont(txt, &GUI_FontTahoma33hAA4B);
-}
+    sprintf(buf,"%s°", convertTemp((float)getPeriod(periods_text[3]).heat));
+    TEXT_SetText(sleep_heat_win, buf);
 
-static struct days_s getDay(char * d)
-{
-    int sz1 = sizeof(days) / sizeof(days[0]);
-    int i;
-    for (i=0; i<sz1; i++)
-    {
-        if (strcmp(days[i].label, d) == 0)
-        {
-            selected_day = i;
-            return days[i];
-            break;
-        }
-    }
-}
+    sprintf(buf,"%s°", convertTemp((float)getPeriod(periods_text[0]).cool));
+    TEXT_SetText(wake_cool_win, buf);
 
-static void getDayPeriods()
-{
-    int i,k,j;
+    sprintf(buf,"%s°", convertTemp((float)getPeriod(periods_text[1]).cool));
+    TEXT_SetText(leave_cool_win, buf);
 
-    int sz1 = sizeof(schedules) / sizeof(schedules[0]);
-    int sz2 = sizeof(days) / sizeof(days[0]);
+    sprintf(buf,"%s°", convertTemp((float)getPeriod(periods_text[2]).cool));
+    TEXT_SetText(return_cool_win, buf);
 
-    for (i=0; i<sz1; i++)
-    {
-        if (strcmp(schedules[i].label, "each day") == 0)
-        {
-            for (k=0; k<sz2; k++)
-            {
-                days[k] = schedules[i].days[k];
-            }
-            break;
-        }
-    }
+    sprintf(buf,"%s°", convertTemp((float)getPeriod(periods_text[3]).cool));
+    TEXT_SetText(sleep_cool_win, buf);
 }
 
 static void selectWeekType()
@@ -734,22 +808,22 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         TEXT_SetText(hItem, LANG("Time"));
 
         wake_time_win = WM_GetDialogItem(pMsg->hWin, ID_TEXT_WAKE_TIME);
-        TEXT_SetText(wake_time_win, getTime(getPeriod(periods_text[0]).startTime));
+        TEXT_SetText(wake_time_win, getFormattedTime(getPeriod(periods_text[0]).startTime));
         TEXT_SetTextColor(wake_time_win, 0x808080);
         WM_SetCallback(wake_time_win, slot_cb);
 
         leave_time_win = WM_GetDialogItem(pMsg->hWin, ID_TEXT_LEAVE_TIME);
-        TEXT_SetText(leave_time_win, getTime(getPeriod(periods_text[1]).startTime));
+        TEXT_SetText(leave_time_win, getFormattedTime(getPeriod(periods_text[1]).startTime));
         TEXT_SetTextColor(leave_time_win, 0x808080);
         WM_SetCallback(leave_time_win, slot_cb);
 
         return_time_win = WM_GetDialogItem(pMsg->hWin, ID_TEXT_RETURN_TIME);
-        TEXT_SetText(return_time_win, getTime(getPeriod(periods_text[2]).startTime));
+        TEXT_SetText(return_time_win, getFormattedTime(getPeriod(periods_text[2]).startTime));
         TEXT_SetTextColor(return_time_win, 0x808080);
         WM_SetCallback(return_time_win, slot_cb);
 
         sleep_time_win = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SLEEP_TIME);
-        TEXT_SetText(sleep_time_win, getTime(getPeriod(periods_text[3]).startTime));
+        TEXT_SetText(sleep_time_win, getFormattedTime(getPeriod(periods_text[3]).startTime));
         TEXT_SetTextColor(sleep_time_win, 0x808080);
         WM_SetCallback(sleep_time_win, slot_cb);
         //
@@ -1055,31 +1129,55 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                     break;
                 case 4:
                     temperature = selectedDay.periods[selected_period].heat + 1;
-                    if (temperature == 86) temperature = 85;
+                    if (temperature == 83) temperature = 82;
                     sprintf(buf, "%s°", convertTemp((float)temperature));
                     TEXT_SetText(wake_heat_win,buf);
                     selectedDay.periods[selected_period].heat = temperature;
+                    if (selectedDay.periods[selected_period].cool - temperature == 2)
+                    {
+                        selectedDay.periods[selected_period].cool = temperature + 3;
+                        sprintf(buf, "%s°", convertTemp((float)temperature + 3));
+                        TEXT_SetText(wake_cool_win, buf);
+                    }
                     break;
                 case 5:
                     temperature = selectedDay.periods[selected_period].heat + 1;
-                    if (temperature == 86) temperature = 85;
+                    if (temperature == 83) temperature = 82;
                     sprintf(buf, "%s°", convertTemp((float)temperature));
                     TEXT_SetText(leave_heat_win, buf);
                     selectedDay.periods[selected_period].heat = temperature;
+                    if (selectedDay.periods[selected_period].cool - temperature == 2)
+                    {
+                        selectedDay.periods[selected_period].cool = temperature + 3;
+                        sprintf(buf, "%s°", convertTemp((float)temperature + 3));
+                        TEXT_SetText(leave_cool_win, buf);
+                    }
                     break;
                 case 6:
                     temperature = selectedDay.periods[selected_period].heat + 1;
-                    if (temperature == 86) temperature = 85;
+                    if (temperature == 83) temperature = 82;
                     sprintf(buf, "%s°", convertTemp((float)temperature));
                     TEXT_SetText(return_heat_win,buf);
                     selectedDay.periods[selected_period].heat = temperature;
+                    if (selectedDay.periods[selected_period].cool - temperature == 2)
+                    {
+                        selectedDay.periods[selected_period].cool = temperature + 3;
+                        sprintf(buf, "%s°", convertTemp((float)temperature + 3));
+                        TEXT_SetText(return_cool_win, buf);
+                    }
                     break;
                 case 7:
                     temperature = selectedDay.periods[selected_period].heat + 1;
-                    if (temperature == 86) temperature = 85;
+                    if (temperature == 83) temperature = 82;
                     sprintf(buf, "%s°", convertTemp((float)temperature));
                     TEXT_SetText(sleep_heat_win,buf);
                     selectedDay.periods[selected_period].heat = temperature;
+                    if (selectedDay.periods[selected_period].cool - temperature == 2)
+                    {
+                        selectedDay.periods[selected_period].cool = temperature + 3;
+                        sprintf(buf, "%s°", convertTemp((float)temperature + 3));
+                        TEXT_SetText(sleep_cool_win, buf);
+                    }
                     break;
                 case 8:
                     temperature = selectedDay.periods[selected_period].cool + 1;
@@ -1123,6 +1221,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                     TEXT_GetText(wake_time_win, buf, 10);
                     TEXT_SetText(wake_time_win, updateTime(buf, -1, &tout));
                     selectedDay.periods[selected_period].startTime = tout;
+//                    sprintf(buf, "%d", getPeriod("leave").startTime);
+//                    GUI_ErrorOut(buf);
                     break;
                 case 1:
                     TEXT_GetText(leave_time_win, buf, 10);
@@ -1169,31 +1269,55 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                     break;
                 case 8:
                     temperature = selectedDay.periods[selected_period].cool - 1;
-                    if (temperature == 64) temperature = 65;
+                    if (temperature == 67) temperature = 68;
                     sprintf(buf, "%s°", convertTemp((float)temperature));
                     TEXT_SetText(wake_cool_win,buf);
                     selectedDay.periods[selected_period].cool = temperature;
+                    if (temperature - selectedDay.periods[selected_period].heat == 2)
+                    {
+                        selectedDay.periods[selected_period].heat = temperature - 3;
+                        sprintf(buf, "%s°", convertTemp((float)temperature - 3));
+                        TEXT_SetText(wake_heat_win, buf);
+                    }
                     break;
                 case 9:
                     temperature = selectedDay.periods[selected_period].cool - 1;
-                    if (temperature == 64) temperature = 65;
+                    if (temperature == 67) temperature = 68;
                     sprintf(buf, "%s°", convertTemp((float)temperature));
                     TEXT_SetText(leave_cool_win, buf);
                     selectedDay.periods[selected_period].cool = temperature;
+                    if (temperature - selectedDay.periods[selected_period].heat == 2)
+                    {
+                        selectedDay.periods[selected_period].heat = temperature - 3;
+                        sprintf(buf, "%s°", convertTemp((float)temperature - 3));
+                        TEXT_SetText(leave_heat_win, buf);
+                    }
                     break;
                 case 10:
                     temperature = selectedDay.periods[selected_period].cool - 1;
-                    if (temperature == 64) temperature = 65;
+                    if (temperature == 67) temperature = 68;
                     sprintf(buf, "%s°", convertTemp((float)temperature));
                     TEXT_SetText(return_cool_win,buf);
                     selectedDay.periods[selected_period].cool = temperature;
+                    if (temperature - selectedDay.periods[selected_period].heat == 2)
+                    {
+                        selectedDay.periods[selected_period].heat = temperature - 3;
+                        sprintf(buf, "%s°", convertTemp((float)temperature - 3));
+                        TEXT_SetText(return_heat_win, buf);
+                    }
                     break;
                 case 11:
                     temperature = selectedDay.periods[selected_period].cool - 1;
-                    if (temperature == 64) temperature = 65;
+                    if (temperature == 67) temperature = 68;
                     sprintf(buf, "%s°", convertTemp((float)temperature));
                     TEXT_SetText(sleep_cool_win,buf);
                     selectedDay.periods[selected_period].cool = temperature;
+                    if (temperature - selectedDay.periods[selected_period].heat == 2)
+                    {
+                        selectedDay.periods[selected_period].heat = temperature - 3;
+                        sprintf(buf, "%s°", convertTemp((float)temperature - 3));
+                        TEXT_SetText(sleep_heat_win, buf);
+                    }
                     break;
                 }
                 break;
@@ -1240,15 +1364,13 @@ static void _cbDialog(WM_MESSAGE * pMsg)
             switch(NCode)
             {
             case WM_NOTIFICATION_RELEASED:
-               GUI_Delay(100);
+                GUI_Delay(100);
                 int i;
-                char buf[100];
                 for (i=0; i<4; i++)
                 {
                     setSchedule(selectedSchedule.label, selectedDay.label, periods_text[i],
                                 selectedDay.periods[getPeriodIndex(periods_text[i])]);
                 }
-
                 for (i=0; i<5; i++)
                 {
                     if (strcmp(schedules[i].label, tolow(schedulePeriod)) == 0)
@@ -1273,137 +1395,26 @@ static void _cbDialog(WM_MESSAGE * pMsg)
     }
 }
 
-static void setPeriods()
-{
-    char buf[10];
-
-    TEXT_SetText(wake_time_win, getTime(getPeriod(periods_text[0]).startTime));
-    TEXT_SetText(leave_time_win,getTime(getPeriod(periods_text[1]).startTime));
-    TEXT_SetText(return_time_win,getTime(getPeriod(periods_text[2]).startTime));
-    TEXT_SetText(sleep_time_win,getTime(getPeriod(periods_text[3]).startTime));
-
-    sprintf(buf,"%s°", convertTemp((float)getPeriod(periods_text[0]).heat));
-    TEXT_SetText(wake_heat_win, buf);
-
-    sprintf(buf,"%s°", convertTemp((float)getPeriod(periods_text[1]).heat));
-    TEXT_SetText(leave_heat_win, buf);
-
-    sprintf(buf,"%s°", convertTemp((float)getPeriod(periods_text[2]).heat));
-    TEXT_SetText(return_heat_win, buf);
-
-    sprintf(buf,"%s°", convertTemp((float)getPeriod(periods_text[3]).heat));
-    TEXT_SetText(sleep_heat_win, buf);
-
-    sprintf(buf,"%s°", convertTemp((float)getPeriod(periods_text[0]).cool));
-    TEXT_SetText(wake_cool_win, buf);
-
-    sprintf(buf,"%s°", convertTemp((float)getPeriod(periods_text[1]).cool));
-    TEXT_SetText(leave_cool_win, buf);
-
-    sprintf(buf,"%s°", convertTemp((float)getPeriod(periods_text[2]).cool));
-    TEXT_SetText(return_cool_win, buf);
-
-    sprintf(buf,"%s°", convertTemp((float)getPeriod(periods_text[3]).cool));
-    TEXT_SetText(sleep_cool_win, buf);
-}
-
-static void setDays(WM_HWIN *hWin, int d)
-{
-    char buf [20];
-    WM_HWIN  hItem;
-
-    selectedDay = getDay(days_text[d]);
-    setPeriods();
-}
-
-static int getPeriodIndex(char * s)
-{
-    int i;
-    for (i=0; i<4; i++)
-    {
-        if (strcmp(selectedDay.periods[i].label, s) == 0)
-        {
-            return i;
-        }
-    }
-    return 0;
-}
-
-static struct periods_s getPeriod(char * s)
-{
-    int i;
-    for (i=0; i<4; i++)
-    {
-        if (strcmp(selectedDay.periods[i].label, s) == 0)
-        {
-            return selectedDay.periods[i];
-        }
-    }
-}
-
-static void setSchedule(char *sched, char *day, char *per, struct periods_s period)
-{
-    int i,j,k;
-    char buf[50];
-
-    for (i=0; i<5; i++)
-    {
-        if (strcmp(schedules[i].label, sched) == 0)
-        {
-            for (j=0; j<schedules[i].day_count; j++)
-            {
-                if (strcmp(schedules[i].days[j].label, day) == 0)
-                {
-                    for (k=0; k<4; k++)
-                    {
-                        if (strcmp(schedules[i].days[j].periods[k].label, per) == 0)
-                        {
-                            schedules[i].days[j].periods[k] = period;
-                            return;
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
 WM_HWIN CreateEditSchedule();
 WM_HWIN CreateEditSchedule()
 {
     WM_HWIN hWin;
-    int i;
 
     strcpy(edit_title, scheduleDay);
     strcpy(edit_sched, schedulePeriod);
+
+    selectedSchedule = getSchedule(tolow(schedulePeriod));
 
     if (strcmp(edit_title, "monday") == 0)
     {
         each_day = 1;
         getDayPeriods();
-        selectedDay = getDay(scheduleDay);
+        selectedDay = getEachDay(scheduleDay);
     }
     else
     {
         each_day = 0;
-    }
-
-    for (i=0; i<5; i++)
-    {
-        if (strcmp(schedules[i].label, tolow(schedulePeriod)) == 0)
-        {
-            selectedSchedule = schedules[i];
-            break;
-        }
-    }
-
-    for (i=0; i<selectedSchedule.day_count; i++)
-    {
-        if (strcmp(selectedSchedule.days[i].label, tolow(scheduleDay)) == 0)
-        {
-            selectedDay = selectedSchedule.days[i];
-            break;
-        }
+        selectedDay = getDay(&selectedSchedule, tolow(scheduleDay));
     }
 
     selected_period = getPeriodIndex(periods_text[period]);

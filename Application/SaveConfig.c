@@ -70,8 +70,6 @@ void saveConfig()
     writeString("currFwVersion", currFwVersion, ",", f);
     writeBool("dst", dst, ",", f);
     writeInt("epochTime", epochTime, ",", f);
-    writeString("fanControl", fanControl, ",", f);
-    writeString("firstNameText", firstNameText, ",", f);
     writeString("fanMode", fanMode, ",", f);
     writeInt("filterChangeDate", filterChangeDate, ",", f);
     writeInt("filterLifeInDays", filterLifeInDays, ",", f);
@@ -116,7 +114,7 @@ void saveConfig()
             fprintf(f,"            \"startTime\": %d,\n",
                     schedules[i].days[0].periods[p].startTime);
             fprintf(f,"            \"stopTime\": %d\n",
-                    schedules[i].days[0].periods[p].stopTime);
+                    schedules[i].days[0].periods[p].next);
             fprintf(f,"          }");
             if (p != 3)
             {
@@ -155,7 +153,7 @@ void saveConfig()
             fprintf(f,"            \"startTime\": %d,\n",
                     schedules[i].days[k].periods[p].startTime);
             fprintf(f,"            \"stopTime\": %d\n",
-                    schedules[i].days[k].periods[p].stopTime);
+                    schedules[i].days[k].periods[p].next);
             fprintf(f,"          }");
             if (p != 3)
             {
@@ -186,7 +184,7 @@ void saveConfig()
     writeString("serial", serialNumber, ",", f);
     writeBool("tempHold", tempHold, ",", f);
     writeInt("thermoControls", thermoControls, ",", f);
-    writeInt("temperatureSetPoint", temperatureSetPoint, ",", f);
+    writeInt("temperatureSetPoint", (int)temperatureSetPoint, ",", f);
     writeInt("timeZoneOffset", timeZoneOffset, ",", f);
     writeBool("unitLocked", unitLocked, ",", f);
     writeString("zipCode", zipCode, "", f);

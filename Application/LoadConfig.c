@@ -235,6 +235,54 @@ char * tolow(char *s)
     return o;
 }
 
+char *convertTemp(float temp_set)
+{
+    float inside_temp;
+    static char tbuf[10];
+
+    if (metric)
+    {
+        inside_temp = (temp_set - 32.) * 5./9.;
+        sprintf(tbuf,"%d.%1d", (int)inside_temp, (int)(((inside_temp - (int)inside_temp) * 100)/10));
+    }
+    else
+    {
+        sprintf(tbuf,"%d", (int)temp_set);
+    }
+
+    return tbuf;
+}
+
+char * getFormattedTime(int st)
+{
+    static char buf[30];
+
+    int h = st/100;
+    int m = st - (st/100)*100;
+
+    if (h > 12) h -= 12;
+    sprintf(buf, "%d:%02d%s",
+            h, m, ((st >= 0 && st <= 1201) ? "am" : "pm"));
+    return buf;
+}
+
+int getScheduleTime()
+{
+#ifdef CODEBLOCK
+    time_t now = time(NULL);
+    struct tm *info;
+
+    time( &now );
+    info = localtime( &now );
+    int h = info->tm_hour * 100 + info->tm_min;
+#else
+    RTC_TimeTypeDef tm;
+    BSP_RTC_GetTime(&tm);
+    int h = tm.Hours * 100 + tm.Minutes;;
+#endif
+    return h;
+}
+
 void getCurrentTime()
 {
 #ifdef CODEBLOCK
@@ -271,14 +319,106 @@ void getCurrentTime()
 #endif
 }
 
-int  scheduleTemperature(int tod, char *day, char *mode)
+int getIndex(struct days_s *day, char * s)
 {
-    int i,k;
-    int startTime, stopTime;
-    struct days_s selectedDay;
+    int i;
+    for (i=0; i<4; i++)
+    {
+        if (strcmp(day->periods[i].label, s) == 0)
+        {
+            return i;
+        }
+    }
+    return 0;
+}
 
-    int st = tod;
-    char buf[50];
+struct days_s getDay(schedules_s *schedule, char * day)
+{
+    int k;
+    for (k=0; k<schedule->day_count; k++)
+    {
+        if (strcmp(schedule->days[k].label, day) == 0) break;
+    }
+    return  schedule->days[k];
+}
+
+struct schedules_s getSchedule(char *s)
+{
+    int i;
+    for (i=0; i<5; i++)
+    {
+        if (strcmp(schedules[i].label, s) == 0) break;
+    }
+    return  schedules[i];
+}
+
+struct periods_s getMyPeriod(char *sched, char *d, char *p) {
+    struct days_s day;
+    struct periods_s period;
+    struct schedules_s schedule;
+
+    schedule = getSchedule(sched);
+    day = getDay(&schedule, d);
+
+    int i;
+    for (i=0; i<4; i++)
+    {
+        if (strcmp(day.periods[i].label, p) == 0)  break;
+    }
+    return day.periods[i];
+}
+
+struct periods_s getMyTimePeriod(char *sched, int tod, char *day) {
+    struct days_s selectedDay;
+    struct periods_s period;
+    struct schedules_s schedule;
+    int i,k, itemp;;
+    int startTime, stopTime;
+    char *periods[] = {"wake","leave","return","sleep"};
+
+    schedule = getSchedule(sched);
+
+    for (k=0; k<schedule.day_count; k++)
+    {
+        if (strcmp(schedule.days[k].label, day) != 0) continue;
+        selectedDay = schedule.days[k];
+
+        for (i=0; i<4; i++)
+        {
+            period = selectedDay.periods[getIndex(&selectedDay, periods[i])];
+            startTime = period.startTime;
+            stopTime = selectedDay.periods[getIndex(&selectedDay, period.next)].startTime;
+
+            if (stopTime < startTime)
+            {
+                if (tod < stopTime || tod >= startTime)
+                {
+                    return period;
+                }
+            }
+            else
+            {
+                if (tod >= startTime && tod < stopTime)
+                {
+                    return period;
+                }
+            }
+        }
+    }
+
+    return period;
+}
+
+float scheduleTemperature(int tod, char *day, char *mode)
+{
+    int i,k, itemp;;
+    int startTime, stopTime;
+    float cool, heat;
+    struct days_s selectedDay;
+    struct periods_s period;
+    char *periods[] = {"wake","leave","return","sleep"};
+
+    char buf[100];
 
     for (k=0; k<selectedSchedule.day_count; k++)
     {
@@ -287,37 +427,40 @@ int  scheduleTemperature(int tod, char *day, char *mode)
 
         for (i=0; i<4; i++)
         {
-            startTime = selectedDay.periods[i].startTime;
-            stopTime = selectedDay.periods[i].stopTime;
+            period = selectedDay.periods[getIndex(&selectedDay, periods[i])];
+            startTime = period.startTime;
+            stopTime = selectedDay.periods[getIndex(&selectedDay, period.next)].startTime;
 
-            sprintf(buf, "%s, tod=%d, S=%d, E=%d, T=%d",
-                    selectedDay.periods[i].label, tod, startTime,
-                    stopTime, selectedDay.periods[i].cool);
+            cool = period.cool;
+            heat = period.heat;
+//            sprintf(buf, "day=%s, per=%s, tod=%d, S=%d, E=%d, C=%f, H=%f\n", day,
+//                    period.label, tod, startTime, stopTime, cool, heat);
+            //GUI_ErrorOut(buf);
             if (stopTime < startTime)
             {
-                if (st < stopTime || st >= startTime)
+                if (tod < stopTime || tod >= startTime)
                 {
                     if (strcmp(mode, "cool") == 0) {
-                        return selectedDay.periods[i].cool;
+                        return cool;
                     } else {
-                        return selectedDay.periods[i].heat;
+                        return heat;
                     }
                 }
             }
             else
             {
-                if (st >= startTime && st <= stopTime)
+                if (tod >= startTime && tod < stopTime)
                 {
                     if (strcmp(mode, "cool") == 0) {
-                        return selectedDay.periods[i].cool;
+                        return cool;
                     } else {
-                        return selectedDay.periods[i].heat;
+                        return heat;
                     }
                 }
             }
         }
     }
-    return 78;
+    return 72.;
 }
 
 int getIntObject(cJSON *j, char * o)
@@ -370,8 +513,6 @@ void loadConfig()
         strcpy(currentSchedule, getStringObject(config_root,"currentSchedule"));
         dst = getBoolObject(config_root,"dst");
         epochTime = getIntObject(config_root,"epochTime");
-        strcpy(fanControl, getStringObject(config_root,"fanControl"));
-        strcpy(firstNameText, getStringObject(config_root,"firstNameText"));
         strcpy(fanMode, getStringObject(config_root,"fanMode"));
         filterChangeDate = getIntObject(config_root,"filterChangeDate");
         filterLifeInDays = getIntObject(config_root,"filterLifeInDays");
@@ -393,7 +534,7 @@ void loadConfig()
         holdMode = getBoolObject(config_root,"tempHold");
         strcpy(currentScheme, getStringObject(config_root,"themeScheme"));
         thermostatControls = getIntObject(config_root,"thermostatControls");
-        temperatureSetPoint = getIntObject(config_root,"temperatureSetPoint");
+        temperatureSetPoint = (float)getIntObject(config_root,"temperatureSetPoint");
         timeZoneOffset = getIntObject(config_root,"timeZoneOffset");
         unitLocked = getBoolObject(config_root,"unitLocked");
         strcpy(zipCode, getStringObject(config_root,"zipCode"));
@@ -435,7 +576,7 @@ void loadConfig()
                     periods.heat = cJSON_GetObjectItem(p,"heat")->valueint;
                     periods.cool = cJSON_GetObjectItem(p,"cool")->valueint;
                     periods.startTime = cJSON_GetObjectItem(p,"startTime")->valueint;
-                    periods.stopTime = cJSON_GetObjectItem(p,"stopTime")->valueint;
+                    periods.next = cJSON_GetObjectItem(p,"next")->valuestring;
                     days.periods[j] = periods;
                 }
                 schedules[i].days[k] = days;
@@ -453,8 +594,6 @@ void loadConfig()
         dst = 1;;
         epochTime = 0;
 
-        strcpy(fanControl, "thermostat");
-        strcpy(firstNameText, "Frank");
         strcpy(fanMode, "auto");
         filterChangeDate = 0;
         filterLifeInDays = 0;
@@ -477,7 +616,7 @@ void loadConfig()
 
         strcpy(serialNumber, "1234567890");
         thermostatControls = 3;
-        temperatureSetPoint = 72;
+        temperatureSetPoint = 72.;
         timeZoneOffset = -5;
         unitLocked = 1;
         strcpy(zipCode, "12345");
@@ -500,7 +639,7 @@ void loadConfig()
 
         char *scheds[] = {"vacation", "weekday", "weekend", "all days", "each day"};
 
-        int hh, mm, i, k = 0;
+        int i, k = 0;
         for (i=0; i<4; i++)
         {
             schedules[i].label = scheds[i];
@@ -511,26 +650,26 @@ void loadConfig()
             schedules[i].days[k].periods[0].label = "wake";
             schedules[i].days[k].periods[0].cool = 74;
             schedules[i].days[k].periods[0].heat = 68;
-            schedules[i].days[k].periods[0].startTime = 615;
-            schedules[i].days[k].periods[0].stopTime = 845;
+            schedules[i].days[k].periods[0].startTime = 600;
+            schedules[i].days[k].periods[0].next = "leave";
 
             schedules[i].days[k].periods[1].label = "leave";
             schedules[i].days[k].periods[1].cool = 74;
             schedules[i].days[k].periods[1].heat = 68;
             schedules[i].days[k].periods[1].startTime = 800;
-            schedules[i].days[k].periods[1].stopTime = 1700;
+            schedules[i].days[k].periods[1].next = "return";
 
             schedules[i].days[k].periods[2].label = "return";
             schedules[i].days[k].periods[2].cool = 72;
             schedules[i].days[k].periods[2].heat = 68;
             schedules[i].days[k].periods[2].startTime = 1700;
-            schedules[i].days[k].periods[2].stopTime = 2000;
+            schedules[i].days[k].periods[2].next = "sleep";
 
             schedules[i].days[k].periods[3].label = "sleep";
             schedules[i].days[k].periods[3].cool = 76;
             schedules[i].days[k].periods[3].heat = 70;
-            schedules[i].days[k].periods[3].startTime = 2000;
-            schedules[i].days[k].periods[3].stopTime = 600;
+            schedules[i].days[k].periods[3].startTime = 2200;
+            schedules[i].days[k].periods[3].next = "wake";
 
             schedules[i].day_count = 1;
         }
@@ -550,26 +689,26 @@ void loadConfig()
             schedules[i].days[k].periods[0].label = "wake";
             schedules[i].days[k].periods[0].cool = 74;
             schedules[i].days[k].periods[0].heat = 68;
-            schedules[i].days[k].periods[0].startTime = 615;
-            schedules[i].days[k].periods[0].stopTime = 845;
+            schedules[i].days[k].periods[0].startTime = 600;
+            schedules[i].days[k].periods[0].next = "leave";
 
             schedules[i].days[k].periods[1].label = "leave";
             schedules[i].days[k].periods[1].cool = 74;
             schedules[i].days[k].periods[1].heat = 68;
             schedules[i].days[k].periods[1].startTime = 800;
-            schedules[i].days[k].periods[1].stopTime = 1700;
+            schedules[i].days[k].periods[1].next = "return";
 
             schedules[i].days[k].periods[2].label = "return";
             schedules[i].days[k].periods[2].cool = 72;
             schedules[i].days[k].periods[2].heat = 68;
             schedules[i].days[k].periods[2].startTime = 1700;
-            schedules[i].days[k].periods[2].stopTime = 2000;
+            schedules[i].days[k].periods[2].next = "sleep";
 
             schedules[i].days[k].periods[3].label = "sleep";
             schedules[i].days[k].periods[3].cool = 76;
             schedules[i].days[k].periods[3].heat = 70;
-            schedules[i].days[k].periods[3].startTime = 2000;
-            schedules[i].days[k].periods[3].stopTime = 600;
+            schedules[i].days[k].periods[3].startTime = 2200;
+            schedules[i].days[k].periods[3].next = "wake";
         }
     }
 
@@ -596,8 +735,10 @@ void loadConfig()
         }
     }
 
+    wifiStrength = 2;
     tempHighOutside = 0;
     tempLowOutside = 999999;
+
 
     tempHighInside = 0;
     tempLowInside = 999999;

@@ -11,9 +11,11 @@ static int compressor_off_time, heating_off_time;
 
 static char buf[60];
 static GUI_TIMER_HANDLE fan_timer;
-extern WM_HWIN textDebug;
-extern int scheduleTemperature(int tod, char *day, char *mode), hide_debug;
-extern WM_HWIN hvacHeat, hvacCool, hvacFan;
+
+extern float scheduleTemperature(int tod, char *day, char *mode), hide_debug;
+extern float sensor_temperature, sensor_humidity;
+
+extern WM_HWIN hvacHeat, hvacCool, hvacFan, textDebug;
 
 int comp_run_start = 0, blower_run_start = 0;
 
@@ -136,23 +138,6 @@ void heatingOff()
     heating_state = 0;
 }
 
-static int getScheduleTime()
-{
-#ifdef CODEBLOCK
-    time_t now = time(NULL);
-    struct tm *info;
-
-    time( &now );
-    info = localtime( &now );
-    int h = info->tm_hour * 100 + info->tm_min;
-#else
-    RTC_TimeTypeDef tm;
-    BSP_RTC_GetTime(&tm);
-    int h = tm.Hours * 100 + tm.Minutes;;
-#endif
-    return h;
-}
-
 updateStats()
 {
     if (getScheduleTime() >= 2358 && getScheduleTime() <= 2)
@@ -201,22 +186,19 @@ updateStats()
     humidityLowInside = GUI_MIN(humidityLowInside, insideHumidity);
 }
 
-extern float sensor_temperature, sensor_humidity;
-
 void hvacControlCode()
 {
     float inside_temp, schedule_temp;
 
     inside_temp = 1.8 * sensor_temperature + 32.;
-    insideTemperature = inside_temp;
     insideHumidity = sensor_humidity;
-    schedule_temp = (float)scheduleTemperature(getScheduleTime(), currentSchedule, hvacMode);
+    schedule_temp = scheduleTemperature(getScheduleTime(), currentSchedule, hvacMode);
 
     updateStats();
 
     if (holdMode)
     {
-        float sp = (float)temperatureSetPoint;
+        float sp = temperatureSetPoint;
 
 #ifdef DEBUG_MODE
         float inside = inside_temp;
@@ -300,14 +282,18 @@ void hvacControlCode()
                 compressorOff();
             }
 
-//            if (inside_temp - schedule_temp > 1.5 && cool_control)
-//            {
-//                insideTemperature = inside_temp;
-//            }
-//            else if (inside_temp - schedule_temp <= 1.5 )
-//            {
-//                insideTemperature = schedule_temp;
-//            }
+            if (inside_temp - schedule_temp > 1.5 && cool_control)
+            {
+                insideTemperature = inside_temp;
+            }
+            else if (inside_temp < schedule_temp )
+            {
+                insideTemperature = inside_temp;
+            }
+            else if (insideTemperature > inside_temp )
+            {
+                insideTemperature = inside_temp;
+            }
         }
         else if (strcmp(hvacMode, "heat") == 0)
         {
@@ -321,11 +307,15 @@ void hvacControlCode()
                 heatingOff();
             }
 
-//            if (schedule_temp - inside_temp > 1.5 && heat_control)
-//            {
-//                insideTemperature = inside_temp;
-//            }
-//
+            if (schedule_temp - inside_temp > 1.5 && heat_control)
+            {
+                insideTemperature = inside_temp;
+            }
+
+            if (inside_temp >= schedule_temp)
+            {
+                insideTemperature = inside_temp;
+            }
 //            if (schedule_temp - inside_temp <= 0)
 //            {
 //                insideTemperature = inside_temp;

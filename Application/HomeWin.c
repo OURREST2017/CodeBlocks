@@ -66,7 +66,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
     { BUTTON_CreateIndirect, "HEAT", ID_BUTTON_HEAT, 292, 230, 84, BUT_HEIGHT, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "COOL", ID_BUTTON_COOL, 384, 230, 84, BUT_HEIGHT, 0, 0x0, 0 },
 
-    { BUTTON_CreateIndirect, "", ID_BUTTON_WIFI, 320, 0, 50, 50, 0, 0x0, 0 },
+    { BUTTON_CreateIndirect, "", ID_BUTTON_WIFI, 325, 0, 50, 50, 0, 0x0, 0 },
 
 #ifdef DEBUG_MODE
     { TEXT_CreateIndirect, "", ID_TEXT_DEBUG, 10, 54, 150, 60, 0, 0x64, 0 },
@@ -92,6 +92,12 @@ static WM_HWIN dateText, timeText, textIndoor;
 static char date_buf[20], time_buf[20];
 static char *weekDays[] = {"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};
 
+static periods_s myPeriod;
+extern struct periods_s getMyPeriod(char *sched, char *d, char *p);
+extern struct periods_s getMyTimePeriod(char *sched, int tod, char *day);
+extern char * getFormattedTime(int st);
+extern char *convertTemp(float temp_set);
+
 extern GUI_CONST_STORAGE GUI_BITMAP bmbig_degree;
 
 extern GUI_CONST_STORAGE GUI_BITMAP bmdn_p;
@@ -101,6 +107,7 @@ extern GUI_CONST_STORAGE GUI_BITMAP bmup_lg;
 extern GUI_CONST_STORAGE GUI_BITMAP bmup_s_lg;
 extern GUI_CONST_STORAGE GUI_BITMAP bmdn_s_lg;
 
+// debug vars
 WM_HWIN textDebug;
 WM_HWIN hvacHeat, hvacCool, hvacFan, holdText;
 int hide_debug=0;
@@ -283,34 +290,51 @@ static void wifi_cb(WM_MESSAGE * pMsg)
     switch (pMsg->MsgId)
     {
     case WM_PAINT:
-        GUI_SetColor(0x666666);
-        GUI_FillRect(x+21,(y+=5),x+26,ys);
-        GUI_FillRect(x+14,(y+=5),x+19,ys);
-        GUI_SetColor(0xeeeeee);
-        GUI_FillRect(x+7,(y+=5),x+12,ys);
-        GUI_FillRect(x,(y+=5),x+5,ys);
+        switch(wifiStrength) {
+        case 0:
+            GUI_SetColor(0x666666);
+            GUI_FillRect(x+21,(y+=5),x+26,ys);
+            GUI_FillRect(x+14,(y+=5),x+19,ys);
+            GUI_FillRect(x+7,(y+=5),x+12,ys);
+            GUI_FillRect(x,(y+=5),x+5,ys);
+            break;
+        case 1:
+            GUI_SetColor(0x666666);
+            GUI_FillRect(x+21,(y+=5),x+26,ys);
+            GUI_FillRect(x+14,(y+=5),x+19,ys);
+            GUI_FillRect(x+7,(y+=5),x+12,ys);
+            GUI_SetColor(0xeeeeee);
+            GUI_FillRect(x,(y+=5),x+5,ys);
+            break;
+        case 2:
+            GUI_SetColor(0x666666);
+            GUI_FillRect(x+21,(y+=5),x+26,ys);
+            GUI_FillRect(x+14,(y+=5),x+19,ys);
+            GUI_SetColor(0xeeeeee);
+            GUI_FillRect(x+7,(y+=5),x+12,ys);
+            GUI_FillRect(x,(y+=5),x+5,ys);
+            break;
+        case 3:
+            GUI_SetColor(0x666666);
+            GUI_FillRect(x+21,(y+=5),x+26,ys);
+            GUI_SetColor(0xeeeeee);
+            GUI_FillRect(x+14,(y+=5),x+19,ys);
+            GUI_FillRect(x+7,(y+=5),x+12,ys);
+            GUI_FillRect(x,(y+=5),x+5,ys);
+            break;
+        case 4:
+            GUI_SetColor(0xeeeeee);
+            GUI_FillRect(x+21,(y+=5),x+26,ys);
+            GUI_FillRect(x+14,(y+=5),x+19,ys);
+            GUI_FillRect(x+7,(y+=5),x+12,ys);
+            GUI_FillRect(x,(y+=5),x+5,ys);
+            break;
+       }
         break;
     default:
         BUTTON_Callback(pMsg);
         break;
     }
-}
-
-int getScheduleTime()
-{
-#ifdef CODEBLOCK
-    time_t now = time(NULL);
-    struct tm *info;
-
-    time( &now );
-    info = localtime( &now );
-    int h = info->tm_hour * 100 + info->tm_min;
-#else
-    RTC_TimeTypeDef tm;
-    BSP_RTC_GetTime(&tm);
-    int h = tm.Hours * 100 + tm.Minutes;;
-#endif
-    return h;
 }
 
 static void holdModeOptions()
@@ -391,31 +415,12 @@ static void convertIntTemp(float temp_set)
     TEXT_SetText(insideTempFracWin, buf);
 }
 
-char *convertTemp(float temp_set)
-{
-    float inside_temp;
-    static char tbuf[10];
-
-    if (metric)
-    {
-        inside_temp = (temp_set - 32.) * 5./9.;
-        sprintf(tbuf,"%d.%1d", (int)inside_temp, (int)(((inside_temp - (int)inside_temp) * 100)/10));
-    }
-    else
-    {
-        sprintf(tbuf,"%d", (int)temp_set);
-    }
-
-    return tbuf;
-}
-extern GUI_CONST_STORAGE GUI_FONT GUI_FontTahoma58hAA4;
-
 void _cbDialog(WM_MESSAGE * pMsg)
 {
     WM_HWIN hItem;
     int     NCode;
     int     Id;
-    char		buffer[10];
+    char		buffer[50];
     GUI_COLOR textColor = 0xffffff;
 
     switch (pMsg->MsgId)
@@ -609,8 +614,8 @@ void _cbDialog(WM_MESSAGE * pMsg)
         }
         else
         {
-            heat_to = (float)scheduleTemperature(getScheduleTime(), currentSchedule, "heat");
-            cool_to = (float)scheduleTemperature(getScheduleTime(), currentSchedule, "cool");
+            heat_to = scheduleTemperature(getScheduleTime(), currentSchedule, "heat");
+            cool_to = scheduleTemperature(getScheduleTime(), currentSchedule, "cool");
         }
 
         heatToWin = WM_GetDialogItem(pMsg->hWin, ID_TEXT_HEATTO);
@@ -750,7 +755,7 @@ void _cbDialog(WM_MESSAGE * pMsg)
                 WM_MoveWindow(upButton, -1, 0);
 
                 temperatureSetPoint++;
-                if (temperatureSetPoint == 86) temperatureSetPoint = 85;
+                if (temperatureSetPoint == 86.) temperatureSetPoint = 85.;
                 sprintf(buffer,"%s %s°", LANG("SET TO"), convertTemp(temperatureSetPoint));
                 TEXT_SetText(textIndoor, buffer);
 
@@ -758,7 +763,7 @@ void _cbDialog(WM_MESSAGE * pMsg)
                 hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SET_TO_TEMP);
                 TEXT_SetText(hItem, buffer);
 
-                timerTemp = temperatureSetPoint;
+                timerTemp = (int)temperatureSetPoint;
                 convertIntTemp(temperatureSetPoint);
 
                 if (strcmp(hvacMode, "heat") == 0)
@@ -766,6 +771,9 @@ void _cbDialog(WM_MESSAGE * pMsg)
                     if (temperatureSetPoint > scheduleTemperature(getScheduleTime(),
                                                                   currentSchedule, hvacMode))
                     {
+                        sprintf(buffer,"Hold Until\n%s",
+                                     getFormattedTime(getMyPeriod(currentSchedule, currentSchedule,myPeriod.next).startTime));
+                        TEXT_SetText(holdUntil, buffer);
                         WM_MoveTo(settingsButWin, 14, 84);
                         WM_ShowWindow(holdUntil);
                         holdMode = 1;
@@ -805,7 +813,7 @@ void _cbDialog(WM_MESSAGE * pMsg)
                 WM_MoveWindow(dnButton, -1, 0);
                 //
                 temperatureSetPoint--;
-                if (temperatureSetPoint == 64) temperatureSetPoint = 65;
+                if (temperatureSetPoint == 64.) temperatureSetPoint = 65.;
                 if (heatToDegrees < coolToDegrees) heatToDegrees = coolToDegrees;
 
                 sprintf(buffer,"%s %s°", LANG("SET TO"), convertTemp(temperatureSetPoint));
@@ -815,7 +823,7 @@ void _cbDialog(WM_MESSAGE * pMsg)
                 hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SET_TO_TEMP);
                 TEXT_SetText(hItem, buffer);
 
-                timerTemp = temperatureSetPoint;
+                timerTemp = (int)temperatureSetPoint;
                 convertIntTemp(temperatureSetPoint);
 
                 if (strcmp(hvacMode, "heat") == 0)
@@ -831,6 +839,9 @@ void _cbDialog(WM_MESSAGE * pMsg)
                 {
                     if (temperatureSetPoint < scheduleTemperature(getScheduleTime(), currentSchedule, hvacMode))
                     {
+                        sprintf(buffer,"Hold Until\n%s",
+                                     getFormattedTime(getMyPeriod(currentSchedule, currentSchedule,myPeriod.next).startTime));
+                        TEXT_SetText(holdUntil, buffer);
                         WM_MoveTo(settingsButWin, 14, 84);
                         WM_ShowWindow(holdUntil);
                         holdMode = 1;
@@ -867,7 +878,7 @@ void _cbDialog(WM_MESSAGE * pMsg)
                     strcpy(hvacMode, "heat");
                     TEXT_SetText(hvacModeText, LANG("HEAT"));
                     temperatureSetPoint = scheduleTemperature(getScheduleTime(), currentSchedule, hvacMode);
-                    sprintf(buffer,"%s°", convertTemp((float)temperatureSetPoint));
+                    sprintf(buffer,"%s°", convertTemp(temperatureSetPoint));
                     hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_SET_TO_TEMP);
                     TEXT_SetText(hItem, buffer);
                     WM_HideWindow(holdUntil);
@@ -1040,9 +1051,9 @@ static void dateTimer(GUI_TIMER_MESSAGE * pTM)
 
     if (strcmp(hvacMode, "auto") == 0)
     {
-        heat_to = (int)heatToDegrees;
-        cool_to = (int)coolToDegrees;
-        temperatureSetPoint = cool_to - ((cool_to - heat_to)/2);
+        heat_to = heatToDegrees;
+        cool_to = coolToDegrees;
+        temperatureSetPoint = cool_to - ((cool_to - heat_to)/2.);
         sprintf(buffer,"%s°", convertTemp(temperatureSetPoint));
         TEXT_SetText(setPointWin, buffer);
     }
@@ -1096,6 +1107,8 @@ WM_HWIN CreateHomeWin(void)
         tempTimerSet = 1;
     }
 
+    myPeriod = getMyPeriod(currentSchedule, currentSchedule,
+                           getMyTimePeriod(currentSchedule, getScheduleTime(), currentSchedule).label );
     temperatureSetPoint = scheduleTemperature(getScheduleTime(), currentSchedule, hvacMode);
     inside_temperature = insideTemperature;
 

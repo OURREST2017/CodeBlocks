@@ -27,7 +27,6 @@ static char *wifi_networks[] =
 };
 
 static WM_HWIN listBox_h, wifiConnectWin;
-static WHEEL wifiWheel;
 static int wifi;
 
 static void _cbDialog(WM_MESSAGE * pMsg)

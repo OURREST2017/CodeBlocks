@@ -1,9 +1,22 @@
 #include "ranger.h"
 
-extern WHEEL dateTimeWheels[6], screenLockWheels[4];
 static GUI_TIMER_HANDLE hvac_timer;
 
+static void hvacTimer(GUI_TIMER_MESSAGE * pTM)
+{
+    hvacControlCode();
+    GUI_TIMER_SetPeriod(pTM->hTimer, 4000);
+    GUI_TIMER_Restart(pTM->hTimer);
+}
+
+static void lockTimer(GUI_TIMER_MESSAGE * pTM)
+{
+    WM_HideWindow(homeWin);
+    WM_ShowWindow(idleWin);
+}
+
 #ifndef CODEBLOCK
+
 #include "main.h"
 #include "cmsis_os.h"
 #include "calibration.h"
@@ -18,35 +31,11 @@ osTimerId lcd_timer;
 
 uint32_t GUI_FreeMem = 0;
 
-static void hvacTimer(GUI_TIMER_MESSAGE * pTM)
-{
-    hvacControlCode();
-    GUI_TIMER_SetPeriod(pTM->hTimer, 4000);
-    GUI_TIMER_Restart(pTM->hTimer);
-}
-
-static void lockTimer(GUI_TIMER_MESSAGE * pTM)
-{
-    WM_HideWindow(homeWin);
-    WM_ShowWindow(idleWin);
-}
 static void GUIThread(void const * argument)
 #else
 
 float sensor_temperature, sensor_humidity;
 
-static void hvacTimer(GUI_TIMER_MESSAGE * pTM)
-{
-    hvacControlCode();
-    GUI_TIMER_SetPeriod(pTM->hTimer, 4000);
-    GUI_TIMER_Restart(pTM->hTimer);
-}
-
-static void lockTimer(GUI_TIMER_MESSAGE * pTM)
-{
-    WM_HideWindow(homeWin);
-    WM_ShowWindow(idleWin);
-}
 void MainTask(void)
 #endif
 {
@@ -85,7 +74,7 @@ void MainTask(void)
     loadConfig();
 
     //saveConfig();
-    saveStats();
+    //saveStats();
 
     homeWin = CreateHomeWin();
     idleWin = CreateIdleWin();
@@ -110,7 +99,6 @@ void MainTask(void)
         screenState = HOMEWIN;
     }
     //screenState = HOMEWIN;
-    int counter;
 
 #ifdef DEBUG_MODE
     sensor_temperature = 22.8f;

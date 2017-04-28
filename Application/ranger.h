@@ -19,13 +19,11 @@
 #define HEADER_FONT &GUI_FontTahoma29hAA4
 #define HEADER_FONT_BOLD &GUI_FontTahoma29hAA4B
 
-WM_HWIN textDebug;
-
 GUI_TIMER_HANDLE lockTimer_h;
+
 WM_HWIN homeWin, idleWin, screenLockoutWin, dateTimeWin, settingsWin, languagesWin;
-WM_HWIN settingsScheduleWin, editScheduleWin, preferencesWin, systemSetupWin;
+WM_HWIN settingsScheduleWin, editScheduleWin, preferencesWin, systemSetupWin, settingsHelpWin;
 WM_HWIN mobilePairWin, profileWin, modeWin, fanModeWin, coolToWin, heatToWin, temperatureLimitsWin;
-WM_HWIN settingsHelpWin;
 WM_HWIN hvacModeText, fanModeText, heatToText, coolToText, triacWin, keyboardWin;
 
 extern GUI_CONST_STORAGE GUI_FONT GUI_FontLucidaSans15hAA4;
@@ -82,6 +80,7 @@ extern int returnSkin(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo);
 
 extern int color_scheme;
 extern void initColors();
+extern float scheduleTemperature(int tod, char *day, char *mode);
 
 extern  WM_HWIN CreateHomeWin(void);
 extern  WM_HWIN CreateIdleWin(void);
@@ -121,23 +120,13 @@ extern  WM_HWIN CreateEditScheduleHelp(char *,char *);
 extern  WM_HWIN CreateSplashWin(void);
 extern void loadConfig();
 
-typedef struct
-{
-    WM_HWIN           hWin;
-    GUI_MEMDEV_Handle hMemOverlay;
-    GUI_MEMDEV_Handle hMemRBorder;
-    GUI_MEMDEV_Handle hMemLBorder;
-    const GUI_FONT GUI_UNI_PTR * pFont;
-} WHEEL;
-
-
 typedef struct periods_s
 {
     char *label;
     int heat;
     int cool;
     int startTime;
-    int stopTime;
+    char *next;
 } periods_s;
 
 typedef struct days_s
@@ -180,6 +169,7 @@ enum Screen_Selector {
     PREFERENCESWIN, SYSTEMSETUPWIN, EDITSCHEDULEWIN
 };
 
+int wifiStrength;
 int screenLockDig[4];
 char schedulePeriod[20];
 char scheduleDay[20];
@@ -201,7 +191,6 @@ char thermo_rooms[6][30];
 char changeOver[20];
 char configVersion[10];
 char serialNumber[30];
-char fanControl[30];
 char fanMode[10];
 
 char firmwareUrl[10];
@@ -212,7 +201,6 @@ int holdMode;
 char hvacMode[10];
 char language[12];
 char lockCode[5];
-char firstNameText[30];
 char ownersName[30];
 int dst;
 char keyboardLock[20];
@@ -225,7 +213,7 @@ int localHumidity;
 int localTemperature;
 char *nextFwVersion;
 char *securityMode;
-int temperatureSetPoint;
+float temperatureSetPoint;
 int timeZoneOffset;
 int unitLocked;
 int resetUnit;
