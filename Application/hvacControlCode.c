@@ -191,6 +191,11 @@ void hvacControlCode()
     float inside_temp, schedule_temp;
 
     inside_temp = 1.8 * sensor_temperature + 32.;
+    if (inside_temp - (int)inside_temp < .5) {
+        inside_temp = (int)inside_temp;
+    } else if (inside_temp - (int)inside_temp >= .5) {
+        inside_temp = (float)((int)inside_temp) + .5;
+    }
     insideHumidity = sensor_humidity;
     schedule_temp = scheduleTemperature(getScheduleTime(), currentSchedule, hvacMode);
 

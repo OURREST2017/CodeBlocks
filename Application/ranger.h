@@ -81,6 +81,7 @@ extern int returnSkin(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo);
 extern int color_scheme;
 extern void initColors();
 extern float scheduleTemperature(int tod, char *day, char *mode);
+extern char *LANG(char *s);
 
 extern  WM_HWIN CreateHomeWin(void);
 extern  WM_HWIN CreateIdleWin(void);

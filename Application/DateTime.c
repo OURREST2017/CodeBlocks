@@ -155,15 +155,14 @@ static void dateChanger()
     {
     case 0:
         current_hour++;
-        if (current_hour > 12) current_hour -= 12;
-        //GUI_ErrorOut1("H",current_hour);
+        if (current_hour == 24) current_hour = 0;
         ctime = current_hour > 12 ? current_hour - 12 : current_hour;
         sprintf(buf, "%d", ctime);
         TEXT_SetText(hour_text, buf);
         break;
     case 1:
         current_hour--;
-        if (current_hour == 0) current_hour = 12;
+        if (current_hour == -1) current_hour = 23;
         ctime = current_hour > 12 ? current_hour -12 : current_hour;
         sprintf(buf, "%d", ctime);
         TEXT_SetText(hour_text, buf);
@@ -336,35 +335,6 @@ static void date_box_cb(WM_MESSAGE * pMsg)
     }
 }
 
-static void saveCurrentTime()
-{
-#ifdef CODEBLOCK
-
-//    sprintf(date_buf, "%s %2d/%2d/%2d", LANG(day), info->tm_mon+1,info->tm_mday,(info->tm_year-100));
-//
-//    int h = (info->tm_hour > 12) ? info->tm_hour - 12 : info->tm_hour ;
-//    sprintf(time_buf, "%3d:%02d %s", h, info->tm_min, (info->tm_hour > 12) ? "PM" : "AM");
-#else
-//    tm.Hours = current_hour;
-//    tm.Minutes = current_minute;
-//    tm.DayLightSaving = 1;
-//    tm.TimeFormat = 64;
-//
-//    dt.Date = current_day;
-//    dt.Month = current_month;
-//    dt.Year = current_year;
-//    dt.WeekDay = current_wday;
-//
-//    BSP_RTC_SetTime(&tm);
-//    BSP_RTC_SetDate(&dt);
-//
-//    int h = (tm.Hours > 12) ? tm.Hours - 12 : tm.Hours;
-//    sprintf(time_buf, "%d:%02d", tm.Hours, tm.Minutes, (tm.Hours > 12) ? "pm" : "am");
-//
-//    sprintf(date_buf, "%s %02d/%02d/%d", LANG(weekDays[dt.WeekDay]), dt.Month, dt.Date, dt.Year);
-#endif
-}
-
 static void timeWin_cb(WM_MESSAGE * pMsg)
 {
     WM_HWIN hItem;
@@ -514,7 +484,6 @@ static void timeWin_cb(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                //WM_HideWindow(dateTimeWin);
                 WM_DeleteWindow(dateTimeWin);
                 screenState = SETTINGSWIN;
                 break;
@@ -525,7 +494,6 @@ static void timeWin_cb(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-
                 WM_HideWindow(timeWin);
                 WM_ShowWindow(dateWin);
                 break;
@@ -536,8 +504,8 @@ static void timeWin_cb(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                GUI_ErrorOut1("H",current_ampm);
                 WM_DeleteWindow(dateTimeWin);
+                saveDateTime();
                 screenState = SETTINGSWIN;
                 break;
             }
@@ -712,7 +680,7 @@ static void dateWin_cb(WM_MESSAGE * pMsg)
             {
             case WM_NOTIFICATION_RELEASED:
                 GUI_Delay(100);
-                saveCurrentTime();
+                saveDateTime();
                 WM_DeleteWindow(dateTimeWin);
                 screenState = SETTINGSWIN;
                 break;

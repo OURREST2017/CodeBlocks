@@ -13,7 +13,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] =
 {
     { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 480, 272, 0, 0x0, 0 },
     { TEXT_CreateIndirect, "SELECT WIFI NETWORK", ID_TEXT_HEADER, 0, 0, 480, 50, 0, 0x64, 0 },
-    { LISTBOX_CreateIndirect, "Listbox", ID_LISTBOX_0, 66, 70, 350, 120, 0, 0x0, 0 },
+    { LISTBOX_CreateIndirect, "Listbox", ID_LISTBOX_0, 62, 70, 350, 140, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "CANCEL", ID_BUTTON_CANCEL, 20, 230, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "RESCAN", ID_BUTTON_RESCAN, 140, 230, BUT_WIDTH, BUT_HEIGHT, 0, 0x0, 0 },
     { BUTTON_CreateIndirect, "LATER", ID_BUTTON_LATER, 260, 230, 80, BUT_HEIGHT, 0, 0x0, 0 },
@@ -29,6 +29,101 @@ static char *wifi_networks[] =
 static WM_HWIN listBox_h, wifiConnectWin;
 static int wifi;
 
+/*********************************************************************
+*
+*   	_GetItemSizeX
+*/
+static int _GetItemSizeX(WM_HWIN hWin, int ItemIndex) {
+  char acBuffer[100];
+  int  DistX;
+
+  LISTBOX_GetItemText(hWin, ItemIndex, acBuffer, sizeof(acBuffer));
+  DistX = GUI_GetStringDistX(acBuffer);
+  return DistX + 16;
+}
+
+/*********************************************************************
+*
+*   	_GetItemSizeY
+*/
+static int _GetItemSizeY(WM_HWIN hWin, int ItemIndex) {
+  int DistY;
+
+  DistY = GUI_GetFontDistY();
+
+  return DistY;
+}
+
+// Refer to page 598 in Manual
+int drawRoundedListBox(const WIDGET_ITEM_DRAW_INFO * pDrawItemInfo) {
+  WM_HWIN hWin;
+  int 	Index;
+
+	hWin 	= pDrawItemInfo->hWin;
+	Index	= pDrawItemInfo->ItemIndex;
+	switch (pDrawItemInfo->Cmd) {
+		case WIDGET_ITEM_GET_XSIZE:
+			return _GetItemSizeX(hWin, Index);
+		case WIDGET_ITEM_GET_YSIZE:
+			return _GetItemSizeY(hWin, Index);
+		case WIDGET_ITEM_DRAW:
+		{
+			int Sel;
+			int YSize;
+			int FontDistX;
+			int FontDistY;
+			int YOffset;
+			char acBuffer[100];
+			GUI_RECT rFocus;
+			GUI_RECT rInside;
+
+			Sel = LISTBOX_GetSel(hWin);
+
+			GUI_SetBkColor(0xf2f2f2);
+			GUI_SetColor(GUI_WHITE);
+			YSize = _GetItemSizeY(hWin, Index);
+
+			YOffset = 1;
+
+			WM_GetInsideRectEx(pDrawItemInfo->hWin, &rInside);
+			rFocus.x0 = pDrawItemInfo->x0+1;
+			rFocus.y0 = pDrawItemInfo->y0 + YOffset;
+			rFocus.x1 = rInside.x1-21;
+			rFocus.y1 = pDrawItemInfo->y0 + YSize - YOffset;
+
+			LISTBOX_GetItemText(pDrawItemInfo->hWin, pDrawItemInfo->ItemIndex, acBuffer, sizeof(acBuffer));
+			GUI_Clear();
+			// Draw focus rectangle if item is selected
+			if ((pDrawItemInfo->ItemIndex == Sel)) {
+				rFocus.y0-=3;
+				rFocus.y1-=1;
+				GUI_SetColor(0x009e5a);
+				// Refer to page 948 of Manual
+				GUI_AA_FillRoundedRectEx(&rFocus, 2);
+				GUI_SetTextMode(GUI_TEXTMODE_TRANS);
+				//GUI_SetBkColor(GUI_TRANSPARENT);
+				GUI_SetColor(GUI_WHITE);
+				FontDistY = GUI_GetFontDistY();
+				FontDistX = GUI_GetStringDistX(acBuffer);
+				// Center text
+				GUI_DispStringAt(acBuffer, pDrawItemInfo->x0 + (pDrawItemInfo->x0 + rFocus.x1)/2 - (FontDistX/2), pDrawItemInfo->y0 + ((YSize - FontDistY) / 2) - YOffset);
+			}
+			else {
+				YSize = YSize - 2;
+				GUI_SetBkColor(0xf2f2f2);
+				GUI_SetColor(0x707070);
+				FontDistY = GUI_GetFontDistY();
+				FontDistX = GUI_GetStringDistX(acBuffer);
+				GUI_DispStringAt(acBuffer, pDrawItemInfo->x0 + (pDrawItemInfo->x0 + rFocus.x1)/2 - (FontDistX/2), pDrawItemInfo->y0 + ((YSize - FontDistY) / 2));
+				GUI_DispCEOL();
+			}
+		}
+		break;
+		default:
+			return LISTBOX_OwnerDraw(pDrawItemInfo);
+	}
+	return 0;
+}
 static void _cbDialog(WM_MESSAGE * pMsg)
 {
     WM_HWIN hItem, spinner;
@@ -53,11 +148,9 @@ static void _cbDialog(WM_MESSAGE * pMsg)
         //
         listBox_h = WM_GetDialogItem(pMsg->hWin, ID_LISTBOX_0);
         LISTBOX_SetFont(listBox_h, Tahoma23B);
-        LISTBOX_SetBkColor(listBox_h, LISTBOX_CI_SELFOCUS, 0x009e5a);
-        LISTBOX_SetTextColor(listBox_h, LISTBOX_CI_SEL,0x808080);
-        LISTBOX_SetTextColor(listBox_h, LISTBOX_CI_UNSEL,0x707070);
         LISTBOX_SetAutoScrollV(listBox_h, 1);
         LISTBOX_SetScrollbarWidth(listBox_h, 20);
+        LISTBOX_SetOwnerDraw(listBox_h, drawRoundedListBox);
 
         for (i=0; i<wifi_count; i++)
         {

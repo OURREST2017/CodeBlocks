@@ -43,22 +43,7 @@ void MainTask(void)
 
 #ifndef CODEBLOCK
     WM_MULTIBUF_Enable(1);
-//    RTC_TimeTypeDef tm;
-//    RTC_DateTypeDef dt;
-//
-//    tm.Hours = 4;
-//    tm.Minutes = 43;
-//    tm.DayLightSaving = 1;
-//    tm.TimeFormat = 64;
-//
-//    dt.Date = 9;
-//    dt.Month = 2;
-//    dt.Year = 17;
-//    dt.WeekDay = 4;
-//
-//    BSP_RTC_SetTime(&tm);
-//    BSP_RTC_SetDate(&dt);
-//
+
     /* Check for calibration */
     if (CalibrationIsDone() == 0)
     {
@@ -84,6 +69,7 @@ void MainTask(void)
     preferencesWin = CreatePreferences();
     systemSetupWin = CreateSystemSetup();
     //firstTime = 0;
+
     if (testing)
     {
         screenState = 99;
@@ -101,7 +87,8 @@ void MainTask(void)
     //screenState = HOMEWIN;
 
 #ifdef DEBUG_MODE
-    sensor_temperature = 22.8f;
+    insideTemperature = 77.;
+    sensor_temperature = (insideTemperature - 32.) * 5./9.;
     sensor_humidity = 39.0f;
     hvac_timer = GUI_TIMER_Create(hvacTimer, 4000, 0, 0);
     //hvacControlCode();
@@ -120,7 +107,7 @@ void MainTask(void)
         case HOMEWIN:
 //            GUI_TIMER_SetPeriod(lockTimer_h, idleTimeOut);
 //            GUI_TIMER_Restart(lockTimer_h);
-            hvacControlCode();
+            //hvacControlCode();
             WM_ShowWindow(homeWin);
             screenState = NOWIN;
             break;

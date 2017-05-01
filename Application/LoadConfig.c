@@ -319,6 +319,29 @@ void getCurrentTime()
 #endif
 }
 
+void saveDateTime() {
+#ifndef CODEBLOCK
+    RTC_TimeTypeDef tm;
+    RTC_DateTypeDef dt;
+
+    dt.Year = current_year - 2000;
+    dt.Date =  current_day;
+    dt.Month = current_month;
+    dt.WeekDay = current_wday;
+
+    tm.Hours = current_hour;
+    if (current_ampm && current_hour < 12) {
+    	tm.Hours += 12;
+    } else if (!current_ampm && current_hour >= 12) {
+    	tm.Hours -= 12;
+    }
+    tm.Minutes = current_minute;
+
+    BSP_RTC_SetTime(&tm);
+    BSP_RTC_SetDate(&dt);
+#endif
+}
+
 int getIndex(struct days_s *day, char * s)
 {
     int i;
@@ -716,7 +739,7 @@ void loadConfig()
     localTemperature = 90;
 
     insideHumidity = 30;
-    insideTemperature = 72.5f;
+//    insideTemperature = 72.5f;
 
     idleTimeOut = 360000;
     heat_control = 0;

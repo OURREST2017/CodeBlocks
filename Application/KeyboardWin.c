@@ -472,7 +472,8 @@ static void _cbDialog(WM_MESSAGE * pMsg)
                 }
                 else if (strcmp(from_screen, "wifi") == 0)
                 {
-                    CreateWifiSetup();
+                    CreateWifiConnect();
+                    //CreateWifiSetup();
                 }
                 else
                 {
